@@ -9,8 +9,6 @@ $(document).ready(function () {
         pengirim: namacust,
       },
       success: function (res) {
-        console.log(res);
-
         // Remove options
         $(".orderno").val(res.orderno).trigger("change");
 
@@ -42,7 +40,6 @@ $(document).ready(function () {
         no_order: order,
       },
       success: function (data) {
-        console.log(data);
         $(".platno").val(data.platno);
         $(".kotaasal").val(data.kota_asal);
         $(".kotatujuan").val(data.kota_tujuan);
