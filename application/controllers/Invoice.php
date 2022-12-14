@@ -39,10 +39,18 @@ class Invoice extends CI_Controller
     $this->load->view('layout/trans/add-invoice', $data);
   }
 
-  public function getOrderPenjualan()
+  public function getOrderCust()
   {
-    $post   = $this->input->post('penerima');
-    $data   = $this->Sales->getOrderPenjualan($post);
+    $post   = $this->input->post('pengirim');
+    $data   = $this->Sales->getOrderCust($post);
+
+    echo json_encode($data);
+  }
+
+  public function getDataOrderCust()
+  {
+    $no   = $this->input->post('no_order');
+    $data   = $this->Sales->getDataOrderCust($no);
 
     echo json_encode($data);
   }

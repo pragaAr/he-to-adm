@@ -43,7 +43,7 @@
               <div class="form-group col-md-6">
                 <label for="cust">Nama Customer</label>
                 <select name="cust" id="cust" class="form-control select2" style="width:100%" required>
-                  <option value="" selected disabled>-Pilih CUstomer-</option>
+                  <option value="" selected disabled>-Pilih Customer-</option>
                   <?php foreach ($cust as $cust) : ?>
                     <option value="<?= $cust->pengirim ?>"><?= strtoupper($cust->pengirim) ?></option>
                   <?php endforeach ?>
@@ -60,32 +60,42 @@
           </div>
         </div>
 
-        <div class="row">
-
-          <div class="col-lg-6 col-md-6">
-            <div class="card">
-              <div class="card-body">
-                <div class="form-group">
-                  <label for="nominal">Nominal</label>
-                  <input type="text" name="nominal" id="nominal" class="form-control text-capitalize" placeholder="Nominal.." required oninvalid="this.setCustomValidity('Nominal wajib di isi!')" oninput="setCustomValidity('')" autofocus>
-                </div>
-                <div class="form-group">
-                  <label for="karyawan">Nama Karyawan</label>
-                  <select name="karyawan" id="karyawan" class="form-control select2" style="width:100%;" required>
-                    <option value="" selected disabled>-Pilih Karyawan-</option>
-                    <?php foreach ($karyawan as $data) : ?>
-                      <option value="<?= $data->id_karyawan ?>"><?= strtoupper($data->nama) ?></option>
-                    <?php endforeach ?>
-                  </select>
-                  <input type="hidden" name="namakaryawan" class="form-control" readonly>
-                </div>
-                <div class="form-group mt-5" style="margin-bottom: 1rem!important;">
-                  <button class="btn btn-dark btn-block pt-2 pb-2" style="height: calc(2.25rem + 2px);" type="button" id="tambah" disabled>
-                    <i class="fas fa-plus"></i>
-                    Tambah
-                  </button>
-                </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="platno">Plat No</label>
+                <input type="text" name="platno" id="platno" class="form-control text-capitalize platno" placeholder="Plat No.." required readonly>
               </div>
+              <div class="form-group col-md-4">
+                <label for="kotaasal">Kota Asal</label>
+                <input type="text" name="kotaasal" id="kotaasal" class="form-control text-capitalize kotaasal" placeholder="Kota Asal.." required readonly>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="kotatujuan">Kota Tujuan</label>
+                <input type="text" name="kotatujuan" id="kotatujuan" class="form-control text-capitalize kotatujuan" placeholder="Kota Tujuan.." required readonly>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="berat">Berat</label>
+                <input type="text" name="berat" id="berat" class="form-control text-capitalize berat" placeholder="Berat.." required readonly>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="hargakg">Ongkos</label>
+                <input type="text" name="hargakg" id="hargakg" class="form-control text-capitalize hargakg" placeholder="Ongkos.." required readonly>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="tagihan">Tagihan</label>
+                <input type="text" name="tagihan" id="tagihan" class="form-control text-capitalize tagihan" placeholder="Tagihan.." required readonly>
+              </div>
+            </div>
+
+            <div class="form-group mt-5" style="margin-bottom: 1rem!important;">
+              <button class="btn btn-dark btn-block pt-2 pb-2" style="height: calc(2.25rem + 2px);" type="button" id="tambah" disabled>
+                <i class="fas fa-plus"></i>
+                Tambah
+              </button>
             </div>
           </div>
         </div>
