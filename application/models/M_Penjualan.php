@@ -47,7 +47,7 @@ class M_Penjualan extends CI_Model
 
   public function getDataOrderCust($no)
   {
-    $this->db->select('penjualan.no_order, penjualan.kota_asal, penjualan.kota_tujuan, penjualan.berat, penjualan.harga_kg, penjualan.total_harga, penjualan.dateAdd, sangu_order.no_order, sangu_order.platno');
+    $this->db->select('penjualan.no_order, penjualan.surat_jalan, penjualan.kota_asal, penjualan.kota_tujuan, penjualan.berat, penjualan.harga_kg, penjualan.total_harga, penjualan.dateAdd, sangu_order.no_order, sangu_order.platno');
     $this->db->from('penjualan');
     $this->db->where('penjualan.no_order', $no);
     $this->db->join('sangu_order', 'sangu_order.no_order = penjualan.no_order');
@@ -61,6 +61,7 @@ class M_Penjualan extends CI_Model
     $userid           = $this->session->userdata('id_user');
 
     $noorder          = $this->input->post('noorderpenjualan');
+    $nosj             = trim($this->input->post('nosj'));
     $jenisnota        = $this->input->post('jenispenjualan');
     $jenisbarng       = $this->input->post('muatan');
     $beratbrg         = $this->input->post('berat');
@@ -78,6 +79,7 @@ class M_Penjualan extends CI_Model
 
     $data = array(
       'no_order'            => strtolower($noorder),
+      'surat_jalan'         => strtolower($nosj),
       'jenis_penjualan'     => strtolower($jenisnota),
       'muatan'              => strtolower($jenisbarng),
       'berat'               => strtolower($beratbrg),
@@ -110,7 +112,7 @@ class M_Penjualan extends CI_Model
   public function editData($no)
   {
     $userid           = $this->session->userdata('id_user');
-
+    $nosj             = trim($this->input->post('editnosj'));
     $jenisnota        = $this->input->post('editjenispenjualan');
     $jenisbarng       = $this->input->post('editmuatan');
     $beratbrg         = $this->input->post('editberat');
@@ -119,11 +121,11 @@ class M_Penjualan extends CI_Model
     $kotaasal         = trim($this->input->post('editkotaasal'));
     $penerima         = trim($this->input->post('editpenerima'));
     $kotatujuan       = trim($this->input->post('editkotatujuan'));
-    $alamatpenerima   = trim($this->input->post('editalamatpenerima'));
     $totalbiaya       = preg_replace("/[^0-9\.]/", "", $this->input->post('edittotalbiaya'));
     $pembayaran       = $this->input->post('editpembayaran');
 
     $data = array(
+      'surat_jalan'         => strtolower($nosj),
       'jenis_penjualan'     => strtolower($jenisnota),
       'muatan'              => strtolower($jenisbarng),
       'berat'               => strtolower($beratbrg),
@@ -132,7 +134,6 @@ class M_Penjualan extends CI_Model
       'kota_asal'           => strtolower($kotaasal),
       'penerima'            => strtolower($penerima),
       'kota_tujuan'         => strtolower($kotatujuan),
-      'alamat_tujuan'       => strtolower($alamatpenerima),
       'total_harga'         => $totalbiaya,
       'pembayaran'          => strtolower($pembayaran),
       'user_id'             => $userid,

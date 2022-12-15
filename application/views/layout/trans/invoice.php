@@ -12,7 +12,7 @@
           <div class="breadcrumb float-sm-right">
             <a href="<?= base_url('invoice/addInvoice') ?>" class="btn btn-dark">
               <i class=" fas fa-plus"></i>
-              Tambah
+              Buat Invoice
             </a>
           </div>
         </div>

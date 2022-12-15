@@ -17,7 +17,7 @@ class M_Invoice extends CI_Model
       $kode = 1;
     }
     $batas = str_pad($kode, 3, "0", STR_PAD_LEFT);
-    $kodetampil = $batas . "/han" . "/" . date('y');
+    $kodetampil = $batas . "/han/" . date('d') . "/" . date('y');
     return $kodetampil;
   }
 
@@ -53,8 +53,8 @@ class M_Invoice extends CI_Model
 
   public function addData($data, $detail)
   {
-    $this->db->insert('uang_makan', $data);
-    $this->db->insert_batch('detail_um', $detail);
+    $this->db->insert('invoice', $data);
+    $this->db->insert_batch('detail_inv', $detail);
   }
 
   public function updateData($kd, $data, $detail)

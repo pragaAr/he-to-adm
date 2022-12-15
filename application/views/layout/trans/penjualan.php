@@ -114,49 +114,44 @@
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6">
               <label for="pengirim">
                 Pengirim
                 <span class="text-white">*</span>
               </label>
               <input type="text" class="form-control text-uppercase pengirim" name="pengirim" placeholder="Nama Pengirim.." readonly>
             </div>
-            <div class="form-group col-md-3">
-              <label for="kotaasal">
-                Kota Asal
-                <span class="text-white">*</span>
-              </label>
-              <input type="text" class="form-control text-uppercase kotaasal" name="kotaasal" placeholder="Kota Asal..">
-            </div>
-            <div class="form-group col-md-5">
-              <label for="alamatpengirim">
-                Alamat Pengirim
-                <span class="text-white">*</span>
-              </label>
-              <textarea name="alamatpengirim" class="form-control text-uppercase alamatpengirim" placeholder="Alamat Pengirim.." style="height: calc(2.25rem + 2px) !important; min-height: calc(2.25rem + 2px) !important;" readonly></textarea>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6">
               <label for="penerima">
                 Penerima
                 <span class="text-white">*</span>
               </label>
               <input name="penerima" class="form-control text-uppercase" placeholder="Nama Penerima.." required oninvalid="this.setCustomValidity('Nama Penerima wajib di isi!')" oninput="setCustomValidity('')">
             </div>
-            <div class="form-group col-md-3">
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="kotaasal">
+                Kota Asal
+                <span class="text-white">*</span>
+              </label>
+              <input type="text" class="form-control text-uppercase kotaasal" name="kotaasal" placeholder="Kota Asal..">
+              <input type="hidden" class="form-control text-uppercase alamatpengirim" name="alamatpengirim" readonly>
+              <input type="hidden" class="form-control text-uppercase alamatpenerima" name="alamatpenerima" readonly>
+            </div>
+            <div class="form-group col-md-4">
               <label for="kotatujuan">
                 Kota Tujuan
                 <span class="text-white">*</span>
               </label>
               <input type="text" class="form-control text-uppercase kotatujuan" name="kotatujuan" placeholder="Kota Tujuan..">
             </div>
-            <div class="form-group col-md-5">
-              <label for="alamatpenerima">
-                Alamat Penerima
+            <div class="form-group col-md-4">
+              <label for="nosj">
+                No Surat Jalan
                 <span class="text-white">*</span>
               </label>
-              <textarea name="alamatpenerima" class="form-control text-uppercase alamatpenerima" placeholder="Alamat Penerima.." required oninvalid="this.setCustomValidity('Alamat Penerima wajib di isi!')" oninput="setCustomValidity('')" style="height: calc(2.25rem + 2px) !important; min-height: calc(2.25rem + 2px) !important;" readonly></textarea>
+              <input type="text" class="form-control text-uppercase nosj" name="nosj" placeholder="No Surat Jalan.." required>
             </div>
           </div>
           <div class="form-row">
@@ -264,49 +259,44 @@
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6">
               <label for="editpengirim">
                 Pengirim
                 <span class="text-white">*</span>
               </label>
               <input type="text" class="form-control text-uppercase editpengirim" name="editpengirim" placeholder="Nama Pengirim.." readonly>
             </div>
-            <div class="form-group col-md-3">
-              <label for="editkotaasal">
-                Kota Asal
-                <span class="text-white">*</span>
-              </label>
-              <input type="text" class="form-control text-uppercase editkotaasal" name="editkotaasal" placeholder="Kota Asal..">
-            </div>
-            <div class="form-group col-md-5">
-              <label for="editalamatpengirim">
-                Alamat Pengirim
-                <span class="text-white">*</span>
-              </label>
-              <textarea name="editalamatpengirim" class="form-control text-uppercase editalamatpengirim" placeholder="Alamat Pengirim.." style="height: calc(2.25rem + 2px) !important; min-height: calc(2.25rem + 2px) !important;" readonly></textarea>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6">
               <label for="editpenerima">
                 Penerima
                 <span class="text-white">*</span>
               </label>
               <input name="editpenerima" class="form-control text-uppercase editpenerima" placeholder="Nama Penerima.." required oninvalid="this.setCustomValidity('Nama Penerima wajib di isi!')" oninput="setCustomValidity('')">
             </div>
-            <div class="form-group col-md-3">
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="editkotaasal">
+                Kota Asal
+                <span class="text-white">*</span>
+              </label>
+              <input type="text" class="form-control text-uppercase editkotaasal" name="editkotaasal" placeholder="Kota Asal..">
+            </div>
+            <div class="form-group col-md-4">
               <label for="editkotatujuan">
                 Kota Tujuan
                 <span class="text-white">*</span>
               </label>
               <input type="text" class="form-control text-uppercase editkotatujuan" name="editkotatujuan" placeholder="Kota Tujuan..">
+              <input type="hidden" class="form-control text-uppercase editalamatpengirim" name="editalamatpengirim" readonly>
+              <input type="hidden" class="form-control text-uppercase editalamattujuan" name="editalamattujuan" readonly>
             </div>
-            <div class="form-group col-md-5">
-              <label for="editalamatpenerima">
-                Alamat Penerima
+            <div class="form-group col-md-4">
+              <label for="editnosj">
+                No Surat Jalan
                 <span class="text-white">*</span>
               </label>
-              <textarea name="editalamatpenerima" class="form-control text-uppercase editalamatpenerima" placeholder="Alamat Penerima.." required oninvalid="this.setCustomValidity('Alamat Penerima wajib di isi!')" oninput="setCustomValidity('')" style="height: calc(2.25rem + 2px) !important; min-height: calc(2.25rem + 2px) !important;" readonly></textarea>
+              <input type="text" class="form-control text-uppercase editnosj" name="editnosj" placeholder="No Surat Jalan..">
             </div>
           </div>
           <div class="form-row">

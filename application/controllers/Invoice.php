@@ -62,14 +62,17 @@ class Invoice extends CI_Controller
 
   public function prosesAdd()
   {
-    $userid   = $this->session->userdata('id_user');
-    $jmlum    = count($this->input->post('idkaryawan_hidden'));
-    $nominal  = preg_replace("/[^0-9\.]/", "", $this->input->post('nominal_hidden'));
-    $total    = preg_replace("/[^0-9\.]/", "", $this->input->post('total_hidden'));
+    $userid     = $this->session->userdata('id_user');
+    $kd         = $this->input->post('kd');
+    $namacust   = $this->input->post('namacust');
+    $nosj       = $this->input->post('nosj_hidden');
+    $jmlresi    = count($this->input->post('noorder_hidden'));
+    $total      = preg_replace("/[^0-9\.]/", "", $this->input->post('total_hidden'));
 
     $data  = [
-      'kd_um'         => $this->input->post('kdum'),
-      'jml_orang'     => $jmlum,
+      'kd_inv'        => $kd,
+      'nama_cust'     => $namacust,
+      'jml_resi'      => $jmlresi,
       'jml_nominal'   => $total,
       'user_id'       => $userid,
       'dateAdd'       => date('Y-m-d H:i:s'),
@@ -77,15 +80,15 @@ class Invoice extends CI_Controller
 
     $detail = [];
 
-    for ($i = 0; $i < $jmlum; $i++) {
-      array_push($detail, ['karyawan_id'  => $this->input->post('idkaryawan_hidden')[$i]]);
-      $detail[$i]['kd_um']        = $this->input->post('kdum');
-      $detail[$i]['nominal_um']   = $nominal[$i];
+    for ($i = 0; $i < $jmlresi; $i++) {
+      array_push($detail, ['no_order'  => $this->input->post('noorder_hidden')[$i]]);
+      $detail[$i]['kd_inv']        = $kd;
+      $detail[$i]['surat_jalan']   = $nosj[$i];
     }
 
-    $this->Uangmakan->addData($data, $detail);
+    $this->Invoice->addData($data, $detail);
     $this->session->set_flashdata('inserted', 'Data berhasil ditambahkan!');
-    redirect('uangmakan');
+    redirect('invoice');
   }
 
   public function getDetailkd()

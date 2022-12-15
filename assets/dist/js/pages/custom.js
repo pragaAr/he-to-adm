@@ -362,6 +362,7 @@ $(".btn-edit-penjualan").on("click", function (e) {
       $(".editkotaasal").val(data.kota_asal);
       $(".editalamatpengirim").val(data.alamat_asal);
       $(".editpenerima").val(data.penerima);
+      $(".editnosj").val(data.surat_jalan);
       $(".editkotatujuan").val(data.kota_tujuan);
       $('input[name="editpenerima"]').focus();
       $(".editalamatpenerima").val(data.alamat_tujuan);
@@ -540,7 +541,7 @@ $("#addPenjualan").on("show.bs.modal", function () {
         $(".pengirim").val(data.nama_cust);
         $(".alamatpengirim").val(data.alamat_asal);
         $(".alamatpenerima").val(data.alamat_tujuan);
-        $('input[name="kotaasal"]').focus();
+        $('input[name="penerima"]').focus();
       },
     });
   });
