@@ -7,7 +7,7 @@ $(document).ready(function () {
     }
   });
 
-  $("#namacust").on("change", function () {
+  $("#namacust").on("input", function () {
     const namacust = $(this).val();
     $.ajax({
       url: "http://localhost/hira-to-adm/invoice/getOrderCust",
@@ -17,6 +17,7 @@ $(document).ready(function () {
         pengirim: namacust,
       },
       success: function (res) {
+        console.log(res);
         $('input[name="nosj"]').prop("readonly", true);
 
         // Remove options
@@ -99,11 +100,14 @@ $(document).ready(function () {
   $(document).on("click", "#tombol-hapus", function () {
     $(this).closest(".row-cart").remove();
 
+    $("#total").html("<p>" + total_tagihan().toLocaleString() + "</p>");
+    $('input[name="total_hidden"]').val(total_tagihan());
+
     if ($("tbody").children().length == 0) $("tfoot").hide();
   });
 
   $('button[type="submit"]').on("click", function () {
-    $('select[name="namacust"]').prop("disabled", true);
+    $('input[name="tanggal"]').prop("disabled", true);
     $('select[name="orderno"]').prop("disabled", true);
   });
 

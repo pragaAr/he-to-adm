@@ -15,7 +15,7 @@
   </td>
 
   <td class="action">
-    <button type="button" class="btn btn-danger btn-sm" id="tombol-hapus" data-toggle="tooltip" title="Hapus Resi" data-order="<?= $this->input->post('noorder') ?>">
+    <button type="button" class="btn btn-danger btn-sm" id="tombol-hapus" title="Hapus Resi" data-order="<?= $this->input->post('noorder') ?>">
       <i class="fas fa-times"></i>
     </button>
   </td>

@@ -138,7 +138,7 @@
                         </td>
                         <td>
                           <input type="hidden" name="total_hidden" value="">
-                          <button type="submit" class="btn btn-dark btn-sm" data-toggle="tooltip" title="Simpan">
+                          <button type="submit" class="btn btn-dark btn-sm" title="Simpan">
                             <i class="fas fa-save"></i>
                             Simpan
                           </button>
@@ -158,10 +158,12 @@
 
 <!-- Main Footer -->
 <footer class="main-footer">
-  <strong>Copyright &copy; 2022 <a href="https://hira-express.com">Hira Express</a></strong>
+  <strong>Copyright &copy; 2022
+    <a href="https://hira-express.com" class="text-light">Hira Express</a>
+  </strong>
   Made With 💖
   <div class="float-right d-none d-sm-inline-block">
-    <b>Version</b> 0.1.0
+    <b>ver</b> 0.1.0
   </div>
 </footer>
 </div>

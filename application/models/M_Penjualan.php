@@ -41,6 +41,8 @@ class M_Penjualan extends CI_Model
     $this->db->select('no_order');
     $this->db->from('penjualan');
     $this->db->where('pengirim', $post);
+    $this->db->where('pembayaran=', "tempo");
+
     $query = $this->db->get()->result();
     return $query;
   }
