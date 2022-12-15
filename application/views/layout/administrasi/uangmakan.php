@@ -29,12 +29,12 @@
               <table id="dtable" class="table table-bordered table-striped">
                 <thead class="text-center">
                   <tr>
-                    <th width="10%">No.</th>
+                    <th>No.</th>
                     <th>No UM</th>
                     <th>Jml Penerima</th>
                     <th>Jml Total</th>
                     <th>Tanggal</th>
-                    <th width="20%">Actions</th>
+                    <th width="15%">Actions</th>
                   </tr>
                 </thead>
                 <tbody class="text-center">
@@ -48,7 +48,7 @@
                       <td><?= date('d-m-Y', strtotime($data->dateAdd)) ?></td>
                       <td>
                         <div class="btn-group" role="group">
-                          <a href="<?= base_url('uangmakan/update/') . $data->kd_um ?>" class="btn btn-sm btn-warning text-white btn-edit-um" title="Edit" data-id="<?= $data->kd_um ?>">
+                          <a href="<?= base_url('uangmakan/update/') . $data->kd_um ?>" class="btn btn-sm btn-warning text-white btn-edit-um" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                           </a>
                           <a href="" class="btn btn-sm btn-info text-white btn-detail-um" title="Detail" data-id="<?= $data->kd_um ?>" data-tgl="<?= date('d-m-Y', strtotime(($data->dateAdd))) ?>">

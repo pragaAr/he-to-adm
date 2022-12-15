@@ -101,20 +101,20 @@ class Invoice extends CI_Controller
 
   public function cartupdate()
   {
-    $this->load->view('layout/administrasi/cart-update-uangmakan');
+    $this->load->view('layout/trans/update-cart-invoice');
   }
 
   public function update($kd)
   {
-    $data['title']      = 'Update Data Uang Makan';
-    $data['karyawan']   = $this->Karyawan->getData();
-    $data['kd']         = $this->Uangmakan->getDataKd($kd);
-    $data['detail']     = $this->Uangmakan->getDetailKd($kd);
+    $data['title']    = 'Update Data Invoice';
+    $data['cust']     = $this->Sales->getDataCust();
+    $data['kd']       = $this->Invoice->getDataKd($kd);
+    $data['detail']   = $this->Invoice->getDetailKd($kd);
 
     $this->load->view('layout/template/header', $data);
     $this->load->view('layout/template/navbar');
     $this->load->view('layout/template/sidebar');
-    $this->load->view('layout/administrasi/update-uangmakan', $data);
+    $this->load->view('layout/trans/update-invoice', $data);
   }
 
   public function prosesupdate()

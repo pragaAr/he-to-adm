@@ -50,13 +50,13 @@
                       <td><?= date('d-m-Y', strtotime($data->dateAdd)) ?></td>
                       <td>
                         <div class="btn-group" role="group">
-                          <a href="<?= base_url('uangmakan/update/') . $data->kd_inv ?>" class="btn btn-sm btn-warning text-white btn-edit-um" title="Edit" data-id="<?= $data->kd_inv ?>">
+                          <a href="<?= base_url('invoice/update/') . $data->kd_inv ?>" class="btn btn-sm btn-warning text-white" title="Edit">
                             <i class="fas fa-pencil-alt"></i>
                           </a>
-                          <a href="" class="btn btn-sm btn-info text-white btn-detail-um" title="Detail" data-id="<?= $data->kd_inv ?>" data-tgl="<?= date('d-m-Y', strtotime(($data->dateAdd))) ?>">
+                          <a href="" class="btn btn-sm btn-info text-white btn-detail-inv" title="Detail" data-id="<?= $data->kd_inv ?>" data-tgl="<?= date('d-m-Y', strtotime(($data->dateAdd))) ?>">
                             <i class="fas fa-eye"></i>
                           </a>
-                          <a href="<?= base_url('uangmakan/delete/') . $data->kd_inv ?>" class="btn btn-sm btn-danger text-white btn-delete" title="Hapus">
+                          <a href="<?= base_url('invoice/delete/') . $data->kd_inv ?>" class="btn btn-sm btn-danger text-white btn-delete" title="Hapus">
                             <i class="fas fa-trash"></i>
                           </a>
                         </div>

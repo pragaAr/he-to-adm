@@ -42,10 +42,10 @@ class M_Invoice extends CI_Model
 
   public function getDetailKd($kd)
   {
-    $this->db->select('uang_makan.kd_um, uang_makan.dateAdd, detail_um.kd_um, detail_um.karyawan_id, detail_um.nominal_um, karyawan.id_karyawan, karyawan.nama');
+    $this->db->select('invoice.kd_inv, invoice.dateAdd, detail_um.kd_inv, detail_um.karyawan_id, detail_um.nominal_um, karyawan.id_karyawan, karyawan.nama');
     $this->db->from('detail_um');
-    $this->db->where('detail_um.kd_um', $kd);
-    $this->db->join('uang_makan', 'uang_makan.kd_um = detail_um.kd_um');
+    $this->db->where('detail_um.kd_inv', $kd);
+    $this->db->join('invoice', 'invoice.kd_inv = detail_um.kd_inv');
     $this->db->join('karyawan', 'karyawan.id_karyawan = detail_um.karyawan_id');
     $query = $this->db->get()->result();
     return $query;
