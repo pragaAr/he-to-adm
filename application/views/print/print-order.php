@@ -8,31 +8,26 @@
   <title><?= $title ?></title>
 
   <style>
-    html {
+    body {
       box-sizing: border-box;
       font-family: Arial, Helvetica, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      margin-top: 50px;
+      margin-top: 25px;
       margin-left: 50px;
       margin-right: 50px;
     }
 
     .img-logo {
       position: absolute;
-      width: 92px;
-      height: 60px;
+      width: 82px;
+      height: 50px;
     }
 
     .company-name {
-      margin-left: 110px;
+      margin-left: 100px;
     }
 
     .company-name h4 {
-      font-size: 24px;
+      font-size: 20px;
       margin-top: -3px;
     }
 
@@ -42,7 +37,7 @@
     }
 
     .intro {
-      margin-top: 30px;
+      margin-top: 25px;
     }
 
     .intro:after {
@@ -57,14 +52,14 @@
     }
 
     .order-number {
-      width: 450px;
+      width: 350px;
       font-size: 14px;
       font-weight: bold;
     }
 
     .cust-data {
       font-size: 14px;
-      width: 250px;
+      width: 350px;
       word-wrap: break-word;
     }
 
@@ -74,7 +69,7 @@
 
     footer {
       float: right;
-      margin-top: 20px;
+      margin-top: 40px;
     }
 
     footer .ttd {
