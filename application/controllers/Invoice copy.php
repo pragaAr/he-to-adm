@@ -93,25 +93,15 @@ class Invoice extends CI_Controller
 
   public function getDetailkd()
   {
-    $kd   = $this->input->post('kd_inv');
-    $data = $this->Invoice->getDetailKd($kd);
+    $kd   = $this->input->post('kd_um');
+    $data = $this->Uangmakan->getDetailKd($kd);
 
     echo json_encode($data);
   }
 
-  public function getDetailDataInvoice()
+  public function cartupdate()
   {
-    $kd   = $this->input->post('kd_inv');
-    $data = $this->Invoice->getDetailInv($kd);
-
-    echo json_encode($data);
-  }
-
-  public function getDetailDataCust()
-  {
-    $data = $this->Sales->getDataCust();
-
-    echo json_encode($data);
+    $this->load->view('layout/trans/cart-update-invoice');
   }
 
   public function update($no)

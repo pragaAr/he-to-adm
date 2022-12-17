@@ -6,7 +6,7 @@ class M_Invoice extends CI_Model
 {
   public function getKd()
   {
-    $this->db->select('RIGHT(invoice.kd_inv,3) as kd_inv', FALSE);
+    $this->db->select('LEFT(invoice.kd_inv,3) as kd_inv', FALSE);
     $this->db->order_by('kd_inv', 'DESC');
     $this->db->limit(1);
     $query = $this->db->get('invoice');
@@ -17,15 +17,15 @@ class M_Invoice extends CI_Model
       $kode = 1;
     }
     $batas = str_pad($kode, 3, "0", STR_PAD_LEFT);
-    $kodetampil = $batas . "/han/" . date('d') . "/" . date('y');
+    $kodetampil = $batas . "-han-" . date('d') . "-" . date('y');
     return $kodetampil;
   }
 
-  public function getDataKd($kd)
+  public function getDataKd($no)
   {
-    $this->db->select('invoice.kd_inv, invoice.jml_nominal, invoice.dateAdd');
+    $this->db->select('invoice.kd_inv, invoice.nama_cust, invoice.jml_nominal, invoice.dateAdd');
     $this->db->from('invoice');
-    $this->db->where('kd_inv', $kd);
+    $this->db->where('invoice.kd_inv', $no);
     $query = $this->db->get()->row();
     return $query;
   }
@@ -40,13 +40,26 @@ class M_Invoice extends CI_Model
     return $this->db->get_where('invoice', ['id_um' => $id])->row();
   }
 
-  public function getDetailKd($kd)
+  public function getDetailInv($kd)
   {
-    $this->db->select('invoice.kd_inv, invoice.dateAdd, detail_um.kd_inv, detail_um.karyawan_id, detail_um.nominal_um, karyawan.id_karyawan, karyawan.nama');
-    $this->db->from('detail_um');
-    $this->db->where('detail_um.kd_inv', $kd);
-    $this->db->join('invoice', 'invoice.kd_inv = detail_um.kd_inv');
-    $this->db->join('karyawan', 'karyawan.id_karyawan = detail_um.karyawan_id');
+    $this->db->select('detail_inv.kd_inv, detail_inv.no_order, detail_inv.surat_jalan, invoice.kd_inv, invoice.dateAdd, penjualan.no_order, penjualan.total_harga, sangu_order.no_order, sangu_order.platno');
+    $this->db->from('detail_inv');
+    $this->db->where('detail_inv.kd_inv', $kd);
+    $this->db->join('invoice', 'invoice.kd_inv = detail_inv.kd_inv');
+    $this->db->join('penjualan', 'penjualan.no_order = detail_inv.no_order');
+    $this->db->join('sangu_order', 'sangu_order.no_order = detail_inv.no_order');
+    $query = $this->db->get()->result();
+    return $query;
+  }
+
+  public function getDetailKd($no)
+  {
+    $this->db->select('detail_inv.kd_inv, detail_inv.no_order, detail_inv.surat_jalan, invoice.kd_inv, invoice.dateAdd, penjualan.no_order, penjualan.total_harga, sangu_order.no_order, sangu_order.platno');
+    $this->db->from('detail_inv');
+    $this->db->where('detail_inv.kd_inv', $no);
+    $this->db->join('invoice', 'invoice.kd_inv = detail_inv.kd_inv');
+    $this->db->join('penjualan', 'penjualan.no_order = detail_inv.no_order');
+    $this->db->join('sangu_order', 'sangu_order.no_order = detail_inv.no_order');
     $query = $this->db->get()->result();
     return $query;
   }

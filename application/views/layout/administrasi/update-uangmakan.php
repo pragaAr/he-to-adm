@@ -76,7 +76,7 @@
               <div class="card-body">
                 <div class="d-flex align-item-center justify-content-between">
                   <h5>List Penerima Uang Makan</h5>
-                  <button type="submit" class="btn btn-warning pt-1 pb-1 um-update" data-toggle="tooltip" title="Update Data Pengiriman">
+                  <button type="submit" class="btn btn-warning pt-0 pb-0 text-light um-update" data-toggle="tooltip" title="Update Data Uang Makan">
                     <i class="fas fa-pencil-alt"></i>
                     Update Data
                   </button>

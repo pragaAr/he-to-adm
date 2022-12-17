@@ -21,7 +21,7 @@ $(document).ready(function () {
         $('input[name="nosj"]').prop("readonly", true);
 
         // Remove options
-        $(".orderno").val(res.orderno).trigger("change");
+        $(".orderno").val(res.no_order).trigger("change");
 
         reset();
 

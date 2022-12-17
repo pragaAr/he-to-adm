@@ -50,6 +50,7 @@
  <script src="<?= base_url('assets/') ?>dist/js/pages/clock.js"></script>
  <script src="<?= base_url('assets/') ?>dist/js/pages/number-format.js"></script>
  <script src="<?= base_url('assets/') ?>dist/js/pages/custom.js"></script>
+ <script src="<?= base_url('assets/') ?>dist/js/pages/update-invoice.js"></script>
 
  <script>
    $(function() {
