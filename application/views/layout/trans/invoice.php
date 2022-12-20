@@ -53,11 +53,7 @@
                           <a href="" class="btn btn-sm btn-warning text-white" id="btn-update-invoice" title=" Edit" data-id="<?= $data->kd_inv ?>" data-cust="<?= $data->nama_cust ?>" data-resi="<?= $data->jml_resi ?>" data-total="<?= $data->jml_nominal ?>" data-tgl="<?= $data->dateAdd ?>">
                             <i class=" fas fa-pencil-alt"></i>
                           </a>
-                          <!-- <div class="btn-group" role="group">
-                          <a href="<?= base_url('invoice/update/') . $data->kd_inv ?>" class="btn btn-sm btn-warning text-white" title=" Edit">
-                            <i class="fas fa-pencil-alt"></i>
-                          </a> -->
-                          <a href="" class="btn btn-sm btn-info text-white btn-detail-inv" title="Detail" data-id="<?= $data->kd_inv ?>" data-tgl="<?= date('d-m-Y', strtotime(($data->dateAdd))) ?>">
+                          <a href="" class="btn btn-sm btn-info text-white btn-detail-inv" title="Detail" data-id="<?= $data->kd_inv ?>">
                             <i class="fas fa-eye"></i>
                           </a>
                           <a href="<?= base_url('invoice/delete/') . $data->kd_inv ?>" class="btn btn-sm btn-danger text-white btn-delete" title="Hapus">
@@ -138,9 +134,6 @@
                     <div class="form-group col-lg-7 col-md-12">
                       <label for="editnamacust">Nama Customer</label>
                       <input type="text" name="editnamacust" class="form-control text-uppercase editnamacust" readonly>
-                      <!-- <select name="editnamacust" id="editnamacust" class="form-control select2 editnamacust" style="width:100%">
-                        <option value="" disabled>-Pilih Customer-</option>
-                      </select> -->
                     </div>
                     <div class="form-group col-lg-5 col-md-12">
                       <label for="editorderno">No Resi</label>

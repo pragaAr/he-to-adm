@@ -9,7 +9,7 @@ $("#btn-update-invoice").on("click", function (e) {
   });
 
   const id = $(this).data("id");
-  namaCust = $(this).data("cust");
+  const namaCust = $(this).data("cust");
   tgl = $(this).data("tgl");
 
   $("#updateInvoice").modal("show");
@@ -22,10 +22,9 @@ $("#btn-update-invoice").on("click", function (e) {
       kd_inv: id,
     },
     success: function (data) {
-      console.log(data);
       $(".editkd").val(id);
       $(".edittanggal").val(tgl);
-      $(".editnamacust").val(namaCust);
+      $('input[name="editnamacust"]').val(namaCust);
       getresi();
       $('input[name="editcust_hidden"]').val(namaCust);
 
@@ -139,10 +138,6 @@ function getresi() {
     },
   });
 }
-
-// $("#editnamacust").on("input", function () {
-//   const editnamacust = $(this).val();
-// });
 
 $("#editorderno").on("input", function () {
   const order = $(this).val();

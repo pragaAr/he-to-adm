@@ -83,7 +83,7 @@ class M_Invoice extends CI_Model
 
   public function deleteData($kd)
   {
-    $this->db->delete('uang_makan', ['kd_um' => $kd]);
-    $this->db->delete('detail_um', ['kd_um' => $kd]);
+    $this->db->delete('invoice', ['kd_inv' => $kd]);
+    $this->db->delete('detail_inv', ['kd_inv' => $kd]);
   }
 }

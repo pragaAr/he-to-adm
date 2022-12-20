@@ -119,23 +119,6 @@ class Invoice extends CI_Controller
     echo json_encode($data);
   }
 
-  public function update($no)
-  {
-    $data['title']    = 'Update Data Invoice';
-    $data['cust']     = $this->Sales->getDataCust();
-    $data['kd']       = $this->Invoice->getDataKd($no);
-    $kdinv       = $this->Invoice->getDataKd($no);
-    $data['resi']     = $this->Sales->getOrderCust($kdinv->nama_cust);;
-    $data['detail']   = $this->Invoice->getDetailKd($no);
-
-    // var_dump($resi);
-    // die;
-    $this->load->view('layout/template/header', $data);
-    $this->load->view('layout/template/navbar');
-    $this->load->view('layout/template/sidebar');
-    $this->load->view('layout/trans/update-invoice', $data);
-  }
-
   public function prosesupdate()
   {
     $userid     = $this->session->userdata('id_user');
@@ -167,10 +150,15 @@ class Invoice extends CI_Controller
     redirect('invoice');
   }
 
+  public function detailData($kd)
+  {
+    $data['detail'] = $this->Invoice->getDetailInv($kd);
+  }
+
   public function delete($kd)
   {
-    $this->Uangmakan->deleteData($kd);
+    $this->Invoice->deleteData($kd);
     $this->session->set_flashdata('deleted', 'Data berhasil dihapus!');
-    redirect('uangmakan');
+    redirect('invoice');
   }
 }
