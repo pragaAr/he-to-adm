@@ -60,6 +60,11 @@ class Invoice extends CI_Controller
     $this->load->view('layout/trans/cart-invoice');
   }
 
+  public function cartUpdate()
+  {
+    $this->load->view('layout/trans/cart-update-invoice');
+  }
+
   public function prosesAdd()
   {
     $userid     = $this->session->userdata('id_user');
@@ -134,35 +139,32 @@ class Invoice extends CI_Controller
   public function prosesupdate()
   {
     $userid     = $this->session->userdata('id_user');
-    $kd         = $this->input->post('kdum');
-    $jmlum      = count($this->input->post('karyawanid_hidden'));
-    $nominal    = preg_replace("/[^0-9\.]/", "", $this->input->post('nominal_hidden'));
-
-    $total = 0;
-    $allum = $nominal;
-    foreach ($allum as $all) {
-      $total += $all;
-    }
+    $kd         = $this->input->post('editkd');
+    $cust       = $this->input->post('editcust_hidden');
+    $sj         = $this->input->post('sj_hidden');
+    $jmlresi    = count($this->input->post('noorder_hidden'));
+    $nominal    = preg_replace("/[^0-9\.]/", "", $this->input->post('edittotal_hidden'));
 
     $data  = [
-      'kd_um'         => $kd,
-      'jml_orang'     => $jmlum,
-      'jml_nominal'   => $total,
+      'kd_inv'        => $kd,
+      'nama_cust'     => $cust,
+      'jml_resi'      => $jmlresi,
+      'jml_nominal'   => $nominal,
       'user_id'       => $userid,
       'dateAdd'       => date('Y-m-d H:i:s'),
     ];
 
     $detail = [];
 
-    for ($i = 0; $i < $jmlum; $i++) {
-      array_push($detail, ['karyawan_id'  => $this->input->post('karyawanid_hidden')[$i]]);
-      $detail[$i]['kd_um']                = $kd;
-      $detail[$i]['nominal_um']           = $nominal[$i];
+    for ($i = 0; $i < $jmlresi; $i++) {
+      array_push($detail, ['no_order'  => $this->input->post('noorder_hidden')[$i]]);
+      $detail[$i]['kd_inv']            = $kd;
+      $detail[$i]['surat_jalan']       = $sj[$i];
     }
 
-    $this->Uangmakan->updateData($kd, $data, $detail);
+    $this->Invoice->updateData($kd, $data, $detail);
     $this->session->set_flashdata('updated', 'Data berhasil diubah!');
-    redirect('uangmakan');
+    redirect('invoice');
   }
 
   public function delete($kd)

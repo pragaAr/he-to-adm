@@ -1,5 +1,6 @@
 $("#btn-update-invoice").on("click", function (e) {
   e.preventDefault();
+  $("tfoot").show();
 
   $(document).keypress(function (event) {
     if (event.which == "13") {
@@ -8,10 +9,8 @@ $("#btn-update-invoice").on("click", function (e) {
   });
 
   const id = $(this).data("id");
-  const namaCust = $(this).data("nama");
-  const jmlResi = $(this).data("resi");
-  const jmlTot = $(this).data("total");
-  const tgl = $(this).data("tgl");
+  namaCust = $(this).data("cust");
+  tgl = $(this).data("tgl");
 
   $("#updateInvoice").modal("show");
 
@@ -24,6 +23,51 @@ $("#btn-update-invoice").on("click", function (e) {
     },
     success: function (data) {
       console.log(data);
+      $(".editkd").val(id);
+      $(".edittanggal").val(tgl);
+      $(".editnamacust").val(namaCust);
+      getresi();
+      $('input[name="editcust_hidden"]').val(namaCust);
+
+      let datadetail = "";
+      let hasil = 0;
+
+      $.each(data, function (key, value) {
+        datadetail += "<tr class='text-center tbdetail'>";
+        datadetail +=
+          "<td class='text-uppercase editorderno'>" +
+          value.no_order +
+          "<input type='hidden' class='form-control' name='noorder_hidden[]' value='" +
+          value.no_order +
+          "'readonly></td>";
+        datadetail +=
+          "<td class='text-uppercase editnosj'>" +
+          value.surat_jalan +
+          "<input type='hidden' class='form-control' name='sj_hidden[]' value='" +
+          value.surat_jalan +
+          "'readonly></td>";
+        datadetail +=
+          "<td class='text-uppercase edittagihan' data-val='" +
+          value.total_harga +
+          "'>" +
+          format(value.total_harga) +
+          "<input type='hidden' class='form-control' name='harga_hidden[]' value='" +
+          value.total_harga +
+          "'readonly></td>";
+        datadetail +=
+          "<td class='action'>" +
+          "<button type='button' class='btn btn-danger btn-sm' id='btn-hapus-noorder' title='Hapus Resi'>" +
+          "<i class='fas fa-times'></i>" +
+          "</button>" +
+          "</td>";
+        datadetail += "</tr>";
+        hasil += parseFloat(value.total_harga);
+      });
+
+      $("#edittotal").html(format(hasil));
+
+      $('input[name="edittotal_hidden"]').val(hasil);
+      $(".tbody-cart-inv").html(datadetail);
     },
   });
 
@@ -32,8 +76,6 @@ $("#btn-update-invoice").on("click", function (e) {
     type: "GET",
     dataType: "json",
     success: function (dataCust) {
-      console.log(dataCust);
-
       // Remove options
       $(".editnamacust").val(dataCust.pengirim).trigger("change");
 
@@ -55,19 +97,25 @@ $("#btn-update-invoice").on("click", function (e) {
   });
 });
 
-$("#editnamacust").on("input", function () {
-  const editnamacust = $(this).val();
+function getresi() {
+  customers = $(".editnamacust").val();
+
   $.ajax({
     url: "http://localhost/hira-to-adm/invoice/getOrderCust",
     type: "POST",
     dataType: "json",
     data: {
-      pengirim: editnamacust,
+      pengirim: customers,
     },
     success: function (res) {
-      console.log(res);
+      // if ($(".tbdetail").length < 1) {
+      //   $("#btnupdate").prop("disabled", true);
+      //   $("tfoot").hide();
+      // }
 
-      $("#tambah-invoice-update").prop("disabled", true);
+      // $('input[name="editcust_hidden"]').val(editnamacust);
+
+      // $("#tambah-invoice-update").prop("disabled", true);
 
       $('input[name="editnosj"]').prop("readonly", true);
 
@@ -90,7 +138,11 @@ $("#editnamacust").on("input", function () {
       });
     },
   });
-});
+}
+
+// $("#editnamacust").on("input", function () {
+//   const editnamacust = $(this).val();
+// });
 
 $("#editorderno").on("input", function () {
   const order = $(this).val();
@@ -108,6 +160,7 @@ $("#editorderno").on("input", function () {
       $(".editberat").val(format(data.berat));
       $(".edithargakg").val(format(data.harga_kg));
       $(".edittagihanorder").val(format(data.total_harga));
+      $(".edittagihanorder").attr("data-val", data.total_harga);
       $(".editnosj").val(data.surat_jalan);
       $("#tambah-invoice-update").prop("disabled", false);
     },
@@ -115,65 +168,88 @@ $("#editorderno").on("input", function () {
 });
 
 $("button#tambah-invoice-update").on("click", function (e) {
-  const cartInv = {
-    editorderno: $('select[name="editorderno"]').val(),
-    editplatno: $('input[name="editplatno"]').val(),
-    editkotaasal: $('input[name="editkotaasal"]').val(),
-    editkotatujuan: $('input[name="editkotatujuan"]').val(),
-    editberat: $('input[name="editberat"]').val(),
-    edithargakg: $('input[name="edithargakg"]').val(),
-    edittagihanorder: $('input[name="edittagihanorder"]').val(),
-    editnosj: $('input[name="editnosj"]').val(),
+  let adddatadetail = "";
+
+  const datainv = {
+    noorder: $('select[name="editorderno"]').val(),
+    tagihan: $('input[name="edittagihanorder"]').val(),
+    tagihanVal: $('input[name="edittagihanorder"]').attr("data-val"),
+    nosj: $('input[name="editnosj"]').val(),
   };
-  console.log(cartInv);
 
-  $.ajax({
-    url: "http://localhost/hira-to-adm/invoice/cartUpdate",
-    type: "POST",
-    data: cartInv,
-    success: function (data) {
-      if ($('select[name="editorderno"]').val() == cartInv.editorderno) reset();
+  adddatadetail += "<tr class='text-center tbdetail'>";
+  adddatadetail +=
+    "<td class='text-uppercase editorderno'>" +
+    datainv.noorder +
+    "<input type='hidden' class='form-control' name='noorder_hidden[]' value='" +
+    datainv.noorder +
+    "'readonly></td>";
+  adddatadetail +=
+    "<td class='text-uppercase editnosj'>" +
+    datainv.nosj +
+    "<input type='hidden' class='form-control' name='sj_hidden[]' value='" +
+    datainv.nosj +
+    "'readonly></td>";
+  adddatadetail +=
+    "<td class='text-uppercase edittagihan' data-val='" +
+    datainv.tagihanVal +
+    "'>" +
+    datainv.tagihan +
+    "<input type='hidden' class='form-control' name='harga_hidden[]' value='" +
+    datainv.tagihanVal +
+    "'readonly></td>";
+  adddatadetail +=
+    "<td class='action'>" +
+    "<button type='button' class='btn btn-danger btn-sm' id='btn-hapus-noorder' title='Hapus Resi'>" +
+    "<i class='fas fa-times'></i>" +
+    "</button>" +
+    "</td>";
+  adddatadetail += "</tr>";
 
-      $("#tambah-invoice-update").prop("disabled", true);
+  $(".tbody-cart-inv").append(adddatadetail);
 
-      $("table#cart tbody").append(data);
-      $("#edittotal").html("<p>" + total_tagihan().toLocaleString() + "</p>");
-      $('input[name="edittotal_hidden"]').val(total_tagihan());
+  $("#edittotal").html(format(total_tagihan()));
 
-      $("tfoot").show();
-    },
-  });
+  $('input[name="edittotal_hidden"]').val(total_tagihan());
+
+  if ($(".tbdetail").length > 0) {
+    $("#btnupdate").prop("disabled", false);
+    $("tfoot").show();
+  }
+
+  reset();
 });
 
 $(document).on("click", "#btn-hapus-noorder", function () {
   $(this).closest(".tbdetail").remove();
 
-  $("#edittotal").html("<p>" + total_tagihan().toLocaleString() + "</p>");
+  $("#edittotal").html(format(total_tagihan()));
   $('input[name="edittotal_hidden"]').val(total_tagihan());
+
+  if ($(".tbdetail").length < 1) {
+    $("#btnupdate").prop("disabled", true);
+    $("tfoot").hide();
+  }
 });
 
 $('button[type="submit"]').on("click", function () {
-  $('input[name="edittanggal"]').prop("disabled", true);
-  $('select[name="editorderno"]').prop("disabled", true);
+  $("#tambah-invoice-update").prop("disabled", true);
 });
 
 function total_tagihan() {
-  let hasil = 0;
-  $(".edittagihanorder").each(function () {
-    // if ($(".edittagihanorder").length == "") {
-    // } else {
-    // }
-    hasil += parseFloat(
-      $(this)
-        .text()
-        .replace(/[^\d.]/g, "")
-    );
+  let result = 0;
+
+  $(".edittagihan").each(function () {
+    let element = $(this);
+    let harga = element.attr("data-val");
+    result += parseFloat(harga);
   });
-  return hasil;
+
+  return result;
 }
 
 function reset() {
-  $('select[name="editorderno"]').val("");
+  $('select[name="editorderno"]').val(null).trigger("change");
   $('input[name="editplatno"]').val("");
   $('input[name="editkotaasal"]').val("");
   $('input[name="editkotatujuan"]').val("");
@@ -181,4 +257,6 @@ function reset() {
   $('input[name="edithargakg"]').val("");
   $('input[name="edittagihanorder"]').val("");
   $('input[name="editnosj"]').val("");
+
+  $("#tambah-invoice-update").prop("disabled", true);
 }

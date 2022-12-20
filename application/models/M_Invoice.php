@@ -73,12 +73,12 @@ class M_Invoice extends CI_Model
   public function updateData($kd, $data, $detail)
   {
     $where = array(
-      'kd_um'   => $kd
+      'kd_inv'   => $kd
     );
 
-    $this->db->update('uang_makan', $data, $where);
-    $this->db->delete('detail_um', $where);
-    $this->db->insert_batch('detail_um', $detail);
+    $this->db->update('invoice', $data, $where);
+    $this->db->delete('detail_inv', $where);
+    $this->db->insert_batch('detail_inv', $detail);
   }
 
   public function deleteData($kd)
