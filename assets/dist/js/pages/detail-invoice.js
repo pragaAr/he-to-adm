@@ -1,60 +1,75 @@
-$(".btn-detail-inv").on("click", function () {
+$(".btn-detail-inv").on("click", function (e) {
+  e.preventDefault();
+  $("#detailInv").modal("show");
+
   const kd = $(this).data("id");
+  const cust = $(this).data("cust");
 
   $.ajax({
     url: "http://localhost/hira-to-adm/invoice/getDetailDataInvoice",
     type: "POST",
     dataType: "json",
     data: {
-      kd_inv: id,
+      kd_inv: kd,
     },
     success: function (data) {
       console.log(data);
-      // $(".editkd").val(id);
-      // $(".edittanggal").val(tgl);
-      // $(".editnamacust").val(namaCust);
-      // getresi();
-      // $('input[name="editcust_hidden"]').val(namaCust);
+      $('input[name="kdinv"]').val(kd);
 
-      // let datadetail = "";
-      // let hasil = 0;
+      $(".custname").text(cust);
 
-      // $.each(data, function (key, value) {
-      //   datadetail += "<tr class='text-center tbdetail'>";
-      //   datadetail +=
-      //     "<td class='text-uppercase editorderno'>" +
-      //     value.no_order +
-      //     "<input type='hidden' class='form-control' name='noorder_hidden[]' value='" +
-      //     value.no_order +
-      //     "'readonly></td>";
-      //   datadetail +=
-      //     "<td class='text-uppercase editnosj'>" +
-      //     value.surat_jalan +
-      //     "<input type='hidden' class='form-control' name='sj_hidden[]' value='" +
-      //     value.surat_jalan +
-      //     "'readonly></td>";
-      //   datadetail +=
-      //     "<td class='text-uppercase edittagihan' data-val='" +
-      //     value.total_harga +
-      //     "'>" +
-      //     format(value.total_harga) +
-      //     "<input type='hidden' class='form-control' name='harga_hidden[]' value='" +
-      //     value.total_harga +
-      //     "'readonly></td>";
-      //   datadetail +=
-      //     "<td class='action'>" +
-      //     "<button type='button' class='btn btn-danger btn-sm' id='btn-hapus-noorder' title='Hapus Resi'>" +
-      //     "<i class='fas fa-times'></i>" +
-      //     "</button>" +
-      //     "</td>";
-      //   datadetail += "</tr>";
-      //   hasil += parseFloat(value.total_harga);
-      // });
+      let detaildata = "";
+      let no = 1;
+      let hasil = 0;
+      let d = new Date();
 
-      // $("#edittotal").html(format(hasil));
+      $.each(data, function (key, value) {
+        detaildata += "<tr class='text-center datadetailtr'>";
 
-      // $('input[name="edittotal_hidden"]').val(hasil);
-      // $(".tbody-cart-inv").html(datadetail);
+        detaildata += "<td class='text-uppercase'>" + no++ + "</td>";
+
+        detaildata +=
+          "<td class='text-uppercase'>" +
+          d.getDate(value.dateAdd) +
+          "/" +
+          d.getMonth(value.dateAdd) +
+          "/" +
+          d.getFullYear(value.dateAdd) +
+          "</td>";
+
+        detaildata +=
+          "<td class='text-uppercase'>" + value.surat_jalan + "</td>";
+
+        detaildata += "<td class='text-uppercase'>" + value.platno + "</td>";
+
+        detaildata += "<td class='text-uppercase'>" + value.no_order + "</td>";
+
+        detaildata +=
+          "<td class='text-uppercase'>" +
+          value.kota_asal +
+          " - " +
+          value.kota_tujuan +
+          "</td>";
+
+        detaildata +=
+          "<td class='text-uppercase'>" + format(value.berat) + "</td>";
+
+        detaildata += "<td class='text-uppercase'>" + value.harga_kg + "</td>";
+
+        detaildata +=
+          "<td class='text-uppercase'>" + format(value.total_harga) + "</td>";
+
+        detaildata += "</tr>";
+        hasil += parseFloat(value.total_harga);
+      });
+
+      $("#total").html(format(hasil));
+
+      $(".tbody-detail-inv").html(detaildata);
     },
+  });
+
+  $("#printinv").on("click", function () {
+    $("#detailInv").modal("hide");
   });
 });

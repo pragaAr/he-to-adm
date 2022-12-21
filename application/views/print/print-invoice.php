@@ -11,35 +11,24 @@
     body {
       box-sizing: border-box;
       font-family: Arial, Helvetica, sans-serif;
-      margin: 0;
-      padding: 0;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      margin-left: 15px;
+      margin-right: 15px;
     }
 
-    main {
-      margin-top: 2rem;
-
-    }
-
-    .head-side {
-      margin-bottom: 5px;
+    .kop {
+      display: inline;
     }
 
     .img-logo {
-      float: left;
-    }
-
-    .img-logo img {
       position: absolute;
-      width: 65px;
-      height: 43px;
-    }
-
-    .company-name {
-      float: right;
+      width: 82px;
+      height: 50px;
     }
 
     .company-name h4 {
-      font-size: 16px;
+      font-size: 20px;
       margin-top: -3px;
     }
 
@@ -48,52 +37,107 @@
       font-size: 12px;
     }
 
-    table {
-      width: 100%;
-      margin-top: 15px;
-    }
-
-    table,
-    th,
-    td {
-      border-collapse: collapse;
-      border: 1px solid black;
-    }
-
-    th,
-    td {
+    .text-center {
       text-align: center;
-      padding: 10px;
     }
 
-    th {
-      background-color: #eaeaea;
-      line-height: 5px;
-      font-size: 12px;
-      font-weight: bolder;
-    }
-
-    td {
-      line-height: 15px;
-      font-size: 14px;
-    }
-
-    .tanggal {
+    .text-left {
       text-align: left;
-      width: 20%;
+    }
+
+    .text-right {
+      text-align: right;
+    }
+
+    .inv-cust {
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .data-section {
+      margin-top: 15px;
+      margin-bottom: 20px;
+    }
+
+    .tabledata {
+      width: 100%;
+      text-align: center;
+    }
+
+    .tabledata,
+    .thdata,
+    .tddata {
+      font-size: 12px;
+      border: 0.8px solid black;
+      border-collapse: collapse;
+    }
+
+    .thdata,
+    .tddata {
+      padding: 5px;
+    }
+
+    tfoot {
+      text-align: right;
+      font-weight: bold;
+    }
+
+    .tablepajak {
+      width: 100%;
+      font-size: 12px;
+    }
+
+    .tablepajak,
+    .tdpajak {
+      border: none;
+      border-collapse: collapse;
+    }
+
+    .totdpp {
+      padding-right: 7px;
+    }
+
+    .emptytd {
+      height: 20px;
+    }
+
+    .fw-bold {
+      font-weight: bold;
+    }
+
+    .bankinfo {
+      font-size: 12px;
+      margin-top: 30px;
+    }
+
+    footer {
+      float: right;
+      margin-top: 40px;
+    }
+
+    .ttd {
+      font-size: 12px;
+    }
+
+    .manager {
+      margin-top: 65px;
+    }
+
+    .nama-manager {
+      border-bottom: 1px solid black;
+    }
+
+    .jabatan {
+      margin-top: -12px;
     }
   </style>
+
 </head>
 
 <body>
-  <main>
-
-  </main>
-  <div class="head-side">
-    <div class="img-logo">
-      <img src="<?= base_url('assets/dist/img/logo-red.png') ?>">
-    </div>
-
+  <div class="kop text-center">
+    <img src="<?= base_url('assets/dist/img/logo-red.png') ?>" class="img-logo">
     <div class="company-name">
       <h4> PT. HIRA ADYA NARANATA</h4>
       <p>
@@ -102,126 +146,139 @@
       </p>
     </div>
   </div>
+  <hr>
 
-  <br>
-  <br>
-  <?php if ($penjualan->jenis_penjualan == "borong") { ?>
-    <table>
-      <tr>
-        <th>No Pengiriman</th>
-        <th>Jenis</th>
-        <th>Asal</th>
-        <th>Tujuan</th>
-      </tr>
-      <tr>
-        <td>No.<?= $penjualan->no_order ?></td>
-        <td><?= strtoupper($penjualan->jenis_penjualan) ?></td>
-        <td><?= strtoupper($penjualan->kota_asal) ?></td>
-        <td><?= strtoupper($penjualan->kota_tujuan) ?></td>
-      </tr>
-      <tr>
-        <th colspan="2">Pengirim :</th>
-        <th colspan="2">Penerima :</th>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <br>
-          <?= strtoupper($penjualan->pengirim) ?> <br><br>
-          <?= strtoupper($penjualan->alamat_asal) ?>
-          <br>
-          <br>
-        </td>
-        <td colspan="2">
-          <br>
-          <?= strtoupper($penjualan->penerima) ?> <br><br>
-          <?= strtoupper($penjualan->alamat_tujuan) ?>
-          <br>
-          <br>
-        </td>
-      </tr>
-      <tr>
-        <th>Petugas</th>
-        <th>Muatan</th>
-        <th>Penerima</th>
-        <th>Jumlah Rp.</th>
-      </tr>
-      <tr>
-        <td class="tanggal">
-          <br><br><br><br>Tanggal :
+  <section>
+    <div class="inv-cust text-center">
+      <p>invoice <?= strtoupper($datacust->nama_cust) ?></p>
+      <p> no: <?= strtoupper($datacust->kd_inv) ?></p>
+    </div>
+  </section>
 
-        </td>
-        <td>
-          <?= strtoupper($penjualan->muatan) ?><br>
-        </td>
-        <td class="tanggal">
-          <br><br><br><br>Tanggal :
-        </td>
-        <td>
-          Rp. <?= number_format($penjualan->total_harga) ?><br>
-        </td>
-      </tr>
+  <section class="data-section">
+    <table class="tabledata">
+      <thead>
+        <tr>
+          <th class="thdata">NO.</th>
+          <th class="thdata">TANGGAL</th>
+          <th class="thdata">NO SJ</th>
+          <th class="thdata">NO POL</th>
+          <th class="thdata">NO RESI</th>
+          <th class="thdata">ASAL-TUJUAN</th>
+          <th class="thdata">BERAT</th>
+          <th class="thdata">ONGKOS</th>
+          <th class="thdata">TAGIHAN</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php $no = 1;
+        foreach ($detail as $detail) : ?>
+          <tr>
+            <td class="tddata"><?= $no ?>.</td>
+            <td class="tddata"><?= date('d/m/y', strtotime($detail->dateAdd)) ?></td>
+            <td class="tddata"><?= strtoupper($detail->surat_jalan) ?></td>
+            <td class="tddata"><?= strtoupper($detail->platno) ?></td>
+            <td class="tddata"><?= strtoupper($detail->no_order) ?></td>
+            <td class="tddata"><?= strtoupper($detail->kota_asal) ?>-<?= strtoupper($detail->kota_tujuan) ?></td>
+            <td class="tddata"><?= number_format($detail->berat) ?> Kg</td>
+            <td class="tddata text-right">Rp. <?= number_format($detail->harga_kg) ?></td>
+            <td class="tddata text-right">Rp. <?= number_format($detail->total_harga) ?></td>
+          </tr>
+          <?php $no++ ?>
+        <?php endforeach ?>
+      </tbody>
+      <tfoot>
+        <td class="tddata" colspan="9"> <?= number_format($datacust->jml_nominal) ?></td>
+      </tfoot>
     </table>
-  <?php } else { ?>
-    <table>
-      <tr>
-        <th>No Pengiriman</th>
-        <th>Jenis</th>
-        <th>Berat</th>
-        <th>Harga</th>
-        <th>Asal</th>
-        <th>Tujuan</th>
-      </tr>
-      <tr>
-        <td>No.<?= $penjualan->no_order ?></td>
-        <td><?= strtoupper($penjualan->jenis_penjualan) ?></td>
-        <td><?= number_format($penjualan->berat) ?> Kg</td>
-        <td>Rp. <?= number_format($penjualan->harga_kg) ?></td>
-        <td><?= strtoupper($penjualan->kota_asal) ?></td>
-        <td><?= strtoupper($penjualan->kota_tujuan) ?></td>
-      </tr>
-      <tr>
-        <th colspan="3">Pengirim :</th>
-        <th colspan="3">Penerima :</th>
-      </tr>
-      <tr>
-        <td colspan="3">
-          <br>
-          <?= strtoupper($penjualan->pengirim) ?> <br><br>
-          <?= strtoupper($platno->platno) ?>
-          <br>
-          <br>
-        </td>
-        <td colspan="3">
-          <br>
-          <?= strtoupper($penjualan->penerima) ?> <br><br>
-          <?= strtoupper($penjualan->alamat_tujuan) ?>
-          <br>
-          <br>
-        </td>
-      </tr>
-      <tr>
-        <th>Petugas</th>
-        <th colspan="2">Muatan</th>
-        <th>Penerima</th>
-        <th colspan="2">Jumlah Rp.</th>
-      </tr>
-      <tr>
-        <td class="tanggal">
-          <br><br><br><br>Tanggal : <?= date('d-m-Y', strtotime($penjualan->dateAdd)) ?>
-        </td>
-        <td colspan="2">
-          <?= strtoupper($penjualan->muatan) ?><br>
-        </td>
-        <td width="20%" class="tanggal">
-          <br><br><br><br>Tanggal :
-        </td>
-        <td colspan="2">
-          Rp. <?= number_format($penjualan->total_harga) ?><br>
-        </td>
-      </tr>
-    </table>
-  <?php } ?>
+  </section>
 
+  <section>
+    <table class="tablepajak">
+      <?php
+      $a = 100;
+      $b = 101.1;
+      $divide = $a / $b;
+      $resultdpp = $datacust->jml_nominal * $divide;
+
+      $ppn = 1.1 / 100;
+      $resultppn = $ppn * round($resultdpp);
+
+      $jmlpajak = round($resultppn) + round($resultdpp);
+      ?>
+      <tbody>
+        <tr>
+          <td class="tdpajak" width="5%"></td>
+          <td class="tdpajak" width="20%"></td>
+          <td class="tdpajak text-left" width="30%">DPP &nbsp;&nbsp; Rp. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?= number_format($datacust->jml_nominal) ?></td>
+          <td class="tdpajak text-center" style="padding-bottom:3px;" width="10%"><span style="border-bottom:1.5px solid black">&nbsp; X 100%&nbsp;</span> </td>
+          <td class="tdpajak text-center" width="5%"> = </td>
+          <td class="tdpajak text-right totdpp" width="20%"> <?= number_format(round($resultdpp)) ?></td>
+        </tr>
+        <tr>
+          <td class="tdpajak" colspan="3"></td>
+          <td class="tdpajak text-center" width="10%"> 101.1%</td>
+          <td class="tdpajak" colspan="2"></td>
+        </tr>
+        <tr>
+          <td class="tdpajak emptytd" colspan="6"></td>
+        </tr>
+        <tr>
+          <td class="tdpajak" colspan="2"></td>
+          <td class="tdpajak text-left" width="30%">PPN</td>
+          <td class="tdpajak text-center" width="10%">1.1%</td>
+          <td class="tdpajak text-center" width="5%"> = </td>
+          <td class="tdpajak text-right totdpp" width="20%"> <?= number_format(round($resultppn)) ?></td>
+        </tr>
+        <tr>
+          <td class="tdpajak emptytd" colspan="6"></td>
+        </tr>
+        <tr>
+          <td class="tdpajak" colspan="2"></td>
+          <td class="tdpajak text-center fw-bold" colspan="2">JUMLAH</td>
+          <td class="tdpajak text-center" width="5%"> = </td>
+          <td class="tdpajak text-right totdpp fw-bold" width="20%">Rp. <?= number_format(round($jmlpajak)) ?></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="bankinfo">
+    <p>Mohon tagihan dapat ditransfer ke rekening :</p>
+    <table>
+      <tbody>
+        <tr>
+          <td>BANK</td>
+          <td>:</td>
+          <td>BCA KCP Solo Veteran</td>
+        </tr>
+        <tr>
+          <td>Atas Nama</td>
+          <td>:</td>
+          <td>PT. HIRA ADYA NARANATA</td>
+        </tr>
+        <tr>
+          <td>No Acc</td>
+          <td>:</td>
+          <td>773 550 6161</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    <div class="ttd">
+      <div class="text-center">
+        <p>Semarang, <?= date('d F Y') ?></p>
+        <p>Hormat Kami<br>PT. HIRA ADYA NARANATA</p>
+      </div>
+      <div class="text-left manager">
+        <p class="nama-manager">David Pratama Widiatmo.S.Ak</p>
+        <p class="jabatan">Manager</p>
+      </div>
+
+    </div>
+  </footer>
 
 </body>
 

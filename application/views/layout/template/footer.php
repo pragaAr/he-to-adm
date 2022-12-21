@@ -44,13 +44,12 @@
  <script src="<?= base_url('assets/') ?>plugins/jquery-mapael/jquery.mapael.min.js"></script>
  <script src="<?= base_url('assets/') ?>plugins/jquery-mapael/maps/usa_states.min.js"></script>
  <!-- ChartJS -->
- <!-- <script src="<?= base_url('assets/') ?>plugins/chart.js/Chart.min.js"></script> -->
 
- <!-- <script src="<?= base_url('assets/') ?>dist/js/pages/dashboard2.js"></script> -->
  <script src="<?= base_url('assets/') ?>dist/js/pages/clock.js"></script>
  <script src="<?= base_url('assets/') ?>dist/js/pages/number-format.js"></script>
  <script src="<?= base_url('assets/') ?>dist/js/pages/custom.js"></script>
  <script src="<?= base_url('assets/') ?>dist/js/pages/update-invoice.js"></script>
+ <script src="<?= base_url('assets/') ?>dist/js/pages/detail-invoice.js"></script>
 
  <script>
    $(function() {

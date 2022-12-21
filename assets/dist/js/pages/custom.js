@@ -74,6 +74,10 @@ $("#harga").on("keypress", function (key) {
   if (key.charCode < 48 || key.charCode > 57) return false;
 });
 
+$("#berat").on("keypress", function (key) {
+  if (key.charCode < 48 || key.charCode > 57) return false;
+});
+
 $("#tonase").on("keypress", function (key) {
   if (key.charCode < 48 || key.charCode > 57) return false;
 });

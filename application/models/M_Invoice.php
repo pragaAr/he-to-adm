@@ -35,14 +35,18 @@ class M_Invoice extends CI_Model
     return $this->db->get('invoice')->result();
   }
 
-  public function getId($id)
+  public function getCustKd($kd)
   {
-    return $this->db->get_where('invoice', ['id_um' => $id])->row();
+    $this->db->select('kd_inv, nama_cust, jml_nominal');
+    $this->db->from('invoice');
+    $this->db->where('kd_inv', $kd);
+    $query = $this->db->get()->row();
+    return $query;
   }
 
   public function getDetailInv($kd)
   {
-    $this->db->select('detail_inv.kd_inv, detail_inv.no_order, detail_inv.surat_jalan, invoice.kd_inv, invoice.dateAdd, penjualan.no_order, penjualan.total_harga, sangu_order.no_order, sangu_order.platno');
+    $this->db->select('detail_inv.kd_inv, detail_inv.no_order, detail_inv.surat_jalan, invoice.kd_inv, invoice.dateAdd, penjualan.no_order, penjualan.kota_asal, penjualan.kota_tujuan, penjualan.berat, penjualan.harga_kg, penjualan.total_harga, sangu_order.no_order, sangu_order.platno');
     $this->db->from('detail_inv');
     $this->db->where('detail_inv.kd_inv', $kd);
     $this->db->join('invoice', 'invoice.kd_inv = detail_inv.kd_inv');

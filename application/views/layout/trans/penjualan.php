@@ -180,7 +180,7 @@
                 Berat
                 <span class="text-white">*</span>
               </label>
-              <input type="text" class="form-control text-uppercase" name="berat" placeholder="Berat dalam Kilo.." readonly>
+              <input type="text" class="form-control text-uppercase" name="berat" id="berat" placeholder="Berat dalam Kilo.." readonly>
             </div>
             <div class="form-group col-md-6">
               <label for="tonase">

@@ -150,9 +150,17 @@ class Invoice extends CI_Controller
     redirect('invoice');
   }
 
-  public function detailData($kd)
+  public function print()
   {
-    $data['detail'] = $this->Invoice->getDetailInv($kd);
+    $this->load->library('pdf');
+
+    $kd   = $this->input->post('kdinv');
+
+    $data['title']      = 'Hira Express - Print Invoice';
+    $data['datacust']   = $this->Invoice->getCustKd($kd);
+    $data['detail']     = $this->Invoice->getDetailInv($kd);
+
+    $this->pdf->generate('print/print-invoice', $data, 'Invoice-Penjualan', 'A4', 'portrait');
   }
 
   public function delete($kd)

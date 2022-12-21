@@ -53,7 +53,7 @@
                           <a href="" class="btn btn-sm btn-warning text-white" id="btn-update-invoice" title=" Edit" data-id="<?= $data->kd_inv ?>" data-cust="<?= $data->nama_cust ?>" data-resi="<?= $data->jml_resi ?>" data-total="<?= $data->jml_nominal ?>" data-tgl="<?= $data->dateAdd ?>">
                             <i class=" fas fa-pencil-alt"></i>
                           </a>
-                          <a href="" class="btn btn-sm btn-info text-white btn-detail-inv" title="Detail" data-id="<?= $data->kd_inv ?>">
+                          <a href="" class="btn btn-sm btn-info text-white btn-detail-inv" title="Detail" data-id="<?= $data->kd_inv ?>" data-cust="<?= $data->nama_cust ?>">
                             <i class="fas fa-eye"></i>
                           </a>
                           <a href="<?= base_url('invoice/delete/') . $data->kd_inv ?>" class="btn btn-sm btn-danger text-white btn-delete" title="Hapus">
@@ -75,10 +75,10 @@
 </div>
 
 <!-- detailInv -->
-<form action="<?= base_url('invoice/print') ?>" method="POST">
+<form action="<?= base_url('invoice/print') ?>" method="POST" target="_blank">
   <div class="modal fade" id="detailInv">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg">
-      <div class="modal-content bg-secondary">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Detail Invoice</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -86,17 +86,33 @@
           </button>
         </div>
         <div class="modal-body" style="padding: 2rem !important;">
-          <div class="font-weight-bold mb-3">
-            <p class="text-uppercase kd_um"></p>
-            <p class="text-uppercase tgl_um"></p>
+          <div class="font-weight-bold mb-3 d-flex justify-content-between align-items-center">
+            <p class="text-uppercase custname"></p>
+            <input type="hidden" class="form-control" name="kdinv" readonly>
+            <button type="submit" class="btn btn-info" id="printinv" title="Print-invoice">
+              <i class="fas fa-print"></i>
+            </button>
           </div>
           <table class="table table-bordered" width="100%">
             <thead class="text-center" style="border:1.5px solid rgb(145, 143, 143) !important;">
-              <th style="border-color: rgb(145, 143, 143) !important;">Penerima</th>
-              <th style="border-color: rgb(145, 143, 143) !important;">Nominal</th>
+              <th style="border-color: rgb(145, 143, 143) !important;">No</th>
+              <th style="border-color: rgb(145, 143, 143) !important;">Tgl</th>
+              <th style="border-color: rgb(145, 143, 143) !important;">No SJ</th>
+              <th style="border-color: rgb(145, 143, 143) !important;">Truck</th>
+              <th style="border-color: rgb(145, 143, 143) !important;">No Resi</th>
+              <th style="border-color: rgb(145, 143, 143) !important;">Asal - Tujuan</th>
+              <th style="border-color: rgb(145, 143, 143) !important;">Berat</th>
+              <th style="border-color: rgb(145, 143, 143) !important;">Ongkos</th>
+              <th style="border-color: rgb(145, 143, 143) !important;">Tagihan</th>
             </thead>
-            <tbody class="text-center tbody-detail-um" style="border:1.5px solid rgb(145, 143, 143) !important;">
+            <tbody class="text-center tbody-detail-inv" style="border:1.5px solid rgb(145, 143, 143) !important;">
             </tbody>
+            <tfoot align="center">
+              <tr id="tfootdetailinv">
+                <td colspan="9" class="font-weight-bold" id="total">
+                </td>
+              </tr>
+            </tfoot>
           </table>
         </div>
       </div>
