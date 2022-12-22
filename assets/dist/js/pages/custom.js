@@ -66,10 +66,6 @@ $("#nominal").on("keypress", function (key) {
   if (key.charCode < 48 || key.charCode > 57) return false;
 });
 
-$("#nominaledit").on("keypress", function (key) {
-  if (key.charCode < 48 || key.charCode > 57) return false;
-});
-
 $("#nominal-order").on("keypress", function (key) {
   if (key.charCode < 48 || key.charCode > 57) return false;
 });
@@ -100,6 +96,12 @@ $("#editborongan").on("keypress", function (key) {
 
 $(function () {
   $("#nominal").on("keydown keyup click change blur input", function (e) {
+    $(this).val(format($(this).val()));
+  });
+});
+
+$(function () {
+  $("#nominaledit").on("keydown keyup click change blur input", function (e) {
     $(this).val(format($(this).val()));
   });
 });
@@ -284,6 +286,9 @@ $(".btn-edit-lain").on("click", function (e) {
   });
 
   $("#editLain").modal("show");
+  $("#nominaledit").on("keypress", function (key) {
+    if (key.charCode < 48 || key.charCode > 57) return false;
+  });
 });
 
 //  update order and sangu too

@@ -51,7 +51,7 @@
                           <a href="" class="btn btn-sm btn-warning text-white btn-edit-lain" title="Edit" data-id="<?= $data->id_lain ?>">
                             <i class="fas fa-pencil-alt"></i>
                           </a>
-                          <a href="<?= base_url('rekening/delete/') . $data->id_lain ?>" class="btn btn-sm btn-danger text-white btn-delete" title="Hapus">
+                          <a href="<?= base_url('etc/delete/') . $data->id_lain ?>" class="btn btn-sm btn-danger text-white btn-delete" title="Hapus">
                             <i class="fas fa-trash"></i>
                           </a>
                         </div>
