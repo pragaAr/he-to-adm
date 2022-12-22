@@ -50,7 +50,7 @@
            </a>
          </li>
          <li class="nav-item">
-           <a href="" class="nav-link">
+           <a href="<?= base_url('etc') ?>" class="nav-link <?= $this->uri->segment(1) == 'etc' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
              <i class="nav-icon fas fa-search-dollar"></i>
              <p>Lain-lain</p>
            </a>

@@ -66,6 +66,10 @@ $("#nominal").on("keypress", function (key) {
   if (key.charCode < 48 || key.charCode > 57) return false;
 });
 
+$("#nominaledit").on("keypress", function (key) {
+  if (key.charCode < 48 || key.charCode > 57) return false;
+});
+
 $("#nominal-order").on("keypress", function (key) {
   if (key.charCode < 48 || key.charCode > 57) return false;
 });
@@ -257,6 +261,29 @@ $(".btn-edit-rek").on("click", function (e) {
   });
 
   $("#editRek").modal("show");
+});
+
+//  update lain-lain
+$(".btn-edit-lain").on("click", function (e) {
+  e.preventDefault();
+  const id = $(this).data("id");
+  $.ajax({
+    url: "http://localhost/hira-to-adm/etc/getId",
+    type: "POST",
+    dataType: "json",
+    data: {
+      id_lain: id,
+    },
+    success: function (data) {
+      console.log(data);
+      $(".idlain").val(data.id_lain);
+      $(".karyawanedit").val(data.karyawan_id).trigger("change");
+      $(".nominaledit").val(format(data.nominal));
+      $(".keperluanedit").val(data.keperluan);
+    },
+  });
+
+  $("#editLain").modal("show");
 });
 
 //  update order and sangu too

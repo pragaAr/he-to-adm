@@ -71,7 +71,7 @@
 <form action="<?= base_url('rekening') ?>" method="POST">
   <div class="modal fade" id="addRek" data-backdrop="static">
     <div class="modal-dialog">
-      <div class="modal-content bg-secondary">
+      <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Tambah Data Rekening</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -115,7 +115,7 @@
 <form action="<?= base_url('rekening/update') ?>" method="POST">
   <div class="modal fade" id="editRek" data-backdrop="static">
     <div class="modal-dialog">
-      <div class="modal-content bg-secondary">
+      <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Edit Data Rekening</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">

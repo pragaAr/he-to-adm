@@ -93,27 +93,30 @@
               <i class="fas fa-print"></i>
             </button>
           </div>
-          <table class="table table-bordered" width="100%">
-            <thead class="text-center" style="border:1.5px solid rgb(145, 143, 143) !important;">
-              <th style="border-color: rgb(145, 143, 143) !important;">No</th>
-              <th style="border-color: rgb(145, 143, 143) !important;">Tgl</th>
-              <th style="border-color: rgb(145, 143, 143) !important;">No SJ</th>
-              <th style="border-color: rgb(145, 143, 143) !important;">Truck</th>
-              <th style="border-color: rgb(145, 143, 143) !important;">No Resi</th>
-              <th style="border-color: rgb(145, 143, 143) !important;">Asal - Tujuan</th>
-              <th style="border-color: rgb(145, 143, 143) !important;">Berat</th>
-              <th style="border-color: rgb(145, 143, 143) !important;">Ongkos</th>
-              <th style="border-color: rgb(145, 143, 143) !important;">Tagihan</th>
-            </thead>
-            <tbody class="text-center tbody-detail-inv" style="border:1.5px solid rgb(145, 143, 143) !important;">
-            </tbody>
-            <tfoot align="center">
-              <tr id="tfootdetailinv">
-                <td colspan="9" class="font-weight-bold" id="total">
-                </td>
-              </tr>
-            </tfoot>
-          </table>
+          <div class="table-responsive">
+            <table class="table table-bordered" width="100%">
+              <thead class="text-center" style="border:1.5px solid rgb(145, 143, 143) !important;">
+                <th style="border-color: rgb(145, 143, 143) !important;">No</th>
+                <th style="border-color: rgb(145, 143, 143) !important;">Tgl</th>
+                <th style="border-color: rgb(145, 143, 143) !important;">No SJ</th>
+                <th style="border-color: rgb(145, 143, 143) !important;">Truck</th>
+                <th style="border-color: rgb(145, 143, 143) !important;">No Resi</th>
+                <th style="border-color: rgb(145, 143, 143) !important;">Asal - Tujuan</th>
+                <th style="border-color: rgb(145, 143, 143) !important;">Berat</th>
+                <th style="border-color: rgb(145, 143, 143) !important;">Ongkos</th>
+                <th style="border-color: rgb(145, 143, 143) !important;">Tagihan</th>
+              </thead>
+              <tbody class="text-center tbody-detail-inv" style="border:1.5px solid rgb(145, 143, 143) !important;">
+              </tbody>
+              <tfoot align="center">
+                <tr id="tfootdetailinv">
+                  <td colspan="9" class="font-weight-bold" id="total">
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+
         </div>
       </div>
     </div>

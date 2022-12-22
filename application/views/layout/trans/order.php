@@ -367,53 +367,59 @@
           <div class="row">
             <div class="col-lg-12 col-md-12">
               <h5>Data Order</h5>
-              <table class="table table-bordered text-center">
-                <thead>
-                  <tr>
-                    <th>No Order</th>
-                    <th>Muatan</th>
-                    <th>Customer</th>
-                    <th>Asal</th>
-                    <th>Tujuan</th>
-                    <th>Tanggal</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="text-uppercase">
-                    <td class="noorder"></td>
-                    <td class="muatan"></td>
-                    <td class="namacust"></td>
-                    <td class="alamatasal"></td>
-                    <td class="alamattujuan"></td>
-                    <td class="tanggal"></td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="table-responsive">
+                <table class="table table-bordered text-center">
+                  <thead>
+                    <tr>
+                      <th>No Order</th>
+                      <th>Muatan</th>
+                      <th>Customer</th>
+                      <th>Asal</th>
+                      <th>Tujuan</th>
+                      <th>Tanggal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="text-uppercase">
+                      <td class="noorder"></td>
+                      <td class="muatan"></td>
+                      <td class="namacust"></td>
+                      <td class="alamatasal"></td>
+                      <td class="alamattujuan"></td>
+                      <td class="tanggal"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
             </div>
             <div class="col-lg-12 col-md-12">
               <h5>Data Sangu</h5>
-              <table class="table table-bordered text-center">
-                <thead>
-                  <tr>
-                    <th>No Order</th>
-                    <th>Truck</th>
-                    <th>Supir</th>
-                    <th>Kota Asal</th>
-                    <th>Kota Tujuan</th>
-                    <th>Nominal</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="text-uppercase">
-                    <td class="noorder"></td>
-                    <td class="truck"></td>
-                    <td class="supir"></td>
-                    <td class="kotaasal"></td>
-                    <td class="kotatujuan"></td>
-                    <td class="nominalsangu"></td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="table-responsive">
+                <table class="table table-bordered text-center">
+                  <thead>
+                    <tr>
+                      <th>No Order</th>
+                      <th>Truck</th>
+                      <th>Supir</th>
+                      <th>Kota Asal</th>
+                      <th>Kota Tujuan</th>
+                      <th>Nominal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="text-uppercase">
+                      <td class="noorder"></td>
+                      <td class="truck"></td>
+                      <td class="supir"></td>
+                      <td class="kotaasal"></td>
+                      <td class="kotatujuan"></td>
+                      <td class="nominalsangu"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
             </div>
           </div>
           <div class="row">
