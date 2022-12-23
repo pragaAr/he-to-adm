@@ -2,7 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 date_default_timezone_set('Asia/Jakarta');
 
-class M_Etc extends CI_Model
+class M_Pengeluaran_lain extends CI_Model
 {
   public function getData()
   {
@@ -26,7 +26,7 @@ class M_Etc extends CI_Model
   public function addData()
   {
     $karyawan   = $this->input->post('karyawan');
-    $nominal    = $this->input->post('nominal');
+    $nominal    = preg_replace("/[^0-9\.]/", "", $this->input->post('nominal'));
     $keperluan  = $this->input->post('keperluan');
     $user       = $this->session->userdata('id_user');
     $dateAdd    = date('Y-m-d H:i:s');
@@ -45,7 +45,7 @@ class M_Etc extends CI_Model
   public function editData($id)
   {
     $karyawan   = $this->input->post('karyawanedit');
-    $nominal    = $this->input->post('nominaledit');
+    $nominal    = preg_replace("/[^0-9\.]/", "", $this->input->post('nominaledit'));
     $keperluan  = $this->input->post('keperluanedit');
     $user       = $this->session->userdata('id_user');
 

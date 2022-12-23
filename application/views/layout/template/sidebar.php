@@ -17,7 +17,7 @@
              </p>
            </a>
          </li>
-         <li class="nav-header">Master</li>
+         <li class="nav-header">Operasional</li>
          <li class="nav-item">
            <a href="<?= base_url('armada') ?>" class="nav-link <?= $this->uri->segment(1) == 'armada' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
              <i class="nav-icon fas fa-truck-moving"></i>
@@ -36,7 +36,7 @@
              <p>User</p>
            </a>
          </li>
-         <li class="nav-header">Administrasi</li>
+         <li class="nav-header">Pengeluaran</li>
          <li class="nav-item">
            <a href="<?= base_url('uangmakan') ?>" class="nav-link <?= $this->uri->segment(1) == 'uangmakan' || $this->uri->segment(1) == '' ? 'active' : '' ?>" class="nav-link">
              <i class="nav-icon fas fa-hand-holding-usd"></i>
@@ -50,12 +50,12 @@
            </a>
          </li>
          <li class="nav-item">
-           <a href="<?= base_url('etc') ?>" class="nav-link <?= $this->uri->segment(1) == 'etc' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
+           <a href="<?= base_url('pengeluaran_lain') ?>" class="nav-link <?= $this->uri->segment(1) == 'pengeluaran_lain' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
              <i class="nav-icon fas fa-search-dollar"></i>
              <p>Lain-lain</p>
            </a>
          </li>
-         <li class="nav-header">Penjualan</li>
+         <li class="nav-header">Pemasukan</li>
          <li class="nav-item">
            <a href="<?= base_url('customer') ?>" class="nav-link <?= $this->uri->segment(1) == 'customer' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
              <i class="nav-icon fas fa-portrait"></i>

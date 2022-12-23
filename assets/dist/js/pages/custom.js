@@ -94,6 +94,10 @@ $("#editborongan").on("keypress", function (key) {
   if (key.charCode < 48 || key.charCode > 57) return false;
 });
 
+$("#nominaledit").on("keypress", function (key) {
+  if (key.charCode < 48 || key.charCode > 57) return false;
+});
+
 $(function () {
   $("#nominal").on("keydown keyup click change blur input", function (e) {
     $(this).val(format($(this).val()));
@@ -270,7 +274,7 @@ $(".btn-edit-lain").on("click", function (e) {
   e.preventDefault();
   const id = $(this).data("id");
   $.ajax({
-    url: "http://localhost/hira-to-adm/etc/getId",
+    url: "http://localhost/hira-to-adm/pengeluaran_lain/getId",
     type: "POST",
     dataType: "json",
     data: {
@@ -286,9 +290,6 @@ $(".btn-edit-lain").on("click", function (e) {
   });
 
   $("#editLain").modal("show");
-  $("#nominaledit").on("keypress", function (key) {
-    if (key.charCode < 48 || key.charCode > 57) return false;
-  });
 });
 
 //  update order and sangu too

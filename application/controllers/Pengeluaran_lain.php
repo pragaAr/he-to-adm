@@ -1,12 +1,12 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Etc extends CI_Controller
+class Pengeluaran_lain extends CI_Controller
 {
   public function __construct()
   {
     parent::__construct();
-    $this->load->model('M_Etc', 'Etc');
+    $this->load->model('M_Pengeluaran_lain', 'Etc');
     $this->load->model('M_Karyawan', 'Karyawan');
 
     if (empty($this->session->userdata('id_user'))) {
@@ -35,7 +35,7 @@ class Etc extends CI_Controller
     } else {
       $this->Etc->addData();
       $this->session->set_flashdata('inserted', 'Data berhasil ditambahkan!');
-      redirect('etc');
+      redirect('pengeluaran_lain');
     }
   }
 
@@ -52,13 +52,13 @@ class Etc extends CI_Controller
     $id = $this->input->post('idlain');
     $this->Etc->editData($id);
     $this->session->set_flashdata('updated', 'Data berhasil diubah!');
-    redirect('etc');
+    redirect('pengeluaran_lain');
   }
 
   public function delete($id)
   {
     $this->Etc->deleteData($id);
     $this->session->set_flashdata('deleted', 'Data berhasil dihapus!');
-    redirect('etc');
+    redirect('pengeluaran_lain');
   }
 }

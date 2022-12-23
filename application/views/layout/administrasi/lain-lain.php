@@ -51,7 +51,7 @@
                           <a href="" class="btn btn-sm btn-warning text-white btn-edit-lain" title="Edit" data-id="<?= $data->id_lain ?>">
                             <i class="fas fa-pencil-alt"></i>
                           </a>
-                          <a href="<?= base_url('etc/delete/') . $data->id_lain ?>" class="btn btn-sm btn-danger text-white btn-delete" title="Hapus">
+                          <a href="<?= base_url('pengeluaran_lain/delete/') . $data->id_lain ?>" class="btn btn-sm btn-danger text-white btn-delete" title="Hapus">
                             <i class="fas fa-trash"></i>
                           </a>
                         </div>
@@ -70,7 +70,7 @@
 </div>
 
 <!-- addLain -->
-<form action="<?= base_url('etc') ?>" method="POST">
+<form action="<?= base_url('pengeluaran_lain') ?>" method="POST">
   <div class="modal fade" id="addLain" data-backdrop="static">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -119,7 +119,7 @@
 </form>
 
 <!-- editLain -->
-<form action="<?= base_url('etc/update') ?>" method="POST">
+<form action="<?= base_url('pengeluaran_lain/update') ?>" method="POST">
   <div class="modal fade" id="editLain" data-backdrop="static">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -148,7 +148,7 @@
               <span class="text-white">*</span>
             </label>
             <input type="text" class="form-control nominaledit" name="nominaledit" id="nominaledit" placeholder="Nominal.." required oninvalid="this.setCustomValidity('Nominal wajib di isi!')" oninput="setCustomValidity('')">
-            <input type="hidden" class="form-control idlain" required readonly>
+            <input type="hidden" name="idlain" class="form-control idlain" required readonly>
           </div>
           <div class="form-group">
             <label for="keperluanedit">
