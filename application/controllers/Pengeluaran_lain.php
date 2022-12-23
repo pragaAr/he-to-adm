@@ -24,7 +24,7 @@ class Pengeluaran_lain extends CI_Controller
 
     $this->form_validation->set_rules('karyawan', 'Karyawan', 'trim|required');
     $this->form_validation->set_rules('nominal', 'Nominal', 'trim|required');
-    $this->form_validation->set_rules('keperluan', 'Keperluan', 'trim|required');
+    $this->form_validation->set_rules('keterangan', 'Keterangan', 'trim|required');
 
     if ($this->form_validation->run() == false) {
       $this->load->view('layout/template/header', $data);

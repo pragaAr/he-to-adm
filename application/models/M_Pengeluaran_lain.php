@@ -6,7 +6,7 @@ class M_Pengeluaran_lain extends CI_Model
 {
   public function getData()
   {
-    $this->db->select('pengeluaran_lain.id_lain, pengeluaran_lain.karyawan_id, pengeluaran_lain.nominal, pengeluaran_lain.keperluan, pengeluaran_lain.dateAdd, karyawan.id_karyawan, karyawan.nama');
+    $this->db->select('pengeluaran_lain.id_lain, pengeluaran_lain.karyawan_id, pengeluaran_lain.nominal, pengeluaran_lain.keterangan, pengeluaran_lain.dateAdd, karyawan.id_karyawan, karyawan.nama');
     $this->db->from('pengeluaran_lain');
     $this->db->join('karyawan', 'karyawan.id_karyawan = pengeluaran_lain.karyawan_id');
     $query = $this->db->get()->result();
@@ -15,7 +15,7 @@ class M_Pengeluaran_lain extends CI_Model
 
   public function getId($id)
   {
-    $this->db->select('pengeluaran_lain.id_lain, pengeluaran_lain.karyawan_id, pengeluaran_lain.nominal, pengeluaran_lain.keperluan, karyawan.id_karyawan, karyawan.nama');
+    $this->db->select('pengeluaran_lain.id_lain, pengeluaran_lain.karyawan_id, pengeluaran_lain.nominal, pengeluaran_lain.keterangan, karyawan.id_karyawan, karyawan.nama');
     $this->db->from('pengeluaran_lain');
     $this->db->join('karyawan', 'karyawan.id_karyawan = pengeluaran_lain.karyawan_id');
     $this->db->where('pengeluaran_lain.id_lain', $id);
@@ -27,14 +27,14 @@ class M_Pengeluaran_lain extends CI_Model
   {
     $karyawan   = $this->input->post('karyawan');
     $nominal    = preg_replace("/[^0-9\.]/", "", $this->input->post('nominal'));
-    $keperluan  = $this->input->post('keperluan');
+    $keterangan = $this->input->post('keterangan');
     $user       = $this->session->userdata('id_user');
     $dateAdd    = date('Y-m-d H:i:s');
 
     $data = array(
       'karyawan_id'   => strtolower($karyawan),
       'nominal'       => strtolower($nominal),
-      'keperluan'     => strtolower($keperluan),
+      'keterangan'    => strtolower($keterangan),
       'user_id'       => strtolower($user),
       'dateAdd'       => $dateAdd
     );
@@ -46,13 +46,13 @@ class M_Pengeluaran_lain extends CI_Model
   {
     $karyawan   = $this->input->post('karyawanedit');
     $nominal    = preg_replace("/[^0-9\.]/", "", $this->input->post('nominaledit'));
-    $keperluan  = $this->input->post('keperluanedit');
+    $keterangan = $this->input->post('keteranganedit');
     $user       = $this->session->userdata('id_user');
 
     $data = array(
       'karyawan_id'   => strtolower($karyawan),
       'nominal'       => strtolower($nominal),
-      'keperluan'     => strtolower($keperluan),
+      'keterangan'    => strtolower($keterangan),
       'user_id'       => strtolower($user),
     );
 

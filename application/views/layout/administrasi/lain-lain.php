@@ -32,7 +32,7 @@
                     <th width="10%">No.</th>
                     <th>Nama</th>
                     <th>Nominal</th>
-                    <th>Keperluan</th>
+                    <th>Keterangan</th>
                     <th>Tanggal</th>
                     <th>Actions</th>
                   </tr>
@@ -44,7 +44,7 @@
                       <td><?= $no ?>.</td>
                       <td><?= strtoupper($data->nama) ?></td>
                       <td>Rp. <?= number_format($data->nominal) ?></td>
-                      <td><?= strtoupper($data->keperluan) ?></td>
+                      <td><?= strtoupper($data->keterangan) ?></td>
                       <td><?= date('d-m-Y', strtotime($data->dateAdd)) ?></td>
                       <td>
                         <div class="btn-group" role="group">
@@ -101,11 +101,11 @@
             <input type="text" class="form-control" name="nominal" id="nominal" placeholder="Nominal.." required oninvalid="this.setCustomValidity('Nominal wajib di isi!')" oninput="setCustomValidity('')">
           </div>
           <div class="form-group">
-            <label for="keperluan">
-              Keperluan
+            <label for="keterangan">
+              Keterangan
               <span class="text-white">*</span>
             </label>
-            <input type="text" class="form-control text-capitalize" name="keperluan" placeholder="Keperluan.." required oninvalid="this.setCustomValidity('Keperluan wajib di isi!')" oninput="setCustomValidity('')">
+            <input type="text" class="form-control text-capitalize" name="keterangan" placeholder="Keterangan.." required oninvalid="this.setCustomValidity('Keterangan wajib di isi!')" oninput="setCustomValidity('')">
           </div>
           <div>
             <button type="submit" class="btn btn-dark float-right">
@@ -151,11 +151,11 @@
             <input type="hidden" name="idlain" class="form-control idlain" required readonly>
           </div>
           <div class="form-group">
-            <label for="keperluanedit">
-              Keperluan
+            <label for="keteranganedit">
+              Keterangan
               <span class="text-white">*</span>
             </label>
-            <input type="text" class="form-control text-capitalize keperluanedit" name="keperluanedit" placeholder="Keperluan.." required oninvalid="this.setCustomValidity('Keperluan wajib di isi!')" oninput="setCustomValidity('')">
+            <input type="text" class="form-control text-capitalize keteranganedit" name="keteranganedit" placeholder="Keterangan.." required oninvalid="this.setCustomValidity('Keterangan wajib di isi!')" oninput="setCustomValidity('')">
           </div>
           <div>
             <button type="submit" class="btn btn-dark float-right">

@@ -285,7 +285,7 @@ $(".btn-edit-lain").on("click", function (e) {
       $(".idlain").val(data.id_lain);
       $(".karyawanedit").val(data.karyawan_id).trigger("change");
       $(".nominaledit").val(format(data.nominal));
-      $(".keperluanedit").val(data.keperluan);
+      $(".keteranganedit").val(data.keterangan);
     },
   });
 
