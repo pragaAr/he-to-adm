@@ -6,19 +6,19 @@ class M_Pengeluaran_lain extends CI_Model
 {
   public function getData()
   {
-    $this->db->select('lain_lain.id_lain, lain_lain.karyawan_id, lain_lain.nominal, lain_lain.keperluan, lain_lain.dateAdd, karyawan.id_karyawan, karyawan.nama');
-    $this->db->from('lain_lain');
-    $this->db->join('karyawan', 'karyawan.id_karyawan = lain_lain.karyawan_id');
+    $this->db->select('pengeluaran_lain.id_lain, pengeluaran_lain.karyawan_id, pengeluaran_lain.nominal, pengeluaran_lain.keperluan, pengeluaran_lain.dateAdd, karyawan.id_karyawan, karyawan.nama');
+    $this->db->from('pengeluaran_lain');
+    $this->db->join('karyawan', 'karyawan.id_karyawan = pengeluaran_lain.karyawan_id');
     $query = $this->db->get()->result();
     return $query;
   }
 
   public function getId($id)
   {
-    $this->db->select('lain_lain.id_lain, lain_lain.karyawan_id, lain_lain.nominal, lain_lain.keperluan, karyawan.id_karyawan, karyawan.nama');
-    $this->db->from('lain_lain');
-    $this->db->join('karyawan', 'karyawan.id_karyawan = lain_lain.karyawan_id');
-    $this->db->where('lain_lain.id_lain', $id);
+    $this->db->select('pengeluaran_lain.id_lain, pengeluaran_lain.karyawan_id, pengeluaran_lain.nominal, pengeluaran_lain.keperluan, karyawan.id_karyawan, karyawan.nama');
+    $this->db->from('pengeluaran_lain');
+    $this->db->join('karyawan', 'karyawan.id_karyawan = pengeluaran_lain.karyawan_id');
+    $this->db->where('pengeluaran_lain.id_lain', $id);
     $query = $this->db->get()->row();
     return $query;
   }
@@ -39,7 +39,7 @@ class M_Pengeluaran_lain extends CI_Model
       'dateAdd'       => $dateAdd
     );
 
-    $this->db->insert('lain_lain', $data);
+    $this->db->insert('pengeluaran_lain', $data);
   }
 
   public function editData($id)
@@ -58,11 +58,11 @@ class M_Pengeluaran_lain extends CI_Model
 
     $where = array('id_lain' => $id);
 
-    $this->db->update('lain_lain', $data, $where);
+    $this->db->update('pengeluaran_lain', $data, $where);
   }
 
   public function deleteData($id)
   {
-    return $this->db->delete('lain_lain', ['id_lain' => $id]);
+    return $this->db->delete('pengeluaran_lain', ['id_lain' => $id]);
   }
 }
