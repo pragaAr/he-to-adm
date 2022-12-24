@@ -7,7 +7,7 @@
   <div class="wrongdata" data-flashdata="<?= $this->session->flashdata('wrongdata'); ?>"></div>
   <div class="login-box">
     <div class="login-logo">
-      <img src="<?= base_url('assets/dist/img/logo-white.png') ?>" alt="Logo Hira" width="143" height="78">
+      <img src="<?= base_url('assets/dist/img/logo-white.png') ?>" alt="Logo Hira" width="125" height="70">
     </div>
     <div class="card">
       <div class="card-body login-card-body" style="border-radius:10px;">
