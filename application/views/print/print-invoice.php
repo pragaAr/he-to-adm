@@ -211,7 +211,7 @@
           <td class="tdpajak" width="5%"></td>
           <td class="tdpajak" width="20%"></td>
           <td class="tdpajak text-left" width="30%">DPP &nbsp;&nbsp; Rp. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <?= number_format($datacust->jml_nominal) ?></td>
-          <td class="tdpajak text-center" style="padding-bottom:3px;" width="10%"><span style="border-bottom:1.5px solid black">&nbsp; X 100%&nbsp;</span> </td>
+          <td class="tdpajak text-center" style="padding-bottom:3px;" width="10%"><span style="border-bottom:1.5px solid black">&nbsp; x 100%&nbsp;</span> </td>
           <td class="tdpajak text-center" width="5%"> = </td>
           <td class="tdpajak text-right totdpp" width="20%"> <?= number_format(round($resultdpp)) ?></td>
         </tr>
