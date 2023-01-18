@@ -7,6 +7,7 @@ class Sangu extends CI_Controller
   {
     parent::__construct();
     $this->load->model('M_Sangu', 'Sangu');
+    $this->load->model('M_Sopir', 'Sopir');
     $this->load->model('M_Armada', 'Armada');
 
     if (empty($this->session->userdata('id_user'))) {
@@ -19,6 +20,7 @@ class Sangu extends CI_Controller
   {
     $data['title']  = 'Data Sangu';
     $data['sangu']  = $this->Sangu->getData();
+    $data['sopir']  = $this->Sopir->getData();
     $data['truck']  = $this->Armada->getData();
 
     $this->load->view('layout/template/header', $data);

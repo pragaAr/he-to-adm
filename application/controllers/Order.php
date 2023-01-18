@@ -6,8 +6,9 @@ class Order extends CI_Controller
   public function __construct()
   {
     parent::__construct();
-    $this->load->model('M_Order', 'Order');
     $this->load->model('M_Armada', 'Armada');
+    $this->load->model('M_Order', 'Order');
+    $this->load->model('M_Sopir', 'Sopir');
 
     if (empty($this->session->userdata('id_user'))) {
       $this->session->set_flashdata('flashrole', 'Silahkan Login terlebih dahulu!');
@@ -19,6 +20,8 @@ class Order extends CI_Controller
   {
     $data['title']      = 'Data Order';
     $data['order']      = $this->Order->getData();
+    $data['sopir']      = $this->Sopir->getData();
+    $data['sopiredit']  = $this->Sopir->getData();
     $data['truck']      = $this->Armada->getData();
     $data['truckedit']  = $this->Armada->getData();
     $data['kd']         = $this->Order->getKd();

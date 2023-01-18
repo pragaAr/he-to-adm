@@ -31,6 +31,12 @@
            </a>
          </li>
          <li class="nav-item">
+           <a href="<?= base_url('sopir') ?>" class="nav-link <?= $this->uri->segment(1) == 'sopir' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
+             <i class="nav-icon far fa-user"></i>
+             <p>Sopir</p>
+           </a>
+         </li>
+         <li class="nav-item">
            <a href="<?= base_url('user') ?>" class="nav-link <?= $this->uri->segment(1) == 'user' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
              <i class="nav-icon fas fa-user-lock"></i>
              <p>User</p>
@@ -54,6 +60,12 @@
            <a href="<?= base_url('sangu') ?>" class="nav-link <?= $this->uri->segment(1) == 'sangu' || $this->uri->segment(1) == '' ? 'active' : '' ?>" class="nav-link">
              <i class="nav-icon fas fa-wallet"></i>
              <p>Sangu</p>
+           </a>
+         </li>
+         <li class="nav-item">
+           <a href="<?= base_url('persensopir') ?>" class="nav-link <?= $this->uri->segment(1) == 'persensopir' || $this->uri->segment(1) == '' ? 'active' : '' ?>" class="nav-link">
+             <i class="nav-icon fas fa-percentage"></i>
+             <p>Persen Sopir</p>
            </a>
          </li>
          <li class="nav-item">

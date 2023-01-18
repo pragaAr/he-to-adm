@@ -72,7 +72,6 @@
   </section>
 </div>
 
-
 <!-- detailUm -->
 <form action="<?= base_url('uangmakan/print') ?>" method="POST">
   <div class="modal fade" id="detailUm">
@@ -85,12 +84,17 @@
           </button>
         </div>
         <div class="modal-body" style="padding: 2rem !important;">
-          <div class="font-weight-bold mb-3">
-            <p class="text-uppercase kd_um"></p>
-            <p class="text-uppercase tgl_um"></p>
+          <div class="d-flex justify-content-between align-items-start flex-wrap mb-3">
+            <div class="font-weight-bold">
+              <p class="text-uppercase kd_um"></p>
+              <p class="text-uppercase tgl_um"></p>
+            </div>
+            <button type="submit" class="btn btn-primary">Print</button>
+            <input type="hidden" class="form-control kd_um" readonly>
           </div>
           <table class="table table-bordered" width="100%">
             <thead class="text-center" style="border:1.5px solid rgb(145, 143, 143) !important;">
+              <th width="10%" style="border-color: rgb(145, 143, 143) !important;">No</th>
               <th style="border-color: rgb(145, 143, 143) !important;">Penerima</th>
               <th style="border-color: rgb(145, 143, 143) !important;">Nominal</th>
             </thead>

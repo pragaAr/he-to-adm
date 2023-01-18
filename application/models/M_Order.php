@@ -32,6 +32,7 @@ class M_Order extends CI_Model
     $this->db->from('order_masuk');
     $this->db->where('order_masuk.no_order', $no);
     $this->db->join('sangu_order', 'sangu_order.no_order = order_masuk.no_order');
+    // $this->db->join('sopir', 'sopir.id_sopir = sangu_order.sopir_id');
     $query = $this->db->get()->row();
     return $query;
   }
@@ -64,7 +65,7 @@ class M_Order extends CI_Model
     $muatan         = $this->input->post('muatan');
     $asal           = $this->input->post('kotaasal');
     $platno         = $this->input->post('platno');
-    $supir          = $this->input->post('supir');
+    $supir          = $this->input->post('sopir');
     $tujuan         = $this->input->post('kotatujuan');
     $nominal        = preg_replace("/[^0-9\.]/", "", $this->input->post('nominal'));
     $user           = 1;
@@ -85,7 +86,7 @@ class M_Order extends CI_Model
       'no_rek'        => '610101',
       'no_order'      => strtolower($noorder),
       'platno'        => strtolower($platno),
-      'supir'         => strtolower($supir),
+      'sopir_id'      => $supir,
       'kota_asal'     => strtolower($asal),
       'kota_tujuan'   => strtolower($tujuan),
       'nominal'       => strtolower($nominal),
@@ -106,7 +107,7 @@ class M_Order extends CI_Model
     $muatan         = $this->input->post('muatan');
     $asal           = $this->input->post('kotaasal');
     $platno         = $this->input->post('platno');
-    $supir          = $this->input->post('supir');
+    $supir          = $this->input->post('sopir');
     $tujuan         = $this->input->post('kotatujuan');
     $nominal        = preg_replace("/[^0-9\.]/", "", $this->input->post('nominal'));
     $user           = 1;
@@ -122,7 +123,7 @@ class M_Order extends CI_Model
 
     $datasangu = array(
       'platno'        => strtolower($platno),
-      'supir'         => strtolower($supir),
+      'sopir_id'      => $supir,
       'kota_asal'     => strtolower($asal),
       'kota_tujuan'   => strtolower($tujuan),
       'nominal'       => strtolower($nominal),

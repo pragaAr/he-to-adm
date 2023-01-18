@@ -17,7 +17,7 @@ class M_Uangmakan extends CI_Model
       $kode = 1;
     }
     $batas = str_pad($kode, 5, "0", STR_PAD_LEFT);
-    $kodetampil = "um." . $batas;
+    $kodetampil = "um-" . $batas;
     return $kodetampil;
   }
 

@@ -312,7 +312,7 @@ $(".btn-edit-order").on("click", function (e) {
       $(".alamatasal").val(data.alamat_asal);
       $(".alamattujuan").val(data.alamat_tujuan);
       $(".platno").val(data.platno).trigger("change");
-      $(".supir").val(data.supir);
+      $(".sopir").val(data.sopir_id).trigger("change");
       $(".kotaasal").val(data.kota_asal);
       $(".kotatujuan").val(data.kota_tujuan);
       $(".nominal").val(format(data.nominal));
@@ -348,7 +348,7 @@ $(".btn-edit-sangu").on("click", function (e) {
     success: function (data) {
       $(".noorder").val(data.no_order);
       $(".platno").val(data.platno).trigger("change");
-      $(".supir").val(data.supir);
+      $(".sopir").val(data.sopir_id).trigger("change");
       $(".asal").val(data.kota_asal);
       $(".tujuan").val(data.kota_tujuan);
       $(".nominal").val(format(data.nominal));
@@ -356,6 +356,28 @@ $(".btn-edit-sangu").on("click", function (e) {
   });
 
   $("#editSangu").modal("show");
+});
+
+//  update sopir
+$(".btn-edit-sopir").on("click", function (e) {
+  e.preventDefault();
+  const id = $(this).data("id");
+  $.ajax({
+    url: "http://localhost/hira-to-adm/sopir/getId",
+    type: "POST",
+    dataType: "json",
+    data: {
+      id_sopir: id,
+    },
+    success: function (data) {
+      $(".idsopir").val(data.id_sopir);
+      $(".namasopir").val(data.nama_sopir);
+      $(".alamatsopir").val(data.alamat_sopir);
+      $(".notelpsopir").val(data.notelp_sopir);
+    },
+  });
+
+  $("#editSopir").modal("show");
 });
 
 //  update user
@@ -503,16 +525,21 @@ $(".btn-detail-um").on("click", function (e) {
     },
     success: function (data) {
       console.log(data);
+      $(".kd_um").val(kd);
       $(".kd_um").html("no um : " + kd);
       $(".tgl_um").html("tanggal : " + tgl);
 
       $("#detailUm").modal("show");
 
       let datadetail = "";
-
+      let no = 1;
       $.each(data, function (key, value) {
         datadetail +=
           "<tr style='border-bottom-color: rgb(145, 143, 143) !important;'>";
+        datadetail +=
+          "<td style='border-color:rgb(145, 143, 143) !important' class='text-capitalize'>" +
+          no++ +
+          "</td>";
         datadetail +=
           "<td style='border-color:rgb(145, 143, 143) !important' class='text-capitalize'>" +
           value.nama +

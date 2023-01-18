@@ -6,12 +6,21 @@ class M_Sangu extends CI_Model
 {
   public function getData()
   {
-    return $this->db->get('sangu_order')->result();
+    $this->db->select('*');
+    $this->db->from('sangu_order');
+    $this->db->join('sopir', 'sopir.id_sopir = sangu_order.sopir_id');
+    $res = $this->db->get()->result();
+    return $res;
   }
 
   public function getNoOrder($no)
   {
-    return $this->db->get_where('sangu_order', ['no_order' => $no])->row();
+    $this->db->select('*');
+    $this->db->from('sangu_order');
+    $this->db->where('no_order', $no);
+    $this->db->join('sopir', 'sopir.id_sopir = sangu_order.sopir_id');
+    $res = $this->db->get()->row();
+    return $res;
   }
 
   public function editData($no)

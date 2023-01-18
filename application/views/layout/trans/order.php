@@ -169,11 +169,16 @@
               </select>
             </div>
             <div class="form-group col-md-6">
-              <label for="supir">
-                Driver
+              <label for="sopir">
+                Sopir
                 <span class="text-white">*</span>
               </label>
-              <input type="text" class="form-control text-uppercase" name="supir" placeholder="Driver.." required oninvalid="this.setCustomValidity('Driver wajib di isi!')" oninput="setCustomValidity('')">
+              <select name="sopir" class="form-control text-uppercase select2" style="width: 100%;" required oninvalid="this.setCustomValidity('Sopir wajib di isi!')" oninput="setCustomValidity('')">
+                <option value="" selected disabled>-Pilih Sopir-</option>
+                <?php foreach ($sopir as $sopir) : ?>
+                  <option value="<?= $sopir->id_sopir ?>"><?= strtoupper($sopir->nama_sopir) ?></option>
+                <?php endforeach ?>
+              </select>
             </div>
           </div>
           <div class="form-row">
@@ -307,11 +312,16 @@
               </select>
             </div>
             <div class="form-group col-md-6">
-              <label for="supir">
+              <label for="sopir">
                 Driver
                 <span class="text-white">*</span>
               </label>
-              <input type="text" class="form-control text-uppercase supir" name="supir" placeholder="Driver.." required oninvalid="this.setCustomValidity('Driver wajib di isi!')" oninput="setCustomValidity('')">
+              <select name="sopir" class="form-control text-uppercase select2 sopir" style="width: 100%;" required oninvalid="this.setCustomValidity('Sopir wajib di isi!')" oninput="setCustomValidity('')">
+                <option value="" selected disabled>-Pilih Sopir-</option>
+                <?php foreach ($sopiredit as $sopir) : ?>
+                  <option value="<?= $sopir->id_sopir ?>"><?= strtoupper($sopir->nama_sopir) ?></option>
+                <?php endforeach ?>
+              </select>
             </div>
           </div>
           <div class="form-row">
