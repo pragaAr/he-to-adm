@@ -127,6 +127,7 @@ class M_Order extends CI_Model
       'kota_asal'     => strtolower($asal),
       'kota_tujuan'   => strtolower($tujuan),
       'nominal'       => strtolower($nominal),
+      'tambahan'      => 0,
       'user_id'       => $user,
     );
 

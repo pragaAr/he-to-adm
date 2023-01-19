@@ -26,18 +26,20 @@ class M_Sangu extends CI_Model
   public function editData($no)
   {
     $platno     = trim($this->input->post('platno'));
-    $supir      = trim($this->input->post('supir'));
+    $supir      = trim($this->input->post('sopir'));
     $asal       = trim($this->input->post('asal'));
     $tujuan     = trim($this->input->post('tujuan'));
     $nominal    = preg_replace("/[^0-9\.]/", "", $this->input->post('nominal'));
+    $tambahan   = preg_replace("/[^0-9\.]/", "", $this->input->post('tambahan'));
     $user       = $this->session->userdata('id_user');
 
     $data = array(
       'platno'        => strtolower($platno),
-      'supir'         => strtolower($supir),
+      'sopir_id'      => $supir,
       'kota_asal'     => strtolower($asal),
       'kota_tujuan'   => strtolower($tujuan),
       'nominal'       => $nominal,
+      'tambahan'      => $tambahan,
       'user_id'       => $user,
     );
 

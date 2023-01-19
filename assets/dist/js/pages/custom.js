@@ -62,6 +62,10 @@ $("#addPenjualan").on("shown.bs.modal", function () {
   $('input[name="kdpaket"]').focus();
 });
 
+$("#tambahan").on("keypress", function (key) {
+  if (key.charCode < 48 || key.charCode > 57) return false;
+});
+
 $("#nominal").on("keypress", function (key) {
   if (key.charCode < 48 || key.charCode > 57) return false;
 });
@@ -96,6 +100,12 @@ $("#editborongan").on("keypress", function (key) {
 
 $("#nominaledit").on("keypress", function (key) {
   if (key.charCode < 48 || key.charCode > 57) return false;
+});
+
+$(function () {
+  $("#tambahan").on("keydown keyup click change blur input", function (e) {
+    $(this).val(format($(this).val()));
+  });
 });
 
 $(function () {
@@ -352,6 +362,7 @@ $(".btn-edit-sangu").on("click", function (e) {
       $(".asal").val(data.kota_asal);
       $(".tujuan").val(data.kota_tujuan);
       $(".nominal").val(format(data.nominal));
+      $(".tambahan").val(format(data.tambahan));
     },
   });
 

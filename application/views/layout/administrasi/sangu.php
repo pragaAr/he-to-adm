@@ -27,9 +27,8 @@
                     <th>No Order</th>
                     <th>Truck</th>
                     <th>Driver</th>
-                    <th>Asal</th>
-                    <th>Tujuan</th>
-                    <th>Nominal</th>
+                    <th>PP</th>
+                    <th>Jumlah</th>
                     <th>Tanggal</th>
                     <th>Actions</th>
                   </tr>
@@ -41,10 +40,16 @@
                       <td><?= $no ?>.</td>
                       <td><?= strtoupper($data->no_order) ?></td>
                       <td><?= strtoupper($data->platno) ?></td>
-                      <td><?= strtoupper($data->nama_sopir) ?></td>
-                      <td><?= strtoupper($data->kota_asal) ?></td>
-                      <td><?= strtoupper($data->kota_tujuan) ?></td>
-                      <td>Rp. <?= number_format($data->nominal) ?></td>
+                      <td><?= ucwords($data->nama_sopir) ?></td>
+                      <td><?= ucwords($data->kota_asal) ?> - <?= ucwords($data->kota_tujuan) ?></td>
+                      <?php if ($data->tambahan == '0') { ?>
+                        <td>Rp. <?= number_format($data->nominal) ?> </td>
+                      <?php } else { ?>
+                        <td>
+                          Rp. <?= number_format($data->nominal) ?>
+                          <i class="fas fa-check ml-1" title="Ada tambahan Rp. <?= number_format($data->tambahan) ?>"></i>
+                        </td>
+                      <?php } ?>
                       <td><?= date('d-m-Y', strtotime($data->dateAdd)) ?></td>
                       <td>
                         <div class="btn-group" role="group">
@@ -79,14 +84,14 @@
         </div>
         <div class="modal-body">
           <div class="form-row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
               <label for="noorder">
                 No Order
                 <span class="text-white">*</span>
               </label>
               <input type="text" class="form-control text-uppercase noorder" name="noorder" readonly>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
               <label for="platno">
                 Truck
                 <span class="text-white">*</span>
@@ -98,6 +103,18 @@
                 <?php endforeach ?>
               </select>
             </div>
+            <div class="form-group col-md-4">
+              <label for="sopir">
+                Driver
+                <span class="text-white">*</span>
+              </label>
+              <select name="sopir" class="form-control text-capitalize select2 sopir" style="width: 100%;" required oninvalid="this.setCustomValidity('Sopir wajib di isi!')" oninput="setCustomValidity('')">
+                <option value="" selected disabled>-Pilih Sopir-</option>
+                <?php foreach ($sopir as $sopir) : ?>
+                  <option value="<?= $sopir->id_sopir ?>"><?= ucwords($sopir->nama_sopir) ?></option>
+                <?php endforeach ?>
+              </select>
+            </div>
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
@@ -105,35 +122,30 @@
                 Kota Asal
                 <span class="text-white">*</span>
               </label>
-              <input type="text" class="form-control text-uppercase asal" name="asal" placeholder="Kota Asal.." required oninvalid="this.setCustomValidity('Kota Asal wajib di isi!')" oninput="setCustomValidity('')">
+              <input type="text" class="form-control text-capitalize asal" name="asal" placeholder="Kota Asal.." required oninvalid="this.setCustomValidity('Kota Asal wajib di isi!')" oninput="setCustomValidity('')">
             </div>
             <div class="form-group col-md-6">
               <label for="tujuan">
                 Kota Tujuan
                 <span class="text-white">*</span>
               </label>
-              <input type="text" class="form-control text-uppercase tujuan" name="tujuan" placeholder="Kota Tujuan.." required oninvalid="this.setCustomValidity('Kota Tujuan wajib di isi!')" oninput="setCustomValidity('')">
+              <input type="text" class="form-control text-capitalize tujuan" name="tujuan" placeholder="Kota Tujuan.." required oninvalid="this.setCustomValidity('Kota Tujuan wajib di isi!')" oninput="setCustomValidity('')">
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="sopir">
-                Driver
-                <span class="text-white">*</span>
-              </label>
-              <select name="sopir" class="form-control text-uppercase select2 sopir" style="width: 100%;" required oninvalid="this.setCustomValidity('Sopir wajib di isi!')" oninput="setCustomValidity('')">
-                <option value="" selected disabled>-Pilih Sopir-</option>
-                <?php foreach ($sopir as $sopir) : ?>
-                  <option value="<?= $sopir->id_sopir ?>"><?= strtoupper($sopir->nama_sopir) ?></option>
-                <?php endforeach ?>
-              </select>
-            </div>
             <div class="form-group col-md-6">
               <label for="nominal">
                 Nominal
                 <span class="text-white">*</span>
               </label>
-              <input type="text" class="form-control text-uppercase nominal" name="nominal" id="nominal" placeholder="Nominal.." required oninvalid="this.setCustomValidity('Nominal wajib di isi!')" oninput="setCustomValidity('')">
+              <input type="text" class="form-control text-capitalize nominal" name="nominal" id="nominal" placeholder="Nominal.." required oninvalid="this.setCustomValidity('Nominal wajib di isi!')" oninput="setCustomValidity('')">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="tambahan">
+                Tambahan
+                <span class="text-white">*</span>
+              </label>
+              <input type="text" class="form-control text-capitalize tambahan" name="tambahan" id="tambahan" value="0" placeholder="Tambahan..">
             </div>
           </div>
           <div>
