@@ -40,6 +40,21 @@ class M_Uangmakan extends CI_Model
     return $this->db->get_where('uang_makan', ['id_um' => $id])->row();
   }
 
+  public function getDataKdUm($kd)
+  {
+    return $this->db->get_where('uang_makan', ['kd_um' => $kd])->row();
+  }
+
+  public function getDetailKdUm($kd)
+  {
+    $this->db->select('detail_um.kd_um, detail_um.karyawan_id, detail_um.nominal_um, karyawan.id_karyawan, karyawan.nama, karyawan.status');
+    $this->db->from('detail_um');
+    $this->db->where('detail_um.kd_um', $kd);
+    $this->db->join('karyawan', 'karyawan.id_karyawan = detail_um.karyawan_id');
+    $query = $this->db->get()->result();
+    return $query;
+  }
+
   public function getDetailKd($kd)
   {
     $this->db->select('uang_makan.kd_um, uang_makan.dateAdd, detail_um.kd_um, detail_um.karyawan_id, detail_um.nominal_um, karyawan.id_karyawan, karyawan.nama');

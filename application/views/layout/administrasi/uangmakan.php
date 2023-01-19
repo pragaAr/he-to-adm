@@ -73,7 +73,7 @@
 </div>
 
 <!-- detailUm -->
-<form action="<?= base_url('uangmakan/print') ?>" method="POST">
+<form action="<?= base_url('uangmakan/print') ?>" method="POST" target="_blank">
   <div class="modal fade" id="detailUm">
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
       <div class="modal-content">
@@ -90,7 +90,7 @@
               <p class="text-uppercase tgl_um"></p>
             </div>
             <button type="submit" class="btn btn-primary">Print</button>
-            <input type="hidden" class="form-control kd_um" readonly>
+            <input type="hidden" name="kd_um" class="form-control kd_um" readonly>
           </div>
           <table class="table table-bordered" width="100%">
             <thead class="text-center" style="border:1.5px solid rgb(145, 143, 143) !important;">

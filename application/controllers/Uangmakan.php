@@ -140,6 +140,19 @@ class Uangmakan extends CI_Controller
     redirect('uangmakan');
   }
 
+  public function print()
+  {
+    $kd = $this->input->post('kd_um');
+
+    $this->load->library('pdf');
+
+    $data['title']    = 'Hira Express - Print Uang Makan';
+    $data['dataum']   = $this->Uangmakan->getDataKdUm($kd);
+    $data['detailum'] = $this->Uangmakan->getDetailKdUm($kd);
+
+    $this->pdf->generate('print/print-uangmakan', $data, 'Data-Uang-Makan', 'A4', 'portrait');
+  }
+
   public function delete($kd)
   {
     $this->Uangmakan->deleteData($kd);
