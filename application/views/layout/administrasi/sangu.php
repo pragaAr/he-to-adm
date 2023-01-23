@@ -27,7 +27,7 @@
                     <th>No Order</th>
                     <th>Truck</th>
                     <th>Driver</th>
-                    <th>PP</th>
+                    <th>Dari-Ke</th>
                     <th>Jumlah</th>
                     <th>Tanggal</th>
                     <th>Actions</th>
