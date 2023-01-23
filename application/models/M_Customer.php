@@ -13,6 +13,11 @@ class M_Customer extends CI_Model
     return $query;
   }
 
+  public function countData()
+  {
+    return $this->db->get('customer')->num_rows();
+  }
+
   public function getId($id)
   {
     return $this->db->get_where('customer', ['id_customer' => $id])->row();

@@ -9,6 +9,11 @@ class M_Penjualan extends CI_Model
     return $this->db->get('penjualan')->result();
   }
 
+  public function countData()
+  {
+    return $this->db->get('penjualan')->num_rows();
+  }
+
   public function getNoOrder($no)
   {
     return $this->db->get_where('penjualan', ['no_order' => $no])->row();

@@ -26,6 +26,11 @@ class M_Order extends CI_Model
     return $this->db->get('order_masuk')->result();
   }
 
+  public function countData()
+  {
+    return $this->db->get('order_masuk')->num_rows();
+  }
+
   public function getNoOrder($no)
   {
     $this->db->select('*');
