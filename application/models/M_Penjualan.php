@@ -52,6 +52,18 @@ class M_Penjualan extends CI_Model
     return $query;
   }
 
+  public function getOrderSopir($noorder)
+  {
+    $this->db->select('penjualan.no_order, penjualan.jenis_penjualan, penjualan.muatan, penjualan.pengirim,  penjualan.kota_asal, penjualan.kota_tujuan, penjualan.total_harga, order_masuk.no_order, sangu_order.no_order, sangu_order.sopir_id, sangu_order.nominal, sangu_order.tambahan');
+    $this->db->from('penjualan');
+    $this->db->where('penjualan.no_order', $noorder);
+    $this->db->join('order_masuk', 'order_masuk.no_order = penjualan.no_order');
+    $this->db->join('sangu_order', 'sangu_order.no_order = penjualan.no_order');
+
+    $query = $this->db->get()->row();
+    return $query;
+  }
+
   public function getDataOrderCust($no)
   {
     $this->db->select('penjualan.no_order, penjualan.surat_jalan, penjualan.kota_asal, penjualan.kota_tujuan, penjualan.berat, penjualan.harga_kg, penjualan.total_harga, penjualan.dateAdd, sangu_order.no_order, sangu_order.platno');
