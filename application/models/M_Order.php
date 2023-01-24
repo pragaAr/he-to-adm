@@ -37,7 +37,7 @@ class M_Order extends CI_Model
     $this->db->from('order_masuk');
     $this->db->where('order_masuk.no_order', $no);
     $this->db->join('sangu_order', 'sangu_order.no_order = order_masuk.no_order');
-    // $this->db->join('sopir', 'sopir.id_sopir = sangu_order.sopir_id');
+    $this->db->join('sopir', 'sopir.id_sopir = sangu_order.sopir_id');
     $query = $this->db->get()->row();
     return $query;
   }
@@ -99,6 +99,22 @@ class M_Order extends CI_Model
       'user_id'       => $user,
       'dateAdd'       => $dateAdd
     );
+
+    $datacust = array(
+      'nama'      => strtolower($namacust),
+      'alamat'    => strtolower($alamatasal),
+      'notelp'    => strtolower($notelp),
+      'dateAdd'   => $dateAdd,
+    );
+
+    $this->db->select('nama');
+    $this->db->from('customer');
+    $this->db->where('nama', $namacust);
+    $query = $this->db->get()->row();
+
+    if ($query == 0) {
+      $this->db->insert('customer', $datacust);
+    }
 
     $this->db->insert('order_masuk', $data);
     $this->db->insert('sangu_order', $datasangu);

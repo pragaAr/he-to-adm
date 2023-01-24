@@ -34,6 +34,14 @@ class Customer extends CI_Controller
 		echo json_encode($data);
 	}
 
+	public function getDataCustomer()
+	{
+		$nama	= $this->input->post('nama');
+		$data = $this->Customer->getDataByName($nama);
+
+		echo json_encode($data);
+	}
+
 	public function update()
 	{
 		$id = $this->input->post('idcustomer');

@@ -7,6 +7,7 @@ class Order extends CI_Controller
   {
     parent::__construct();
     $this->load->model('M_Armada', 'Armada');
+    $this->load->model('M_Customer', 'Cust');
     $this->load->model('M_Order', 'Order');
     $this->load->model('M_Sopir', 'Sopir');
 
@@ -19,6 +20,7 @@ class Order extends CI_Controller
   public function index()
   {
     $data['title']      = 'Data Order';
+    $data['cust']       = $this->Cust->getDataNama();
     $data['order']      = $this->Order->getData();
     $data['sopir']      = $this->Sopir->getData();
     $data['sopiredit']  = $this->Sopir->getData();

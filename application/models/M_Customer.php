@@ -6,10 +6,26 @@ class M_Customer extends CI_Model
 {
   public function getData()
   {
-    $this->db->select('customer.id_customer, customer.customercab_id, customer.nama_customer, customer.notelp, customer.alamat, cabang.id_cab, cabang.nama_cab');
+    $this->db->select('*');
     $this->db->from('customer');
-    $this->db->join('cabang', 'cabang.id_cab = customer.customercab_id');
     $query = $this->db->get()->result();
+    return $query;
+  }
+
+  public function getDataNama()
+  {
+    $this->db->select('nama');
+    $this->db->from('customer');
+    $query = $this->db->get()->result();
+    return $query;
+  }
+
+  public function getDataByName($nama)
+  {
+    $this->db->select('*');
+    $this->db->from('customer');
+    $this->db->where('nama', $nama);
+    $query = $this->db->get()->row();
     return $query;
   }
 

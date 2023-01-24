@@ -56,6 +56,27 @@ $("#addUser").on("shown.bs.modal", function () {
 
 $("#addOrder").on("shown.bs.modal", function () {
   $('input[name="namacust"]').focus();
+  $('input[name="namacust"]').on("input", function () {
+    const cust = $(this).val();
+    $.ajax({
+      url: "http://localhost/hira-to-adm/customer/getDataCustomer",
+      type: "POST",
+      dataType: "json",
+      data: {
+        nama: cust,
+      },
+      success: function (res) {
+        if (res != null) {
+          $('input[name="notelp"]').val(res.notelp);
+          $('textarea[name="alamatasal"]').val(res.alamat);
+          $('input[name="muatan"]').focus();
+        } else {
+          $('input[name="notelp"]').val("");
+          $('textarea[name="alamatasal"]').val("");
+        }
+      },
+    });
+  });
 });
 
 $("#addRek").on("shown.bs.modal", function () {
@@ -593,7 +614,7 @@ $(".btn-detail-order").on("click", function (e) {
       $(".tanggal").text(data.dateAdd);
 
       $(".truck").text(data.platno);
-      $(".supir").text(data.supir);
+      $(".supir").text(data.nama_sopir);
       $(".kotaasal").text(data.kota_asal);
       $(".kotatujuan").text(data.kota_tujuan);
       $(".nominalsangu").text("Rp. " + format(data.nominal));
