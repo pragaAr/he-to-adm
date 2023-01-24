@@ -91,7 +91,14 @@ class Invoice extends CI_Controller
       $detail[$i]['surat_jalan']   = $nosj[$i];
     }
 
-    $this->Invoice->addData($data, $detail);
+    $dateInv = [];
+
+    for ($j = 0; $j < $jmlresi; $j++) {
+      array_push($dateInv, ['no_order'  => $this->input->post('noorder_hidden')[$j]]);
+      $dateInv[$j]['invAdd']        = date('Y-m-d H:i:s');
+    }
+
+    $this->Invoice->addData($data, $detail, $dateInv);
     $this->session->set_flashdata('inserted', 'Data berhasil ditambahkan!');
     redirect('invoice');
   }

@@ -45,6 +45,7 @@ class M_Penjualan extends CI_Model
   {
     $this->db->select('no_order');
     $this->db->from('penjualan');
+    $this->db->where('penjualan.invAdd =', null);
     $this->db->where('pengirim', $post);
     $this->db->where('pembayaran=', "tempo");
 
@@ -66,7 +67,7 @@ class M_Penjualan extends CI_Model
 
   public function getDataOrderCust($no)
   {
-    $this->db->select('penjualan.no_order, penjualan.surat_jalan, penjualan.kota_asal, penjualan.kota_tujuan, penjualan.berat, penjualan.harga_kg, penjualan.total_harga, penjualan.dateAdd, sangu_order.no_order, sangu_order.platno');
+    $this->db->select('penjualan.no_order, penjualan.surat_jalan, penjualan.kota_asal, penjualan.kota_tujuan, penjualan.berat, penjualan.harga_kg, penjualan.total_harga, penjualan.dateAdd, penjualan.invAdd, sangu_order.no_order, sangu_order.platno');
     $this->db->from('penjualan');
     $this->db->where('penjualan.no_order', $no);
     $this->db->join('sangu_order', 'sangu_order.no_order = penjualan.no_order');

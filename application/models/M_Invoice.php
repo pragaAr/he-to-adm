@@ -68,10 +68,11 @@ class M_Invoice extends CI_Model
     return $query;
   }
 
-  public function addData($data, $detail)
+  public function addData($data, $detail, $dateInv)
   {
     $this->db->insert('invoice', $data);
     $this->db->insert_batch('detail_inv', $detail);
+    $this->db->update_batch('penjualan', $dateInv, 'no_order');
   }
 
   public function updateData($kd, $data, $detail)
@@ -87,6 +88,29 @@ class M_Invoice extends CI_Model
 
   public function deleteData($kd)
   {
+    $this->db->select('no_order');
+    $this->db->from('detail_inv');
+    $this->db->where('kd_inv', $kd);
+    $query = $this->db->get()->result();
+
+    foreach ($query as $val) {
+      $data[] = $val->no_order;
+    }
+
+    $sumdata = count($data);
+
+    $dateInv = [];
+
+    for ($i = 0; $i < $sumdata; $i++) {
+      array_push($dateInv, ['no_order'   => $data[$i]]);
+      $dateInv[$i]['invAdd']      = null;
+    }
+
+    $this->db->select('no_order');
+    $this->db->from('penjualan');
+    $this->db->where_in('no_order', $data);
+    $this->db->update_batch('penjualan', $dateInv, 'no_order');
+
     $this->db->delete('invoice', ['kd_inv' => $kd]);
     $this->db->delete('detail_inv', ['kd_inv' => $kd]);
   }
