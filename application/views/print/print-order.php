@@ -16,6 +16,14 @@
       margin-right: 50px;
     }
 
+    .fw-bold {
+      font-weight: bold;
+    }
+
+    .f-upper {
+      text-transform: uppercase;
+    }
+
     .img-logo {
       position: absolute;
       width: 82px;
@@ -91,7 +99,7 @@
   <div>
     <img src="<?= base_url('assets/dist/img/logo-red.png') ?>" class="img-logo">
     <div class="company-name">
-      <h4> PT. HIRA ADYA NARANATA</h4>
+      <h4 class="f-upper"> pt. hira adya naranata</h4>
       <p>
         Komplek Pangkalan Truk Genuk Blok AA No.35<br>
         Jl. Raya Kaligawe Km. 5,6 Semarang Telp./Fax. (024) 6582208
@@ -101,28 +109,36 @@
   <hr>
   <section class="intro">
     <div class="order-detail order-number">
-      <p>D.O : No. <?= strtoupper($detail->no_order) ?></p>
+      <p class="f-upper">d.o : no. <?= $detail->no_order ?></p>
     </div>
     <div class="order-detail cust-data">
       <p>Semarang, <?= date('d-F-Y', strtotime($detail->dateAdd)) ?></p>
       <p>Kepada Yth :</p>
-      <p><?= strtoupper($detail->nama_cust) ?></p>
+      <p class="f-upper"><?= $detail->nama_cust ?></p>
       <p>Di, <?= ucwords($detail->alamat_asal) ?></p>
     </div>
   </section>
 
   <section class="body-order">
     <p>Dengan hormat,</p>
-    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bersama ini, truk kami dengan nomor polisi : <?= strtoupper($detail->platno) ?></p>
-    <p>Nama Pengemudi dan Kernet : <?= strtoupper($detail->supir) ?> dan - </p>
-    <p>Mohon diberi muatan berupa : <?= strtoupper($detail->jenis_muatan) ?></p>
-    <p>Dengan tujuan ke : <?= ucwords($detail->alamat_tujuan) ?></p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bersama ini, truk kami dengan nomor polisi :
+      <span class="fw-bold f-upper"> <?= $detail->platno ?></span>
+    </p>
+    <p>Nama Pengemudi dan Kernet :
+      <span class="fw-bold"> <?= ucwords($detail->nama_sopir) ?></span> dan -
+    </p>
+    <p>Mohon diberi muatan berupa :
+      <span class="fw-bold"><?= ucwords($detail->jenis_muatan) ?></span>
+    </p>
+    <p>Dengan tujuan ke :
+      <span class="fw-bold"><?= ucwords($detail->alamat_tujuan) ?></span>
+    </p>
   </section>
 
   <footer>
     <div class="ttd">
       <p>Hormat kami,</p>
-      <h4> PT. HIRA ADYA NARANATA</h4>
+      <h4 class="f-upper"> pt. hira adya naranata</h4>
     </div>
   </footer>
 
