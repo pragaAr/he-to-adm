@@ -15,10 +15,11 @@ class M_Sangu extends CI_Model
 
   public function getOrderSopir($sopir)
   {
-    $this->db->select('sangu_order.no_order, sangu_order.sopir_id, order_masuk.no_order');
+    $this->db->select('sangu_order.no_order, sangu_order.sopir_id, order_masuk.no_order, penjualan.no_order');
     $this->db->from('sangu_order');
     $this->db->where('sangu_order.sopir_id', $sopir);
     $this->db->join('order_masuk', 'order_masuk.no_order = sangu_order.no_order');
+    $this->db->join('penjualan', 'penjualan.no_order = sangu_order.no_order');
     $query = $this->db->get()->result();
     return $query;
   }

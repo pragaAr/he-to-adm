@@ -75,8 +75,8 @@ class Persensopir extends CI_Controller
   public function prosesAdd()
   {
     $order    = count($this->input->post('noorder_hidden'));
-    $sopir    = $this->input->post('sopirid');
-    $nominal  = preg_replace("/[^0-9\.]/", "", $this->input->post('nominal_hidden'));
+    $sopir    = $this->input->post('sopir');
+    $nominal  = preg_replace("/[^0-9\.]/", "", $this->input->post('nominalterima_hidden'));
     $total    = preg_replace("/[^0-9\.]/", "", $this->input->post('total_hidden'));
 
     $data  = [
@@ -91,7 +91,7 @@ class Persensopir extends CI_Controller
     for ($i = 0; $i < $order; $i++) {
       array_push($detail, ['no_order'  => $this->input->post('noorder_hidden')[$i]]);
       $detail[$i]['kd_persen']        = $this->input->post('kdpersen');
-      $detail[$i]['jumlah']          = $nominal[$i];
+      $detail[$i]['jumlah']           = $nominal[$i];
     }
 
     $this->Persensopir->addData($data, $detail);

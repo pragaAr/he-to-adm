@@ -55,7 +55,7 @@
                   </div>
                   <div class="form-group col-md-3">
                     <label for="noorder">No Order</label>
-                    <select name="noorder" id="noorder" class="form-control select2" style="width:100%;" required>
+                    <select name="noorder" id="noorder" class="form-control select2" style="width:100%;">
                       <option value="" selected disabled>-Pilih No Order-</option>
 
                     </select>
@@ -107,7 +107,7 @@
                 </div>
                 <div class="form-row">
                   <div class="col-md">
-                    <button type="submit" class="btn btn-primary btn-block">Tambah</button>
+                    <button type="button" class="btn btn-primary btn-block" id="btn-persen" disabled>Tambah</button>
                   </div>
                 </div>
               </div>
@@ -143,7 +143,7 @@
                           <h4 class="font-weight-bold" id="total"></h4>
                         </td>
                         <td>
-                          <input type="hidden" name="total_hidden" value="">
+                          <input type="text" name="total_hidden" value="">
                           <button type="submit" class="btn btn-dark btn-sm" data-toggle="tooltip" title="Simpan">
                             <i class="fas fa-save"></i>
                             Simpan

@@ -68,36 +68,33 @@ $(document).ready(function () {
         const jmlterima = parseFloat(nominalpersen) - parseFloat(jmlsangu);
 
         $(".jumlahterima").val(format(jmlterima));
-        // $("#tambah-invoice").prop("disabled", false);
+        $("#btn-persen").prop("disabled", false);
       },
     });
   });
 
-  $("button#tambah-invoice").on("click", function (e) {
-    const cartInv = {
-      noorder: $('select[name="orderno"]').val(),
-      platno: $('input[name="platno"]').val(),
-      kotaasal: $('input[name="kotaasal"]').val(),
-      kotatujuan: $('input[name="kotatujuan"]').val(),
-      berat: $('input[name="berat"]').val(),
-      hargakg: $('input[name="hargakg"]').val(),
-      tagihan: $('input[name="tagihanorder"]').val(),
-      nosj: $('input[name="nosj"]').val(),
+  $("button#btn-persen").on("click", function (e) {
+    const cartPersen = {
+      noorder: $('select[name="noorder"]').val(),
+      jmlpersen: $('input[name="jumlahpersen"]').val(),
+      jmlsangu: $('input[name="jumlahsangu"]').val(),
+      nominalterima: $('input[name="jumlahterima"]').val(),
     };
-    console.log(cartInv);
 
     $.ajax({
-      url: "http://localhost/hira-to-adm/invoice/cart",
+      url: "http://localhost/hira-to-adm/persensopir/cart",
       type: "POST",
-      data: cartInv,
+      data: cartPersen,
       success: function (data) {
-        if ($('select[name="orderno"]').val() == cartInv.noorder) reset();
+        $("select[name=sopir]").prop("disabled", true);
 
-        $("#tambah-invoice").prop("disabled", true);
+        reset();
+
+        $("#btn-persen").prop("disabled", true);
 
         $("table#cart tbody").append(data);
-        $("#total").html("<p>" + total_tagihan().toLocaleString() + "</p>");
-        $('input[name="total_hidden"]').val(total_tagihan());
+        $("#total").html("<p>" + total_diterima().toLocaleString() + "</p>");
+        $('input[name="total_hidden"]').val(total_diterima());
 
         $("tfoot").show();
         $('[data-toggle="tooltip"]').tooltip();
@@ -110,20 +107,19 @@ $(document).ready(function () {
   $(document).on("click", "#tombol-hapus", function () {
     $(this).closest(".row-cart").remove();
 
-    $("#total").html("<p>" + total_tagihan().toLocaleString() + "</p>");
-    $('input[name="total_hidden"]').val(total_tagihan());
+    $("#total").html("<p>" + total_diterima().toLocaleString() + "</p>");
+    $('input[name="total_hidden"]').val(total_diterima());
 
     if ($("tbody").children().length == 0) $("tfoot").hide();
   });
 
   $('button[type="submit"]').on("click", function () {
     $('input[name="tanggal"]').prop("disabled", true);
-    $('select[name="orderno"]').prop("disabled", true);
   });
 
-  function total_tagihan() {
+  function total_diterima() {
     let hasil = 0;
-    $(".tagihan").each(function () {
+    $(".nominalterima").each(function () {
       hasil += parseFloat(
         $(this)
           .text()
@@ -143,6 +139,6 @@ $(document).ready(function () {
     $('input[name="tambahan"]').val("");
     $('input[name="jumlahsangu"]').val("");
     $('input[name="jumlahterima"]').val("");
-    $('select[name="noorder"] option[value=""]').prop("selected", true);
+    $("#noorder").val(null).trigger("change");
   }
 });

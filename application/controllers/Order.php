@@ -32,7 +32,7 @@ class Order extends CI_Controller
     $this->form_validation->set_rules('alamattujuan', 'Alamat Tujuan', 'trim|required');
     $this->form_validation->set_rules('muatan', 'Muatan', 'trim|required');
     $this->form_validation->set_rules('platno', 'Plat No Truck', 'trim|required');
-    $this->form_validation->set_rules('supir', 'Supir', 'trim|required');
+    $this->form_validation->set_rules('sopir', 'Supir', 'trim|required');
     $this->form_validation->set_rules('kotaasal', 'Kota Asal', 'trim|required');
     $this->form_validation->set_rules('kotatujuan', 'Kota Tujuan', 'trim|required');
     $this->form_validation->set_rules('nominal', 'Nominal', 'trim|required');
