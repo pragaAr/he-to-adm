@@ -101,7 +101,13 @@
                 Customer
                 <span class="text-white">*</span>
               </label>
-              <input type="text" class="form-control text-uppercase" name="namacust" placeholder="Nama Customer.." required oninvalid="this.setCustomValidity('Nama Customer wajib di isi!')" oninput="setCustomValidity('')">
+              <!-- <input type="text" class="form-control text-uppercase" name="namacust" placeholder="Nama Customer.." required oninvalid="this.setCustomValidity('Nama Customer wajib di isi!')" oninput="setCustomValidity('')"> -->
+              <input type="text" list="namacust" name="namacust" autocomplete="off" class="form-control text-uppercase listnama" style="width:100% !important;" placeholder="Nama Customer.." required oninvalid="this.setCustomValidity('Nama Customer wajib di isi!')" oninput="setCustomValidity('')">
+              <datalist id="namacust">
+                <?php foreach ($cust as $data) : ?>
+                  <option value="<?= strtoupper($data->nama) ?>"></option>
+                <?php endforeach ?>
+              </datalist>
             </div>
           </div>
           <div class="form-row">
@@ -110,14 +116,14 @@
                 No Telepon
                 <span class="text-white">*</span>
               </label>
-              <input type="text" class="form-control text-uppercase" name="notelp" placeholder="No Telepon.." required oninvalid="this.setCustomValidity('No Telepon Customer wajib di isi!')" oninput="setCustomValidity('')">
+              <input type="text" class="form-control text-uppercase" name="notelp" placeholder="No Telepon.." autocomplete="off" required oninvalid="this.setCustomValidity('No Telepon Customer wajib di isi!')" oninput="setCustomValidity('')">
             </div>
             <div class="form-group col-md-6">
               <label for="muatan">
                 Jenis Muatan
                 <span class="text-white">*</span>
               </label>
-              <input type="text" class="form-control text-uppercase" name="muatan" placeholder="Jenis Muatan.." required oninvalid="this.setCustomValidity('Jenis Muatan wajib di isi!')" oninput="setCustomValidity('')">
+              <input type="text" class="form-control text-uppercase" name="muatan" placeholder="Jenis Muatan.." autocomplete="off" required oninvalid="this.setCustomValidity('Jenis Muatan wajib di isi!')" oninput="setCustomValidity('')">
             </div>
           </div>
           <div class="form-group">
@@ -187,14 +193,14 @@
                 Kota Asal
                 <span class="text-white">*</span>
               </label>
-              <input type="text" class="form-control text-uppercase" name="kotaasal" placeholder="Kota Asal.." required oninvalid="this.setCustomValidity('Kota Asal Customer wajib di isi!')" oninput="setCustomValidity('')">
+              <input type="text" class="form-control text-uppercase" name="kotaasal" placeholder="Kota Asal.." autocomplete="off" required oninvalid="this.setCustomValidity('Kota Asal Customer wajib di isi!')" oninput="setCustomValidity('')">
             </div>
             <div class="form-group col-md-6">
               <label for="kotatujuan">
                 Kota Tujuan
                 <span class="text-white">*</span>
               </label>
-              <input type="text" class="form-control text-uppercase" name="kotatujuan" placeholder="Kota Tujuan.." required oninvalid="this.setCustomValidity('Kota Tujuan Customer wajib di isi!')" oninput="setCustomValidity('')">
+              <input type="text" class="form-control text-uppercase" name="kotatujuan" placeholder="Kota Tujuan.." autocomplete="off" required oninvalid="this.setCustomValidity('Kota Tujuan Customer wajib di isi!')" oninput="setCustomValidity('')">
             </div>
           </div>
           <div class="form-group">
@@ -202,7 +208,7 @@
               Nominal
               <span class="text-white">*</span>
             </label>
-            <input type="text" name="nominal" id="nominal" class="form-control" placeholder="Nominal.." required oninvalid="this.setCustomValidity('Nominal wajib di isi!')" oninput="setCustomValidity('')">
+            <input type="text" name="nominal" id="nominal" class="form-control" placeholder="Nominal.." autocomplete="off" required oninvalid="this.setCustomValidity('Nominal wajib di isi!')" oninput="setCustomValidity('')">
           </div>
           <div>
             <button type="submit" class="btn btn-dark float-right">
@@ -313,7 +319,7 @@
             </div>
             <div class="form-group col-md-6">
               <label for="sopir">
-                Driver
+                Sopir
                 <span class="text-white">*</span>
               </label>
               <select name="sopir" class="form-control text-uppercase select2 sopir" style="width: 100%;" required oninvalid="this.setCustomValidity('Sopir wajib di isi!')" oninput="setCustomValidity('')">
@@ -330,14 +336,14 @@
                 Kota Asal
                 <span class="text-white">*</span>
               </label>
-              <input type="text" class="form-control text-uppercase kotaasal" name="kotaasal" placeholder="Kota Asal.." required oninvalid="this.setCustomValidity('Kota Asal Customer wajib di isi!')" oninput="setCustomValidity('')">
+              <input type="text" class="form-control text-uppercase kotaasal" name="kotaasal" placeholder="Kota Asal.." autocomplete="off" required oninvalid="this.setCustomValidity('Kota Asal Customer wajib di isi!')" oninput="setCustomValidity('')">
             </div>
             <div class="form-group col-md-6">
               <label for="kotatujuan">
                 Kota Tujuan
                 <span class="text-white">*</span>
               </label>
-              <input type="text" class="form-control text-uppercase kotatujuan" name="kotatujuan" placeholder="Kota Tujuan.." required oninvalid="this.setCustomValidity('Kota Tujuan Customer wajib di isi!')" oninput="setCustomValidity('')">
+              <input type="text" class="form-control text-uppercase kotatujuan" name="kotatujuan" placeholder="Kota Tujuan.." autocomplete="off" required oninvalid="this.setCustomValidity('Kota Tujuan Customer wajib di isi!')" oninput="setCustomValidity('')">
             </div>
           </div>
           <div class="form-group">
