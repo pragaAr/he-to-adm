@@ -34,6 +34,16 @@
       text: userlogout,
     });
   }
+
+  const registered = $('.registered').data('flashdata');
+
+  if (registered) {
+    Swal.fire({
+      icon: 'success',
+      title: 'Anda telah terdaftar',
+      text: registered,
+    });
+  }
 </script>
 </body>
 

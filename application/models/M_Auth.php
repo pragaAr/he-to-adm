@@ -1,23 +1,24 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+date_default_timezone_set('Asia/Jakarta');
 
 class M_Auth extends CI_MODEL
 {
-  public function cekLogin()
+  public function cekLogin($uname)
   {
-    $uname  = set_value('username');
-    $pass   = set_value('pass');
+    return $this->db->get_where('users', ['username' => $uname])->row();
+  }
 
-    $result = $this->db
-      ->where('username', $uname)
-      ->where('pass', md5($pass))
-      ->limit(1)
-      ->get('user');
+  public function register()
+  {
+    $data = array(
+      'namauser'  => $this->input->post('namauser'),
+      'username'  => $this->input->post('username'),
+      'pass'      => password_hash($this->input->post('pass'), PASSWORD_DEFAULT),
+      'role'      => 'admin',
+      'usersAdd'  => date('Y-m-d H:i:s')
+    );
 
-    if ($result->num_rows() > 0) {
-      return $result->row();
-    } else {
-      return false;
-    }
+    $this->db->insert('users', $data);
   }
 }

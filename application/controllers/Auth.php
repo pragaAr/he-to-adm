@@ -21,28 +21,51 @@ class Auth extends CI_Controller
       $this->load->view('layout/auth/login');
       $this->load->view('layout/auth/footer');
     } else {
-      $uname  = $this->input->post('username');
-      $pass   = md5($this->input->post('pass'));
+      $uname        = $this->input->post('username');
+      $inputpass    = $this->input->post('pass');
 
-      $cek = $this->Auth->cekLogin($uname, $pass);
+      $cekpass      = $this->Auth->cekLogin($uname);
+      $truepass     = password_verify($inputpass, $cekpass->pass);
 
-      if ($cek == false) {
-        $this->session->set_flashdata('wrongdata', 'Username atau Password salah!');
-        redirect('auth');
-      } else {
-        $this->session->set_userdata('id_user', $cek->id_user);
-        $this->session->set_userdata('namauser', $cek->namauser);
-        $this->session->set_userdata('username', $cek->username);
-        $this->session->set_userdata('role', $cek->role);
+      if ($cekpass) {
 
-        if ($cek->role == 'kurir') {
-          $this->session->set_flashdata('userlogin', 'Login Berhasil');
-          redirect('kurir');
-        } else {
+        if ($truepass) {
+          // var_dump($truepass);
+          // die;
+          $this->session->set_userdata('id_users', $cekpass->id_user);
+          $this->session->set_userdata('namauser', $cekpass->namauser);
+          $this->session->set_userdata('username', $cekpass->username);
+          $this->session->set_userdata('role', $cekpass->role);
+
           $this->session->set_flashdata('userlogin', 'Selamat Datang ' . ucwords($this->session->userdata('username')));
           redirect('home');
+        } else {
+          $this->session->set_flashdata('wrongdata', 'Password salah!');
+          redirect('auth');
         }
+      } else {
+        $this->session->set_flashdata('wrongdata', 'Username dan Password salah!');
+        redirect('auth');
       }
+    }
+  }
+
+  public function register()
+  {
+    $data['title'] = "Registrasi";
+
+    $this->form_validation->set_rules('namauser', 'Username', 'required|trim|strtolower');
+    $this->form_validation->set_rules('username', 'Username', 'required');
+    $this->form_validation->set_rules('pass', 'Password', 'required');
+
+    if ($this->form_validation->run() == false) {
+      $this->load->view('layout/auth/header', $data);
+      $this->load->view('layout/auth/register', $data);
+      $this->load->view('layout/auth/footer');
+    } else {
+      $this->Auth->Register();
+      $this->session->set_flashdata('registered', 'Berhasil Registrasi');
+      redirect('auth');
     }
   }
 
