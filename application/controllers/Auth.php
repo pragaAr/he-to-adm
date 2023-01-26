@@ -29,10 +29,10 @@ class Auth extends CI_Controller
 
       if ($cekpass) {
 
-        if ($truepass) {
+        if ($truepass == true) {
           // var_dump($truepass);
           // die;
-          $this->session->set_userdata('id_users', $cekpass->id_user);
+          $this->session->set_userdata('id_user', $cekpass->id_user);
           $this->session->set_userdata('namauser', $cekpass->namauser);
           $this->session->set_userdata('username', $cekpass->username);
           $this->session->set_userdata('role', $cekpass->role);

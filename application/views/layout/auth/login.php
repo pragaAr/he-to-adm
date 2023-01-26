@@ -30,7 +30,7 @@
           <div class="form-group">
             <label for="pass">Password</label>
             <div class="input-group mb-3">
-              <input type="password" class="form-control" name="pass" placeholder="Password Anda.." autocomplete="off" required oninvalid="this.setCustomValidity('Password wajib di isi!')" oninput="setCustomValidity('')">
+              <input type="text" class="form-control" name="pass" placeholder="Password Anda.." autocomplete="off" required oninvalid="this.setCustomValidity('Password wajib di isi!')" oninput="setCustomValidity('')">
               <div class="input-group-append">
                 <div class="input-group-text">
                   <span class="fas fa-lock"></span>
