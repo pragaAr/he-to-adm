@@ -4,6 +4,9 @@
     <input type="hidden" name="noorder_hidden[]" value="<?= $this->input->post('noorder') ?>">
   </td>
 
+  <?= $this->input->post('sopir') ?>
+  <input type="hidden" name="sopir_hidden[]" value="<?= $this->input->post('sopir') ?>">
+
   <?= $this->input->post('jmlpersen') ?>
   <input type="hidden" name="jmlpersen_hidden[]" value="<?= $this->input->post('jmlpersen') ?>">
 

@@ -12,7 +12,7 @@ class Persensopir extends CI_Controller
     $this->load->model('M_Sangu', 'Sangu');
     $this->load->model('M_Penjualan', 'Sales');
 
-    if (empty($this->session->userdata('id_user'))) {
+    if (empty($this->session->userdata('id'))) {
       $this->session->set_flashdata('flashrole', 'Silahkan Login terlebih dahulu!');
       redirect('auth');
     }
@@ -75,7 +75,7 @@ class Persensopir extends CI_Controller
   public function prosesAdd()
   {
     $order    = count($this->input->post('noorder_hidden'));
-    $sopir    = $this->input->post('sopir');
+    $sopir    = $this->input->post('sopirid');
     $nominal  = preg_replace("/[^0-9\.]/", "", $this->input->post('nominalterima_hidden'));
     $total    = preg_replace("/[^0-9\.]/", "", $this->input->post('total_hidden'));
 

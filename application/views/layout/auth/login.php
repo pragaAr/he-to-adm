@@ -16,21 +16,24 @@
 
         <form action="<?= base_url('auth') ?>" method="post">
           <div class="form-group">
-            <label for="username">Username</label>
+            <label for="username">
+              Username
+            </label>
             <div class="input-group mb-3">
-              <input type="text" class="form-control" name="username" placeholder="Username Anda.." autocomplete="off" autofocus required oninvalid="this.setCustomValidity('Username wajib di isi!')" oninput="setCustomValidity('')">
+              <input type="text" class="form-control" name="username" id="username" placeholder="Username Anda.." autocomplete="off" autofocus required oninvalid="this.setCustomValidity('Username wajib di isi!')" oninput="setCustomValidity('')">
               <div class="input-group-append">
                 <div class="input-group-text">
                   <span class="fas fa-id-card"></span>
-                  <!-- <i class="fas fa-id-card"></i> -->
                 </div>
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label for="pass">Password</label>
+            <label for="pass">
+              Password
+            </label>
             <div class="input-group mb-3">
-              <input type="text" class="form-control" name="pass" placeholder="Password Anda.." autocomplete="off" required oninvalid="this.setCustomValidity('Password wajib di isi!')" oninput="setCustomValidity('')">
+              <input type="password" class="form-control" name="pass" id="pass" placeholder="Password Anda.." autocomplete="off" required oninvalid="this.setCustomValidity('Password wajib di isi!')" oninput="setCustomValidity('')">
               <div class="input-group-append">
                 <div class="input-group-text">
                   <span class="fas fa-lock"></span>
@@ -43,8 +46,6 @@
           </div>
         </form>
         <div class="mt-4 text-center">
-          <span class="text-secondary">Belum punya akun ?<br> Hubungi Admin Cabang Anda</span>
-          <hr>
           <p>
             <strong>
               <a class="text-dark" href="https://hira-express.com" target="_blank">Hira Express</a>

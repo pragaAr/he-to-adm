@@ -31,7 +31,7 @@
     }
 
     .company-name {
-      margin-left: 100px;
+      margin-left: 120px;
     }
 
     .company-name h4 {

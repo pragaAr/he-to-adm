@@ -11,7 +11,7 @@ class Order extends CI_Controller
     $this->load->model('M_Order', 'Order');
     $this->load->model('M_Sopir', 'Sopir');
 
-    if (empty($this->session->userdata('id_user'))) {
+    if (empty($this->session->userdata('id'))) {
       $this->session->set_flashdata('flashrole', 'Silahkan Login terlebih dahulu!');
       redirect('auth');
     }
@@ -21,6 +21,7 @@ class Order extends CI_Controller
   {
     $data['title']      = 'Data Order';
     $data['cust']       = $this->Cust->getDataNama();
+    $data['custedit']   = $this->Cust->getDataNama();
     $data['order']      = $this->Order->getData();
     $data['sopir']      = $this->Sopir->getData();
     $data['sopiredit']  = $this->Sopir->getData();

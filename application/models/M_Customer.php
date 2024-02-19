@@ -1,15 +1,25 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-date_default_timezone_set('Asia/Jakarta');
-
 class M_Customer extends CI_Model
 {
   public function getData()
   {
-    $this->db->select('*');
-    $this->db->from('customer');
-    $query = $this->db->get()->result();
-    return $query;
+    $this->datatables->select('id, nama, notelp, alamat')
+      ->from('customer')
+      ->add_column(
+        'view',
+        '<div class="btn-group" role="group">
+          <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-id="$1" data-toggle="tooltip" title="Edit">
+            <i class="fas fa-pencil-alt fa-sm"></i>
+          </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-id="$1" data-toggle="tooltip" title="Hapus">
+            <i class="fas fa-trash fa-sm"></i>
+          </a>
+        </div>',
+        'id, nama, notelp, alamat'
+      );
+
+    return $this->datatables->generate();
   }
 
   public function getDataNama()
@@ -36,45 +46,21 @@ class M_Customer extends CI_Model
 
   public function getId($id)
   {
-    return $this->db->get_where('customer', ['id_customer' => $id])->row();
+    return $this->db->get_where('customer', ['id' => $id])->row();
   }
 
-  public function addData()
+  public function addData($data)
   {
-    $nama     = $this->input->post('nama');
-    $notelp   = $this->input->post('notelp');
-    $alamat   = $this->input->post('alamat');
-    $dateAdd  = date('d-m-Y H:i:s');
-
-    $data = array(
-      'nama'    => strtolower($nama),
-      'notelp'  => strtolower($notelp),
-      'alamat'  => strtolower($alamat),
-      'dateAdd' => $dateAdd
-    );
-
-    $this->db->insert('customer', $data);
+    return $this->db->insert('customer', $data);
   }
 
-  public function editData($id)
+  public function editData($data, $where)
   {
-    $nama     = trim($this->input->post('nama'));
-    $notelp   = trim($this->input->post('notelp'));
-    $alamat   = trim($this->input->post('alamat'));
-
-    $data = array(
-      'nama'    => strtolower($nama),
-      'notelp'  => strtolower($notelp),
-      'alamat'  => strtolower($alamat),
-    );
-
-    $where = array('id_customer' => $id);
-
-    $this->db->update('customer', $data, $where);
+    return $this->db->update('customer', $data, $where);
   }
 
   public function deleteData($id)
   {
-    return $this->db->delete('customer', ['id_customer' => $id]);
+    return $this->db->delete('customer', ['id' => $id]);
   }
 }

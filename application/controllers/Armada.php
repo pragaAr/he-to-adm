@@ -1,14 +1,18 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+date_default_timezone_set('Asia/Jakarta');
+
 class Armada extends CI_Controller
 {
   public function __construct()
   {
     parent::__construct();
+    $this->load->library('datatables');
+
     $this->load->model('M_Armada', 'Armada');
 
-    if (empty($this->session->userdata('id_user'))) {
+    if (empty($this->session->userdata('id'))) {
       $this->session->set_flashdata('flashrole', 'Silahkan Login terlebih dahulu!');
       redirect('auth');
     }
@@ -16,45 +20,76 @@ class Armada extends CI_Controller
 
   public function index()
   {
-    $data['title']    = 'Data Armada';
-    $data['armada']   = $this->Armada->getData();
+    $data['title']  = 'Data Armada';
 
-    $this->form_validation->set_rules('platno', 'Plat Nomor', 'trim|required');
-    $this->form_validation->set_rules('merk', 'Merk', 'trim|required');
+    $this->load->view('layout/template/header', $data);
+    $this->load->view('layout/template/navbar');
+    $this->load->view('layout/template/sidebar');
+    $this->load->view('layout/master/armada', $data);
+    $this->load->view('layout/template/footer');
+  }
 
-    if ($this->form_validation->run() == false) {
-      $this->load->view('layout/template/header', $data);
-      $this->load->view('layout/template/navbar');
-      $this->load->view('layout/template/sidebar');
-      $this->load->view('layout/master/armada', $data);
-      $this->load->view('layout/template/footer');
-    } else {
-      $this->Armada->addData();
-      $this->session->set_flashdata('inserted', 'Data berhasil ditambahkan!');
-      redirect('armada');
-    }
+  public function getArmada()
+  {
+    header('Content-Type: application/json');
+
+    echo $this->Armada->getData();
   }
 
   public function getId()
   {
-    $id   = $this->input->post('id_armada');
+    $id   = $this->input->post('id');
     $data = $this->Armada->getId($id);
+
+    echo json_encode($data);
+  }
+
+  public function add()
+  {
+    $platno = trim($this->input->post('platno'));
+    $merk   = trim($this->input->post('merk'));
+    $keur   = date('Y-m-d', strtotime($this->input->post('keur')));
+    $addAt  = date('Y-m-d H:i:s');
+
+    $data = [
+      'platno'    => strtolower($platno),
+      'merk'      => strtolower($merk),
+      'dateKeur'  => $keur,
+      'dateAdd'   => $addAt,
+    ];
+
+    $data = $this->Armada->addData($data);
 
     echo json_encode($data);
   }
 
   public function update()
   {
-    $id = $this->input->post('idarmada');
-    $this->Armada->editData($id);
-    $this->session->set_flashdata('updated', 'Data berhasil diubah!');
-    redirect('armada');
+    $id     = $this->input->post('id');
+    $platno = trim($this->input->post('platno'));
+    $merk   = trim($this->input->post('merk'));
+    $keur   = date('Y-m-d', strtotime($this->input->post('keur')));
+
+    $data = [
+      'platno'    => strtolower($platno),
+      'merk'      => strtolower($merk),
+      'dateKeur'  => $keur,
+    ];
+
+    $where = [
+      'id' => $id
+    ];
+
+    $data = $this->Armada->editData($data, $where);
+
+    echo json_encode($data);
   }
 
-  public function delete($id)
+  public function delete()
   {
-    $this->Armada->deleteData($id);
-    $this->session->set_flashdata('deleted', 'Data berhasil dihapus!');
-    redirect('armada');
+    $id   = $this->input->post('id');
+    $data = $this->Armada->deleteData($id);
+
+    echo json_encode($data);
   }
 }

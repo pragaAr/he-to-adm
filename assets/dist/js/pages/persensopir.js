@@ -17,6 +17,7 @@ $(document).ready(function () {
         sopir_id: sopir,
       },
       success: function (res) {
+        $(".sopirid").val(sopir);
         // Remove options
         $(".noorder").val(res.no_order).trigger("change");
 
@@ -75,6 +76,7 @@ $(document).ready(function () {
 
   $("button#btn-persen").on("click", function (e) {
     const cartPersen = {
+      sopir: $('select[name="sopir"]').val(),
       noorder: $('select[name="noorder"]').val(),
       jmlpersen: $('input[name="jumlahpersen"]').val(),
       jmlsangu: $('input[name="jumlahsangu"]').val(),

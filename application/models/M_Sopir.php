@@ -1,55 +1,44 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-date_default_timezone_set('Asia/Jakarta');
-
 class M_Sopir extends CI_Model
 {
   public function getData()
   {
-    return $this->db->get('sopir')->result();
+    $this->datatables->select('id, nama, alamat, notelp')
+      ->from('sopir')
+      ->add_column(
+        'view',
+        '<div class="btn-group" role="group">
+          <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-id="$1" data-toggle="tooltip" title="Edit">
+            <i class="fas fa-pencil-alt fa-sm"></i>
+          </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-id="$1" data-toggle="tooltip" title="Hapus">
+            <i class="fas fa-trash fa-sm"></i>
+          </a>
+        </div>',
+        'id, nama, alamat, notelp'
+      );
+
+    return $this->datatables->generate();
   }
 
   public function getId($id)
   {
-    return $this->db->get_where('sopir', ['id_sopir' => $id])->row();
+    return $this->db->get_where('sopir', ['id' => $id])->row();
   }
 
-  public function addData()
+  public function addData($data)
   {
-    $nama       = $this->input->post('namasopir');
-    $alamat     = $this->input->post('alamatsopir');
-    $notelp     = $this->input->post('notelpsopir');
-    $dateAdd    = date('Y-m-d H:i:s');
-
-    $data = array(
-      'nama_sopir'    => strtolower($nama),
-      'alamat_sopir'  => strtolower($alamat),
-      'notelp_sopir'  => strtolower($notelp),
-      'dateAdd'       => $dateAdd
-    );
-
-    $this->db->insert('sopir', $data);
+    return $this->db->insert('sopir', $data);
   }
 
-  public function editData($id)
+  public function editData($data, $where)
   {
-    $nama       = $this->input->post('namasopir');
-    $alamat     = $this->input->post('alamatsopir');
-    $notelp     = $this->input->post('notelpsopir');
-
-    $data = array(
-      'nama_sopir'    => strtolower($nama),
-      'alamat_sopir'  => strtolower($alamat),
-      'notelp_sopir'  => strtolower($notelp),
-    );
-
-    $where = array('id_sopir' => $id);
-
-    $this->db->update('sopir', $data, $where);
+    return $this->db->update('sopir', $data, $where);
   }
 
   public function deleteData($id)
   {
-    return $this->db->delete('sopir', ['id_sopir' => $id]);
+    return $this->db->delete('sopir', ['id' => $id]);
   }
 }

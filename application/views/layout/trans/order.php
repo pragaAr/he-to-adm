@@ -250,7 +250,12 @@
                 Customer
                 <span class="text-white">*</span>
               </label>
-              <input type="text" class="form-control text-uppercase namacust" name="namacust" placeholder="Nama Customer.." required oninvalid="this.setCustomValidity('Nama Customer wajib di isi!')" oninput="setCustomValidity('')">
+              <input type="text" list="namacustedit" class="form-control text-uppercase namacust" name="namacust" placeholder="Nama Customer.." autocomplete="off" required oninvalid="this.setCustomValidity('Nama Customer wajib di isi!')" oninput="setCustomValidity('')">
+              <datalist id="namacustedit">
+                <?php foreach ($custedit as $data) : ?>
+                  <option value="<?= strtoupper($data->nama) ?>"></option>
+                <?php endforeach ?>
+              </datalist>
             </div>
           </div>
           <div class="form-row">
@@ -259,14 +264,14 @@
                 No Telepon
                 <span class="text-white">*</span>
               </label>
-              <input type="text" class="form-control text-uppercase notelp" name="notelp" placeholder="No Telepon.." required oninvalid="this.setCustomValidity('No Telepon Customer wajib di isi!')" oninput="setCustomValidity('')">
+              <input type="text" class="form-control text-uppercase notelp" name="notelp" placeholder="No Telepon.." autocomplete="off" required oninvalid="this.setCustomValidity('No Telepon Customer wajib di isi!')" oninput="setCustomValidity('')">
             </div>
             <div class="form-group col-md-6">
               <label for="muatan">
                 Jenis Muatan
                 <span class="text-white">*</span>
               </label>
-              <input type="text" class="form-control text-uppercase muatan" name="muatan" placeholder="Jenis Muatan.." required oninvalid="this.setCustomValidity('Jenis Muatan wajib di isi!')" oninput="setCustomValidity('')">
+              <input type="text" class="form-control text-uppercase muatan" name="muatan" placeholder="Jenis Muatan.." autocomplete="off" required oninvalid="this.setCustomValidity('Jenis Muatan wajib di isi!')" oninput="setCustomValidity('')">
             </div>
           </div>
           <div class="form-group">
@@ -274,14 +279,14 @@
               Alamat Asal
               <span class="text-white">*</span>
             </label>
-            <textarea name="alamatasal" class="form-control text-uppercase alamatasal" placeholder="Alamat Asal.." required oninvalid="this.setCustomValidity('Alamat Asal wajib di isi!')" oninput="setCustomValidity('')" style="height: calc(2.25rem + 2px) !important; min-height: calc(2.25rem + 2px) !important;"></textarea>
+            <textarea name="alamatasal" class="form-control text-uppercase alamatasal" placeholder="Alamat Asal.." autocomplete="off" required oninvalid="this.setCustomValidity('Alamat Asal wajib di isi!')" oninput="setCustomValidity('')" style="height: calc(2.25rem + 2px) !important; min-height: calc(2.25rem + 2px) !important;"></textarea>
           </div>
           <div class="form-group">
             <label for="alamattujuan">
               Alamat Tujuan
               <span class="text-white">*</span>
             </label>
-            <textarea name="alamattujuan" class="form-control text-uppercase alamattujuan" placeholder="Alamat Tujuan.." required oninvalid="this.setCustomValidity('Alamat Tujuan wajib di isi!')" oninput="setCustomValidity('')" style="height: calc(2.25rem + 2px) !important; min-height: calc(2.25rem + 2px) !important;"></textarea>
+            <textarea name="alamattujuan" class="form-control text-uppercase alamattujuan" placeholder="Alamat Tujuan.." autocomplete="off" required oninvalid="this.setCustomValidity('Alamat Tujuan wajib di isi!')" oninput="setCustomValidity('')" style="height: calc(2.25rem + 2px) !important; min-height: calc(2.25rem + 2px) !important;"></textarea>
           </div>
           <div>
             <button type="button" id="nextUpdateOrder" class="btn btn-dark float-right">
@@ -351,7 +356,7 @@
               Nominal
               <span class="text-white">*</span>
             </label>
-            <input type="text" name="nominal" id="nominal-order" class="form-control nominal" placeholder="Nominal.." required oninvalid="this.setCustomValidity('Nominal wajib di isi!')" oninput="setCustomValidity('')">
+            <input type="text" name="nominal" id="nominal-order" class="form-control nominal" autocomplete="off" placeholder="Nominal.." required oninvalid="this.setCustomValidity('Nominal wajib di isi!')" oninput="setCustomValidity('')">
           </div>
           <div>
             <button type="submit" class="btn btn-dark float-right">

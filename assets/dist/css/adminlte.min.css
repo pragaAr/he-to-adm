@@ -231,7 +231,7 @@ textarea {
   font-size: inherit;
   line-height: inherit;
 }
-input::-webkit-calendar-picker-indicator {
+.datalist-input::-webkit-calendar-picker-indicator {
   display: none !important;
 }
 

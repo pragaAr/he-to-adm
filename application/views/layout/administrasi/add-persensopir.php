@@ -52,6 +52,7 @@
                         <option value="<?= $data->id_sopir ?>"><?= ucwords($data->nama_sopir) ?></option>
                       <?php endforeach ?>
                     </select>
+                    <input type="hidden" name="sopirid" class="form-control text-capitalize sopirid" readonly>
                   </div>
                   <div class="form-group col-md-3">
                     <label for="noorder">No Order</label>

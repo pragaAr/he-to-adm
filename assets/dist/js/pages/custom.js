@@ -42,6 +42,10 @@ $("#addArmada").on("shown.bs.modal", function () {
   $('input[name="platno"]').focus();
 });
 
+$("#addCust").on("shown.bs.modal", function () {
+  $('input[name="namacust"]').focus();
+});
+
 $("#addSopir").on("shown.bs.modal", function () {
   $('input[name="namasopir"]').focus();
 });

@@ -1,63 +1,45 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-date_default_timezone_set('Asia/Jakarta');
 
 class M_Karyawan extends CI_Model
 {
   public function getData()
   {
-    return $this->db->get('Karyawan')->result();
+    $this->datatables->select('id, nama, usia, alamat, notelp, status')
+      ->from('karyawan')
+      ->add_column(
+        'view',
+        '<div class="btn-group" role="group">
+          <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-id="$1" data-toggle="tooltip" title="Edit">
+            <i class="fas fa-pencil-alt fa-sm"></i>
+          </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-id="$1" data-toggle="tooltip" title="Hapus">
+            <i class="fas fa-trash fa-sm"></i>
+          </a>
+        </div>',
+        'id, nama, usia, alamat, notelp, status'
+      );
+
+    return $this->datatables->generate();
   }
 
   public function getId($id)
   {
-    return $this->db->get_where('Karyawan', ['id_Karyawan' => $id])->row();
+    return $this->db->get_where('Karyawan', ['id' => $id])->row();
   }
 
-  public function addData()
+  public function addData($data)
   {
-    $nama     = $this->input->post('nama');
-    $usia     = $this->input->post('usia');
-    $alamat   = $this->input->post('alamat');
-    $notelp   = $this->input->post('notelp');
-    $status   = $this->input->post('status');
-    $dateAdd  = date('Y-m-d H:i:s');
-
-    $data = array(
-      'nama'      => strtolower($nama),
-      'usia'      => strtolower($usia),
-      'alamat'    => strtolower($alamat),
-      'notelp'    => strtolower($notelp),
-      'status'    => strtolower($status),
-      'dateAdd'   => $dateAdd
-    );
-
-    $this->db->insert('karyawan', $data);
+    return $this->db->insert('karyawan', $data);
   }
 
-  public function editData($id)
+  public function editData($data, $where)
   {
-    $nama     = trim($this->input->post('nama'));
-    $usia     = trim($this->input->post('usia'));
-    $alamat   = trim($this->input->post('alamat'));
-    $notelp   = trim($this->input->post('notelp'));
-    $status   = trim($this->input->post('status'));
-
-    $data = array(
-      'nama'      => strtolower($nama),
-      'usia'      => strtolower($usia),
-      'alamat'    => strtolower($alamat),
-      'notelp'    => strtolower($notelp),
-      'status'    => strtolower($status),
-    );
-
-    $where = array('id_karyawan' => $id);
-
-    $this->db->update('karyawan', $data, $where);
+    return $this->db->update('karyawan', $data, $where);
   }
 
   public function deleteData($id)
   {
-    return $this->db->delete('karyawan', ['id_karyawan' => $id]);
+    return $this->db->delete('karyawan', ['id' => $id]);
   }
 }

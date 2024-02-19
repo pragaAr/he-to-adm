@@ -1,14 +1,18 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+date_default_timezone_set('Asia/Jakarta');
+
 class Customer extends CI_Controller
 {
 	public function __construct()
 	{
 		parent::__construct();
+		$this->load->library('datatables');
+
 		$this->load->model('M_Customer', 'Customer');
 
-		if (empty($this->session->userdata('id_user'))) {
+		if (empty($this->session->userdata('id'))) {
 			$this->session->set_flashdata('flashrole', 'Silahkan Login terlebih dahulu!');
 			redirect('auth');
 		}
@@ -17,7 +21,6 @@ class Customer extends CI_Controller
 	public function index()
 	{
 		$data['title'] 	= 'Data Customer';
-		$data['cust']		= $this->Customer->getData();
 
 		$this->load->view('layout/template/header', $data);
 		$this->load->view('layout/template/navbar');
@@ -26,9 +29,16 @@ class Customer extends CI_Controller
 		$this->load->view('layout/template/footer');
 	}
 
+	public function getCustomer()
+	{
+		header('Content-Type: application/json');
+
+		echo $this->Customer->getData();
+	}
+
 	public function getId()
 	{
-		$id   = $this->input->post('id_customer');
+		$id   = $this->input->post('id');
 		$data = $this->Customer->getId($id);
 
 		echo json_encode($data);
@@ -42,18 +52,52 @@ class Customer extends CI_Controller
 		echo json_encode($data);
 	}
 
-	public function update()
+	public function add()
 	{
-		$id = $this->input->post('idcustomer');
-		$this->Customer->editData($id);
-		$this->session->set_flashdata('updated', 'Data berhasil diubah!');
-		redirect('customer');
+		$nama 	= trim($this->input->post('nama'));
+		$notelp = trim($this->input->post('notelp'));
+		$alamat	= trim($this->input->post('alamat'));
+		$addAt  = date('Y-m-d H:i:s');
+
+		$data = [
+			'nama'    => strtolower($nama),
+			'notelp'  => strtolower($notelp),
+			'alamat'  => strtolower($alamat),
+			'dateAdd'	=> $addAt,
+		];
+
+		$data = $this->Customer->addData($data);
+
+		echo json_encode($data);
 	}
 
-	public function delete($id)
+	public function update()
 	{
-		$this->Customer->deleteData($id);
-		$this->session->set_flashdata('deleted', 'Data berhasil dihapus!');
-		redirect('customer');
+		$id     = $this->input->post('id');
+		$nama 	= trim($this->input->post('nama'));
+		$notelp = trim($this->input->post('notelp'));
+		$alamat	= trim($this->input->post('alamat'));
+
+		$data = [
+			'nama'    => strtolower($nama),
+			'notelp'	=> strtolower($notelp),
+			'alamat'  => strtolower($alamat),
+		];
+
+		$where = [
+			'id' => $id
+		];
+
+		$data = $this->Customer->editData($data, $where);
+
+		echo json_encode($data);
+	}
+
+	public function delete()
+	{
+		$id   = $this->input->post('id');
+		$data = $this->Customer->deleteData($id);
+
+		echo json_encode($data);
 	}
 }

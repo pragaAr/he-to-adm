@@ -9,7 +9,7 @@ class Uangmakan extends CI_Controller
     $this->load->model('M_Uangmakan', 'Uangmakan');
     $this->load->model('M_Karyawan', 'Karyawan');
 
-    if (empty($this->session->userdata('id_user'))) {
+    if (empty($this->session->userdata('id'))) {
       $this->session->set_flashdata('flashrole', 'Silahkan Login terlebih dahulu!');
       redirect('auth');
     }

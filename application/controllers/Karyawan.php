@@ -1,14 +1,17 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+date_default_timezone_set('Asia/Jakarta');
 class Karyawan extends CI_Controller
 {
   public function __construct()
   {
     parent::__construct();
+    $this->load->library('datatables');
+
     $this->load->model('M_Karyawan', 'Karyawan');
 
-    if (empty($this->session->userdata('id_user'))) {
+    if (empty($this->session->userdata('id'))) {
       $this->session->set_flashdata('flashrole', 'Silahkan Login terlebih dahulu!');
       redirect('auth');
     }
@@ -16,48 +19,84 @@ class Karyawan extends CI_Controller
 
   public function index()
   {
-    $data['title']      = 'Data Karyawan';
-    $data['karyawan']   = $this->Karyawan->getData();
+    $data['title']  = 'Data Karyawan';
 
-    $this->form_validation->set_rules('nama', 'Nama Karyawan', 'trim|required');
-    $this->form_validation->set_rules('usia', 'Usia', 'trim|required');
-    $this->form_validation->set_rules('alamat', 'Alamat', 'trim|required');
-    $this->form_validation->set_rules('notelp', 'No Telepon', 'trim|required');
-    $this->form_validation->set_rules('status', 'Status', 'trim|required');
+    $this->load->view('layout/template/header', $data);
+    $this->load->view('layout/template/navbar');
+    $this->load->view('layout/template/sidebar');
+    $this->load->view('layout/master/karyawan', $data);
+    $this->load->view('layout/template/footer');
+  }
 
-    if ($this->form_validation->run() == false) {
-      $this->load->view('layout/template/header', $data);
-      $this->load->view('layout/template/navbar');
-      $this->load->view('layout/template/sidebar');
-      $this->load->view('layout/master/karyawan', $data);
-      $this->load->view('layout/template/footer');
-    } else {
-      $this->Karyawan->addData();
-      $this->session->set_flashdata('inserted', 'Data berhasil ditambahkan!');
-      redirect('karyawan');
-    }
+  public function getKaryawan()
+  {
+    header('Content-Type: application/json');
+
+    echo $this->Karyawan->getData();
   }
 
   public function getId()
   {
-    $id   = $this->input->post('id_karyawan');
+    $id   = $this->input->post('id');
     $data = $this->Karyawan->getId($id);
+
+    echo json_encode($data);
+  }
+
+  public function add()
+  {
+    $nama   = trim($this->input->post('nama'));
+    $usia   = trim($this->input->post('usia'));
+    $alamat = trim($this->input->post('alamat'));
+    $notelp = trim($this->input->post('notelp'));
+    $status = trim($this->input->post('status'));
+    $addAt  = date('Y-m-d H:i:s');
+
+    $data = [
+      'nama'    => strtolower($nama),
+      'usia'    => strtolower($usia),
+      'alamat'  => strtolower($alamat),
+      'notelp'  => strtolower($notelp),
+      'status'  => strtolower($status),
+      'dateAdd' => $addAt,
+    ];
+
+    $data = $this->Karyawan->addData($data);
 
     echo json_encode($data);
   }
 
   public function update()
   {
-    $id = $this->input->post('idkaryawan');
-    $this->Karyawan->editData($id);
-    $this->session->set_flashdata('updated', 'Data berhasil diubah!');
-    redirect('karyawan');
+    $id     = $this->input->post('id');
+    $nama   = trim($this->input->post('nama'));
+    $usia   = trim($this->input->post('usia'));
+    $alamat = trim($this->input->post('alamat'));
+    $notelp = trim($this->input->post('notelp'));
+    $status = trim($this->input->post('status'));
+
+    $data = [
+      'nama'    => strtolower($nama),
+      'usia'    => strtolower($usia),
+      'alamat'  => strtolower($alamat),
+      'notelp'  => strtolower($notelp),
+      'status'  => strtolower($status),
+    ];
+
+    $where = [
+      'id' => $id
+    ];
+
+    $data = $this->Karyawan->editData($data, $where);
+
+    echo json_encode($data);
   }
 
-  public function delete($id)
+  public function delete()
   {
-    $this->Karyawan->deleteData($id);
-    $this->session->set_flashdata('deleted', 'Data berhasil dihapus!');
-    redirect('karyawan');
+    $id   = $this->input->post('id');
+    $data = $this->Karyawan->deleteData($id);
+
+    echo json_encode($data);
   }
 }

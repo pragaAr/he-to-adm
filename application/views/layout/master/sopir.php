@@ -1,7 +1,4 @@
 <div class="content-wrapper">
-  <div class="inserted" data-flashdata="<?= $this->session->flashdata('inserted'); ?>"></div>
-  <div class="updated" data-flashdata="<?= $this->session->flashdata('updated'); ?>"></div>
-  <div class="deleted" data-flashdata="<?= $this->session->flashdata('deleted'); ?>"></div>
   <section class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
@@ -10,10 +7,10 @@
         </div>
         <div class="col-sm-6">
           <div class="breadcrumb float-sm-right">
-            <a href="" class="btn btn-dark" data-toggle="modal" data-target="#addSopir">
+            <button class="btn btn-dark border border-light" id="btn_add">
               <i class=" fas fa-plus"></i>
               Tambah
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -26,39 +23,22 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <table id="dtable" class="table table-bordered table-striped">
-                <thead class="text-center">
-                  <tr>
-                    <th width="10%">No.</th>
-                    <th>Nama Sopir</th>
-                    <th>ALamat</th>
-                    <th>No Telp</th>
-                    <th width="20%">Actions</th>
-                  </tr>
-                </thead>
-                <tbody class="text-center">
-                  <?php $no = 1;
-                  foreach ($sopir as $data) : ?>
+              <div class="table-responsive">
+                <table id="sopirTables" class="table table-bordered table-striped" width="100%" cellspacing="0">
+                  <thead class="text-center">
                     <tr>
-                      <td><?= $no ?>.</td>
-                      <td><?= ucwords($data->nama_sopir) ?></td>
-                      <td><?= ucwords($data->alamat_sopir) ?></td>
-                      <td><?= ucwords($data->notelp_sopir) ?></td>
-                      <td>
-                        <div class="btn-group" role="group">
-                          <a href="" class="btn btn-sm btn-warning text-white btn-edit-sopir" title="Edit" data-id="<?= $data->id_sopir ?>">
-                            <i class="fas fa-pencil-alt"></i>
-                          </a>
-                          <a href="<?= base_url('sopir/delete/') . $data->id_sopir ?>" class="btn btn-sm btn-danger text-white btn-delete" title="Hapus">
-                            <i class="fas fa-trash"></i>
-                          </a>
-                        </div>
-                      </td>
+                      <th>No.</th>
+                      <th>Nama Sopir</th>
+                      <th>Alamat</th>
+                      <th>Kontak</th>
+                      <th>Aksi</th>
                     </tr>
-                    <?php $no++ ?>
-                  <?php endforeach ?>
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody class="text-center">
+
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -67,91 +47,85 @@
   </section>
 </div>
 
-<!-- addSopir -->
-<form action="<?= base_url('sopir') ?>" method="POST">
-  <div class="modal fade" id="addSopir" data-backdrop="static">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Tambah Data Sopir</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
+<!-- modalAdd -->
+<div class="modal fade" id="modalAdd" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Tambah Data Sopir</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="form_add">
           <div class="form-group">
-            <label for="namasopir">
+            <label for="nama">
               Nama Sopir
-              <span class="text-white">*</span>
             </label>
-            <input type="text" class="form-control text-uppercase" name="namasopir" placeholder="Nama Sopir.." required oninvalid="this.setCustomValidity('Nama Sopir wajib di isi!')" oninput="setCustomValidity('')">
+            <input type="text" class="form-control text-uppercase" name="nama" id="nama" placeholder="Nama Sopir.." autofocus autocomplete="off" required oninvalid="this.setCustomValidity('Nama Sopir wajib di isi!')" oninput="setCustomValidity('')">
           </div>
           <div class="form-group">
-            <label for="alamatsopir">
+            <label for="alamat">
               Alamat Sopir
-              <span class="text-white">*</span>
             </label>
-            <input type="text" class="form-control text-uppercase" name="alamatsopir" placeholder="Alamat Sopir.." required oninvalid="this.setCustomValidity('Alamat Sopir wajib di isi!')" oninput="setCustomValidity('')">
+            <input type="text" class="form-control text-uppercase" name="alamat" id="alamat" placeholder="Alamat Sopir.." autocomplete="off" required oninvalid="this.setCustomValidity('Alamat Sopir wajib di isi!')" oninput="setCustomValidity('')">
           </div>
           <div class="form-group">
-            <label for="notelpsopir">
+            <label for="notelp">
               No Telepon
-              <span class="text-white">*</span>
             </label>
-            <input type="text" class="form-control text-uppercase" name="notelpsopir" placeholder="No Telepon.." required oninvalid="this.setCustomValidity('No Telepon Sopir wajib di isi!')" oninput="setCustomValidity('')">
+            <input type="text" class="form-control text-uppercase" name="notelp" id="notelp" placeholder="No Telepon.." autocomplete="off" required oninvalid="this.setCustomValidity('No Telepon Sopir wajib di isi!')" oninput="setCustomValidity('')">
           </div>
           <div>
-            <button type="submit" class="btn btn-dark float-right">
+            <button type="submit" class="btn btn-dark border border-light float-right">
               Simpan
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>
-</form>
+</div>
 
-<!-- editSopir -->
-<form action="<?= base_url('sopir/update') ?>" method="POST">
-  <div class="modal fade" id="editSopir" data-backdrop="static">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Edit Data Sopir</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
+<!-- modalEdit -->
+<div class="modal fade" id="modalEdit" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Edit Data Sopir</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="form_edit">
           <div class="form-group">
-            <label for="namasopir">
+            <label for="namaedit">
               Nama Sopir
-              <span class="text-white">*</span>
             </label>
-            <input type="hidden" class="form-control idsopir" name="idsopir" readonly>
-            <input type="text" class="form-control text-uppercase namasopir" name="namasopir" placeholder="Nama Sopir.." required oninvalid="this.setCustomValidity('Nama Sopir wajib di isi!')" oninput="setCustomValidity('')">
+            <input type="hidden" class="form-control" name="id" id="id" readonly>
+            <input type="text" class="form-control text-uppercase" name="namaedit" id="namaedit" placeholder="Nama Sopir.." autofocus autocomplete="off" required oninvalid="this.setCustomValidity('Nama Sopir wajib di isi!')" oninput="setCustomValidity('')">
           </div>
           <div class="form-group">
-            <label for="alamatsopir">
+            <label for="alamatedit">
               Alamat Sopir
-              <span class="text-white">*</span>
             </label>
-            <input type="text" class="form-control text-uppercase alamatsopir" name="alamatsopir" placeholder="Alamat Sopir.." required oninvalid="this.setCustomValidity('Alamat Sopir wajib di isi!')" oninput="setCustomValidity('')">
+            <input type="text" class="form-control text-uppercase" name="alamatedit" id="alamatedit" placeholder="Alamat Sopir.." autocomplete="off" required oninvalid="this.setCustomValidity('Alamat Sopir wajib di isi!')" oninput="setCustomValidity('')">
           </div>
           <div class="form-group">
-            <label for="notelpsopir">
+            <label for="notelpedit">
               No Telepon
-              <span class="text-white">*</span>
             </label>
-            <input type="text" class="form-control notelpsopir" name="notelpsopir" placeholder="No Telepon Sopir.." required oninvalid="this.setCustomValidity('No Telepon Sopir wajib di isi!')" oninput="setCustomValidity('')">
+            <input type="text" class="form-control" name="notelpedit" id="notelpedit" placeholder="No Telepon Sopir.." autocomplete="off" required oninvalid="this.setCustomValidity('No Telepon Sopir wajib di isi!')" oninput="setCustomValidity('')">
           </div>
           <div>
-            <button type="submit" class="btn btn-dark float-right">
+            <button type="submit" class="btn btn-dark border border-light float-right">
               Simpan
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>
-</form>
+</div>

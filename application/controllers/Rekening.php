@@ -8,7 +8,7 @@ class Rekening extends CI_Controller
     parent::__construct();
     $this->load->model('M_Rekening', 'Rek');
 
-    if (empty($this->session->userdata('id_user'))) {
+    if (empty($this->session->userdata('id'))) {
       $this->session->set_flashdata('flashrole', 'Silahkan Login terlebih dahulu!');
       redirect('auth');
     }

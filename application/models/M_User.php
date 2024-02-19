@@ -1,59 +1,44 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-date_default_timezone_set('Asia/Jakarta');
-
 class M_User extends CI_Model
 {
   public function getData()
   {
-    return $this->db->get('user')->result();
+    $this->datatables->select('id, nama, username, role')
+      ->from('user')
+      ->add_column(
+        'view',
+        '<div class="btn-group" role="group">
+          <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-id="$1" data-toggle="tooltip" title="Edit">
+            <i class="fas fa-pencil-alt fa-sm"></i>
+          </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-id="$1" data-toggle="tooltip" title="Hapus">
+            <i class="fas fa-trash fa-sm"></i>
+          </a>
+        </div>',
+        'id, nama, username, role'
+      );
+
+    return $this->datatables->generate();
   }
 
   public function getId($id)
   {
-    return $this->db->get_where('user', ['id_user' => $id])->row();
+    return $this->db->get_where('user', ['id' => $id])->row();
   }
 
-  public function addData()
+  public function addData($data)
   {
-    $nama       = $this->input->post('namauser');
-    $username   = $this->input->post('username');
-    $pass       = $this->input->post('pass');
-    $role       = 'admin';
-    $dateAdd    = date('Y-m-d H:i:s');
-
-    $data = array(
-      'namauser'    => strtolower($nama),
-      'username'    => strtolower($username),
-      'pass'        => md5($pass),
-      'role'        => $role,
-      'dateAdd'     => $dateAdd
-    );
-
-    $this->db->insert('user', $data);
+    return $this->db->insert('user', $data);
   }
 
-  public function editData($id)
+  public function editData($data, $where)
   {
-    $nama       = $this->input->post('namauser');
-    $username   = $this->input->post('username');
-    $pass       = $this->input->post('pass');
-    $role       = 'admin';
-
-    $data = array(
-      'namauser'    => strtolower($nama),
-      'username'    => strtolower($username),
-      'pass'        => md5($pass),
-      'role'        => $role
-    );
-
-    $where = array('id_user' => $id);
-
-    $this->db->update('user', $data, $where);
+    return $this->db->update('user', $data, $where);
   }
 
   public function deleteData($id)
   {
-    return $this->db->delete('user', ['id_user' => $id]);
+    return $this->db->delete('user', ['id' => $id]);
   }
 }

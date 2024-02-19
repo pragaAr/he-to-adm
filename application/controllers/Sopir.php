@@ -1,14 +1,17 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+date_default_timezone_set('Asia/Jakarta');
 class Sopir extends CI_Controller
 {
   public function __construct()
   {
     parent::__construct();
+    $this->load->library('datatables');
+
     $this->load->model('M_Sopir', 'Sopir');
 
-    if (empty($this->session->userdata('id_user'))) {
+    if (empty($this->session->userdata('id'))) {
       $this->session->set_flashdata('flashrole', 'Silahkan Login terlebih dahulu!');
       redirect('auth');
     }
@@ -16,46 +19,76 @@ class Sopir extends CI_Controller
 
   public function index()
   {
-    $data['title']    = 'Data Sopir';
-    $data['sopir']    = $this->Sopir->getData();
+    $data['title']  = 'Data Sopir';
 
-    $this->form_validation->set_rules('namasopir', 'Nama Sopir', 'trim|required');
-    $this->form_validation->set_rules('alamatsopir', 'Alamat Sopir', 'trim|required');
-    $this->form_validation->set_rules('notelpsopir', 'Notelp Sopir', 'trim|required');
+    $this->load->view('layout/template/header', $data);
+    $this->load->view('layout/template/navbar');
+    $this->load->view('layout/template/sidebar');
+    $this->load->view('layout/master/sopir', $data);
+    $this->load->view('layout/template/footer');
+  }
 
-    if ($this->form_validation->run() == false) {
-      $this->load->view('layout/template/header', $data);
-      $this->load->view('layout/template/navbar');
-      $this->load->view('layout/template/sidebar');
-      $this->load->view('layout/master/sopir', $data);
-      $this->load->view('layout/template/footer');
-    } else {
-      $this->Sopir->addData();
-      $this->session->set_flashdata('inserted', 'Data berhasil ditambahkan!');
-      redirect('sopir');
-    }
+  public function getSopir()
+  {
+    header('Content-Type: application/json');
+
+    echo $this->Sopir->getData();
   }
 
   public function getId()
   {
-    $id   = $this->input->post('id_sopir');
+    $id   = $this->input->post('id');
     $data = $this->Sopir->getId($id);
+
+    echo json_encode($data);
+  }
+
+  public function add()
+  {
+    $nama   = trim($this->input->post('nama'));
+    $alamat = trim($this->input->post('alamat'));
+    $notelp = trim($this->input->post('notelp'));
+    $addAt  = date('Y-m-d H:i:s');
+
+    $data = [
+      'nama'    => strtolower($nama),
+      'alamat'  => strtolower($alamat),
+      'notelp'  => strtolower($notelp),
+      'dateAdd' => $addAt,
+    ];
+
+    $data = $this->Sopir->addData($data);
 
     echo json_encode($data);
   }
 
   public function update()
   {
-    $id = $this->input->post('idsopir');
-    $this->Sopir->editData($id);
-    $this->session->set_flashdata('updated', 'Data berhasil diubah!');
-    redirect('sopir');
+    $id     = $this->input->post('id');
+    $nama   = trim($this->input->post('nama'));
+    $alamat = trim($this->input->post('alamat'));
+    $notelp = trim($this->input->post('notelp'));
+
+    $data = [
+      'nama'    => strtolower($nama),
+      'alamat'  => strtolower($alamat),
+      'notelp'  => strtolower($notelp),
+    ];
+
+    $where = [
+      'id' => $id
+    ];
+
+    $data = $this->Sopir->editData($data, $where);
+
+    echo json_encode($data);
   }
 
-  public function delete($id)
+  public function delete()
   {
-    $this->Sopir->deleteData($id);
-    $this->session->set_flashdata('deleted', 'Data berhasil dihapus!');
-    redirect('sopir');
+    $id   = $this->input->post('id');
+    $data = $this->Sopir->deleteData($id);
+
+    echo json_encode($data);
   }
 }
