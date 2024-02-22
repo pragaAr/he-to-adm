@@ -42,11 +42,12 @@
     }
 
     .intro p {
-      font-size: 14px;
+      font-size: 12px;
+      text-align: center;
     }
 
     .data-section {
-      margin-top: 15px;
+      margin-top: 10px;
       margin-bottom: 20px;
     }
 
@@ -63,9 +64,12 @@
       border-collapse: collapse;
     }
 
-    .thdata,
-    .tddata {
+    .thdata {
       padding: 5px;
+    }
+
+    .tddata {
+      padding: 12px 0;
     }
   </style>
 
@@ -88,19 +92,33 @@
       <?php
       $dayUm = date('D', strtotime($dataum->dateAdd));
       if ($dayUm == 'Sun') {  ?>
-        <p>Daftar Penerima Uang Makan <?= 'Hari Minggu, ' . date('d F Y', strtotime($dataum->dateAdd)) ?></p>
+        <p>Daftar Penerima Uang Makan. <br>
+          <?= 'Hari Minggu, ' . date('d F Y', strtotime($dataum->dateAdd)) ?>
+        </p>
       <?php } elseif ($dayUm == 'Mon') { ?>
-        <p>Daftar Penerima Uang Makan <?= 'Hari Senin, ' . date('d F Y', strtotime($dataum->dateAdd)) ?></p>
+        <p>Daftar Penerima Uang Makan. <br>
+          <?= 'Hari Senin, ' . date('d F Y', strtotime($dataum->dateAdd)) ?>
+        </p>
       <?php } elseif ($dayUm == 'Tue') { ?>
-        <p>Daftar Penerima Uang Makan <?= 'Hari Selasa, ' . date('d F Y', strtotime($dataum->dateAdd)) ?></p>
+        <p>Daftar Penerima Uang Makan. <br>
+          <?= 'Hari Selasa, ' . date('d F Y', strtotime($dataum->dateAdd)) ?>
+        </p>
       <?php } elseif ($dayUm == 'Wed') { ?>
-        <p>Daftar Penerima Uang Makan <?= 'Hari Rabu, ' . date('d F Y', strtotime($dataum->dateAdd)) ?></p>
+        <p>Daftar Penerima Uang Makan. <br>
+          <?= 'Hari Rabu, ' . date('d F Y', strtotime($dataum->dateAdd)) ?>
+        </p>
       <?php } elseif ($dayUm == 'Thu') { ?>
-        <p>Daftar Penerima Uang Makan <?= 'Hari Kamis, ' . date('d F Y', strtotime($dataum->dateAdd)) ?></p>
+        <p>Daftar Penerima Uang Makan. <br>
+          <?= 'Hari Kamis, ' . date('d F Y', strtotime($dataum->dateAdd)) ?>
+        </p>
       <?php } elseif ($dayUm == 'Fri') { ?>
-        <p>Daftar Penerima Uang Makan <?= 'Hari Jumat, ' . date('d F Y', strtotime($dataum->dateAdd)) ?></p>
+        <p>Daftar Penerima Uang Makan. <br>
+          <?= 'Hari Jumat, ' . date('d F Y', strtotime($dataum->dateAdd)) ?>
+        </p>
       <?php } elseif ($dayUm == 'Sat') { ?>
-        <p>Daftar Penerima Uang Makan <?= 'Hari Sabtu, ' . date('d F Y', strtotime($dataum->dateAdd)) ?></p>
+        <p>Daftar Penerima Uang Makan. <br>
+          <?= 'Hari Sabtu, ' . date('d F Y', strtotime($dataum->dateAdd)) ?>
+        </p>
       <?php } ?>
     </div>
   </section>
@@ -109,7 +127,7 @@
     <table class="tabledata">
       <thead>
         <tr>
-          <th class="thdata">NO.</th>
+          <th class="thdata" style="width:8%">NO.</th>
           <th class="thdata">Nama</th>
           <th class="thdata">Bagian</th>
           <th class="thdata">Nominal</th>
@@ -123,7 +141,7 @@
             <td class="tddata"><?= $no ?>.</td>
             <td class="tddata"><?= strtoupper($detail->nama) ?></td>
             <td class="tddata"><?= strtoupper($detail->status) ?></td>
-            <td class="tddata"></td>
+            <td class="tddata">Rp. <?= number_format($detail->nominal) ?></td>
             <td class="tddata"></td>
           </tr>
           <?php $no++ ?>

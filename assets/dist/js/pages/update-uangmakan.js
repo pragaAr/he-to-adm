@@ -1,5 +1,3 @@
-// edit reccu delivcab
-
 $("#karyawan").on("input", function () {
   $.ajax({
     url: "http://localhost/hira-to-adm/karyawan/getId",

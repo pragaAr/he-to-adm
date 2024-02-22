@@ -43,6 +43,25 @@ class Karyawan extends CI_Controller
     echo json_encode($data);
   }
 
+  public function getKaryawanList()
+  {
+    $keyword = $this->input->get('q');
+
+    $data = !$keyword ? $this->Karyawan->listKaryawan() : $this->Karyawan->searchListKaryawan($keyword);
+
+    $response = [];
+
+    foreach ($data as $karyawan) {
+      $response[] = [
+        'id'    => $karyawan->id,
+        'text'  => ucwords($karyawan->nama),
+      ];
+    }
+
+    echo json_encode($response);
+  }
+
+
   public function add()
   {
     $nama   = trim($this->input->post('nama'));

@@ -21,19 +21,41 @@ class M_Uangmakan extends CI_Model
     return $kodetampil;
   }
 
-  public function getDataKd($kd)
-  {
-    $this->db->select('uang_makan.kd_um, uang_makan.jml_nominal, uang_makan.dateAdd');
-    $this->db->from('uang_makan');
-    $this->db->where('kd_um', $kd);
-    $query = $this->db->get()->row();
-    return $query;
-  }
-
   public function getData()
   {
-    return $this->db->get('uang_makan')->result();
+    $role = $this->session->userdata('role');
+
+    $this->datatables->select('id, kd_um, jml_penerima, jml_nominal, dateAdd')
+      ->from('uang_makan');
+
+    if ($role == 'admin') {
+      $this->datatables->add_column(
+        'view',
+        '<div class="btn-group" role="group">
+            <a href="javascript:void(0);" class="btn btn-sm btn-info text-white border border-light btn-detail" data-kd="$2">
+              <i class="fas fa-eye fa-sm"></i>
+            </a>
+            <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-kd="$2">
+              <i class="fas fa-trash fa-sm"></i>
+            </a>
+          </div>',
+        'id, kd_um, jml_penerima, jml_nominal, dateAdd'
+      );
+    } else if ($role == 'petugas') {
+      $this->datatables->add_column(
+        'view',
+        '<div class="btn-group" role="group">
+            <a href="javascript:void(0);" class="btn btn-sm btn-info text-white border border-light btn-detail" data-kd="$2">
+              <i class="fas fa-eye fa-sm"></i>
+            </a>
+          </div>',
+        'id, kd_um, jml_penerima, jml_nominal, dateAdd'
+      );
+    }
+
+    return $this->datatables->generate();
   }
+
 
   public function getId($id)
   {
@@ -47,39 +69,41 @@ class M_Uangmakan extends CI_Model
 
   public function getDetailKdUm($kd)
   {
-    $this->db->select('detail_um.kd_um, detail_um.karyawan_id, detail_um.nominal_um, karyawan.id_karyawan, karyawan.nama, karyawan.status');
+    $this->db->select('detail_um.kd_um, detail_um.karyawan_id, detail_um.nominal, karyawan.id, karyawan.nama, karyawan.status');
     $this->db->from('detail_um');
     $this->db->where('detail_um.kd_um', $kd);
-    $this->db->join('karyawan', 'karyawan.id_karyawan = detail_um.karyawan_id');
+    $this->db->join('karyawan', 'karyawan.id = detail_um.karyawan_id');
     $query = $this->db->get()->result();
     return $query;
   }
 
-  public function getDetailKd($kd)
+  public function getDataByKd($kd)
   {
-    $this->db->select('uang_makan.kd_um, uang_makan.dateAdd, detail_um.kd_um, detail_um.karyawan_id, detail_um.nominal_um, karyawan.id_karyawan, karyawan.nama');
-    $this->db->from('detail_um');
-    $this->db->where('detail_um.kd_um', $kd);
-    $this->db->join('uang_makan', 'uang_makan.kd_um = detail_um.kd_um');
-    $this->db->join('karyawan', 'karyawan.id_karyawan = detail_um.karyawan_id');
+    $this->db->select('kd_um, jml_penerima, jml_nominal, dateAdd')
+      ->from('uang_makan')
+      ->where('kd_um', $kd);
+
+    $query = $this->db->get()->row();
+
+    return $query;
+  }
+
+  public function getDetailByKd($kd)
+  {
+    $this->db->select('um.kd_um, um.dateAdd, dt.kd_um, dt.karyawan_id, dt.nominal, k.id, k.nama, k.status')
+      ->from('detail_um dt')
+      ->where('dt.kd_um', $kd)
+      ->join('uang_makan um', 'um.kd_um = dt.kd_um')
+      ->join('karyawan k', 'k.id = dt.karyawan_id');
+
     $query = $this->db->get()->result();
+
     return $query;
   }
 
   public function addData($data, $detail)
   {
     $this->db->insert('uang_makan', $data);
-    $this->db->insert_batch('detail_um', $detail);
-  }
-
-  public function updateData($kd, $data, $detail)
-  {
-    $where = array(
-      'kd_um'   => $kd
-    );
-
-    $this->db->update('uang_makan', $data, $where);
-    $this->db->delete('detail_um', $where);
     $this->db->insert_batch('detail_um', $detail);
   }
 

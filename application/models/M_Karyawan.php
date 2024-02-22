@@ -23,6 +23,29 @@ class M_Karyawan extends CI_Model
     return $this->datatables->generate();
   }
 
+  // ----------------------------------for select2----------------------------------
+  public function listKaryawan()
+  {
+    $this->db->select('id, nama')
+      ->from('karyawan');
+
+    $res = $this->db->get()->result();
+
+    return $res;
+  }
+
+  public function searchListKaryawan($keyword)
+  {
+    $this->db->select('id, nama')
+      ->from('karyawan')
+      ->like('nama', $keyword);
+
+    $res = $this->db->get()->result();
+
+    return $res;
+  }
+  // ----------------------------------for select2----------------------------------
+
   public function getId($id)
   {
     return $this->db->get_where('Karyawan', ['id' => $id])->row();

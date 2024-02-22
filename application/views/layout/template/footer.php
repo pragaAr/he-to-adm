@@ -36,6 +36,9 @@
 
  <script src="<?= base_url('assets/') ?>dist/js/pages/clock.js"></script>
 
+ <script src="<?= base_url('assets/') ?>dist/js/pages/number-format.js"></script>
+
+ <!-- Custom Script -->
  <?php if ($this->uri->segment(1) == 'armada') { ?>
    <script src="<?= base_url('assets/') ?>dist/js/pages/master/armada.js"></script>
  <?php } else if ($this->uri->segment(1) == 'customer') { ?>
@@ -46,7 +49,46 @@
    <script src="<?= base_url('assets/') ?>dist/js/pages/master/sopir.js"></script>
  <?php } else if ($this->uri->segment(1) == 'user') { ?>
    <script src="<?= base_url('assets/') ?>dist/js/pages/master/user.js"></script>
+ <?php } else if ($this->uri->segment(1) == 'uangmakan' && $this->uri->segment(2) == '') { ?>
+   <script src="<?= base_url('assets/') ?>dist/js/pages/administrasi/uangmakan.js"></script>
+   <script>
+     const inserted = $(".inserted").data("flashdata");
+
+     if (inserted) {
+       Swal.fire({
+         icon: "success",
+         title: "Success",
+         text: inserted,
+       });
+     }
+
+     const updated = $(".updated").data("flashdata");
+
+     if (updated) {
+       Swal.fire({
+         icon: "success",
+         title: "Success",
+         text: updated,
+       });
+     }
+   </script>
+ <?php } else if ($this->uri->segment(1) == 'uangmakan' && $this->uri->segment(2) == 'addUangMakan') { ?>
+   <script src="<?= base_url('assets/') ?>dist/js/pages/administrasi/add-uangmakan.js"></script>
+ <?php } else if ($this->uri->segment(1) == 'uangmakan' && $this->uri->segment(2) == 'update') { ?>
+   <script src="<?= base_url('assets/') ?>dist/js/pages/administrasi/update-uangmakan.js"></script>
  <?php } ?>
+
+ <script>
+   const userlogin = $(".userlogin").data("flashdata");
+
+   if (userlogin) {
+     Swal.fire({
+       icon: "success",
+       title: "Login berhasil!",
+       text: userlogin,
+     });
+   }
+ </script>
  </body>
 
  </html>
