@@ -1,8 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-date_default_timezone_set('Asia/Jakarta');
-
 class M_Auth extends CI_MODEL
 {
   public function cekLogin($uname)
