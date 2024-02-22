@@ -1,6 +1,5 @@
 <div class="content-wrapper">
   <div class="inserted" data-flashdata="<?= $this->session->flashdata('inserted'); ?>"></div>
-  <div class="updated" data-flashdata="<?= $this->session->flashdata('updated'); ?>"></div>
   <section class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
