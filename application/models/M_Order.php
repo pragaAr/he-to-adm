@@ -1,29 +1,39 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-date_default_timezone_set('Asia/Jakarta');
 
 class M_Order extends CI_Model
 {
   public function getKd()
   {
-    $this->db->select('RIGHT(order_masuk.no_order,3) as no_order', FALSE);
-    $this->db->order_by('no_order', 'DESC');
-    $this->db->limit(1);
-    $query = $this->db->get('order_masuk');
-    if ($query->num_rows() <> 0) {
-      $data = $query->row();
-      $kode = intval($data->no_order) + 1;
-    } else {
-      $kode = 1;
-    }
-    $batas = str_pad($kode, 5, "0", STR_PAD_LEFT);
-    $kodetampil = "0" . $batas;
-    return $kodetampil;
+    $date = date('mdYHis');
+    $tr   = "orm-";
+    $kd   = $tr .  $date;
+
+    return $kd;
   }
 
   public function getData()
   {
-    return $this->db->get('order_masuk')->result();
+    $this->datatables->select('om.id, om.no_order, om.asal_order, om.tujuan_order, om.jenis_muatan, om.keterangan, om.kontak_order, om.dateAdd, cust.nama')
+      ->from('order_masuk om')
+      ->join('customer cust', 'cust.id = om.customer_id')
+      ->add_column(
+        'view',
+        '<div class="btn-group" role="group">
+          <a href="http://localhost/hira-to-adm/order/print/$2" target="_blank" class="btn btn-sm btn-info text-white border border-light btn-print" data-kd="$2" data-toggle="tooltip" title="Cetak">
+            <i class="fas fa-print fa-sm"></i>
+          </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-kd="$2" data-toggle="tooltip" title="Edit">
+            <i class="fas fa-pencil-alt fa-sm"></i>
+          </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-kd="$2" data-toggle="tooltip" title="Hapus">
+            <i class="fas fa-trash fa-sm"></i>
+          </a>
+        </div>',
+        'id, no_order, asal_order, tujuan_order, jenis_muatan, keterangan, kontak_order, dateAdd, nama'
+      );
+
+    return $this->datatables->generate();
   }
 
   public function countData()
@@ -31,14 +41,15 @@ class M_Order extends CI_Model
     return $this->db->get('order_masuk')->num_rows();
   }
 
-  public function getNoOrder($no)
+  public function getDataByKd($kd)
   {
-    $this->db->select('*');
-    $this->db->from('order_masuk');
-    $this->db->where('order_masuk.no_order', $no);
-    $this->db->join('sangu_order', 'sangu_order.no_order = order_masuk.no_order');
-    $this->db->join('sopir', 'sopir.id_sopir = sangu_order.sopir_id');
+    $this->db->select('om.id as order_id, om.no_order, om.customer_id, om.asal_order, om.tujuan_order, om.kontak_order, om.jenis_muatan, om.keterangan, ss.truck_id, ss.sopir_id, ss.nominal')
+      ->from('order_masuk om')
+      ->where('om.no_order', $kd)
+      ->join('sangu_sopir ss', 'ss.no_order = om.no_order');
+
     $query = $this->db->get()->row();
+
     return $query;
   }
 
@@ -60,124 +71,46 @@ class M_Order extends CI_Model
     return $query;
   }
 
-  public function addData()
+  public function printOrder($kd)
   {
-    $noorder        = $this->input->post('noorder');
-    $namacust       = $this->input->post('namacust');
-    $alamatasal     = $this->input->post('alamatasal');
-    $alamattujuan   = $this->input->post('alamattujuan');
-    $notelp         = $this->input->post('notelp');
-    $muatan         = $this->input->post('muatan');
-    $asal           = $this->input->post('kotaasal');
-    $platno         = $this->input->post('platno');
-    $supir          = $this->input->post('sopir');
-    $tujuan         = $this->input->post('kotatujuan');
-    $nominal        = preg_replace("/[^0-9\.]/", "", $this->input->post('nominal'));
-    $user           = 1;
-    $dateAdd        = date('Y-m-d H:i:s');
+    $this->db->select('om.id as order_id, om.no_order, om.asal_order, om.tujuan_order, om.kontak_order, om.jenis_muatan, om.keterangan, om.dateAdd, cust.nama as nama_customer, ar.platno, so.nama as nama_sopir')
+      ->from('order_masuk om')
+      ->where('om.no_order', $kd)
+      ->join('customer cust', 'cust.id = om.customer_id')
+      ->join('sangu_sopir ss', 'ss.no_order = om.no_order')
+      ->join('armada ar', 'ar.id = ss.truck_id')
+      ->join('sopir so', 'so.id = ss.sopir_id');
 
-    $data = array(
-      'no_order'      => strtolower($noorder),
-      'nama_cust'     => strtolower($namacust),
-      'alamat_asal'   => strtolower($alamatasal),
-      'alamat_tujuan' => strtolower($alamattujuan),
-      'notelp_cust'   => strtolower($notelp),
-      'jenis_muatan'  => strtolower($muatan),
-      'user_id'       => $user,
-      'dateAdd'       => $dateAdd
-    );
-
-    $datasangu = array(
-      'no_rek'        => '610101',
-      'no_order'      => strtolower($noorder),
-      'platno'        => strtolower($platno),
-      'sopir_id'      => $supir,
-      'kota_asal'     => strtolower($asal),
-      'kota_tujuan'   => strtolower($tujuan),
-      'nominal'       => strtolower($nominal),
-      'tambahan'      => 0,
-      'user_id'       => $user,
-      'dateAdd'       => $dateAdd
-    );
-
-    $datacust = array(
-      'nama'      => strtolower($namacust),
-      'alamat'    => strtolower($alamatasal),
-      'notelp'    => strtolower($notelp),
-      'dateAdd'   => $dateAdd,
-    );
-
-    $this->db->select('nama');
-    $this->db->from('customer');
-    $this->db->where('nama', $namacust);
     $query = $this->db->get()->row();
 
-    if ($query == 0) {
-      $this->db->insert('customer', $datacust);
-    }
-
-    $this->db->insert('order_masuk', $data);
-    $this->db->insert('sangu_order', $datasangu);
+    return $query;
   }
 
-  public function editData($no)
+  public function addData($dataorder, $datasangu)
   {
-    $namacust       = $this->input->post('namacust');
-    $alamatasal     = $this->input->post('alamatasal');
-    $alamattujuan   = $this->input->post('alamattujuan');
-    $notelp         = $this->input->post('notelp');
-    $muatan         = $this->input->post('muatan');
-    $asal           = $this->input->post('kotaasal');
-    $platno         = $this->input->post('platno');
-    $supir          = $this->input->post('sopir');
-    $tujuan         = $this->input->post('kotatujuan');
-    $nominal        = preg_replace("/[^0-9\.]/", "", $this->input->post('nominal'));
-    $user           = 1;
-
-    $data = array(
-      'nama_cust'     => strtolower($namacust),
-      'alamat_asal'   => strtolower($alamatasal),
-      'alamat_tujuan' => strtolower($alamattujuan),
-      'notelp_cust'   => strtolower($notelp),
-      'jenis_muatan'  => strtolower($muatan),
-      'user_id'       => $user,
-    );
-
-    $datasangu = array(
-      'platno'        => strtolower($platno),
-      'sopir_id'      => $supir,
-      'kota_asal'     => strtolower($asal),
-      'kota_tujuan'   => strtolower($tujuan),
-      'nominal'       => strtolower($nominal),
-      'tambahan'      => 0,
-      'user_id'       => $user,
-    );
-
-    $datapenjualan = array(
-      'pengirim'        => strtolower($namacust),
-      'alamat_asal'     => strtolower($alamatasal),
-      'alamat_tujuan'   => strtolower($alamattujuan),
-    );
-
-    $where = array('no_order' => $no);
-
-    $this->db->update('order_masuk', $data, $where);
-    $this->db->update('sangu_order', $datasangu, $where);
-    $this->db->update('penjualan', $datapenjualan, $where);
+    $this->db->insert('order_masuk', $dataorder);
+    $this->db->insert('sangu_sopir', $datasangu);
   }
 
-  public function deleteData($no)
+  public function updateData($dataorder, $datasangu, $where)
   {
-    $this->db->delete('order_masuk', ['no_order' => $no]);
-    $this->db->delete('sangu_order', ['no_order' => $no]);
+    $this->db->update('order_masuk', $dataorder, $where);
+    $this->db->update('sangu_sopir', $datasangu, $where);
+  }
 
-    $this->db->select('no_order');
-    $this->db->from('penjualan');
-    $this->db->where('no_order', $no);
+  public function deleteData($kd)
+  {
+    $this->db->delete('order_masuk', ['no_order' => $kd]);
+    $this->db->delete('sangu_opir', ['no_order' => $kd]);
+
+    $this->db->select('no_order')
+      ->from('penjualan')
+      ->where('no_order', $kd);
+
     $query = $this->db->get()->row();
 
     if ($query == !null) {
-      $this->db->delete('penjualan', ['no_order' => $no]);
+      $this->db->delete('penjualan', ['no_order' => $kd]);
     }
   }
 }

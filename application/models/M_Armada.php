@@ -27,6 +27,30 @@ class M_Armada extends CI_Model
     return $this->db->get_where('armada', ['id' => $id])->row();
   }
 
+  // for select2 and search
+  public function getListData()
+  {
+    $this->db->select('id, platno')
+      ->from('armada')
+      ->order_by('platno', 'asc');
+
+    $res = $this->db->get()->result();
+
+    return $res;
+  }
+
+  public function getSearchListData($keyword)
+  {
+    $this->db->select('id, platno')
+      ->from('armada')
+      ->like('platno', $keyword);
+
+    $res = $this->db->get()->result();
+
+    return $res;
+  }
+  // end for select2 and search
+
   public function addData($data)
   {
     return $this->db->insert('armada', $data);

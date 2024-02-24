@@ -24,20 +24,48 @@ class M_Customer extends CI_Model
 
   public function getDataNama()
   {
-    $this->db->select('nama');
-    $this->db->from('customer');
+    $this->db->select('nama')
+      ->from('customer');
+
     $query = $this->db->get()->result();
+
     return $query;
   }
 
   public function getDataByName($nama)
   {
-    $this->db->select('*');
-    $this->db->from('customer');
-    $this->db->where('nama', $nama);
+    $this->db->select('*')
+      ->from('customer')
+      ->where('nama', $nama);
+
     $query = $this->db->get()->row();
+
     return $query;
   }
+
+  // for select2 and search
+  public function getListData()
+  {
+    $this->db->select('id, nama, notelp')
+      ->from('customer')
+      ->order_by('nama', 'asc');
+
+    $res = $this->db->get()->result();
+
+    return $res;
+  }
+
+  public function getSearchListData($keyword)
+  {
+    $this->db->select('id, nama, notelp')
+      ->from('customer')
+      ->like('nama', $keyword);
+
+    $res = $this->db->get()->result();
+
+    return $res;
+  }
+  // end for select2 and search
 
   public function countData()
   {
@@ -52,6 +80,13 @@ class M_Customer extends CI_Model
   public function addData($data)
   {
     return $this->db->insert('customer', $data);
+  }
+
+  public function addNewData($datacust)
+  {
+    $this->db->insert('customer', $datacust);
+
+    return $this->db->insert_id();
   }
 
   public function editData($data, $where)

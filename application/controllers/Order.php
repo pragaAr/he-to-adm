@@ -1,11 +1,15 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+date_default_timezone_set('Asia/Jakarta');
+
 class Order extends CI_Controller
 {
   public function __construct()
   {
     parent::__construct();
+    $this->load->library('datatables');
+
     $this->load->model('M_Armada', 'Armada');
     $this->load->model('M_Customer', 'Cust');
     $this->load->model('M_Order', 'Order');
@@ -19,72 +23,145 @@ class Order extends CI_Controller
 
   public function index()
   {
-    $data['title']      = 'Data Order';
-    $data['cust']       = $this->Cust->getDataNama();
-    $data['custedit']   = $this->Cust->getDataNama();
-    $data['order']      = $this->Order->getData();
-    $data['sopir']      = $this->Sopir->getData();
-    $data['sopiredit']  = $this->Sopir->getData();
-    $data['truck']      = $this->Armada->getData();
-    $data['truckedit']  = $this->Armada->getData();
-    $data['kd']         = $this->Order->getKd();
+    $data['title'] = 'Data Order';
 
-    $this->form_validation->set_rules('namacust', 'Nama Customer', 'trim|required');
-    $this->form_validation->set_rules('notelp', 'No Telp Customer', 'trim|required');
-    $this->form_validation->set_rules('alamatasal', 'Alamat Asal', 'trim|required');
-    $this->form_validation->set_rules('alamattujuan', 'Alamat Tujuan', 'trim|required');
-    $this->form_validation->set_rules('muatan', 'Muatan', 'trim|required');
-    $this->form_validation->set_rules('platno', 'Plat No Truck', 'trim|required');
-    $this->form_validation->set_rules('sopir', 'Supir', 'trim|required');
-    $this->form_validation->set_rules('kotaasal', 'Kota Asal', 'trim|required');
-    $this->form_validation->set_rules('kotatujuan', 'Kota Tujuan', 'trim|required');
-    $this->form_validation->set_rules('nominal', 'Nominal', 'trim|required');
-
-    if ($this->form_validation->run() == false) {
-      $this->load->view('layout/template/header', $data);
-      $this->load->view('layout/template/navbar');
-      $this->load->view('layout/template/sidebar');
-      $this->load->view('layout/trans/order', $data);
-      $this->load->view('layout/template/footer');
-    } else {
-      $this->Order->addData();
-      $this->session->set_flashdata('inserted', 'Data berhasil ditambahkan!');
-      redirect('order');
-    }
+    $this->load->view('layout/template/header', $data);
+    $this->load->view('layout/template/navbar');
+    $this->load->view('layout/template/sidebar');
+    $this->load->view('layout/trans/order', $data);
+    $this->load->view('layout/template/footer');
   }
 
-  public function getNoOrder()
+  public function getKdOrder()
   {
-    $no   = $this->input->post('no_order');
-    $data = $this->Order->getNoOrder($no);
+    $data = $this->Order->getKd();
 
     echo json_encode($data);
   }
 
+  public function getOrder()
+  {
+    header('Content-Type: application/json');
+
+    echo $this->Order->getData();
+  }
+
+  public function getDataKd()
+  {
+    $kd   = $this->input->post('kd');
+    $data = $this->Order->getDataByKd($kd);
+
+    echo json_encode($data);
+  }
+
+  public function add()
+  {
+    $noorder      = strtolower($this->input->post('ordernumber'));
+    $custid       = $this->input->post('custid');
+    // $namecust     = strtolower($this->input->post('namecust'));
+    $notelp       = $this->input->post('notelp');
+    $asal         = strtolower($this->input->post('asal'));
+    $tujuan       = strtolower($this->input->post('tujuan'));
+    $muatan       = strtolower($this->input->post('muatan'));
+    $keterangan   = strtolower($this->input->post('keterangan'));
+
+    $plat         = $this->input->post('plat');
+    // $platno       = strtolower($this->input->post('platno'));
+    $sopir        = $this->input->post('sopir');
+    // $namasopir    = strtolower($this->input->post('namasopir'));
+    $nominal      = preg_replace("/[^0-9\.]/", "", $this->input->post('nominal'));
+
+    $user         = $this->session->userdata('id');
+    $addAt        = date('Y-m-d H:i:s');
+
+    $dataorder = [
+      'no_order'      => $noorder,
+      'customer_id'   => $custid,
+      'asal_order'    => $asal,
+      'tujuan_order'  => $tujuan,
+      'kontak_order'  => $notelp,
+      'jenis_muatan'  => $muatan,
+      'keterangan'    => $keterangan,
+      'status_order'  => 'disiapkan',
+      'user_id'       => $user,
+      'dateAdd'       => $addAt,
+    ];
+
+    $datasangu = [
+      'no_order'      => strtolower($noorder),
+      'truck_id'      => $plat,
+      'sopir_id'      => $sopir,
+      'nominal'       => strtolower($nominal),
+      'user_id'       => $user,
+      'dateAdd'       => $addAt
+    ];
+
+    $response = $this->Order->addData($dataorder, $datasangu);
+
+    echo json_encode($response);
+  }
+
   public function update()
   {
-    $no = $this->input->post('noorder');
-    $this->Order->editData($no);
-    $this->session->set_flashdata('updated', 'Data berhasil diubah!');
-    redirect('order');
+    $noorder      = strtolower($this->input->post('ordernumber'));
+    $custid       = $this->input->post('custid');
+    // $namecust     = strtolower($this->input->post('namecust'));
+    $notelp       = $this->input->post('notelp');
+    $asal         = strtolower($this->input->post('asal'));
+    $tujuan       = strtolower($this->input->post('tujuan'));
+    $muatan       = strtolower($this->input->post('muatan'));
+    $keterangan   = strtolower($this->input->post('keterangan'));
+
+    $plat         = $this->input->post('plat');
+    // $platno       = strtolower($this->input->post('platno'));
+    $sopir        = $this->input->post('sopir');
+    // $namasopir    = strtolower($this->input->post('namasopir'));
+    $nominal      = preg_replace("/[^0-9\.]/", "", $this->input->post('nominal'));
+
+    $dataorder = [
+      'customer_id'   => $custid,
+      'asal_order'    => $asal,
+      'tujuan_order'  => $tujuan,
+      'kontak_order'  => $notelp,
+      'jenis_muatan'  => $muatan,
+      'keterangan'    => $keterangan,
+    ];
+
+    $datasangu = [
+      'truck_id'      => $plat,
+      'sopir_id'      => $sopir,
+      'nominal'       => strtolower($nominal),
+    ];
+
+    $where = [
+      'no_order' => $noorder
+    ];
+
+    $response = $this->Order->updateData($dataorder, $datasangu, $where);
+
+    echo json_encode($response);
   }
 
-  public function printOrder()
+  public function delete()
   {
-    $no = $this->input->post('noorderprint');
+    $kd = $this->input->post('kd');
 
+    $response = $this->Order->deleteData($kd);
+
+    echo json_encode($response);
+  }
+
+  public function print($kd)
+  {
     $this->load->library('pdf');
 
-    $data['title']    = 'Hira Express - Print Order';
-    $data['detail']   = $this->Order->getNoOrder($no);
+    $data = [
+      'title'   => 'Hira TO - Print Order',
+      'detail'  => $this->Order->printOrder($kd)
+    ];
 
+    // var_dump($this->Order->printOrder($kd));
+    // die;
     $this->pdf->generate('print/print-order', $data, 'Data-Order', 'A4', 'portrait');
-  }
-
-  public function delete($no)
-  {
-    $this->Order->deleteData($no);
-    $this->session->set_flashdata('deleted', 'Data berhasil dihapus!');
-    redirect('order');
   }
 }

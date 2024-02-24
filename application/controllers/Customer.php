@@ -52,6 +52,24 @@ class Customer extends CI_Controller
 		echo json_encode($data);
 	}
 
+	public function getListCustomer()
+	{
+		$keyword = $this->input->get('q');
+
+		$data = !$keyword ? $this->Customer->getListData() : $this->Customer->getSearchListData($keyword);
+
+		$response = [];
+		foreach ($data as $cust) {
+			$response[] = [
+				'id'    => $cust->id,
+				'text'  => ucwords($cust->nama),
+				'telp'  => ucwords($cust->notelp),
+			];
+		}
+
+		echo json_encode($response);
+	}
+
 	public function add()
 	{
 		$nama 	= trim($this->input->post('nama'));
@@ -69,6 +87,33 @@ class Customer extends CI_Controller
 		$data = $this->Customer->addData($data);
 
 		echo json_encode($data);
+	}
+
+	public function addNewSelect()
+	{
+		$nama 	= trim($this->input->post('nama'));
+		$notelp = trim($this->input->post('notelp'));
+		$alamat	= trim($this->input->post('alamat'));
+		$addAt  = date('Y-m-d H:i:s');
+
+		$datacust = array(
+			'nama'  	=> strtolower($nama),
+			'notelp'  => $notelp,
+			'alamat'  => $alamat,
+			'dateAdd'	=> $addAt,
+		);
+
+		$this->Customer->addNewData($datacust);
+
+		$custid = $this->db->insert_id();
+
+		$response = [
+			'id'		=> $custid,
+			'text'  => ucwords($nama),
+			'telp'  => $notelp,
+		];
+
+		echo json_encode($response);
 	}
 
 	public function update()

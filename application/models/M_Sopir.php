@@ -27,6 +27,30 @@ class M_Sopir extends CI_Model
     return $this->db->get_where('sopir', ['id' => $id])->row();
   }
 
+  // for select2 and search
+  public function getListData()
+  {
+    $this->db->select('id, nama')
+      ->from('sopir')
+      ->order_by('nama', 'asc');
+
+    $res = $this->db->get()->result();
+
+    return $res;
+  }
+
+  public function getSearchListData($keyword)
+  {
+    $this->db->select('id, nama')
+      ->from('sopir')
+      ->like('nama', $keyword);
+
+    $res = $this->db->get()->result();
+
+    return $res;
+  }
+  // end for select2 and search
+
   public function addData($data)
   {
     return $this->db->insert('sopir', $data);

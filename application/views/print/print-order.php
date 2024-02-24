@@ -109,13 +109,13 @@
   <hr>
   <section class="intro">
     <div class="order-detail order-number">
-      <p class="f-upper">d.o : no. <?= $detail->no_order ?></p>
+      <p class="f-upper">no order. <?= $detail->no_order ?></p>
     </div>
     <div class="order-detail cust-data">
       <p>Semarang, <?= date('d-F-Y', strtotime($detail->dateAdd)) ?></p>
       <p>Kepada Yth :</p>
-      <p class="f-upper"><?= $detail->nama_cust ?></p>
-      <p>Di, <?= ucwords($detail->alamat_asal) ?></p>
+      <p class="f-upper"><?= $detail->nama_customer ?></p>
+      <p>Di, <?= ucwords($detail->asal_order) ?></p>
     </div>
   </section>
 
@@ -131,7 +131,7 @@
       <span class="fw-bold"><?= ucwords($detail->jenis_muatan) ?></span>
     </p>
     <p>Dengan tujuan ke :
-      <span class="fw-bold"><?= ucwords($detail->alamat_tujuan) ?></span>
+      <span class="fw-bold"><?= ucwords($detail->tujuan_order) ?></span>
     </p>
   </section>
 

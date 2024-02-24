@@ -1,14 +1,14 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-date_default_timezone_set('Asia/Jakarta');
 
 class M_Uangmakan extends CI_Model
 {
   public function getKd()
   {
-    $this->db->select('RIGHT(uang_makan.kd_um,3) as kd_um', FALSE);
-    $this->db->order_by('kd_um', 'DESC');
-    $this->db->limit(1);
+    $this->db->select('RIGHT(uang_makan.kd_um,3) as kd_um', FALSE)
+      ->order_by('kd_um', 'DESC')
+      ->limit(1);
+
     $query = $this->db->get('uang_makan');
     if ($query->num_rows() <> 0) {
       $data = $query->row();
@@ -16,8 +16,10 @@ class M_Uangmakan extends CI_Model
     } else {
       $kode = 1;
     }
-    $batas = str_pad($kode, 5, "0", STR_PAD_LEFT);
+
+    $batas      = str_pad($kode, 5, "0", STR_PAD_LEFT);
     $kodetampil = "um-" . $batas;
+
     return $kodetampil;
   }
 
