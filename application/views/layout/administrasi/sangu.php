@@ -18,22 +18,24 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <table id="sanguTables" class="table table-bordered table-striped" style="width:100%" cellspacing="0">
-                <thead class="text-center">
-                  <tr>
-                    <th>No.</th>
-                    <th>No Order</th>
-                    <th>Truck</th>
-                    <th>Sopir</th>
-                    <th>Nominal</th>
-                    <th>Tanggal</th>
-                    <th>Aksi</th>
-                  </tr>
-                </thead>
-                <tbody class="text-center">
+              <div class="table-responsive">
+                <table id="sanguTables" class="table table-bordered table-striped" style="width:100%" cellspacing="0">
+                  <thead class="text-center">
+                    <tr>
+                      <th>No.</th>
+                      <th>No Order</th>
+                      <th>Truck</th>
+                      <th>Sopir</th>
+                      <th>Nominal</th>
+                      <th>Tanggal</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-center">
 
-                </tbody>
-              </table>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>

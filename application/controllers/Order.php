@@ -52,6 +52,29 @@ class Order extends CI_Controller
     echo json_encode($data);
   }
 
+  public function getListOrder()
+  {
+    $keyword = $this->input->get('q');
+
+    $data = !$keyword ? $this->Order->getOrderDisiapkan() : $this->Order->getSearchOrderDisiapkan($keyword);
+
+    $response = [];
+    foreach ($data as $order) {
+      $response[] = [
+        'id'      => $order->id,
+        'text'    => strtoupper($order->no_order),
+        'cust'    => strtoupper($order->nama),
+        'asal'    => strtoupper($order->asal_order),
+        'tujuan'  => strtoupper($order->tujuan_order),
+        'muatan'  => strtoupper($order->jenis_muatan),
+        'ket'     => strtoupper($order->keterangan),
+        'tgl'     => date('d-m-Y', strtotime(($order->dateAdd))),
+      ];
+    }
+
+    echo json_encode($response);
+  }
+
   public function getDetail()
   {
     $kd   = $this->input->post('kd');

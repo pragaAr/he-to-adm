@@ -81,6 +81,8 @@
    <script src="<?= base_url('assets/') ?>dist/js/pages/trans/order.js"></script>
  <?php } else if ($this->uri->segment(1) == 'sangu') { ?>
    <script src="<?= base_url('assets/') ?>dist/js/pages/administrasi/sangu.js"></script>
+ <?php } else if ($this->uri->segment(1) == 'penjualan') { ?>
+   <script src="<?= base_url('assets/') ?>dist/js/pages/trans/penjualan.js"></script>
  <?php } ?>
 
  </body>

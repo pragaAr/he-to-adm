@@ -1,7 +1,4 @@
 <div class="content-wrapper">
-  <div class="inserted" data-flashdata="<?= $this->session->flashdata('inserted'); ?>"></div>
-  <div class="updated" data-flashdata="<?= $this->session->flashdata('updated'); ?>"></div>
-  <div class="deleted" data-flashdata="<?= $this->session->flashdata('deleted'); ?>"></div>
   <section class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
@@ -10,10 +7,10 @@
         </div>
         <div class="col-sm-6">
           <div class="breadcrumb float-sm-right">
-            <a href="" class="btn btn-dark" data-toggle="modal" data-target="#addPenjualan">
+            <button type="button" class="btn btn-dark border border-light" id="addPenjualan">
               <i class=" fas fa-plus"></i>
               Tambah
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -26,52 +23,27 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <table id="dtable" class="table table-bordered table-striped">
-                <thead class="text-center">
-                  <tr>
-                    <th>No.</th>
-                    <th>No Order</th>
-                    <th>Jenis</th>
-                    <th>Pengirim</th>
-                    <th>Penerima</th>
-                    <th>Muatan</th>
-                    <th>Pembayaran</th>
-                    <th>Total</th>
-                    <th>Tanggal</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody class="text-center">
-                  <?php $no = 1;
-                  foreach ($sales as $data) : ?>
+              <div class="table-responsive">
+                <table id="salesTables" class="table table-bordered table-striped" style="width:100%" cellspacing="0">
+                  <thead class="text-center">
                     <tr>
-                      <td><?= $no ?>.</td>
-                      <td><?= strtoupper($data->no_order) ?></td>
-                      <td><?= strtoupper($data->jenis_penjualan) ?></td>
-                      <td><?= strtoupper($data->pengirim) ?>-<?= strtoupper($data->kota_asal) ?></td>
-                      <td><?= strtoupper($data->penerima) ?>-<?= strtoupper($data->kota_tujuan) ?></td>
-                      <td><?= strtoupper($data->muatan) ?></td>
-                      <td><?= strtoupper($data->pembayaran) ?></td>
-                      <td>Rp. <?= number_format($data->total_harga) ?></td>
-                      <td><?= date('d-m-Y', strtotime($data->dateAdd)) ?></td>
-                      <td>
-                        <div class="btn-group" role="group">
-                          <a href="" class="btn btn-sm btn-warning text-white btn-edit-penjualan" title="Edit" data-id="<?= $data->no_order ?>">
-                            <i class="fas fa-pencil-alt"></i>
-                          </a>
-                          <a href="<?= base_url('penjualan/printPenjualan/') . $data->no_order ?>" target="_blank" class="btn btn-sm btn-info text-white" title="Cetak">
-                            <i class="fas fa-print"></i>
-                          </a>
-                          <a href="<?= base_url('penjualan/delete/') . $data->no_order ?>" class="btn btn-sm btn-danger text-white btn-delete" title="Hapus">
-                            <i class="fas fa-trash"></i>
-                          </a>
-                        </div>
-                      </td>
+                      <th>No.</th>
+                      <th>No Order</th>
+                      <th>Jenis</th>
+                      <th>Pengirim</th>
+                      <th>Penerima</th>
+                      <th>Muatan</th>
+                      <th>Pembayaran</th>
+                      <th>Total</th>
+                      <th>Tanggal</th>
+                      <th>Actions</th>
                     </tr>
-                    <?php $no++ ?>
-                  <?php endforeach ?>
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody class="text-center" style="font-size:12px;">
+
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -80,95 +52,94 @@
   </section>
 </div>
 
-<!-- addPenjualan -->
-<form action="<?= base_url('penjualan') ?>" method="POST">
-  <div class="modal fade" id="addPenjualan" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-scrollable modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Tambah Penjualan</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body" style="padding: 2rem !important;">
+<!-- modalAddPenjualan -->
+<div class="modal fade" id="modalAddPenjualan" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Tambah Penjualan</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding:1rem 2rem;">
+        <form id="form_add">
           <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="noorderpenjualan">
+            <div class="form-group col-md-4">
+              <label for="noorder">
                 No Order
-                <span class="text-white">*</span>
               </label>
-              <select name="noorderpenjualan" id="noorderpenjualan" class="form-control select2" style="width:100%" required>
-                <option value="" selected disabled>-Pilih No Order-</option>
-                <?php foreach ($order as $data) : ?>
-                  <option value="<?= $data->no_order ?>"><?= strtoupper($data->no_order) ?></option>
-                <?php endforeach ?>
+              <select name="noorder" id="noorder" class="form-control select-noorder" style="width:100%" required>
+                <option value=""></option>
+
               </select>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
               <label for="tglorder">
                 Tanggal Order
-                <span class="text-white">*</span>
               </label>
-              <input type="text" class="form-control text-uppercase tglorder" name="tglorder" placeholder="Tanggal Order.." readonly>
+              <input type="text" class="form-control text-uppercase" name="tglorder" id="tglorder" placeholder="Tanggal Order.." readonly>
             </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
               <label for="pengirim">
-                Pengirim
-                <span class="text-white">*</span>
+                Customer Order
               </label>
-              <input type="text" class="form-control text-uppercase pengirim" name="pengirim" placeholder="Nama Pengirim.." readonly>
-            </div>
-            <div class="form-group col-md-6">
-              <label for="penerima">
-                Penerima
-                <span class="text-white">*</span>
-              </label>
-              <input name="penerima" class="form-control text-uppercase" placeholder="Nama Penerima.." required oninvalid="this.setCustomValidity('Nama Penerima wajib di isi!')" oninput="setCustomValidity('')">
+              <input type="text" class="form-control text-uppercase" name="pengirim" id="pengirim" placeholder="Nama Pengirim.." readonly>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col-md-4">
-              <label for="kotaasal">
-                Kota Asal
-                <span class="text-white">*</span>
+              <label for="asal">
+                Asal
               </label>
-              <input type="text" class="form-control text-uppercase kotaasal" name="kotaasal" placeholder="Kota Asal..">
-              <input type="hidden" class="form-control text-uppercase alamatpengirim" name="alamatpengirim" readonly>
-              <input type="hidden" class="form-control text-uppercase alamatpenerima" name="alamatpenerima" readonly>
+              <input type="text" class="form-control text-uppercase" name="asal" id="asal" placeholder="Asal.." readonly>
             </div>
             <div class="form-group col-md-4">
-              <label for="kotatujuan">
-                Kota Tujuan
-                <span class="text-white">*</span>
+              <label for="tujuan">
+                Tujuan
               </label>
-              <input type="text" class="form-control text-uppercase kotatujuan" name="kotatujuan" placeholder="Kota Tujuan..">
+              <input type="text" class="form-control text-uppercase" name="tujuan" id="tujuan" placeholder="Tujuan.." readonly>
             </div>
+            <div class="form-group col-md-4">
+              <label for="muatan">
+                Muatan
+              </label>
+              <input type="text" class="form-control text-uppercase" name="muatan" id="muatan" placeholder="Muatan.." readonly>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-lg-6">
+              <label for="alamatasal">
+                Alamat Asal
+              </label>
+              <input type="text" class="form-control text-uppercase" name="alamatasal" id="alamatasal" placeholder="Alamat Asal.." required autocomplete="off">
+            </div>
+            <div class="form-group col-lg-6">
+              <label for="alamattujuan">
+                Alamat Tujuan
+              </label>
+              <input type="text" class="form-control text-uppercase" name="alamattujuan" id="alamattujuan" placeholder="Alamat Tujuan.." required autocomplete="off">
+            </div>
+          </div>
+          <div class="form-row">
             <div class="form-group col-md-4">
               <label for="nosj">
                 No Surat Jalan
-                <span class="text-white">*</span>
               </label>
-              <input type="text" class="form-control text-uppercase nosj" name="nosj" placeholder="No Surat Jalan.." required>
+              <input type="text" class="form-control text-uppercase" name="nosj" id="nosj" placeholder="No Surat Jalan.." required autocomplete="off">
             </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="muatan">
-                Muatan
-                <span class="text-white">*</span>
+            <div class="form-group col-md-4">
+              <label for="penerima">
+                Penerima
               </label>
-              <input type="text" class="form-control text-uppercase muatan" name="muatan" placeholder="Muatan.." readonly>
+              <input name="penerima" id="penerima" class="form-control text-uppercase" placeholder="Nama Penerima.." required autocomplete="off" oninvalid="this.setCustomValidity('Nama Penerima wajib di isi!')" oninput="setCustomValidity('')">
             </div>
-            <div class="form-group col-md-6">
-              <label for="jenispenjualan">
+            <div class="form-group col-md-4">
+              <label for="jenis">
                 Jenis Penjualan
-                <span class="text-white">*</span>
               </label>
-              <select name="jenispenjualan" id="jenispenjualan" class="form-control text-uppercase" required>
-                <option value="" selected disabled>-Pilih Jenis Penjulan-</option>
+              <select name="jenis" id="jenis" class="form-control text-uppercase select-jenis" style="width:100%" required>
+                <option value=""></option>
                 <option value="borong">Borongan</option>
                 <option value="tonase">Tonase</option>
               </select>
@@ -178,57 +149,51 @@
             <div class="form-group col-md-6">
               <label for="berat">
                 Berat
-                <span class="text-white">*</span>
               </label>
               <input type="text" class="form-control text-uppercase" name="berat" id="berat" placeholder="Berat dalam Kilo.." readonly>
             </div>
             <div class="form-group col-md-6">
               <label for="tonase">
                 Harga Tonase
-                <span class="text-white">*</span>
               </label>
               <input name="tonase" id="tonase" class="form-control text-uppercase" placeholder="Harga Tonase.." readonly>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col-md-4" id="harga-borong">
-              <label for="borongan">
+              <label for="borong">
                 Harga Borong
-                <span class="text-white">*</span>
               </label>
-              <input name="borongan" id="borongan" class="form-control text-uppercase" placeholder="Harga Borong.." readonly>
+              <input name="borong" id="borong" class="form-control text-uppercase" placeholder="Harga Borong.." readonly>
             </div>
             <div class="form-group col-md-4" id="total-harga">
-              <label for="totalbiaya">
+              <label for="biaya">
                 Total Harga
-                <span class="text-white">*</span>
               </label>
-              <input name="totalbiaya" id="totalbiaya" class="form-control text-uppercase" placeholder="Total Harga.." readonly>
+              <input name="biaya" id="biaya" class="form-control text-uppercase" placeholder="Total Harga.." readonly>
             </div>
             <div class="form-group col-md-4">
               <label for="pembayaran">
                 Pembayaran
-                <span class="text-white">*</span>
               </label>
-              <select name="pembayaran" class="form-control text-uppercase" required>
-                <option value="" selected disabled>-Pilih Pembayaran-</option>
+              <select name="pembayaran" id="pembayaran" class="form-control text-uppercase select-pembayaran" style="width:100%" required>
+                <option value=""></option>
                 <option value="lunas">Lunas</option>
                 <option value="tempo">Tempo</option>
               </select>
             </div>
           </div>
-
-          <div>
-            <button type="submit" class="btn btn-dark float-right">
+          <div class="form-group">
+            <button type="submit" class="btn btn-dark border border-light float-right">
               Simpan
               <i class="fas fa-save-right ml-1"></i>
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>
-</form>
+</div>
 
 <!-- editPenjualan -->
 <form action="<?= base_url('penjualan/update') ?>" method="POST">
@@ -246,14 +211,12 @@
             <div class="form-group col-md-6">
               <label for="editnoorder">
                 No Order
-                <span class="text-white">*</span>
               </label>
               <input type="text" name="editnoorder" class="form-control text-uppercase editnoorder" readonly>
             </div>
             <div class="form-group col-md-6">
               <label for="edittglorder">
                 Tanggal Order
-                <span class="text-white">*</span>
               </label>
               <input type="text" class="form-control text-uppercase edittglorder" name="edittglorder" placeholder="Tanggal Order.." readonly>
             </div>
@@ -262,14 +225,12 @@
             <div class="form-group col-md-6">
               <label for="editpengirim">
                 Pengirim
-                <span class="text-white">*</span>
               </label>
               <input type="text" class="form-control text-uppercase editpengirim" name="editpengirim" placeholder="Nama Pengirim.." readonly>
             </div>
             <div class="form-group col-md-6">
               <label for="editpenerima">
                 Penerima
-                <span class="text-white">*</span>
               </label>
               <input name="editpenerima" class="form-control text-uppercase editpenerima" placeholder="Nama Penerima.." required oninvalid="this.setCustomValidity('Nama Penerima wajib di isi!')" oninput="setCustomValidity('')">
             </div>
@@ -278,14 +239,12 @@
             <div class="form-group col-md-4">
               <label for="editkotaasal">
                 Kota Asal
-                <span class="text-white">*</span>
               </label>
               <input type="text" class="form-control text-uppercase editkotaasal" name="editkotaasal" placeholder="Kota Asal..">
             </div>
             <div class="form-group col-md-4">
               <label for="editkotatujuan">
                 Kota Tujuan
-                <span class="text-white">*</span>
               </label>
               <input type="text" class="form-control text-uppercase editkotatujuan" name="editkotatujuan" placeholder="Kota Tujuan..">
               <input type="hidden" class="form-control text-uppercase editalamatpengirim" name="editalamatpengirim" readonly>
@@ -294,7 +253,6 @@
             <div class="form-group col-md-4">
               <label for="editnosj">
                 No Surat Jalan
-                <span class="text-white">*</span>
               </label>
               <input type="text" class="form-control text-uppercase editnosj" name="editnosj" placeholder="No Surat Jalan..">
             </div>
@@ -303,14 +261,12 @@
             <div class="form-group col-md-6">
               <label for="editmuatan">
                 Muatan
-                <span class="text-white">*</span>
               </label>
               <input type="text" class="form-control text-uppercase editmuatan" name="editmuatan" placeholder="Muatan.." readonly>
             </div>
             <div class="form-group col-md-6">
               <label for="editjenispenjualan">
                 Jenis Penjualan
-                <span class="text-white">*</span>
               </label>
               <select name="editjenispenjualan" id="editjenispenjualan" class="form-control text-uppercase editjenispenjualan" required>
                 <option value="" selected disabled>-Pilih Jenis Penjulan-</option>
@@ -323,14 +279,12 @@
             <div class="form-group col-md-6">
               <label for="editberat">
                 Berat
-                <span class="text-white">*</span>
               </label>
               <input type="text" class="form-control text-uppercase editberat" name="editberat" placeholder="Berat dalam Kilo.." readonly>
             </div>
             <div class="form-group col-md-6">
               <label for="edittonase">
                 Harga Tonase
-                <span class="text-white">*</span>
               </label>
               <input name="edittonase" id="edittonase" class="form-control text-uppercase edittonase" placeholder="Harga Tonase.." readonly>
             </div>
@@ -339,21 +293,18 @@
             <div class="form-group col-md-4" id="edit-harga-borong">
               <label for="editborongan">
                 Harga Borong
-                <span class="text-white">*</span>
               </label>
               <input name="editborongan" id="editborongan" class="form-control text-uppercase editborongan" placeholder="Harga Borong.." readonly>
             </div>
             <div class="form-group col-md-4" id="edit-total-harga">
               <label for="edittotalbiaya">
                 Total Harga
-                <span class="text-white">*</span>
               </label>
               <input name="edittotalbiaya" id="edittotalbiaya" class="form-control text-uppercase edittotalbiaya" placeholder="Total Harga.." readonly>
             </div>
             <div class="form-group col-md-4">
               <label for="editpembayaran">
                 Pembayaran
-                <span class="text-white">*</span>
               </label>
               <select name="editpembayaran" class="form-control text-uppercase editpembayaran" required>
                 <option value="" selected disabled>-Pilih Pembayaran-</option>

@@ -56,12 +56,28 @@ class M_Order extends CI_Model
     return $query;
   }
 
-  public function getDataPenjualanNull()
+  public function getOrderDisiapkan()
   {
-    $this->db->select('*');
-    $this->db->from('order_masuk');
-    $this->db->where('penjualanAdd =', null);
+    $this->db->select('om.id, om.no_order, om.asal_order, om.tujuan_order, om.jenis_muatan, om.status_order, om.keterangan, om.dateAdd, cust.nama')
+      ->from('order_masuk om')
+      ->where('om.status_order =', 'disiapkan')
+      ->join('customer cust', 'cust.id = om.customer_id');
+
     $query = $this->db->get()->result();
+
+    return $query;
+  }
+
+  public function getSearchOrderDisiapkan($keyword)
+  {
+    $this->db->select('om.id, om.no_order, om.asal_order, om.tujuan_order, om.jenis_muatan, om.status_order, om.keterangan, om.dateAdd, cust.nama')
+      ->from('order_masuk om')
+      ->where('om.status_order =', 'disiapkan')
+      ->join('customer cust', 'cust.id = om.customer_id')
+      ->like('om.no_order', $keyword);;
+
+    $query = $this->db->get()->result();
+
     return $query;
   }
 

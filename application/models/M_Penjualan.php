@@ -1,12 +1,26 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-date_default_timezone_set('Asia/Jakarta');
 
 class M_Penjualan extends CI_Model
 {
   public function getData()
   {
-    return $this->db->get('penjualan')->result();
+    $this->datatables->select('id, no_order, no_sj, jenis, muatan, berat, hrg_borong, hrg_kg, pengirim, kota_asal, alamat_asal, penerima, kota_tujuan, alamat_tujuan, total_hrg, pembayaran, dateAdd')
+      ->from('penjualan')
+      ->add_column(
+        'view',
+        '<div class="btn-group" role="group">
+         <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-kd="$2" data-toggle="tooltip" title="Detail">
+            <i class="fas fa-eye fa-sm"></i>
+          </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-kd="$2" data-toggle="tooltip" title="Edit">
+            <i class="fas fa-pencil-alt fa-sm"></i>
+          </a>
+        </div>',
+        'id, no_order, no_sj, jenis, muatan, berat, hrg_borong, hrg_kg, pengirim, kota_asal, alamat_asal, penerima, kota_tujuan, alamat_tujuan, total_hrg, pembayaran, dateAdd'
+      );
+
+    return $this->datatables->generate();
   }
 
   public function countData()
@@ -76,55 +90,8 @@ class M_Penjualan extends CI_Model
   }
 
 
-  public function addData()
+  public function addData($data, $dataorder, $where)
   {
-    $userid           = $this->session->userdata('id_user');
-
-    $noorder          = $this->input->post('noorderpenjualan');
-    $nosj             = trim($this->input->post('nosj'));
-    $jenisnota        = $this->input->post('jenispenjualan');
-    $jenisbarng       = $this->input->post('muatan');
-    $beratbrg         = $this->input->post('berat');
-    $hrgborong        = preg_replace("/[^0-9\.]/", "", $this->input->post('borongan'));
-    $hrgton           = preg_replace("/[^0-9\.]/", "", $this->input->post('tonase'));
-    $pengirim         = $this->input->post('pengirim');
-    $kotaasal         = trim($this->input->post('kotaasal'));
-    $alamatpengirim   = trim($this->input->post('alamatpengirim'));
-    $penerima         = trim($this->input->post('penerima'));
-    $kotatujuan       = trim($this->input->post('kotatujuan'));
-    $alamatpenerima   = trim($this->input->post('alamatpenerima'));
-    $totalbiaya       = preg_replace("/[^0-9\.]/", "", $this->input->post('totalbiaya'));
-    $pembayaran       = $this->input->post('pembayaran');
-    $dateAdd          = date('Y-m-d H:i:s');
-
-    $data = array(
-      'no_order'            => strtolower($noorder),
-      'surat_jalan'         => strtolower($nosj),
-      'jenis_penjualan'     => strtolower($jenisnota),
-      'muatan'              => strtolower($jenisbarng),
-      'berat'               => strtolower($beratbrg),
-      'harga_borong'        => $hrgborong,
-      'harga_kg'            => $hrgton,
-      'pengirim'            => strtolower($pengirim),
-      'kota_asal'           => strtolower($kotaasal),
-      'alamat_asal'         => strtolower($alamatpengirim),
-      'penerima'            => strtolower($penerima),
-      'kota_tujuan'         => strtolower($kotatujuan),
-      'alamat_tujuan'       => strtolower($alamatpenerima),
-      'total_harga'         => $totalbiaya,
-      'pembayaran'          => strtolower($pembayaran),
-      'user_id'             => $userid,
-      'dateAdd'             => $dateAdd,
-    );
-
-    $dataorder = array(
-      'penjualanAdd'    => $dateAdd,
-    );
-
-    $where = array(
-      'no_order'    => $noorder
-    );
-
     $this->db->update('order_masuk', $dataorder, $where);
     $this->db->insert('penjualan', $data);
   }
