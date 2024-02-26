@@ -29,7 +29,7 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="<?= base_url('assets/') ?>dist/css/adminlte.min.css">
 
-  <link rel="stylesheet" href="<?= base_url('assets/') ?>dist/css/custom-input.css">
+  <link rel="stylesheet" href="<?= base_url('assets/') ?>dist/css/custom.css">
 </head>
 
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">

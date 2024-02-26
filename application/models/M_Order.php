@@ -23,6 +23,9 @@ class M_Order extends CI_Model
           <a href="http://localhost/hira-to-adm/order/print/$2" target="_blank" class="btn btn-sm btn-info text-white border border-light btn-print" data-kd="$2" data-toggle="tooltip" title="Cetak">
             <i class="fas fa-print fa-sm"></i>
           </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-kd="$2" data-toggle="tooltip" title="Detail">
+            <i class="fas fa-eye fa-sm"></i>
+          </a>
           <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-kd="$2" data-toggle="tooltip" title="Edit">
             <i class="fas fa-pencil-alt fa-sm"></i>
           </a>
@@ -62,18 +65,9 @@ class M_Order extends CI_Model
     return $query;
   }
 
-  public function getOrderNo($no)
-  {
-    $this->db->select('*');
-    $this->db->from('order_masuk');
-    $this->db->where('order_masuk.no_order', $no);
-    $query = $this->db->get()->row();
-    return $query;
-  }
-
   public function printOrder($kd)
   {
-    $this->db->select('om.id as order_id, om.no_order, om.asal_order, om.tujuan_order, om.kontak_order, om.jenis_muatan, om.keterangan, om.dateAdd, cust.nama as nama_customer, ar.platno, so.nama as nama_sopir')
+    $this->db->select('om.id as order_id, om.no_order, om.asal_order, om.tujuan_order, om.kontak_order, om.jenis_muatan, om.keterangan, om.dateAdd, cust.nama as nama_customer, ss.nominal, ss.tambahan, ar.platno, so.nama as nama_sopir')
       ->from('order_masuk om')
       ->where('om.no_order', $kd)
       ->join('customer cust', 'cust.id = om.customer_id')
@@ -101,7 +95,7 @@ class M_Order extends CI_Model
   public function deleteData($kd)
   {
     $this->db->delete('order_masuk', ['no_order' => $kd]);
-    $this->db->delete('sangu_opir', ['no_order' => $kd]);
+    $this->db->delete('sangu_sopir', ['no_order' => $kd]);
 
     $this->db->select('no_order')
       ->from('penjualan')

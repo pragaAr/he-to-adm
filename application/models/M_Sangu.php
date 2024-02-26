@@ -1,15 +1,40 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-date_default_timezone_set('Asia/Jakarta');
 
 class M_Sangu extends CI_Model
 {
   public function getData()
   {
-    $this->db->select('*');
-    $this->db->from('sangu_order');
-    $this->db->join('sopir', 'sopir.id_sopir = sangu_order.sopir_id');
-    $res = $this->db->get()->result();
+    $this->datatables->select('ss.id, ss.no_order, ss.nominal, ss.tambahan, ss.dateAdd, s.nama, ar.platno')
+      ->from('sangu_sopir ss')
+      ->join('sopir s', 's.id = ss.sopir_id')
+      ->join('armada ar', 'ar.id = ss.truck_id')
+      ->add_column(
+        'view',
+        '<div class="btn-group" role="group">
+         <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-kd="$2" data-toggle="tooltip" title="Detail">
+            <i class="fas fa-eye fa-sm"></i>
+          </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-kd="$2" data-toggle="tooltip" title="Edit">
+            <i class="fas fa-pencil-alt fa-sm"></i>
+          </a>
+        </div>',
+        'id, no_order, platno, nama, nominal, dateAdd'
+      );
+
+    return $this->datatables->generate();
+  }
+
+  public function getDataByKd($kd)
+  {
+    $this->db->select('ss.id, ss.no_order, ss.nominal, ss.tambahan, ar.platno, s.nama')
+      ->from('sangu_sopir ss')
+      ->where('ss.no_order', $kd)
+      ->join('sopir s', 's.id = ss.sopir_id')
+      ->join('armada ar', 'ar.id = ss.truck_id');
+
+    $res = $this->db->get()->row();
+
     return $res;
   }
 
@@ -34,28 +59,8 @@ class M_Sangu extends CI_Model
     return $res;
   }
 
-  public function editData($no)
+  public function editData($data, $where)
   {
-    $platno     = trim($this->input->post('platno'));
-    $supir      = trim($this->input->post('sopir'));
-    $asal       = trim($this->input->post('asal'));
-    $tujuan     = trim($this->input->post('tujuan'));
-    $nominal    = preg_replace("/[^0-9\.]/", "", $this->input->post('nominal'));
-    $tambahan   = preg_replace("/[^0-9\.]/", "", $this->input->post('tambahan'));
-    $user       = $this->session->userdata('id_user');
-
-    $data = array(
-      'platno'        => strtolower($platno),
-      'sopir_id'      => $supir,
-      'kota_asal'     => strtolower($asal),
-      'kota_tujuan'   => strtolower($tujuan),
-      'nominal'       => $nominal,
-      'tambahan'      => $tambahan,
-      'user_id'       => $user,
-    );
-
-    $where = array('no_order' => $no);
-
-    $this->db->update('sangu_order', $data, $where);
+    return $this->db->update('sangu_sopir', $data, $where);
   }
 }

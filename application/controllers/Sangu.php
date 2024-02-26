@@ -1,14 +1,17 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+date_default_timezone_set('Asia/Jakarta');
+
 class Sangu extends CI_Controller
 {
   public function __construct()
   {
     parent::__construct();
+    $this->load->library('datatables');
+
+    $this->load->model('M_Order', 'Order');
     $this->load->model('M_Sangu', 'Sangu');
-    $this->load->model('M_Sopir', 'Sopir');
-    $this->load->model('M_Armada', 'Armada');
 
     if (empty($this->session->userdata('id'))) {
       $this->session->set_flashdata('flashrole', 'Silahkan Login terlebih dahulu!');
@@ -19,9 +22,6 @@ class Sangu extends CI_Controller
   public function index()
   {
     $data['title']  = 'Data Sangu';
-    $data['sangu']  = $this->Sangu->getData();
-    $data['sopir']  = $this->Sopir->getData();
-    $data['truck']  = $this->Armada->getData();
 
     $this->load->view('layout/template/header', $data);
     $this->load->view('layout/template/navbar');
@@ -30,26 +30,46 @@ class Sangu extends CI_Controller
     $this->load->view('layout/template/footer');
   }
 
-  public function getNoOrder()
+  public function getSangu()
   {
-    $no   = $this->input->post('no_order');
-    $data = $this->Sangu->getNoOrder($no);
+    header('Content-Type: application/json');
+
+    echo $this->Sangu->getData();
+  }
+
+  public function getDataKd()
+  {
+    $kd   = $this->input->post('kd');
+
+    $data = $this->Sangu->getDataByKd($kd);
+
+    echo json_encode($data);
+  }
+
+  public function getDetail()
+  {
+    $kd   = $this->input->post('kd');
+
+    $data = $this->Order->printOrder($kd);
 
     echo json_encode($data);
   }
 
   public function update()
   {
-    $no = $this->input->post('noorder');
-    $this->Sangu->editData($no);
-    $this->session->set_flashdata('updated', 'Data berhasil diubah!');
-    redirect('sangu');
-  }
+    $noorder  = $this->input->post('noorder');
+    $tambahan = $this->input->post('tambahan');
 
-  public function delete($id)
-  {
-    $this->Sangu->deleteData($id);
-    $this->session->set_flashdata('deleted', 'Data berhasil dihapus!');
-    redirect('sangu');
+    $data = [
+      'tambahan' => $tambahan
+    ];
+
+    $where = [
+      'no_order' => $noorder
+    ];
+
+    $response = $this->Sangu->editData($data, $where);
+
+    echo json_encode($response);
   }
 }

@@ -3,6 +3,7 @@
   <div class="updated" data-flashdata="<?= $this->session->flashdata('updated'); ?>"></div>
   <div class="deleted" data-flashdata="<?= $this->session->flashdata('deleted'); ?>"></div>
   <section class="content-header">
+
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
@@ -319,18 +320,18 @@
   </div>
 </form>
 
-<!-- detailOrder -->
-<!-- <form action="<?= base_url('order/printOrder') ?>" method="post">
-  <div class="modal fade" id="detailOrder" data-backdrop="static">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Detail Data</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body" style="padding: 2rem !important;">
+<!-- modalDetailOrder -->
+<div class="modal fade" id="modalDetailOrder" data-backdrop="static">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Detail Data</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="form_detail" method="post">
           <div class="row">
             <div class="col-lg-12 col-md-12">
               <h5>Data Order</h5>
@@ -341,6 +342,7 @@
                       <th>No Order</th>
                       <th>Muatan</th>
                       <th>Customer</th>
+                      <th>Kontak</th>
                       <th>Asal</th>
                       <th>Tujuan</th>
                       <th>Tanggal</th>
@@ -350,10 +352,11 @@
                     <tr class="text-uppercase">
                       <td class="noorder"></td>
                       <td class="muatan"></td>
-                      <td class="namacust"></td>
-                      <td class="alamatasal"></td>
-                      <td class="alamattujuan"></td>
-                      <td class="tanggal"></td>
+                      <td class="cust"></td>
+                      <td class="kontak"></td>
+                      <td class="asal"></td>
+                      <td class="tujuan"></td>
+                      <td class="tgl"></td>
                     </tr>
                   </tbody>
                 </table>
@@ -369,8 +372,6 @@
                       <th>No Order</th>
                       <th>Truck</th>
                       <th>Supir</th>
-                      <th>Kota Asal</th>
-                      <th>Kota Tujuan</th>
                       <th>Nominal</th>
                     </tr>
                   </thead>
@@ -379,9 +380,7 @@
                       <td class="noorder"></td>
                       <td class="truck"></td>
                       <td class="supir"></td>
-                      <td class="kotaasal"></td>
-                      <td class="kotatujuan"></td>
-                      <td class="nominalsangu"></td>
+                      <td class="nominal"></td>
                     </tr>
                   </tbody>
                 </table>
@@ -391,19 +390,17 @@
           </div>
           <div class="row">
             <div class="col-lg-12 col-md-12">
-              <input type="hidden" name="noorderprint" class="form-control noorderprint">
-
-              <button type="submit" formtarget="_blank" class="btn btn-dark float-right">
+              <a href="" type="button" target="_blank" id="btnDetail" class="btn btn-primary border border-light float-right">
                 <i class="fas fa-print"></i>
                 Cetak
-              </button>
+              </a>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>
-</form> -->
+</div>
 
 <!-- modalAddNewCust -->
 <div class="modal fade" id="modalAddNewCust" data-backdrop="static" style="z-index: 1060;">

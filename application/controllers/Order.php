@@ -10,10 +10,7 @@ class Order extends CI_Controller
     parent::__construct();
     $this->load->library('datatables');
 
-    $this->load->model('M_Armada', 'Armada');
-    $this->load->model('M_Customer', 'Cust');
     $this->load->model('M_Order', 'Order');
-    $this->load->model('M_Sopir', 'Sopir');
 
     if (empty($this->session->userdata('id'))) {
       $this->session->set_flashdata('flashrole', 'Silahkan Login terlebih dahulu!');
@@ -49,7 +46,17 @@ class Order extends CI_Controller
   public function getDataKd()
   {
     $kd   = $this->input->post('kd');
+
     $data = $this->Order->getDataByKd($kd);
+
+    echo json_encode($data);
+  }
+
+  public function getDetail()
+  {
+    $kd   = $this->input->post('kd');
+
+    $data = $this->Order->printOrder($kd);
 
     echo json_encode($data);
   }
@@ -88,12 +95,13 @@ class Order extends CI_Controller
     ];
 
     $datasangu = [
-      'no_order'      => strtolower($noorder),
-      'truck_id'      => $plat,
-      'sopir_id'      => $sopir,
-      'nominal'       => strtolower($nominal),
-      'user_id'       => $user,
-      'dateAdd'       => $addAt
+      'no_order'  => strtolower($noorder),
+      'truck_id'  => $plat,
+      'sopir_id'  => $sopir,
+      'nominal'   => strtolower($nominal),
+      'tambahan'  => '0',
+      'user_id'   => $user,
+      'dateAdd'   => $addAt
     ];
 
     $response = $this->Order->addData($dataorder, $datasangu);
@@ -128,9 +136,9 @@ class Order extends CI_Controller
     ];
 
     $datasangu = [
-      'truck_id'      => $plat,
-      'sopir_id'      => $sopir,
-      'nominal'       => strtolower($nominal),
+      'truck_id'  => $plat,
+      'sopir_id'  => $sopir,
+      'nominal'   => strtolower($nominal),
     ];
 
     $where = [
@@ -160,8 +168,6 @@ class Order extends CI_Controller
       'detail'  => $this->Order->printOrder($kd)
     ];
 
-    // var_dump($this->Order->printOrder($kd));
-    // die;
     $this->pdf->generate('print/print-order', $data, 'Data-Order', 'A4', 'portrait');
   }
 }

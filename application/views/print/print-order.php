@@ -10,7 +10,7 @@
   <style>
     body {
       box-sizing: border-box;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: 'Times New Roman', Times, serif;
       margin-top: 25px;
       margin-left: 50px;
       margin-right: 50px;

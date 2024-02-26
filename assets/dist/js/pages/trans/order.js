@@ -662,6 +662,40 @@ $("#form_updateOrder").on("submit", function (e) {
   return false;
 });
 
+$("#orderTables").on("click", ".btn-detail", function () {
+  const kd = $(this).data("kd");
+
+  $.ajax({
+    url: "http://localhost/hira-to-adm/order/getDetail",
+    type: "POST",
+    dataType: "json",
+    data: {
+      kd: kd,
+    },
+    success: function (data) {
+      console.log(data);
+      $("#btnDetail").attr(
+        "href",
+        "http://localhost/hira-to-adm/order/print/" + data.no_order
+      );
+
+      $(".noorder").text(data.no_order);
+      $(".muatan").text(data.jenis_muatan);
+      $(".cust").text(data.nama_customer);
+      $(".kontak").text(data.kontak_order);
+      $(".asal").text(data.asal_order);
+      $(".tujuan").text(data.tujuan_order);
+      $(".tgl").text(data.dateAdd);
+
+      $(".truck").text(data.platno);
+      $(".supir").text(data.nama_sopir);
+      $(".nominal").text("Rp. " + format(data.nominal));
+
+      $("#modalDetailOrder").modal("show");
+    },
+  });
+});
+
 $("#orderTables").on("click", ".btn-delete", function () {
   const kd = $(this).data("kd");
 

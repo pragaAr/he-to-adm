@@ -22,6 +22,21 @@
   line-height: 38px;
 } */
 
+::-webkit-scrollbar {
+  width: 0.7rem;
+  border-radius: 0.5rem;
+  background-color: #51585f;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #8a8e8f;
+
+  border-radius: 0.5rem;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #b9bcbe;
+}
+
 .input-group {
   display: flex;
   flex-wrap: nowrap;

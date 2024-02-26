@@ -79,6 +79,8 @@
    <script src="<?= base_url('assets/') ?>dist/js/pages/administrasi/update-uangmakan.js"></script>
  <?php } else if ($this->uri->segment(1) == 'order') { ?>
    <script src="<?= base_url('assets/') ?>dist/js/pages/trans/order.js"></script>
+ <?php } else if ($this->uri->segment(1) == 'sangu') { ?>
+   <script src="<?= base_url('assets/') ?>dist/js/pages/administrasi/sangu.js"></script>
  <?php } ?>
 
  </body>
