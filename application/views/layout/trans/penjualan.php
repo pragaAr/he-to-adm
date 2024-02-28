@@ -29,17 +29,16 @@
                     <tr>
                       <th>No.</th>
                       <th>No Order</th>
+                      <th>Surat Jalan</th>
                       <th>Jenis</th>
                       <th>Pengirim</th>
-                      <th>Penerima</th>
                       <th>Muatan</th>
-                      <th>Pembayaran</th>
                       <th>Total</th>
-                      <th>Tanggal</th>
-                      <th>Actions</th>
+                      <th>Tgl</th>
+                      <th>Aksi</th>
                     </tr>
                   </thead>
-                  <tbody class="text-center" style="font-size:12px;">
+                  <tbody class="text-center">
 
                   </tbody>
                 </table>
@@ -140,8 +139,8 @@
               </label>
               <select name="jenis" id="jenis" class="form-control text-uppercase select-jenis" style="width:100%" required>
                 <option value=""></option>
-                <option value="borong">Borongan</option>
-                <option value="tonase">Tonase</option>
+                <option value="borong">BORONGAN</option>
+                <option value="tonase">TONASE</option>
               </select>
             </div>
           </div>
@@ -178,8 +177,8 @@
               </label>
               <select name="pembayaran" id="pembayaran" class="form-control text-uppercase select-pembayaran" style="width:100%" required>
                 <option value=""></option>
-                <option value="lunas">Lunas</option>
-                <option value="tempo">Tempo</option>
+                <option value="lunas">LUNAS</option>
+                <option value="tempo">TEMPO</option>
               </select>
             </div>
           </div>
@@ -195,132 +194,221 @@
   </div>
 </div>
 
-<!-- editPenjualan -->
-<form action="<?= base_url('penjualan/update') ?>" method="POST">
-  <div class="modal fade" id="editPenjualan" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-scrollable modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Update Penjualan</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body" style="padding: 2rem !important;">
+<!-- modalUpdatePenjualan -->
+<div class="modal fade" id="modalUpdatePenjualan" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Update Penjualan</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding:1rem 2rem;">
+        <form id="form_update">
           <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="editnoorder">
+            <div class="form-group col-md-4">
+              <label for="noorderedit">
                 No Order
               </label>
-              <input type="text" name="editnoorder" class="form-control text-uppercase editnoorder" readonly>
+              <input type="hidden" class="form-control" name="penjualanid" id="penjualanid" readonly>
+              <input type="text" class="form-control text-uppercase" name="noorderedit" id="noorderedit" placeholder="No Order.." readonly>
             </div>
-            <div class="form-group col-md-6">
-              <label for="edittglorder">
+            <div class="form-group col-md-4">
+              <label for="tglorderedit">
                 Tanggal Order
               </label>
-              <input type="text" class="form-control text-uppercase edittglorder" name="edittglorder" placeholder="Tanggal Order.." readonly>
+              <input type="text" class="form-control text-uppercase" name="tglorderedit" id="tglorderedit" placeholder="Tanggal Order.." readonly>
             </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="editpengirim">
-                Pengirim
+            <div class="form-group col-md-4">
+              <label for="pengirimedit">
+                Customer Order
               </label>
-              <input type="text" class="form-control text-uppercase editpengirim" name="editpengirim" placeholder="Nama Pengirim.." readonly>
-            </div>
-            <div class="form-group col-md-6">
-              <label for="editpenerima">
-                Penerima
-              </label>
-              <input name="editpenerima" class="form-control text-uppercase editpenerima" placeholder="Nama Penerima.." required oninvalid="this.setCustomValidity('Nama Penerima wajib di isi!')" oninput="setCustomValidity('')">
+              <input type="text" class="form-control text-uppercase" name="pengirimedit" id="pengirimedit" placeholder="Nama Pengirim.." readonly>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col-md-4">
-              <label for="editkotaasal">
-                Kota Asal
+              <label for="asaledit">
+                Asal
               </label>
-              <input type="text" class="form-control text-uppercase editkotaasal" name="editkotaasal" placeholder="Kota Asal..">
+              <input type="text" class="form-control text-uppercase" name="asaledit" id="asaledit" placeholder="Asal.." readonly>
             </div>
             <div class="form-group col-md-4">
-              <label for="editkotatujuan">
-                Kota Tujuan
+              <label for="tujuanedit">
+                Tujuan
               </label>
-              <input type="text" class="form-control text-uppercase editkotatujuan" name="editkotatujuan" placeholder="Kota Tujuan..">
-              <input type="hidden" class="form-control text-uppercase editalamatpengirim" name="editalamatpengirim" readonly>
-              <input type="hidden" class="form-control text-uppercase editalamattujuan" name="editalamattujuan" readonly>
+              <input type="text" class="form-control text-uppercase" name="tujuanedit" id="tujuanedit" placeholder="Tujuan.." readonly>
             </div>
             <div class="form-group col-md-4">
-              <label for="editnosj">
-                No Surat Jalan
-              </label>
-              <input type="text" class="form-control text-uppercase editnosj" name="editnosj" placeholder="No Surat Jalan..">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="editmuatan">
+              <label for="muatanedit">
                 Muatan
               </label>
-              <input type="text" class="form-control text-uppercase editmuatan" name="editmuatan" placeholder="Muatan.." readonly>
-            </div>
-            <div class="form-group col-md-6">
-              <label for="editjenispenjualan">
-                Jenis Penjualan
-              </label>
-              <select name="editjenispenjualan" id="editjenispenjualan" class="form-control text-uppercase editjenispenjualan" required>
-                <option value="" selected disabled>-Pilih Jenis Penjulan-</option>
-                <option value="borong">Borongan</option>
-                <option value="tonase">Tonase</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-row" id="edit-berat-tonase">
-            <div class="form-group col-md-6">
-              <label for="editberat">
-                Berat
-              </label>
-              <input type="text" class="form-control text-uppercase editberat" name="editberat" placeholder="Berat dalam Kilo.." readonly>
-            </div>
-            <div class="form-group col-md-6">
-              <label for="edittonase">
-                Harga Tonase
-              </label>
-              <input name="edittonase" id="edittonase" class="form-control text-uppercase edittonase" placeholder="Harga Tonase.." readonly>
+              <input type="text" class="form-control text-uppercase" name="muatanedit" id="muatanedit" placeholder="Muatan.." readonly>
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group col-md-4" id="edit-harga-borong">
-              <label for="editborongan">
-                Harga Borong
+            <div class="form-group col-lg-6">
+              <label for="alamatasaledit">
+                Alamat Asal
               </label>
-              <input name="editborongan" id="editborongan" class="form-control text-uppercase editborongan" placeholder="Harga Borong.." readonly>
+              <input type="text" class="form-control text-uppercase" name="alamatasaledit" id="alamatasaledit" placeholder="Alamat Asal.." required autocomplete="off">
             </div>
-            <div class="form-group col-md-4" id="edit-total-harga">
-              <label for="edittotalbiaya">
-                Total Harga
+            <div class="form-group col-lg-6">
+              <label for="alamattujuanedit">
+                Alamat Tujuan
               </label>
-              <input name="edittotalbiaya" id="edittotalbiaya" class="form-control text-uppercase edittotalbiaya" placeholder="Total Harga.." readonly>
+              <input type="text" class="form-control text-uppercase" name="alamattujuanedit" id="alamattujuanedit" placeholder="Alamat Tujuan.." required autocomplete="off">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="nosjedit">
+                No Surat Jalan
+              </label>
+              <input type="text" class="form-control text-uppercase" name="nosjedit" id="nosjedit" placeholder="No Surat Jalan.." required autocomplete="off">
             </div>
             <div class="form-group col-md-4">
-              <label for="editpembayaran">
-                Pembayaran
+              <label for="penerimaedit">
+                Penerima
               </label>
-              <select name="editpembayaran" class="form-control text-uppercase editpembayaran" required>
-                <option value="" selected disabled>-Pilih Pembayaran-</option>
-                <option value="lunas">Lunas</option>
-                <option value="tempo">Tempo</option>
+              <input name="penerimaedit" id="penerimaedit" class="form-control text-uppercase" placeholder="Nama Penerima.." required autocomplete="off" oninvalid="this.setCustomValidity('Nama Penerima wajib di isi!')" oninput="setCustomValidity('')">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="jenisedit">
+                Jenis Penjualan
+              </label>
+              <select name="jenisedit" id="jenisedit" class="form-control text-uppercase select-jenisedit" style="width:100%" required>
+                <option value=""></option>
+                <option value="borong">BORONG</option>
+                <option value="tonase">TONASE</option>
               </select>
             </div>
           </div>
-          <div>
-            <button type="submit" class="btn btn-dark float-right">
+          <div class="form-row" id="berat-tonaseedit">
+            <div class="form-group col-md-6">
+              <label for="beratedit">
+                Berat
+              </label>
+              <input type="text" class="form-control text-uppercase" name="beratedit" id="beratedit" placeholder="Berat dalam Kilo.." readonly>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="tonaseedit">
+                Harga Tonase
+              </label>
+              <input name="tonaseedit" id="tonaseedit" class="form-control text-uppercase" placeholder="Harga Tonase.." readonly>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-4" id="harga-borongedit">
+              <label for="borongedit">
+                Harga Borong
+              </label>
+              <input name="borongedit" id="borongedit" class="form-control text-uppercase" placeholder="Harga Borong.." readonly>
+            </div>
+            <div class="form-group col-md-4" id="total-hargaedit">
+              <label for="biayaedit">
+                Total Harga
+              </label>
+              <input name="biayaedit" id="biayaedit" class="form-control text-uppercase" placeholder="Total Harga.." readonly>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="pembayaranedit">
+                Pembayaran
+              </label>
+              <select name="pembayaranedit" id="pembayaranedit" class="form-control text-uppercase select-pembayaranedit" style="width:100%" required>
+                <option value=""></option>
+                <option value="lunas">LUNAS</option>
+                <option value="tempo">TEMPO</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-dark border border-light float-right">
               Simpan
               <i class="fas fa-save-right ml-1"></i>
             </button>
           </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modalDetailPenjualan -->
+<div class="modal fade" id="modalDetailPenjualan" data-backdrop="static">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Detail Penjualan</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding:1rem 2rem;">
+        <div class="table-responsive">
+          <h5 class="font-weight-bold">Data Order</h5>
+          <div class="dropdown-divider"></div>
+          <table class="table table-bordered my-3" id="tableDetailOrder" style="width:100%" cellspacing="0">
+            <thead class="text-center">
+              <tr>
+                <th class="align-middle">Tanggal Order</th>
+                <th class="align-middle">No Order</th>
+                <th class="align-middle">Muatan</th>
+                <th class="align-middle">Customer Order</th>
+                <th class="align-middle">Asal</th>
+                <th class="align-middle">Tujuan</th>
+              </tr>
+            </thead>
+            <tbody class="text-center" id="tbodyDetailOrder">
+              <tr>
+                <td class="align-middle text-uppercase" id="dtTanggal"></td>
+                <td class="align-middle text-uppercase" id="dtNoOrder"></td>
+                <td class="align-middle text-uppercase" id="dtMuatan"></td>
+                <td class="align-middle text-uppercase" id="dtCustOrder"></td>
+                <td class="align-middle text-uppercase" id="dtAsal"></td>
+                <td class="align-middle text-uppercase" id="dtTujuan"></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h5 class="font-weight-bold">Data Penjualan</h5>
+          <div class="dropdown-divider"></div>
+
+          <table class="table table-bordered my-3" id="tableDetailPenjualan" style="width:100%" cellspacing="0">
+            <thead class="text-center">
+              <tr>
+                <th class="align-middle">Surat Jalan</th>
+                <th class="align-middle">Jenis Penjualan</th>
+                <th class="align-middle">Berat</th>
+                <th class="align-middle">Harga/Kg</th>
+                <th class="align-middle">Harga Borong</th>
+                <th class="align-middle">Alamat Asal</th>
+                <th class="align-middle">Alamat Tujuan</th>
+                <th class="align-middle">Penerima</th>
+                <th class="align-middle">Total Harga</th>
+              </tr>
+            </thead>
+            <tbody class="text-center" id="tbodyDetailPenjualan">
+              <tr>
+                <td class="align-middle text-uppercase" id="dtSj"></td>
+                <td class="align-middle text-uppercase" id="dtJenis"></td>
+                <td class="align-middle" id="dtBerat"></td>
+                <td class="align-middle" id="dtHrgKg"></td>
+                <td class="align-middle" id="dtHrgBorong"></td>
+                <td class="align-middle text-uppercase" id="dtAlamatAsal"></td>
+                <td class="align-middle text-uppercase" id="dtAlamatTujuan"></td>
+                <td class="align-middle text-uppercase" id="dtPenerima"></td>
+                <td class="align-middle" id="dtBiaya"></td>
+              </tr>
+              <tr>
+                <td colspan="4" class="align-middle text-uppercase">Status Pembayaran</td>
+                <td colspan="5" class="align-middle text-uppercase" id="dtStatusBayar"></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
   </div>
-</form>
+</div>

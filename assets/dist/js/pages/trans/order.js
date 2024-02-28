@@ -72,17 +72,22 @@ $("#orderTables").DataTable({
       },
     },
     {
-      data: "kontak_order",
+      data: "status_order",
       className: "text-center text-capitalize align-middle",
       render: function (data, type, row) {
-        return data == "" ? "-" : data;
-      },
-    },
-    {
-      data: "keterangan",
-      className: "text-center text-capitalize align-middle",
-      render: function (data, type, row) {
-        return data == "" ? "-" : data;
+        if (data == "diproses") {
+          return (
+            "<button type='button' class='btn btn-outline-light font-weight-bold text-success' style='cursor: default;'>" +
+            data.toUpperCase() +
+            "</button>"
+          );
+        } else if (data == "disiapkan") {
+          return (
+            "<button type='button' class='btn btn-outline-light font-weight-bold text-warning' style='cursor: default;'>" +
+            data.toUpperCase() +
+            "</button>"
+          );
+        }
       },
     },
     {
@@ -222,8 +227,6 @@ $("#modalAddOrder").on("shown.bs.modal", function () {
 });
 
 $("#modalAddSanguOrder").on("shown.bs.modal", function () {
-  $("#plat").focus();
-
   $(".select-truck")
     .select2({
       placeholder: "Pilih Truck",
@@ -679,19 +682,38 @@ $("#orderTables").on("click", ".btn-detail", function () {
         "http://localhost/hira-to-adm/order/print/" + data.no_order
       );
 
+      const formatedDate = new Date(data.dateAdd);
+
       $(".noorder").text(data.no_order);
       $(".muatan").text(data.jenis_muatan);
       $(".cust").text(data.nama_customer);
       $(".kontak").text(data.kontak_order);
       $(".asal").text(data.asal_order);
       $(".tujuan").text(data.tujuan_order);
-      $(".tgl").text(data.dateAdd);
+      $(".tgl").text(
+        formatedDate.toLocaleDateString("id-ID", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        })
+      );
 
       $(".truck").text(data.platno);
       $(".supir").text(data.nama_sopir);
       $(".nominal").text("Rp. " + format(data.nominal));
 
+      const tfoot = $("#tfoot_detailOrder");
+
+      if (data.keterangan == "") {
+        tfoot.css("display", "none");
+      } else {
+        tfoot.css("display", "table-footer-group");
+        $(".keterangan").text(data.keterangan);
+      }
+
       $("#modalDetailOrder").modal("show");
+
+      $('[data-toggle="tooltip"]').tooltip("hide");
     },
   });
 });

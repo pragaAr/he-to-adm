@@ -5,16 +5,28 @@ class M_Order extends CI_Model
 {
   public function getKd()
   {
-    $date = date('mdYHis');
-    $tr   = "orm-";
-    $kd   = $tr .  $date;
+    $this->db->select('RIGHT(order_masuk.no_order,3) as no_order', FALSE)
+      ->order_by('no_order', 'DESC')
+      ->limit(1);
 
-    return $kd;
+    $query = $this->db->get('order_masuk');
+
+    if ($query->num_rows() <> 0) {
+      $data = $query->row();
+      $kode = intval($data->no_order) + 1;
+    } else {
+      $kode = 1;
+    }
+
+    $batas = str_pad($kode, 5, "0", STR_PAD_LEFT);
+    $kodetampil = "orm-" . $batas;
+
+    return $kodetampil;
   }
 
   public function getData()
   {
-    $this->datatables->select('om.id, om.no_order, om.asal_order, om.tujuan_order, om.jenis_muatan, om.keterangan, om.kontak_order, om.dateAdd, cust.nama')
+    $this->datatables->select('om.id, om.no_order, om.asal_order, om.tujuan_order, om.jenis_muatan, om.status_order, om.dateAdd, cust.nama')
       ->from('order_masuk om')
       ->join('customer cust', 'cust.id = om.customer_id')
       ->add_column(
@@ -33,7 +45,7 @@ class M_Order extends CI_Model
             <i class="fas fa-trash fa-sm"></i>
           </a>
         </div>',
-        'id, no_order, asal_order, tujuan_order, jenis_muatan, keterangan, kontak_order, dateAdd, nama'
+        'id, no_order, asal_order, tujuan_order, jenis_muatan, status_order, dateAdd, nama'
       );
 
     return $this->datatables->generate();
@@ -42,6 +54,17 @@ class M_Order extends CI_Model
   public function countData()
   {
     return $this->db->get('order_masuk')->num_rows();
+  }
+
+  public function getOrderId($kd)
+  {
+    $this->db->select('id as order_id, no_order')
+      ->from('order_masuk ')
+      ->where('no_order', $kd);
+
+    $query = $this->db->get()->row();
+
+    return $query;
   }
 
   public function getDataByKd($kd)
@@ -73,6 +96,29 @@ class M_Order extends CI_Model
     $this->db->select('om.id, om.no_order, om.asal_order, om.tujuan_order, om.jenis_muatan, om.status_order, om.keterangan, om.dateAdd, cust.nama')
       ->from('order_masuk om')
       ->where('om.status_order =', 'disiapkan')
+      ->join('customer cust', 'cust.id = om.customer_id')
+      ->like('om.no_order', $keyword);;
+
+    $query = $this->db->get()->result();
+
+    return $query;
+  }
+
+  public function getOrderPenjualan()
+  {
+    $this->db->select('om.id, om.no_order, om.asal_order, om.tujuan_order, om.jenis_muatan, om.status_order, om.keterangan, om.dateAdd, cust.nama')
+      ->from('order_masuk om')
+      ->join('customer cust', 'cust.id = om.customer_id');
+
+    $query = $this->db->get()->result();
+
+    return $query;
+  }
+
+  public function getSearchOrderPenjualan($keyword)
+  {
+    $this->db->select('om.id, om.no_order, om.asal_order, om.tujuan_order, om.jenis_muatan, om.status_order, om.keterangan, om.dateAdd, cust.nama')
+      ->from('order_masuk om')
       ->join('customer cust', 'cust.id = om.customer_id')
       ->like('om.no_order', $keyword);;
 

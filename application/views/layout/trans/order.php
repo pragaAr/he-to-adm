@@ -37,8 +37,7 @@
                       <th>Asal</th>
                       <th>Tujuan</th>
                       <th>Muatan</th>
-                      <th>Kontak</th>
-                      <th>Ket</th>
+                      <th>Status</th>
                       <th>Tgl</th>
                       <th>Aksi</th>
                     </tr>
@@ -359,6 +358,12 @@
                       <td class="tgl"></td>
                     </tr>
                   </tbody>
+                  <tfoot id="tfoot_detailOrder">
+                    <tr>
+                      <th colspan="2">Keterangan</th>
+                      <td colspan="5" class="keterangan"></td>
+                    </tr>
+                  </tfoot>
                 </table>
               </div>
 

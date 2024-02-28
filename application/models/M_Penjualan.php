@@ -5,8 +5,9 @@ class M_Penjualan extends CI_Model
 {
   public function getData()
   {
-    $this->datatables->select('id, no_order, no_sj, jenis, muatan, berat, hrg_borong, hrg_kg, pengirim, kota_asal, alamat_asal, penerima, kota_tujuan, alamat_tujuan, total_hrg, pembayaran, dateAdd')
-      ->from('penjualan')
+    $this->datatables->select('p.id, om.no_order, p.no_sj, p.jenis, p.muatan, p.berat, p.hrg_borong, p.hrg_kg, p.pengirim, p.kota_asal, p.alamat_asal, p.penerima, p.kota_tujuan, p.alamat_tujuan, p.total_hrg, p.pembayaran, p.dateAdd')
+      ->from('penjualan p')
+      ->join('order_masuk om', 'om.id = p.order_id')
       ->add_column(
         'view',
         '<div class="btn-group" role="group">
@@ -16,11 +17,26 @@ class M_Penjualan extends CI_Model
           <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-kd="$2" data-toggle="tooltip" title="Edit">
             <i class="fas fa-pencil-alt fa-sm"></i>
           </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-kd="$2" data-toggle="tooltip" title="Hapus">
+            <i class="fas fa-trash fa-sm"></i>
+          </a>
         </div>',
         'id, no_order, no_sj, jenis, muatan, berat, hrg_borong, hrg_kg, pengirim, kota_asal, alamat_asal, penerima, kota_tujuan, alamat_tujuan, total_hrg, pembayaran, dateAdd'
       );
 
     return $this->datatables->generate();
+  }
+
+  public function getDataByKd($kd)
+  {
+    $this->db->select('p.id, om.id as id_order, om.no_order, p.no_sj, p.jenis, p.muatan, p.berat, p.hrg_borong, p.hrg_kg, p.pengirim, p.kota_asal, p.alamat_asal, p.penerima, p.kota_tujuan, p.alamat_tujuan, p.total_hrg, p.pembayaran, p.dateAdd')
+      ->from('penjualan p')
+      ->join('order_masuk om', 'om.id = p.order_id')
+      ->where('om.no_order', $kd);
+
+    $query = $this->db->get()->row();
+
+    return $query;
   }
 
   public function countData()
@@ -89,61 +105,33 @@ class M_Penjualan extends CI_Model
     return $query;
   }
 
-
   public function addData($data, $dataorder, $where)
   {
-    $this->db->update('order_masuk', $dataorder, $where);
     $this->db->insert('penjualan', $data);
-  }
-
-  public function editData($no)
-  {
-    $userid           = $this->session->userdata('id_user');
-    $nosj             = trim($this->input->post('editnosj'));
-    $jenisnota        = $this->input->post('editjenispenjualan');
-    $jenisbarng       = $this->input->post('editmuatan');
-    $beratbrg         = $this->input->post('editberat');
-    $hrgborong        = preg_replace("/[^0-9\.]/", "", $this->input->post('editborongan'));
-    $hrgton           = preg_replace("/[^0-9\.]/", "", $this->input->post('edittonase'));
-    $kotaasal         = trim($this->input->post('editkotaasal'));
-    $penerima         = trim($this->input->post('editpenerima'));
-    $kotatujuan       = trim($this->input->post('editkotatujuan'));
-    $totalbiaya       = preg_replace("/[^0-9\.]/", "", $this->input->post('edittotalbiaya'));
-    $pembayaran       = $this->input->post('editpembayaran');
-
-    $data = array(
-      'surat_jalan'         => strtolower($nosj),
-      'jenis_penjualan'     => strtolower($jenisnota),
-      'muatan'              => strtolower($jenisbarng),
-      'berat'               => strtolower($beratbrg),
-      'harga_borong'        => $hrgborong,
-      'harga_kg'            => $hrgton,
-      'kota_asal'           => strtolower($kotaasal),
-      'penerima'            => strtolower($penerima),
-      'kota_tujuan'         => strtolower($kotatujuan),
-      'total_harga'         => $totalbiaya,
-      'pembayaran'          => strtolower($pembayaran),
-      'user_id'             => $userid,
-    );
-
-    $where = array(
-      'no_order'    => $no
-    );
-
-    $this->db->update('penjualan', $data, $where);
-  }
-
-  public function deleteData($no)
-  {
-    $dataorder = array(
-      'penjualanAdd'    => null,
-    );
-
-    $where = array(
-      'no_order'    => $no
-    );
-
-    $this->db->delete('penjualan', ['no_order' => $no]);
     $this->db->update('order_masuk', $dataorder, $where);
+  }
+
+  public function editData($data, $dataorder, $where, $wherepenjualanid)
+  {
+    $this->db->update('penjualan', $data, $wherepenjualanid);
+    $this->db->update('order_masuk', $dataorder, $where);
+  }
+
+  public function deleteData($id, $no)
+  {
+    $dataorder = [
+      'status_order'  => 'disiapkan',
+    ];
+
+    $wherenoorder = [
+      'no_order' => $no
+    ];
+
+    $whereidorder = [
+      'order_id' => $id
+    ];
+
+    $this->db->delete('penjualan', $whereidorder);
+    $this->db->update('order_masuk', $dataorder, $wherenoorder);
   }
 }

@@ -44,6 +44,13 @@ $("#salesTables").DataTable({
       },
     },
     {
+      data: "no_sj",
+      className: "text-center align-middle",
+      render: function (data, type, row) {
+        return data.toUpperCase();
+      },
+    },
+    {
       data: "jenis",
       className: "text-center align-middle",
       render: function (data, type, row) {
@@ -58,21 +65,7 @@ $("#salesTables").DataTable({
       },
     },
     {
-      data: "penerima",
-      className: "text-center align-middle",
-      render: function (data, type, row) {
-        return data.toUpperCase();
-      },
-    },
-    {
-      data: "jenis_muatan",
-      className: "text-center align-middle",
-      render: function (data, type, row) {
-        return data.toUpperCase();
-      },
-    },
-    {
-      data: "pembayaran",
+      data: "muatan",
       className: "text-center align-middle",
       render: function (data, type, row) {
         return data.toUpperCase();
@@ -82,7 +75,11 @@ $("#salesTables").DataTable({
       data: "total_hrg",
       className: "text-center align-middle",
       render: function (data, type, row) {
-        return "Rp. " + format(data);
+        if (row.pembayaran == "tempo") {
+          return "<span class='text-warning'> Rp. " + format(data) + "</span>";
+        } else {
+          return "<span class='text-success'> Rp. " + format(data) + "</span>";
+        }
       },
     },
     {
@@ -154,7 +151,7 @@ $("#modalAddPenjualan").on("shown.bs.modal", function () {
 
   $(".select-noorder")
     .select2({
-      placeholder: "Pilih No Order",
+      placeholder: "PILIH NO ORDER",
       ajax: {
         url: "http://localhost/hira-to-adm/order/getListOrder",
         dataType: "json",
@@ -181,12 +178,22 @@ $("#modalAddPenjualan").on("shown.bs.modal", function () {
       $("#alamatasal").focus();
     });
 
-  $(".select-jenis").select2({
-    placeholder: "Pilih Jenis Penjualan",
-  });
+  $(".select-jenis")
+    .select2({
+      placeholder: "PILIH JENIS PENJUALAN",
+    })
+    .on("select2:select", function (e) {
+      let selected = e.params.data.id;
+
+      if (selected === "borong") {
+        $("#borong").focus();
+      } else if (selected === "tonase") {
+        $("#berat").focus();
+      }
+    });
 
   $(".select-pembayaran").select2({
-    placeholder: "Pilih Pembayaran",
+    placeholder: "PILIH PEMBAYARAN",
   });
 
   $("#jenis").on("change", function () {
@@ -200,7 +207,7 @@ $("#modalAddPenjualan").on("shown.bs.modal", function () {
       $("#berat").val("");
       $("#tonase").val("");
       $("#biaya").val("");
-      $("#borong").prop("readonly", false).focus();
+      $("#borong").prop("readonly", false);
     } else {
       $("#berat-tonase").css("display", "flex");
       $("#harga-borong").css("display", "none");
@@ -209,7 +216,7 @@ $("#modalAddPenjualan").on("shown.bs.modal", function () {
       $("#borong").val("");
       $("#biaya").val("");
       $("#borong").prop("readonly", true);
-      $("#berat").prop("readonly", false).focus();
+      $("#berat").prop("readonly", false);
       $("#tonase").prop("readonly", false);
     }
   });
@@ -286,6 +293,7 @@ $("#form_add").on("submit", function (e) {
     },
     success: function (data) {
       $("#noorder").val(null).trigger("change");
+      $("#textnoorder").val("");
       $("#tglorder").val("");
       $("#pengirim").val("");
       $("#asal").val("");
@@ -317,306 +325,237 @@ $("#form_add").on("submit", function (e) {
   return false;
 });
 
-$("#modalUpdateOrder").on("shown.bs.modal", function () {
-  $("#custidedit").focus();
+// ---------------------
+$("#modalUpdatePenjualan").on("shown.bs.modal", function () {
+  $("#alamatasaledit").focus();
 
-  $(".select-custedit")
-    .select2({
-      placeholder: "Pilih Customer",
-      ajax: {
-        url: "http://localhost/hira-to-adm/customer/getListCustomer",
-        dataType: "json",
-        data: function (params) {
-          return {
-            q: params.term,
-          };
-        },
-        processResults: function (data) {
-          return {
-            results: data,
-          };
-        },
-      },
-    })
-    .on("select2:select", function (e) {
-      const data = e.params.data;
-      $("#namecustedit").val(data.text);
-      $("#notelpedit").val(data.telp);
-
-      $("#muatan").focus();
-    });
-
-  $("#nextStepUpdateOrder").on("click", function () {
-    $("#modalUpdateOrder").modal("hide");
-    $("#modalEditSanguOrder").modal("show");
-  });
-
-  // addNewCustModal
-  $("#addNewCustEdit").on("click", function () {
-    $("#modalUpdateOrder").css("z-index", 1040);
-    $("#modalAddNewCust").modal("show");
-  });
-
-  $("#modalAddNewCust").on("hidden.bs.modal", function () {
-    $("#modalUpdateOrder").css("z-index", 1050);
-  });
-
-  $("#modalAddNewCust").on("shown.bs.modal", function () {
-    $("#namacust").focus();
-  });
-
-  $("#btn_submitNewCust").on("click", function (e) {
-    e.preventDefault();
-
-    const namacust = $("#namacust").val();
-    const notelpcust = $("#notelpcust").val();
-    const alamatcust = $("#alamatcust").val();
-
-    $.ajax({
-      url: "http://localhost/hira-to-adm/customer/addNewSelect",
-      method: "POST",
-      data: {
-        nama: namacust,
-        notelp: notelpcust,
-        alamat: alamatcust,
-      },
-      success: function (response) {
-        $("#namacust").val("");
-        $("#notelpcust").val("");
-        $("#alamatcust").val("");
-
-        $("#modalAddNewCust").modal("hide");
-
-        Swal.fire({
-          icon: "success",
-          title: "Success!",
-          text: "Customer Baru ditambahkan!",
-        });
-
-        const dataparse = JSON.parse(response);
-        const newOption = new Option(dataparse.text, dataparse.id, true, true);
-
-        $("#custidedit").append(newOption).trigger("change");
-
-        $("#namecustedit").val(dataparse.text);
-        $("#notelpedit").val(dataparse.telp);
-      },
-    });
-  });
-  // addNewCustModal
-});
-
-$("#modalEditSanguOrder").on("shown.bs.modal", function () {
-  $("#platedit").focus();
-
-  $(".select-truckedit")
-    .select2({
-      placeholder: "Pilih Truck",
-      ajax: {
-        url: "http://localhost/hira-to-adm/armada/getListArmada",
-        dataType: "json",
-        data: function (params) {
-          return {
-            q: params.term,
-          };
-        },
-        processResults: function (data) {
-          return {
-            results: data,
-          };
-        },
-      },
-    })
-    .on("select2:select", function (e) {
-      const data = e.params.data;
-      $("#platnoedit").val(data.text);
-    });
-
-  $(".select-sopiredit")
-    .select2({
-      placeholder: "Pilih Sopir",
-      ajax: {
-        url: "http://localhost/hira-to-adm/sopir/getListSopir",
-        dataType: "json",
-        data: function (params) {
-          return {
-            q: params.term,
-          };
-        },
-        processResults: function (data) {
-          return {
-            results: data,
-          };
-        },
-      },
-    })
-    .on("select2:select", function (e) {
-      const data = e.params.data;
-      $("#namasopiredit").val(data.text);
-    });
-
-  $("#nominaledit").on("keypress", function (key) {
+  $("#tonaseedit").on("keypress", function (key) {
     if (key.charCode < 48 || key.charCode > 57) return false;
   });
 
   $(function () {
-    $("#nominaledit").on("keydown keyup click change blur input", function (e) {
+    $("#tonaseedit").on("keydown keyup click change blur input", function (e) {
       $(this).val(format($(this).val()));
     });
   });
 
-  $("#backEditOrder").on("click", function () {
-    $("#modalEditSanguOrder").modal("hide");
-    $("#modalUpdateOrder").modal("show");
+  $("#borongedit").on("keypress", function (key) {
+    if (key.charCode < 48 || key.charCode > 57) return false;
   });
+
+  $(function () {
+    $("#borongedit").on("keydown keyup click change blur input", function (e) {
+      $(this).val(format($(this).val()));
+    });
+  });
+
+  $("#biayaedit").on("keypress", function (key) {
+    if (key.charCode < 48 || key.charCode > 57) return false;
+  });
+
+  $(function () {
+    $("#biayaedit").on("keydown keyup click change blur input", function (e) {
+      $(this).val(format($(this).val()));
+    });
+  });
+
+  $(".select-jenisedit")
+    .select2({
+      placeholder: "PILIH JENIS PENJUALAN",
+    })
+    .on("select2:select", function (e) {
+      let selected = e.params.data.id;
+
+      if (selected === "borong") {
+        $("#borongedit").focus();
+      } else if (selected === "tonase") {
+        $("#beratedit").focus();
+      }
+    });
+
+  $(".select-pembayaranedit").select2({
+    placeholder: "PILIH PEMBAYARAN",
+  });
+
+  $("#jenisedit").on("change", function () {
+    let selected = $(this).val();
+
+    if (selected == "borong") {
+      $("#berat-tonaseedit").css("display", "none");
+      $("#harga-borongedit").css("display", "block");
+      $("#total-hargaedit").removeClass("col-md-8");
+      $("#total-hargaedit").addClass("col-md-4");
+      $("#beratedit").prop("readonly", true);
+      $("#tonaseedit").prop("readonly", true);
+      $("#borongedit").prop("readonly", false);
+    } else if (selected == "tonase") {
+      $("#berat-tonaseedit").css("display", "flex");
+      $("#harga-borongedit").css("display", "none");
+      $("#total-hargaedit").removeClass("col-md-4");
+      $("#total-hargaedit").addClass("col-md-8");
+      $("#borongedit").prop("readonly", true);
+      $("#beratedit").prop("readonly", false);
+      $("#tonaseedit").prop("readonly", false);
+    }
+  });
+
+  $("#beratedit").on("input keyup change", function () {
+    $("#biayaedit").val(biayaTonaseEdit());
+  });
+
+  $("#tonaseedit").on("input keyup change", function () {
+    $("#biayaedit").val(biayaTonaseEdit());
+  });
+
+  $("#borongedit").on("input keyup change", function () {
+    $("#biayaedit").val(biayaBorongEdit());
+  });
+
+  function biayaTonaseEdit() {
+    let beratTonEdit = $("#beratedit").val();
+    let biayaTonEdit = $("#tonaseedit")
+      .val()
+      .replace(/[^\d.]/g, "");
+    let totTonEdit = biayaTonEdit * beratTonEdit;
+    return format(totTonEdit);
+  }
+
+  function biayaBorongEdit() {
+    let biayaEdit = $("#borongedit")
+      .val()
+      .replace(/[^\d.]/g, "");
+
+    let totEdit = biayaEdit;
+    return format(totEdit);
+  }
 });
+// ---------------------
 
 $("#salesTables").on("click", ".btn-edit", function (e) {
   const kd = $(this).data("kd");
 
   $.ajax({
-    url: "http://localhost/hira-to-adm/order/getDataKd",
+    url: "http://localhost/hira-to-adm/penjualan/getDataKd",
     type: "POST",
     data: {
       kd: kd,
     },
     success: function (data) {
       const parsedata = JSON.parse(data);
+      console.log(parsedata);
 
-      const custid = parsedata.customer_id;
-      const truckid = parsedata.truck_id;
-      const sopirid = parsedata.sopir_id;
+      const formatedDate = new Date(parsedata.dateAdd);
 
-      $("#ordernumberedit").val(parsedata.no_order);
-      $("#notelpedit").val(parsedata.kontak_order);
-      $("#muatanedit").val(parsedata.jenis_muatan);
-      $("#asaledit").val(parsedata.asal_order);
-      $("#tujuanedit").val(parsedata.tujuan_order);
-      $("#keteranganedit").val(parsedata.keterangan);
-      $("#nominaledit").val(format(parsedata.nominal));
+      $("#tglorderedit").val(
+        formatedDate.toLocaleDateString("id-ID", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        })
+      );
 
-      $.ajax({
-        url: "http://localhost/hira-to-adm/customer/getListCustomer",
-        type: "GET",
-        dataType: "json",
-        success: function (custData) {
-          const custedit = $(".select-custedit").select2({
-            placeholder: "Pilih Customer",
-            data: custData,
-          });
+      $("#penjualanid").val(parsedata.id);
+      $("#noorderedit").val(parsedata.no_order);
+      $("#pengirimedit").val(parsedata.pengirim);
+      $("#asaledit").val(parsedata.kota_asal);
+      $("#tujuanedit").val(parsedata.kota_tujuan);
+      $("#muatanedit").val(parsedata.muatan);
+      $("#alamatasaledit").val(parsedata.alamat_asal);
+      $("#alamattujuanedit").val(parsedata.alamat_tujuan);
+      $("#nosjedit").val(parsedata.no_sj);
+      $("#penerimaedit").val(parsedata.penerima);
+      $("#jenisedit").val(parsedata.jenis).trigger("change");
+      $("#beratedit").val(parsedata.berat);
+      $("#tonaseedit").val(format(parsedata.hrg_kg));
+      $("#borongedit").val(format(parsedata.hrg_borong));
+      $("#biayaedit").val(format(parsedata.total_hrg));
+      $("#pembayaranedit").val(parsedata.pembayaran).trigger("change");
 
-          $.each(custData, function (i, cust) {
-            if (cust.id === custid) {
-              custedit.val(cust.id).trigger("change");
-              return false;
-            }
-          });
-        },
-      });
+      if ($("#jenisedit").val() == "borong") {
+        $("#berat-tonaseedit").css("display", "none");
+        $("#harga-borongedit").css("display", "block");
+        $("#total-hargaedit").removeClass("col-md-8");
+        $("#total-hargaedit").addClass("col-md-4");
+        $("#beratedit").prop("readonly", true);
+        $("#tonaseedit").prop("readonly", true);
 
-      $.ajax({
-        url: "http://localhost/hira-to-adm/armada/getListArmada",
-        type: "GET",
-        dataType: "json",
-        success: function (truckData) {
-          const truckedit = $(".select-truckedit").select2({
-            placeholder: "Pilih Truck",
-            data: truckData,
-          });
+        $("#borongedit").prop("readonly", false);
+      } else if ($("#jenisedit").val() == "tonase") {
+        $("#berat-tonaseedit").css("display", "flex");
+        $("#harga-borongedit").css("display", "none");
+        $("#total-hargaedit").removeClass("col-md-4");
+        $("#total-hargaedit").addClass("col-md-8");
 
-          $.each(truckData, function (i, truck) {
-            if (truck.id === truckid) {
-              truckedit.val(truck.id).trigger("change");
-              return false;
-            }
-          });
-        },
-      });
+        $("#borongedit").prop("readonly", true);
+        $("#beratedit").prop("readonly", false);
+        $("#tonaseedit").prop("readonly", false);
+      }
 
-      $.ajax({
-        url: "http://localhost/hira-to-adm/sopir/getListSopir",
-        type: "GET",
-        dataType: "json",
-        success: function (sopirData) {
-          const sopiredit = $(".select-sopiredit").select2({
-            placeholder: "Pilih Sopir",
-            data: sopirData,
-          });
-
-          $.each(sopirData, function (i, sopir) {
-            if (sopir.id === sopirid) {
-              sopiredit.val(sopir.id).trigger("change");
-              return false;
-            }
-          });
-        },
-      });
-
-      $("#modalUpdateOrder").modal("show");
+      $("#modalUpdatePenjualan").modal("show");
 
       $('[data-toggle="tooltip"]').tooltip("hide");
     },
   });
 });
 
-$("#form_updateOrder").on("submit", function (e) {
+$("#form_update").on("submit", function (e) {
   e.preventDefault();
 
-  const ordernumber = $("#ordernumberedit").val();
-  const custid = $("#custidedit").val();
-  const namecust = $("#namecustedit").val();
-  const notelp = $("#notelpedit").val();
-  const muatan = $("#muatanedit").val();
-  const asal = $("#asaledit").val();
-  const tujuan = $("#tujuanedit").val();
-  const keterangan = $("#keteranganedit").val();
-
-  const plat = $("#platedit").val();
-  const platno = $("#platnoedit").val();
-  const sopir = $("#sopiredit").val();
-  const namasopir = $("#namasopiredit").val();
-  const nominal = $("#nominaledit").val();
+  const penjualanid = $("#penjualanid").val();
+  const noorder = $("#noorderedit").val();
+  const alamatasal = $("#alamatasaledit").val();
+  const alamattujuan = $("#alamattujuanedit").val();
+  const nosj = $("#nosjedit").val();
+  const penerima = $("#penerimaedit").val();
+  const jenis = $("#jenisedit").val();
+  const berat = $("#beratedit").val();
+  const tonase = $("#tonaseedit").val();
+  const borong = $("#borongedit").val();
+  const biaya = $("#biayaedit").val();
+  const pembayaran = $("#pembayaranedit").val();
 
   $.ajax({
-    url: "http://localhost/hira-to-adm/order/update",
+    url: "http://localhost/hira-to-adm/penjualan/update",
     type: "POST",
     data: {
-      ordernumber: ordernumber,
-      custid: custid,
-      namecust: namecust,
-      notelp: notelp,
-      muatan: muatan,
-      asal: asal,
-      tujuan: tujuan,
-      keterangan: keterangan,
-
-      plat: plat,
-      platno: platno,
-      sopir: sopir,
-      namasopir: namasopir,
-      nominal: nominal,
+      penjualanid: penjualanid,
+      noorder: noorder,
+      alamatasal: alamatasal,
+      alamattujuan: alamattujuan,
+      nosj: nosj,
+      penerima: penerima,
+      jenis: jenis,
+      berat: berat,
+      tonase: tonase,
+      borong: borong,
+      biaya: biaya,
+      pembayaran: pembayaran,
     },
     success: function (data) {
-      $("#ordernumberedit").val("");
-      $("#custidedit").val(null).trigger("change");
-      $("#namecustedit").val("");
-      $("#notelpedit").val("");
-      $("#muatanedit").val("");
+      $("#penjualanid").val("");
+      $("#noorderedit").val("");
+      $("#tglorderedit").val("");
+      $("#pengirimedit").val("");
       $("#asaledit").val("");
       $("#tujuanedit").val("");
+      $("#muatanedit").val("");
+      $("#alamatasaledit").val("");
+      $("#alamattujuanedit").val("");
+      $("#nosjedit").val("");
+      $("#penerimaedit").val("");
+      $("#jenisedit").val(null).trigger("change");
+      $("#beratedit").val("");
+      $("#tonaseedit").val("");
+      $("#borongedit").val("");
+      $("#biayaedit").val("");
+      $("#pembayaranedit").val(null).trigger("change");
 
-      $("#platedit").val(null).trigger("change");
-      $("#platnoedit").val("");
-      $("#sopiredit").val(null).trigger("change");
-      $("#namasopiredit").val("");
-      $("#nominaledit").val("");
-
-      $("#modalEditSanguOrder").modal("hide");
+      $("#modalUpdatePenjualan").modal("hide");
 
       Swal.fire({
         icon: "success",
         title: "Success!",
-        text: "Data Order diubah!",
+        text: "Data Penjualan diubah!",
       });
 
       $("#salesTables").DataTable().ajax.reload(null, false);
@@ -630,7 +569,7 @@ $("#salesTables").on("click", ".btn-detail", function () {
   const kd = $(this).data("kd");
 
   $.ajax({
-    url: "http://localhost/hira-to-adm/order/getDetail",
+    url: "http://localhost/hira-to-adm/penjualan/getDataKd",
     type: "POST",
     dataType: "json",
     data: {
@@ -638,24 +577,41 @@ $("#salesTables").on("click", ".btn-detail", function () {
     },
     success: function (data) {
       console.log(data);
-      $("#btnDetail").attr(
-        "href",
-        "http://localhost/hira-to-adm/order/print/" + data.no_order
+
+      // $("#btnDetail").attr(
+      //   "href",
+      //   "http://localhost/hira-to-adm/order/print/" + data.no_order
+      // );
+
+      const formatedDate = new Date(data.dateAdd);
+
+      $("#dtTanggal").text(
+        formatedDate.toLocaleDateString("id-ID", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        })
       );
+      $("#dtNoOrder").text(data.no_order);
+      $("#dtMuatan").text(data.muatan);
+      $("#dtCustOrder").text(data.pengirim);
+      $("#dtAsal").text(data.kota_asal);
+      $("#dtTujuan").text(data.kota_tujuan);
 
-      $(".noorder").text(data.no_order);
-      $(".muatan").text(data.jenis_muatan);
-      $(".cust").text(data.nama_customer);
-      $(".kontak").text(data.kontak_order);
-      $(".asal").text(data.asal_order);
-      $(".tujuan").text(data.tujuan_order);
-      $(".tgl").text(data.dateAdd);
+      $("#dtSj").text(data.no_sj);
+      $("#dtJenis").text(data.jenis);
+      $("#dtBerat").text(data.berat);
+      $("#dtHrgKg").text("Rp. " + format(data.hrg_kg));
+      $("#dtHrgBorong").text("Rp. " + format(data.hrg_borong));
+      $("#dtAlamatAsal").text(data.alamat_asal);
+      $("#dtAlamatTujuan").text(data.alamat_tujuan);
+      $("#dtPenerima").text(data.penerima);
+      $("#dtBiaya").text("Rp. " + format(data.total_hrg));
+      $("#dtStatusBayar").text(data.pembayaran);
 
-      $(".truck").text(data.platno);
-      $(".supir").text(data.nama_sopir);
-      $(".nominal").text("Rp. " + format(data.nominal));
+      $("#modalDetailPenjualan").modal("show");
 
-      $("#modalDetailOrder").modal("show");
+      $('[data-toggle="tooltip"]').tooltip("hide");
     },
   });
 });
@@ -663,32 +619,47 @@ $("#salesTables").on("click", ".btn-detail", function () {
 $("#salesTables").on("click", ".btn-delete", function () {
   const kd = $(this).data("kd");
 
-  Swal.fire({
-    title: "Apakah anda yakin ?",
-    text: "Data akan di hapus !!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    cancelButtonText: "Batal",
-    confirmButtonText: "Ya, Hapus !",
-  }).then((result) => {
-    if (result.value) {
-      $.ajax({
-        url: "http://localhost/hira-to-adm/order/delete",
-        method: "POST",
-        data: { kd: kd },
-        success: function (data) {
-          Swal.fire({
-            icon: "success",
-            title: "Success!",
-            text: "Data Order dihapus!",
-          });
+  $.ajax({
+    url: "http://localhost/hira-to-adm/order/getId",
+    method: "POST",
+    data: { kd: kd },
+    success: function (data) {
+      const parsedData = JSON.parse(data);
 
-          $("#salesTables").DataTable().ajax.reload(null, false);
-        },
+      const id = parsedData.order_id;
+      const no = parsedData.no_order;
+
+      Swal.fire({
+        title: "Apakah anda yakin ?",
+        text: "Data akan di hapus !!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "Batal",
+        confirmButtonText: "Ya, Hapus !",
+      }).then((result) => {
+        if (result.value) {
+          $.ajax({
+            url: "http://localhost/hira-to-adm/penjualan/delete",
+            method: "POST",
+            data: {
+              id: id,
+              no: no,
+            },
+            success: function (data) {
+              Swal.fire({
+                icon: "success",
+                title: "Success!",
+                text: "Data Penjualan dihapus!",
+              });
+
+              $("#salesTables").DataTable().ajax.reload(null, false);
+            },
+          });
+        }
       });
-    }
+    },
   });
 });
 
