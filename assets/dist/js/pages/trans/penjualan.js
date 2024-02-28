@@ -442,7 +442,6 @@ $("#salesTables").on("click", ".btn-edit", function (e) {
     },
     success: function (data) {
       const parsedata = JSON.parse(data);
-      console.log(parsedata);
 
       const formatedDate = new Date(parsedata.dateAdd);
 
@@ -576,13 +575,6 @@ $("#salesTables").on("click", ".btn-detail", function () {
       kd: kd,
     },
     success: function (data) {
-      console.log(data);
-
-      // $("#btnDetail").attr(
-      //   "href",
-      //   "http://localhost/hira-to-adm/order/print/" + data.no_order
-      // );
-
       const formatedDate = new Date(data.dateAdd);
 
       $("#dtTanggal").text(
