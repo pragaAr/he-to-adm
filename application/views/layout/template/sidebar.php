@@ -96,6 +96,14 @@
            </a>
          </li>
          <li class="nav-item">
+           <a href="<?= base_url('traveldoc') ?>" class="nav-link <?= $this->uri->segment(1) == 'traveldoc' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
+             <i class="nav-icon fas fa-envelope-open"></i>
+             <p>
+               Surat Jalan
+             </p>
+           </a>
+         </li>
+         <li class="nav-item">
            <a href="<?= base_url('invoice') ?>" class="nav-link <?= $this->uri->segment(1) == 'invoice' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
              <i class="nav-icon fas fa-envelope-open-text"></i>
              <p>

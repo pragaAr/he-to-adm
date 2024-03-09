@@ -37,14 +37,18 @@ $("#salesTables").DataTable({
       className: "text-center align-middle",
     },
     {
-      data: "no_order",
+      data: "reccu",
       className: "text-center align-middle",
       render: function (data, type, row) {
-        return data.toUpperCase();
+        if (data === "") {
+          return "-";
+        } else {
+          return data.toUpperCase();
+        }
       },
     },
     {
-      data: "no_sj",
+      data: "no_order",
       className: "text-center align-middle",
       render: function (data, type, row) {
         return data.toUpperCase();
@@ -83,7 +87,7 @@ $("#salesTables").DataTable({
       },
     },
     {
-      data: "dateAdd",
+      data: "tgl_order",
       searchable: false,
       className: "text-center align-middle",
       render: function (data, type, row) {
@@ -114,11 +118,45 @@ $("#salesTables").DataTable({
   },
 });
 
+$("#cetakReccu").on("click", function () {
+  $("#modalCetakReccu").modal("show");
+});
+
+$("#modalCetakReccu").on("shown.bs.modal", function () {
+  $(".selectreccu").select2({
+    placeholder: "PILIH RECCU",
+    ajax: {
+      url: "http://localhost/hira-to-adm/penjualan/getListReccu",
+      dataType: "json",
+      data: function (params) {
+        return {
+          q: params.term,
+        };
+      },
+      processResults: function (data) {
+        return {
+          results: data,
+        };
+      },
+    },
+  });
+});
+
 $("#addPenjualan").on("click", function () {
   $("#modalAddPenjualan").modal("show");
 });
 
 $("#modalAddPenjualan").on("shown.bs.modal", function () {
+  $("#berat").on("keypress", function (key) {
+    if (key.charCode < 48 || key.charCode > 57) return false;
+  });
+
+  $(function () {
+    $("#berat").on("keydown keyup click change blur input", function (e) {
+      $(this).val(format($(this).val()));
+    });
+  });
+
   $("#tonase").on("keypress", function (key) {
     if (key.charCode < 48 || key.charCode > 57) return false;
   });
@@ -169,6 +207,7 @@ $("#modalAddPenjualan").on("shown.bs.modal", function () {
     })
     .on("select2:select", function (e) {
       const data = e.params.data;
+      $("#textnoorder").val(data.text);
       $("#tglorder").val(data.tgl);
       $("#pengirim").val(data.cust);
       $("#asal").val(data.asal);
@@ -234,7 +273,9 @@ $("#modalAddPenjualan").on("shown.bs.modal", function () {
   });
 
   function biayaTonase() {
-    let beratTon = $("#berat").val();
+    let beratTon = $("#berat")
+      .val()
+      .replace(/[^\d.]/g, "");
     let biayaTon = $("#tonase")
       .val()
       .replace(/[^\d.]/g, "");
@@ -255,14 +296,15 @@ $("#modalAddPenjualan").on("shown.bs.modal", function () {
 $("#form_add").on("submit", function (e) {
   e.preventDefault();
 
+  const reccu = $("#reccu").val();
   const noorder = $("#noorder").val();
+  const textnoorder = $("#textnoorder").val();
   const pengirim = $("#pengirim").val();
   const asal = $("#asal").val();
   const tujuan = $("#tujuan").val();
   const muatan = $("#muatan").val();
   const alamatasal = $("#alamatasal").val();
   const alamattujuan = $("#alamattujuan").val();
-  const nosj = $("#nosj").val();
   const penerima = $("#penerima").val();
   const jenis = $("#jenis").val();
   const berat = $("#berat").val();
@@ -275,14 +317,15 @@ $("#form_add").on("submit", function (e) {
     url: "http://localhost/hira-to-adm/penjualan/add",
     type: "POST",
     data: {
+      reccu: reccu,
       noorder: noorder,
+      textnoorder: textnoorder,
       pengirim: pengirim,
       asal: asal,
       tujuan: tujuan,
       muatan: muatan,
       alamatasal: alamatasal,
       alamattujuan: alamattujuan,
-      nosj: nosj,
       penerima: penerima,
       jenis: jenis,
       berat: berat,
@@ -292,6 +335,7 @@ $("#form_add").on("submit", function (e) {
       pembayaran: pembayaran,
     },
     success: function (data) {
+      $("#reccu").val("");
       $("#noorder").val(null).trigger("change");
       $("#textnoorder").val("");
       $("#tglorder").val("");
@@ -301,7 +345,6 @@ $("#form_add").on("submit", function (e) {
       $("#muatan").val("");
       $("#alamatasal").val("");
       $("#alamattujuan").val("");
-      $("#nosj").val("");
       $("#penerima").val("");
       $("#jenis").val(null).trigger("change");
       $("#berat").val("");
@@ -312,10 +355,23 @@ $("#form_add").on("submit", function (e) {
 
       $("#modalAddPenjualan").modal("hide");
 
+      const parsedData = JSON.parse(data);
+
       Swal.fire({
-        icon: "success",
-        title: "Success!",
-        text: "Data Penjualan ditambahkan!",
+        title: "Data Penjualan ditambahkan!",
+        text: "Cetak reccu ??",
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "Batal",
+        confirmButtonText: "Ya, Cetak !",
+      }).then((result) => {
+        if (result.value) {
+          window.open(
+            "http://localhost/hira-to-adm/penjualan/printAfterAdd/" + parsedData
+          );
+        }
       });
 
       $("#salesTables").DataTable().ajax.reload(null, false);
@@ -328,6 +384,16 @@ $("#form_add").on("submit", function (e) {
 // ---------------------
 $("#modalUpdatePenjualan").on("shown.bs.modal", function () {
   $("#alamatasaledit").focus();
+
+  $("#beratedit").on("keypress", function (key) {
+    if (key.charCode < 48 || key.charCode > 57) return false;
+  });
+
+  $(function () {
+    $("#beratedit").on("keydown keyup click change blur input", function (e) {
+      $(this).val(format($(this).val()));
+    });
+  });
 
   $("#tonaseedit").on("keypress", function (key) {
     if (key.charCode < 48 || key.charCode > 57) return false;
@@ -412,7 +478,9 @@ $("#modalUpdatePenjualan").on("shown.bs.modal", function () {
   });
 
   function biayaTonaseEdit() {
-    let beratTonEdit = $("#beratedit").val();
+    let beratTonEdit = $("#beratedit")
+      .val()
+      .replace(/[^\d.]/g, "");
     let biayaTonEdit = $("#tonaseedit")
       .val()
       .replace(/[^\d.]/g, "");
@@ -454,6 +522,7 @@ $("#salesTables").on("click", ".btn-edit", function (e) {
       );
 
       $("#penjualanid").val(parsedata.id);
+      $("#reccuedit").val(parsedata.reccu);
       $("#noorderedit").val(parsedata.no_order);
       $("#pengirimedit").val(parsedata.pengirim);
       $("#asaledit").val(parsedata.kota_asal);
@@ -461,7 +530,6 @@ $("#salesTables").on("click", ".btn-edit", function (e) {
       $("#muatanedit").val(parsedata.muatan);
       $("#alamatasaledit").val(parsedata.alamat_asal);
       $("#alamattujuanedit").val(parsedata.alamat_tujuan);
-      $("#nosjedit").val(parsedata.no_sj);
       $("#penerimaedit").val(parsedata.penerima);
       $("#jenisedit").val(parsedata.jenis).trigger("change");
       $("#beratedit").val(parsedata.berat);
@@ -501,10 +569,10 @@ $("#form_update").on("submit", function (e) {
   e.preventDefault();
 
   const penjualanid = $("#penjualanid").val();
+  const reccu = $("#reccuedit").val();
   const noorder = $("#noorderedit").val();
   const alamatasal = $("#alamatasaledit").val();
   const alamattujuan = $("#alamattujuanedit").val();
-  const nosj = $("#nosjedit").val();
   const penerima = $("#penerimaedit").val();
   const jenis = $("#jenisedit").val();
   const berat = $("#beratedit").val();
@@ -518,10 +586,10 @@ $("#form_update").on("submit", function (e) {
     type: "POST",
     data: {
       penjualanid: penjualanid,
+      reccu: reccu,
       noorder: noorder,
       alamatasal: alamatasal,
       alamattujuan: alamattujuan,
-      nosj: nosj,
       penerima: penerima,
       jenis: jenis,
       berat: berat,
@@ -532,6 +600,7 @@ $("#form_update").on("submit", function (e) {
     },
     success: function (data) {
       $("#penjualanid").val("");
+      $("#reccuedit").val("");
       $("#noorderedit").val("");
       $("#tglorderedit").val("");
       $("#pengirimedit").val("");
@@ -540,7 +609,6 @@ $("#form_update").on("submit", function (e) {
       $("#muatanedit").val("");
       $("#alamatasaledit").val("");
       $("#alamattujuanedit").val("");
-      $("#nosjedit").val("");
       $("#penerimaedit").val("");
       $("#jenisedit").val(null).trigger("change");
       $("#beratedit").val("");
@@ -584,13 +652,13 @@ $("#salesTables").on("click", ".btn-detail", function () {
           year: "numeric",
         })
       );
+      $("#dtReccu").text(data.reccu);
       $("#dtNoOrder").text(data.no_order);
       $("#dtMuatan").text(data.muatan);
       $("#dtCustOrder").text(data.pengirim);
       $("#dtAsal").text(data.kota_asal);
       $("#dtTujuan").text(data.kota_tujuan);
 
-      $("#dtSj").text(data.no_sj);
       $("#dtJenis").text(data.jenis);
       $("#dtBerat").text(data.berat);
       $("#dtHrgKg").text("Rp. " + format(data.hrg_kg));

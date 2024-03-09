@@ -25,7 +25,7 @@ class Uangmakan extends CI_Controller
     $this->load->view('layout/template/header', $data);
     $this->load->view('layout/template/navbar');
     $this->load->view('layout/template/sidebar');
-    $this->load->view('layout/administrasi/uangmakan', $data);
+    $this->load->view('layout/adm/uang-makan/index', $data);
     $this->load->view('layout/template/footer');
   }
 
@@ -44,7 +44,7 @@ class Uangmakan extends CI_Controller
     echo json_encode($data);
   }
 
-  public function addUangMakan()
+  public function add()
   {
     $data = [
       'title' => 'Tambah Data Uang Makan',
@@ -54,7 +54,7 @@ class Uangmakan extends CI_Controller
     $this->load->view('layout/template/header', $data);
     $this->load->view('layout/template/navbar');
     $this->load->view('layout/template/sidebar');
-    $this->load->view('layout/administrasi/add-uangmakan', $data);
+    $this->load->view('layout/adm/uang-makan/add', $data);
     $this->load->view('layout/template/footer');
   }
 

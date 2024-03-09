@@ -676,7 +676,6 @@ $("#orderTables").on("click", ".btn-detail", function () {
       kd: kd,
     },
     success: function (data) {
-      console.log(data);
       $("#btnDetail").attr(
         "href",
         "http://localhost/hira-to-adm/order/print/" + data.no_order

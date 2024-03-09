@@ -12,11 +12,11 @@ $.fn.dataTableExt.oApi.fnPagingInfo = function (oSettings) {
   };
 };
 
-$("#umTables").DataTable({
+$("#sjTables").DataTable({
   ordering: true,
   initComplete: function () {
     var api = this.api();
-    $("#umTables_filter input")
+    $("#sjTables_filter input")
       .off(".DT")
       .on("input.DT", function () {
         api.search(this.value).draw();
@@ -27,42 +27,37 @@ $("#umTables").DataTable({
   processing: true,
   serverSide: true,
   ajax: {
-    url: "http://localhost/hira-to-adm/uangmakan/getUangMakan",
+    url: "http://localhost/hira-to-adm/traveldoc/getTraveldoc",
     type: "POST",
     dataType: "json",
   },
   columns: [
     {
       data: "id",
-      className: "text-center",
+      className: "text-center align-middle",
     },
     {
-      data: "kd_um",
-      className: "text-center",
+      data: "reccu",
+      className: "text-center align-middle",
+      render: function (data, type, row) {
+        if (data === "") {
+          return "-";
+        } else {
+          return data.toUpperCase();
+        }
+      },
+    },
+    {
+      data: "jml_sj",
+      className: "text-center align-middle",
       render: function (data, type, row) {
         return data.toUpperCase();
       },
     },
     {
-      data: "jml_penerima",
-      className: "text-center",
-      render: function (data, type, row) {
-        return data + " Orang";
-      },
-    },
-    {
-      data: "jml_nominal",
-      className: "text-center",
-      render: function (data, type, row) {
-        var value = parseFloat(data);
-        return (
-          "Rp. " + value.toLocaleString("id-ID", { minimumFractionDigits: 0 })
-        );
-      },
-    },
-    {
       data: "dateAdd",
-      className: "text-center",
+      searchable: false,
+      className: "text-center align-middle",
       render: function (data, type, row) {
         var date = new Date(data);
         return date.toLocaleDateString("id-ID", {
@@ -74,7 +69,7 @@ $("#umTables").DataTable({
     },
     {
       data: "view",
-      className: "text-center",
+      className: "text-center align-middle",
     },
   ],
 
@@ -91,30 +86,29 @@ $("#umTables").DataTable({
   },
 });
 
-$("#umTables").on("click", ".btn-detail", function () {
-  const kd = $(this).data("kd");
+$("#sjTables").on("click", ".btn-detail", function () {
+  const reccu = $(this).data("reccu");
 
   $.ajax({
-    url: "http://localhost/hira-to-adm/uangmakan/getDetailData",
+    url: "http://localhost/hira-to-adm/traveldoc/getDetailData",
     method: "POST",
     dataType: "JSON",
     data: {
-      kd: kd,
+      reccu: reccu,
     },
     success: function (data) {
-      console.log(data);
       const tbodyDetail = $("#tbodyDetail");
       tbodyDetail.empty();
 
-      $("#kdum").val(kd);
+      $("#reccu").val(reccu);
 
-      const kdtgl = $(".kdtgl");
+      const reccutgl = $(".reccutgl");
 
       const formatedTgl = new Date(data.data.dateAdd);
 
-      kdtgl.text(
-        "KD " +
-          kd +
+      reccutgl.text(
+        "Reccu " +
+          reccu +
           " - Tgl " +
           formatedTgl.toLocaleDateString("id-ID", {
             day: "2-digit",
@@ -123,14 +117,8 @@ $("#umTables").on("click", ".btn-detail", function () {
           })
       );
 
-      const total = $(".total");
-      total.text(
-        "Total Rp. " +
-          format(data.data.jml_nominal) +
-          " - " +
-          data.data.jml_penerima +
-          " Orang"
-      );
+      const jmlsj = $(".jmlsj");
+      jmlsj.text("Total " + format(data.data.jml_sj) + " Surat Jalan");
 
       const detail = data.detail;
 
@@ -138,10 +126,14 @@ $("#umTables").on("click", ".btn-detail", function () {
         const row = $("<tr>");
         row.append("<td class='text-center'>" + (i + 1) + "." + "</td>");
 
-        row.append("<td class='text-uppercase'>" + detail[i].nama + "</td>");
+        row.append("<td class='text-uppercase'>" + detail[i].reccu + "</td>");
         row.append(
-          "<td class='text-uppercase text-right pr-4'>" +
-            format(detail[i].nominal) +
+          "<td class='text-uppercase'>" + detail[i].surat_jalan + "</td>"
+        );
+        row.append(
+          "<td class='text-right pr-4'>" +
+            format(detail[i].berat) +
+            " Kg" +
             "</td>"
         );
 
@@ -149,41 +141,21 @@ $("#umTables").on("click", ".btn-detail", function () {
       }
 
       $("#modalDetail").modal("show");
+
+      $('[data-toggle="tooltip"]').tooltip("hide");
     },
   });
 });
 
-$("#umTables").on("click", ".btn-delete", function () {
-  const kd = $(this).data("kd");
+const inserted = $(".inserted").data("flashdata");
 
+if (inserted) {
   Swal.fire({
-    title: "Apakah anda yakin ?",
-    text: "Data akan di hapus !!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    cancelButtonText: "Batal",
-    confirmButtonText: "Ya, Hapus !",
-  }).then((result) => {
-    if (result.value) {
-      $.ajax({
-        url: "http://localhost/hira-to-adm/uangmakan/delete",
-        method: "POST",
-        data: { kd: kd },
-        success: function (data) {
-          Swal.fire({
-            icon: "success",
-            title: "Success!",
-            text: "Data Uangmakan dihapus!",
-          });
-
-          $("#umTables").DataTable().ajax.reload(null, false);
-        },
-      });
-    }
+    icon: "success",
+    title: "Success",
+    text: inserted,
   });
-});
+}
 
 $(document).on("select2:open", () => {
   document

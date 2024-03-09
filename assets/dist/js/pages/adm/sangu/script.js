@@ -116,8 +116,6 @@ $("#sanguTables").on("click", ".btn-edit", function () {
       kd: kd,
     },
     success: function (data) {
-      console.log(data);
-
       $("#noorder").val(data.no_order);
       $("#platno").val(data.platno);
       $("#sopir").val(data.nama);
@@ -191,7 +189,6 @@ $("#sanguTables").on("click", ".btn-detail", function () {
       kd: kd,
     },
     success: function (data) {
-      console.log(data);
       $("#btnDetail").attr(
         "href",
         "http://localhost/hira-to-adm/order/print/" + data.no_order

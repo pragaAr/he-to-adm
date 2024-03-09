@@ -34,10 +34,10 @@ class M_Uangmakan extends CI_Model
       $this->datatables->add_column(
         'view',
         '<div class="btn-group" role="group">
-            <a href="javascript:void(0);" class="btn btn-sm btn-info text-white border border-light btn-detail" data-kd="$2">
+            <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-kd="$2" data-toggle="tooltip" title="Detail">
               <i class="fas fa-eye fa-sm"></i>
             </a>
-            <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-kd="$2">
+            <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-kd="$2" data-toggle="tooltip" title="Hapus">
               <i class="fas fa-trash fa-sm"></i>
             </a>
           </div>',
@@ -47,7 +47,7 @@ class M_Uangmakan extends CI_Model
       $this->datatables->add_column(
         'view',
         '<div class="btn-group" role="group">
-            <a href="javascript:void(0);" class="btn btn-sm btn-info text-white border border-light btn-detail" data-kd="$2">
+            <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-kd="$2" data-toggle="tooltip" title="Detail">
               <i class="fas fa-eye fa-sm"></i>
             </a>
           </div>',

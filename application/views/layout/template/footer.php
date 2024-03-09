@@ -61,7 +61,7 @@
  <?php } else if ($this->uri->segment(1) == 'user') { ?>
    <script src="<?= base_url('assets/') ?>dist/js/pages/master/user.js"></script>
  <?php } else if ($this->uri->segment(1) == 'uangmakan' && $this->uri->segment(2) == '') { ?>
-   <script src="<?= base_url('assets/') ?>dist/js/pages/administrasi/uangmakan.js"></script>
+   <script src="<?= base_url('assets/') ?>dist/js/pages/adm/uangmakan/script.js"></script>
    <script>
      const inserted = $(".inserted").data("flashdata");
 
@@ -74,15 +74,19 @@
      }
    </script>
  <?php } else if ($this->uri->segment(1) == 'uangmakan' && $this->uri->segment(2) == 'addUangMakan') { ?>
-   <script src="<?= base_url('assets/') ?>dist/js/pages/administrasi/add-uangmakan.js"></script>
+   <script src="<?= base_url('assets/') ?>dist/js/pages/adm/uangmakan/add.js"></script>
  <?php } else if ($this->uri->segment(1) == 'uangmakan' && $this->uri->segment(2) == 'update') { ?>
-   <script src="<?= base_url('assets/') ?>dist/js/pages/administrasi/update-uangmakan.js"></script>
+   <script src="<?= base_url('assets/') ?>dist/js/pages/adm/uangmakan/update.js"></script>
  <?php } else if ($this->uri->segment(1) == 'order') { ?>
-   <script src="<?= base_url('assets/') ?>dist/js/pages/trans/order.js"></script>
+   <script src="<?= base_url('assets/') ?>dist/js/pages/trans/order/script.js"></script>
  <?php } else if ($this->uri->segment(1) == 'sangu') { ?>
-   <script src="<?= base_url('assets/') ?>dist/js/pages/administrasi/sangu.js"></script>
+   <script src="<?= base_url('assets/') ?>dist/js/pages/adm/sangu/script.js"></script>
  <?php } else if ($this->uri->segment(1) == 'penjualan') { ?>
-   <script src="<?= base_url('assets/') ?>dist/js/pages/trans/penjualan.js"></script>
+   <script src="<?= base_url('assets/') ?>dist/js/pages/trans/sales/script.js"></script>
+ <?php } else if ($this->uri->segment(1) == 'traveldoc' && $this->uri->segment(2) == '') { ?>
+   <script src="<?= base_url('assets/') ?>dist/js/pages/trans/traveldoc/script.js"></script>
+ <?php } else if ($this->uri->segment(1) == 'traveldoc' && $this->uri->segment(2) == 'add') { ?>
+   <script src="<?= base_url('assets/') ?>dist/js/pages/trans/traveldoc/add.js"></script>
  <?php } ?>
 
  </body>

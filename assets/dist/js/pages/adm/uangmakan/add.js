@@ -68,7 +68,6 @@ $(document).ready(function () {
     const id = $("#kryid").val();
     const nama = $("#namakry").val();
     const nominal = $("#nominal").val() === "" ? 0 : $("#nominal").val();
-    console.log(cartUm);
 
     const newRow = `
     <tr class="text-center row-cart">
@@ -132,11 +131,6 @@ $(document).ready(function () {
 
     return hasil;
   }
-
-  // function reset() {
-  //   $("#kryid").val(null).trigger("change");
-  //   $("#namakry").val("");
-  // }
 
   $(document).on("select2:open", () => {
     document

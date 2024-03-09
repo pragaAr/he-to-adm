@@ -26,7 +26,7 @@ class Sangu extends CI_Controller
     $this->load->view('layout/template/header', $data);
     $this->load->view('layout/template/navbar');
     $this->load->view('layout/template/sidebar');
-    $this->load->view('layout/administrasi/sangu', $data);
+    $this->load->view('layout/adm/sangu/index', $data);
     $this->load->view('layout/template/footer');
   }
 

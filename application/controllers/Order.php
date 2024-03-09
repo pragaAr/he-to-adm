@@ -25,7 +25,7 @@ class Order extends CI_Controller
     $this->load->view('layout/template/header', $data);
     $this->load->view('layout/template/navbar');
     $this->load->view('layout/template/sidebar');
-    $this->load->view('layout/trans/order', $data);
+    $this->load->view('layout/trans/order/index', $data);
     $this->load->view('layout/template/footer');
   }
 

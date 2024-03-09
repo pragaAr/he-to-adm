@@ -10,6 +10,7 @@ class Penjualan extends CI_Controller
     parent::__construct();
     $this->load->library('datatables');
 
+    $this->load->model('M_Sangu', 'Sangu');
     $this->load->model('M_Penjualan', 'Sales');
 
     if (empty($this->session->userdata('id'))) {
@@ -21,11 +22,12 @@ class Penjualan extends CI_Controller
   public function index()
   {
     $data['title']  = 'Data Penjualan';
+    $data['reccu']  = $this->Sales->generateReccu();
 
     $this->load->view('layout/template/header', $data);
     $this->load->view('layout/template/navbar');
     $this->load->view('layout/template/sidebar');
-    $this->load->view('layout/trans/penjualan', $data);
+    $this->load->view('layout/trans/penjualan/index', $data);
     $this->load->view('layout/template/footer');
   }
 
@@ -52,11 +54,37 @@ class Penjualan extends CI_Controller
     echo json_encode($data);
   }
 
+  public function getListReccu()
+  {
+    $keyword = $this->input->get('q');
+
+    $data = !$keyword ? $this->Sales->getReccu() : $this->Sales->getSearchReccu($keyword);
+
+    $response = [];
+
+    foreach ($data as $reccu) {
+      $response[] = [
+        'id'        => $reccu->no_order,
+        'text'      => strtoupper($reccu->reccu),
+        'jenis'     => $reccu->jenis,
+        'berat'     => $reccu->berat,
+        'hrgkg'     => $reccu->hrg_kg,
+        'hrgbrg'    => $reccu->hrg_borong,
+        'totalhrg'  => $reccu->total_hrg,
+        'pengirim'  => strtoupper($reccu->pengirim),
+        'penerima'  => strtoupper($reccu->penerima),
+      ];
+    }
+
+    echo json_encode($response);
+  }
+
   public function add()
   {
     $userid       = $this->session->userdata('id');
+    $reccu        = trim($this->input->post('reccu'));
     $noorder      = trim($this->input->post('noorder'));
-    $nosj         = trim($this->input->post('nosj'));
+    $textnoorder  = trim($this->input->post('textnoorder'));
     $jenis        = trim($this->input->post('jenis'));
     $muatan       = trim($this->input->post('muatan'));
     $berat        = trim($this->input->post('berat'));
@@ -93,8 +121,8 @@ class Penjualan extends CI_Controller
     // );
 
     $data = array(
+      'reccu'         => strtolower($reccu),
       'order_id'      => strtolower($noorder),
-      'no_sj'         => strtolower($nosj),
       'jenis'         => strtolower($jenis),
       'muatan'        => strtolower($muatan),
       'berat'         => strtolower($jenis) === 'borong' ? '0' : $berat,
@@ -108,6 +136,7 @@ class Penjualan extends CI_Controller
       'alamat_tujuan' => strtolower($alamattujuan),
       'total_hrg'     => $biaya,
       'pembayaran'    => strtolower($pembayaran),
+      'status'        => 'diproses',
       'user_id'       => $userid,
       'dateAdd'       => $dateAdd,
     );
@@ -120,9 +149,11 @@ class Penjualan extends CI_Controller
       'id'  => $noorder
     );
 
-    $data = $this->Sales->addData($data, $dataorder, $where);
+    $this->Sales->addData($data, $dataorder, $where);
 
-    echo json_encode($data);
+    $dataReccu = strtolower($textnoorder);
+
+    echo json_encode($dataReccu);
   }
 
   public function update()
@@ -130,7 +161,6 @@ class Penjualan extends CI_Controller
     $penjualanid  = $this->input->post('penjualanid');
     $noorder      = trim($this->input->post('noorder'));
 
-    $nosj         = trim($this->input->post('nosj'));
     $jenis        = trim($this->input->post('jenis'));
     $berat        = trim($this->input->post('berat'));
     $hrgborong    = preg_replace("/[^0-9\.]/", "", $this->input->post('borong'));
@@ -142,7 +172,6 @@ class Penjualan extends CI_Controller
     $pembayaran   = trim($this->input->post('pembayaran'));
 
     $data = array(
-      'no_sj'         => strtolower($nosj),
       'jenis'         => strtolower($jenis),
       'berat'         => strtolower($jenis) === 'borong' ? '0' : $berat,
       'hrg_borong'    => strtolower($jenis) === 'borong' ? $hrgborong : '0',
@@ -171,15 +200,28 @@ class Penjualan extends CI_Controller
     echo json_encode($data);
   }
 
-  public function printPenjualan($no)
+  public function printAfterAdd($kd)
   {
     $this->load->library('pdf');
 
-    $data['title']      = 'Hira Express - Print Reccu';
-    $data['platno']     = $this->Sales->getPlatPenjualan($no);
-    $data['penjualan']  = $this->Sales->getNoOrderPenjualan($no);
+    $data['title']  = 'Hira Express - Print Reccu';
+    $data['plat']   = $this->Sangu->getPlatByOrder($kd);
+    $data['sales']  = $this->Sales->getDataByKd($kd);
 
-    $this->pdf->generate('print/print-penjualan', $data, 'Reccu-Penjualan', 'A4', 'landscape');
+    $this->pdf->generate('print/print-penjualan-a5', $data, "reccu-$kd", 'A6', 'portrait');
+  }
+
+  public function print()
+  {
+    $this->load->library('pdf');
+
+    $kd = $this->input->post('pilihreccu');
+
+    $data['title']  = 'Hira Express - Print Reccu';
+    $data['plat']   = $this->Sangu->getPlatByOrder($kd);
+    $data['sales']  = $this->Sales->getDataByKd($kd);
+
+    $this->pdf->generate('print/print-penjualan-a5', $data, "reccu-$kd", 'A6', 'portrait');
   }
 
   public function delete()

@@ -49,6 +49,18 @@ class M_Sangu extends CI_Model
     return $query;
   }
 
+  public function getPlatByOrder($kd)
+  {
+    $this->db->select('armada.platno')
+      ->from('sangu_sopir')
+      ->where('no_order', $kd)
+      ->join('armada', 'armada.id = sangu_sopir.truck_id');
+
+    $query = $this->db->get()->row();
+
+    return $query;
+  }
+
   public function getNoOrder($no)
   {
     $this->db->select('*');

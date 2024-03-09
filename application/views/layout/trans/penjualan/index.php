@@ -2,16 +2,20 @@
   <section class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
-        <div class="col-sm-6">
+        <div class="col-lg-12 d-flex justify-content-between align-items-center flex-wrap">
           <h1><?= $title ?></h1>
-        </div>
-        <div class="col-sm-6">
-          <div class="breadcrumb float-sm-right">
+
+          <div class="mb-1">
+            <button type="button" class="btn btn-primary border border-light" id="cetakReccu">
+              <i class=" fas fa-print"></i>
+              Cetak
+            </button>
             <button type="button" class="btn btn-dark border border-light" id="addPenjualan">
-              <i class=" fas fa-plus"></i>
+              <i class="fas fa-plus"></i>
               Tambah
             </button>
           </div>
+
         </div>
       </div>
     </div>
@@ -28,13 +32,13 @@
                   <thead class="text-center">
                     <tr>
                       <th>No.</th>
+                      <th>Reccu</th>
                       <th>No Order</th>
-                      <th>Surat Jalan</th>
                       <th>Jenis</th>
                       <th>Pengirim</th>
                       <th>Muatan</th>
                       <th>Total</th>
-                      <th>Tgl</th>
+                      <th>Tgl Order</th>
                       <th>Aksi</th>
                     </tr>
                   </thead>
@@ -64,7 +68,13 @@
       <div class="modal-body" style="padding:1rem 2rem;">
         <form id="form_add">
           <div class="form-row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
+              <label for="reccu">
+                Reccu
+              </label>
+              <input type="text" class="form-control text-uppercase" name="reccu" id="reccu" value="<?= $reccu ?>" placeholder="Reccu.." readonly>
+            </div>
+            <div class="form-group col-md-3">
               <label for="noorder">
                 No Order
               </label>
@@ -72,14 +82,15 @@
                 <option value=""></option>
 
               </select>
+              <input type="hidden" class="form-control" name="textnoorder" id="textnoorder" readonly>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
               <label for="tglorder">
                 Tanggal Order
               </label>
               <input type="text" class="form-control text-uppercase" name="tglorder" id="tglorder" placeholder="Tanggal Order.." readonly>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
               <label for="pengirim">
                 Customer Order
               </label>
@@ -121,19 +132,13 @@
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group col-md-4">
-              <label for="nosj">
-                No Surat Jalan
-              </label>
-              <input type="text" class="form-control text-uppercase" name="nosj" id="nosj" placeholder="No Surat Jalan.." required autocomplete="off">
-            </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6">
               <label for="penerima">
                 Penerima
               </label>
               <input name="penerima" id="penerima" class="form-control text-uppercase" placeholder="Nama Penerima.." required autocomplete="off" oninvalid="this.setCustomValidity('Nama Penerima wajib di isi!')" oninput="setCustomValidity('')">
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6">
               <label for="jenis">
                 Jenis Penjualan
               </label>
@@ -185,7 +190,7 @@
           <div class="form-group">
             <button type="submit" class="btn btn-dark border border-light float-right">
               Simpan
-              <i class="fas fa-save-right ml-1"></i>
+              <i class="fas fa-save ml-1"></i>
             </button>
           </div>
         </form>
@@ -207,20 +212,26 @@
       <div class="modal-body" style="padding:1rem 2rem;">
         <form id="form_update">
           <div class="form-row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
+              <label for="reccuedit">
+                Reccu
+              </label>
+              <input type="text" class="form-control text-uppercase" name="reccuedit" id="reccuedit" placeholder="Reccu.." readonly>
+              <input type="hidden" class="form-control" name="penjualanid" id="penjualanid" readonly>
+            </div>
+            <div class="form-group col-md-3">
               <label for="noorderedit">
                 No Order
               </label>
-              <input type="hidden" class="form-control" name="penjualanid" id="penjualanid" readonly>
               <input type="text" class="form-control text-uppercase" name="noorderedit" id="noorderedit" placeholder="No Order.." readonly>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
               <label for="tglorderedit">
                 Tanggal Order
               </label>
               <input type="text" class="form-control text-uppercase" name="tglorderedit" id="tglorderedit" placeholder="Tanggal Order.." readonly>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-3">
               <label for="pengirimedit">
                 Customer Order
               </label>
@@ -262,19 +273,13 @@
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group col-md-4">
-              <label for="nosjedit">
-                No Surat Jalan
-              </label>
-              <input type="text" class="form-control text-uppercase" name="nosjedit" id="nosjedit" placeholder="No Surat Jalan.." required autocomplete="off">
-            </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6">
               <label for="penerimaedit">
                 Penerima
               </label>
               <input name="penerimaedit" id="penerimaedit" class="form-control text-uppercase" placeholder="Nama Penerima.." required autocomplete="off" oninvalid="this.setCustomValidity('Nama Penerima wajib di isi!')" oninput="setCustomValidity('')">
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-md-6">
               <label for="jenisedit">
                 Jenis Penjualan
               </label>
@@ -326,7 +331,7 @@
           <div class="form-group">
             <button type="submit" class="btn btn-dark border border-light float-right">
               Simpan
-              <i class="fas fa-save-right ml-1"></i>
+              <i class="fas fa-save ml-1"></i>
             </button>
           </div>
         </form>
@@ -378,7 +383,10 @@
           <table class="table table-bordered my-3" id="tableDetailPenjualan" style="width:100%" cellspacing="0">
             <thead class="text-center">
               <tr>
-                <th class="align-middle">Surat Jalan</th>
+                <th class="align-middle" colspan="4">Reccu</th>
+                <th class="align-middle text-uppercase" colspan="4" id="dtReccu"></th>
+              </tr>
+              <tr>
                 <th class="align-middle">Jenis Penjualan</th>
                 <th class="align-middle">Berat</th>
                 <th class="align-middle">Harga/Kg</th>
@@ -391,7 +399,6 @@
             </thead>
             <tbody class="text-center" id="tbodyDetailPenjualan">
               <tr>
-                <td class="align-middle text-uppercase" id="dtSj"></td>
                 <td class="align-middle text-uppercase" id="dtJenis"></td>
                 <td class="align-middle" id="dtBerat"></td>
                 <td class="align-middle" id="dtHrgKg"></td>
@@ -402,12 +409,41 @@
                 <td class="align-middle" id="dtBiaya"></td>
               </tr>
               <tr>
-                <td colspan="4" class="align-middle text-uppercase">Status Pembayaran</td>
-                <td colspan="5" class="align-middle text-uppercase" id="dtStatusBayar"></td>
+                <th colspan="4" class="align-middle text-uppercase">Status Pembayaran</th>
+                <th colspan="5" class="align-middle text-uppercase" id="dtStatusBayar"></th>
               </tr>
             </tbody>
           </table>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modalCetakReccu -->
+<div class="modal fade" id="modalCetakReccu" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Detail Penjualan</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding:1rem 2rem;">
+        <form action="<?= base_url('penjualan/print') ?>" method="POST" id="form_cetakReccu" target="_blank">
+          <div class="form-group">
+            <label for="pilihreccu">Pilih Reccu</label>
+            <select name="pilihreccu" id="pilihreccu" class="form-control selectreccu" style="width:100%">
+              <option value=""></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block border border-light">
+              Cetak
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
