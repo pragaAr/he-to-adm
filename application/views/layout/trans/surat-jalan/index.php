@@ -75,6 +75,7 @@
               <th style="border-color: rgb(145, 143, 143) !important;">Reccu</th>
               <th style="border-color: rgb(145, 143, 143) !important;">Surat Jalan</th>
               <th style="border-color: rgb(145, 143, 143) !important;">Berat</th>
+              <th style="border-color: rgb(145, 143, 143) !important;">Retur</th>
             </thead>
             <tbody class="text-center" id="tbodyDetail" style="border:1.5px solid rgb(145, 143, 143) !important;">
             </tbody>

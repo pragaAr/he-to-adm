@@ -66,6 +66,7 @@ class Traveldoc extends CI_Controller
     $sj       = $this->input->post('sj_hidden');
     $reccu    = strtolower($this->input->post('selectedReccu'));
     $berat    = $this->input->post('valueBerat_hidden');
+    $retur    = $this->input->post('valueRetur_hidden');
     $dateAdd  = date('Y-m-d H:i:s');
 
     $datasj = [
@@ -81,6 +82,7 @@ class Traveldoc extends CI_Controller
       array_push($datadt, ['reccu' => $reccu]);
       $datadt[$i]['surat_jalan']  = $sj[$i];
       $datadt[$i]['berat']        = $berat[$i];
+      $datadt[$i]['retur']        = $retur[$i];
     }
 
     $this->SJ->addData($datasj, $datadt);
@@ -103,10 +105,9 @@ class Traveldoc extends CI_Controller
 
   public function delete()
   {
-    $id = $this->input->post('id');
-    $no = $this->input->post('no');
+    $reccu = $this->input->post('reccu');
 
-    $data = $this->Sales->deleteData($id, $no);
+    $data = $this->SJ->deleteData($reccu);
 
     echo json_encode($data);
   }

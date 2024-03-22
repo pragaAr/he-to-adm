@@ -81,6 +81,31 @@ class Penjualan extends CI_Controller
     echo json_encode($response);
   }
 
+  public function getListReccuForTravelDoc()
+  {
+    $keyword = $this->input->get('q');
+
+    $data = !$keyword ? $this->Sales->getReccuForTravelDoc() : $this->Sales->getSearchReccuForTravelDoc($keyword);
+
+    $response = [];
+
+    foreach ($data as $reccu) {
+      $response[] = [
+        'id'        => $reccu->no_order,
+        'text'      => strtoupper($reccu->reccu),
+        'jenis'     => $reccu->jenis,
+        'berat'     => $reccu->berat,
+        'hrgkg'     => $reccu->hrg_kg,
+        'hrgbrg'    => $reccu->hrg_borong,
+        'totalhrg'  => $reccu->total_hrg,
+        'pengirim'  => strtoupper($reccu->pengirim),
+        'penerima'  => strtoupper($reccu->penerima),
+      ];
+    }
+
+    echo json_encode($response);
+  }
+
   public function add()
   {
     $userid       = $this->session->userdata('id');

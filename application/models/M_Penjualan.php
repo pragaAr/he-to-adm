@@ -112,6 +112,31 @@ class M_Penjualan extends CI_Model
     return $query;
   }
 
+  public function getReccuForTravelDoc()
+  {
+    $this->db->select('p.reccu, p.pengirim, p.penerima, p.jenis, p.berat, p.hrg_kg, p.hrg_borong, p.total_hrg, om.no_order')
+      ->from('penjualan p')
+      ->join('order_masuk om', 'om.id = p.order_id')
+      ->where('p.reccu NOT IN (SELECT reccu FROM detail_sj)');
+
+    $query = $this->db->get()->result();
+
+    return $query;
+  }
+
+  public function getSearchReccuForTravelDoc($keyword)
+  {
+    $this->db->select('p.reccu, p.pengirim, p.penerima, p.jenis, p.berat, p.hrg_kg, p.hrg_borong, p.total_hrg, om.no_order')
+      ->from('penjualan')
+      ->join('order_masuk om', 'om.id = p.order_id')
+      ->where('p.reccu NOT IN (SELECT reccu FROM detail_sj)')
+      ->like('p.reccu', $keyword);
+
+    $query = $this->db->get()->result();
+
+    return $query;
+  }
+
   public function countData()
   {
     return $this->db->get('penjualan')->num_rows();

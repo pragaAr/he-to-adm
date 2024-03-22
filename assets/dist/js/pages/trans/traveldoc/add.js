@@ -11,7 +11,7 @@ $(document).ready(function () {
     .select2({
       placeholder: "PILIH RECCU",
       ajax: {
-        url: "http://localhost/hira-to-adm/penjualan/getListReccu",
+        url: "http://localhost/hira-to-adm/penjualan/getListReccuForTravelDoc",
         dataType: "json",
         data: function (params) {
           return {
@@ -70,6 +70,7 @@ $(document).ready(function () {
       cartSj.push(dataCart);
 
       const valueBerat = $("#beratsj").val() ? $("#beratsj").val() : 0;
+      const valueRetur = $("#retur").val() ? $("#retur").val() : 0;
 
       const newRow = `
     <tr class="cart text-center">
@@ -84,8 +85,13 @@ $(document).ready(function () {
       <input type="hidden" name="valueBerat_hidden[]" value="${valueBerat}">
       </td>
 
+      <td class="text-uppercase valueRetur">
+      ${valueRetur}
+      <input type="hidden" name="valueRetur_hidden[]" value="${valueRetur}">
+      </td>
+
       <td class="aksi">
-        <button type="button" class="btn btn-danger btn-sm" id="tombol-hapus" data-sj="${sj}" data-id="${sj}">
+        <button type="button" class="btn btn-danger btn-sm border border-light" id="tombol-hapus" data-sj="${sj}" data-id="${sj}">
           Hapus
         </button>
       </td>
@@ -96,6 +102,7 @@ $(document).ready(function () {
 
       $("#suratjalan").val("");
       $("#beratsj").val("");
+      $("#retur").val("");
 
       $("#suratjalan").focus();
 

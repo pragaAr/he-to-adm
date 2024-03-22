@@ -73,7 +73,7 @@
        });
      }
    </script>
- <?php } else if ($this->uri->segment(1) == 'uangmakan' && $this->uri->segment(2) == 'addUangMakan') { ?>
+ <?php } else if ($this->uri->segment(1) == 'uangmakan' && $this->uri->segment(2) == 'add') { ?>
    <script src="<?= base_url('assets/') ?>dist/js/pages/adm/uangmakan/add.js"></script>
  <?php } else if ($this->uri->segment(1) == 'uangmakan' && $this->uri->segment(2) == 'update') { ?>
    <script src="<?= base_url('assets/') ?>dist/js/pages/adm/uangmakan/update.js"></script>

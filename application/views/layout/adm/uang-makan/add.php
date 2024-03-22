@@ -55,7 +55,7 @@
                   <input type="hidden" class="form-control" name="namakry" id="namakry" readonly>
                 </div>
                 <div class="form-group mt-5" style="margin-bottom: 1rem!important;">
-                  <button class="btn btn-dark border border-light btn-block" style="height: calc(2.25rem + 2px);" type="button" id="tambah" disabled>
+                  <button class="btn btn-primary border border-light btn-block" style="height: calc(2.25rem + 2px);" type="button" id="tambah" disabled>
                     <i class="fas fa-plus"></i>
                     Tambah
                   </button>
@@ -98,7 +98,6 @@
                         <td class="align-middle text-center">
                           <input type="hidden" name="total_hidden" id="total_hidden" value="">
                           <button type="submit" class="btn btn-dark border border-light btn-sm">
-                            <i class="fas fa-save"></i>
                             Simpan
                           </button>
                         </td>

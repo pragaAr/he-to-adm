@@ -66,15 +66,19 @@
                   </div>
                 </div>
                 <div class="form-row">
-                  <div class="form-group col-md-4">
+                  <div class="form-group col-md-3">
                     <label for="suratjalan">Surat Jalan</label>
                     <input type="text" name="suratjalan" id="suratjalan" class="form-control" placeholder="Surat Jalan..">
                   </div>
-                  <div class="form-group col-md-4">
+                  <div class="form-group col-md-3">
                     <label for="beratsj">Berat/SJ(Kg)</label>
                     <input type="text" name="beratsj" id="beratsj" class="form-control" placeholder="Berat/SJ(Kg)..">
                   </div>
-                  <div class="form-group col-md-4 d-flex align-items-end">
+                  <div class="form-group col-md-3">
+                    <label for="retur">Retur</label>
+                    <input type="text" name="retur" id="retur" class="form-control" placeholder="Retur..">
+                  </div>
+                  <div class="form-group col-md-3 d-flex align-items-end">
                     <button type="button" class="btn btn-primary border border-light btn-block mt-4" id="tambah" style="height:calc(1.5em + 0.75rem + 2px);" disabled>
                       <i class="fa fa-plus"></i>
                       Tambah
@@ -103,6 +107,9 @@
                           <strong>Berat</strong>
                         </td>
                         <td>
+                          <strong>Retur</strong>
+                        </td>
+                        <td>
                           <strong>Aksi</strong>
                         </td>
                       </tr>
@@ -115,9 +122,10 @@
                         </td>
                         <td class="align-middle">
                         </td>
+                        <td class="align-middle">
+                        </td>
                         <td class="align-middle text-center">
                           <button type="submit" class="btn btn-dark border border-light btn-sm">
-                            <i class="fas fa-save"></i>
                             Simpan
                           </button>
                         </td>

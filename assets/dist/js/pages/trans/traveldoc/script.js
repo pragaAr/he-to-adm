@@ -136,6 +136,9 @@ $("#sjTables").on("click", ".btn-detail", function () {
             " Kg" +
             "</td>"
         );
+        row.append(
+          "<td class='text-right pr-4'>" + format(detail[i].retur) + "</td>"
+        );
 
         tbodyDetail.append(row);
       }
@@ -144,6 +147,38 @@ $("#sjTables").on("click", ".btn-detail", function () {
 
       $('[data-toggle="tooltip"]').tooltip("hide");
     },
+  });
+});
+
+$("#sjTables").on("click", ".btn-delete", function () {
+  const reccu = $(this).data("reccu");
+
+  Swal.fire({
+    title: "Apakah anda yakin ?",
+    text: "Data akan di hapus !!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    cancelButtonText: "Batal",
+    confirmButtonText: "Ya, Hapus !",
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url: "http://localhost/hira-to-adm/traveldoc/delete",
+        method: "POST",
+        data: { reccu: reccu },
+        success: function (data) {
+          Swal.fire({
+            icon: "success",
+            title: "Success!",
+            text: "Data Surat Jalan dihapus!",
+          });
+
+          $("#sjTables").DataTable().ajax.reload(null, false);
+        },
+      });
+    }
   });
 });
 

@@ -38,7 +38,7 @@ class M_Traveldoc extends CI_Model
 
   public function getDetailByReccu($reccu)
   {
-    $this->db->select('reccu, surat_jalan, berat')
+    $this->db->select('reccu, surat_jalan, berat, retur')
       ->from('detail_sj')
       ->where('reccu', $reccu);
 
@@ -59,21 +59,9 @@ class M_Traveldoc extends CI_Model
     $this->db->update('order_masuk', $dataorder, $where);
   }
 
-  public function deleteData($id, $no)
+  public function deleteData($reccu)
   {
-    $dataorder = [
-      'status_order'  => 'disiapkan',
-    ];
-
-    $wherenoorder = [
-      'no_order' => $no
-    ];
-
-    $whereidorder = [
-      'order_id' => $id
-    ];
-
-    $this->db->delete('penjualan', $whereidorder);
-    $this->db->update('order_masuk', $dataorder, $wherenoorder);
+    $this->db->delete('surat_jalan', ['reccu' => $reccu]);
+    $this->db->delete('detail_sj', ['reccu' => $reccu]);
   }
 }

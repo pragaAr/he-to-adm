@@ -83,7 +83,6 @@ $(document).ready(function () {
       </td>
       <td class="action">
         <button type="button" class="btn btn-danger border border-light btn-sm" id="tombol-hapus" data-nama="${nama}" data-id="${id}">
-          <i class="fas fa-times"></i>
           Hapus
         </button>
       </td>
