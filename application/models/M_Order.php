@@ -84,7 +84,8 @@ class M_Order extends CI_Model
     $this->db->select('om.id, om.no_order, om.asal_order, om.tujuan_order, om.jenis_muatan, om.status_order, om.keterangan, om.dateAdd, cust.nama')
       ->from('order_masuk om')
       ->where('om.status_order =', 'disiapkan')
-      ->join('customer cust', 'cust.id = om.customer_id');
+      ->join('customer cust', 'cust.id = om.customer_id')
+      ->order_by('om.id', 'DESC');
 
     $query = $this->db->get()->result();
 
@@ -97,7 +98,8 @@ class M_Order extends CI_Model
       ->from('order_masuk om')
       ->where('om.status_order =', 'disiapkan')
       ->join('customer cust', 'cust.id = om.customer_id')
-      ->like('om.no_order', $keyword);;
+      ->order_by('om.id', 'DESC')
+      ->like('om.no_order', $keyword);
 
     $query = $this->db->get()->result();
 

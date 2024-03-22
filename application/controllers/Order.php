@@ -3,6 +3,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 date_default_timezone_set('Asia/Jakarta');
 
+use Mpdf\Mpdf;
+
 class Order extends CI_Controller
 {
   public function __construct()
@@ -159,9 +161,11 @@ class Order extends CI_Controller
       'dateAdd'   => $addAt
     ];
 
-    $response = $this->Order->addData($dataorder, $datasangu);
+    $this->Order->addData($dataorder, $datasangu);
 
-    echo json_encode($response);
+    $dataOrder = strtolower($noorder);
+
+    echo json_encode($dataOrder);
   }
 
   public function update()
@@ -216,13 +220,27 @@ class Order extends CI_Controller
 
   public function print($kd)
   {
-    $this->load->library('pdf');
-
     $data = [
       'title'   => 'Hira TO - Print Order',
       'detail'  => $this->Order->printOrder($kd)
     ];
 
-    $this->pdf->generate('print/print-order', $data, 'Data-Order', 'A4', 'portrait');
+    $content  = $this->load->view('layout/trans/order/print', $data, true);
+
+    $mpdf = new Mpdf([
+      'mode'          => 'utf-8',
+      'format'        => 'A4',
+      'orientation'   => 'P',
+      'SetTitle'      => "order-$kd",
+      'margin_left'   => 10,
+      'margin_right'  => 10,
+      'margin_top'    => 10,
+      'margin_bottom' => 10,
+    ]);
+
+    $mpdf->AddPage();
+    $mpdf->WriteHTML($content);
+
+    $mpdf->Output();
   }
 }

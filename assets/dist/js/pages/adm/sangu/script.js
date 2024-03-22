@@ -67,7 +67,7 @@ $("#sanguTables").DataTable({
           return (
             "Rp. " +
             format(data) +
-            "<i class='fas fa-check pl-2' data-toggle='tooltip' title='Ada tambahan Rp. " +
+            "<i class='fas fa-exclamation pl-2' data-toggle='tooltip' title='Ada tambahan Rp. " +
             format(row.tambahan) +
             "'></i>"
           );

@@ -12,17 +12,79 @@ class M_Sangu extends CI_Model
       ->add_column(
         'view',
         '<div class="btn-group" role="group">
-         <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-kd="$2" data-toggle="tooltip" title="Detail">
-            <i class="fas fa-eye fa-sm"></i>
-          </a>
-          <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-kd="$2" data-toggle="tooltip" title="Edit">
-            <i class="fas fa-pencil-alt fa-sm"></i>
-          </a>
+        
         </div>',
         'id, no_order, platno, nama, nominal, dateAdd'
       );
 
-    return $this->datatables->generate();
+    $results = $this->datatables->generate();
+
+    $data = json_decode($results, true);
+
+    foreach ($data['data'] as &$row) {
+      if ($row['tambahan'] == '0') {
+        $row['view'] = '<div class="btn-group" role="group">
+                            <a href="http://localhost/hira-to-adm/sangu/print/' . $row['no_order'] . '" target="_blank" class="btn btn-sm btn-info border border-light" data-toggle="tooltip" title="Print Sangu">
+                              <i class="fas fa-print fa-sm"></i>
+                            </a>
+                            <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-toggle="tooltip" title="Detail" data-kd="' . $row['no_order'] . '">
+                              <i class="fas fa-eye fa-sm"></i>
+                            </a>
+                            <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-kd="' . $row['no_order'] . '" data-toggle="tooltip" title="Edit">
+                              <i class="fas fa-pencil-alt fa-sm"></i>
+                            </a>
+                          </div>';
+      } else {
+        $row['view'] = '<div class="btn-group" role="group">
+                            <a href="http://localhost/hira-to-adm/sangu/print/' . $row['no_order'] . '" target="_blank" class="btn btn-sm btn-info border border-light" data-toggle="tooltip" title="Print Sangu">
+                              <i class="fas fa-print fa-sm"></i>
+                            </a>
+                            <a href="http://localhost/hira-to-adm/sangu/printTambahan/' . $row['no_order'] . '" target="_blank" class="btn btn-sm btn-secondary border border-light" data-toggle="tooltip" title="Print Tambahan Sangu">
+                              <i class="fas fa-plus-circle fa-sm"></i>
+                            </a>
+                            <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-toggle="tooltip" title="Detail" data-kd="' . $row['no_order'] . '">
+                              <i class="fas fa-eye fa-sm"></i>
+                            </a>
+                            <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-kd="' . $row['no_order'] . '" data-toggle="tooltip" title="Edit">
+                              <i class="fas fa-pencil-alt fa-sm"></i>
+                            </a>
+                          </div>';
+      }
+    }
+
+    $results = json_encode($data);
+
+    echo $results;
+  }
+
+  public function sanguByOrder($kd)
+  {
+    $this->db->select('ss.no_order, ss.nominal, ar.platno, s.nama, om.asal_order, om.tujuan_order, cust.nama as nama_cust')
+      ->from('sangu_sopir ss')
+      ->where('ss.no_order', $kd)
+      ->join('sopir s', 's.id = ss.sopir_id')
+      ->join('order_masuk om', 'om.no_order = ss.no_order')
+      ->join('customer cust', 'cust.id = om.customer_id')
+      ->join('armada ar', 'ar.id = ss.truck_id');
+
+    $res = $this->db->get()->row();
+
+    return $res;
+  }
+
+  public function tambahanByOrder($kd)
+  {
+    $this->db->select('ss.no_order, ss.tambahan, ar.platno, s.nama, om.asal_order, om.tujuan_order, cust.nama as nama_cust')
+      ->from('sangu_sopir ss')
+      ->where('ss.no_order', $kd)
+      ->join('sopir s', 's.id = ss.sopir_id')
+      ->join('order_masuk om', 'om.no_order = ss.no_order')
+      ->join('customer cust', 'cust.id = om.customer_id')
+      ->join('armada ar', 'ar.id = ss.truck_id');
+
+    $res = $this->db->get()->row();
+
+    return $res;
   }
 
   public function getDataByKd($kd)

@@ -6,10 +6,6 @@
           <h1><?= $title ?></h1>
 
           <div class="mb-1">
-            <button type="button" class="btn btn-primary border border-light" id="cetakReccu">
-              <i class=" fas fa-print"></i>
-              Cetak
-            </button>
             <button type="button" class="btn btn-dark border border-light" id="addPenjualan">
               <i class="fas fa-plus"></i>
               Tambah
@@ -415,35 +411,6 @@
             </tbody>
           </table>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- modalCetakReccu -->
-<div class="modal fade" id="modalCetakReccu" data-backdrop="static">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Detail Penjualan</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" style="padding:1rem 2rem;">
-        <form action="<?= base_url('penjualan/print') ?>" method="POST" id="form_cetakReccu" target="_blank">
-          <div class="form-group">
-            <label for="pilihreccu">Pilih Reccu</label>
-            <select name="pilihreccu" id="pilihreccu" class="form-control selectreccu" style="width:100%">
-              <option value=""></option>
-            </select>
-          </div>
-          <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block border border-light">
-              Cetak
-            </button>
-          </div>
-        </form>
       </div>
     </div>
   </div>

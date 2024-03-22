@@ -118,30 +118,6 @@ $("#salesTables").DataTable({
   },
 });
 
-$("#cetakReccu").on("click", function () {
-  $("#modalCetakReccu").modal("show");
-});
-
-$("#modalCetakReccu").on("shown.bs.modal", function () {
-  $(".selectreccu").select2({
-    placeholder: "PILIH RECCU",
-    ajax: {
-      url: "http://localhost/hira-to-adm/penjualan/getListReccu",
-      dataType: "json",
-      data: function (params) {
-        return {
-          q: params.term,
-        };
-      },
-      processResults: function (data) {
-        return {
-          results: data,
-        };
-      },
-    },
-  });
-});
-
 $("#addPenjualan").on("click", function () {
   $("#modalAddPenjualan").modal("show");
 });
@@ -369,7 +345,7 @@ $("#form_add").on("submit", function (e) {
       }).then((result) => {
         if (result.value) {
           window.open(
-            "http://localhost/hira-to-adm/penjualan/printAfterAdd/" + parsedData
+            "http://localhost/hira-to-adm/penjualan/print/" + parsedData
           );
         }
       });

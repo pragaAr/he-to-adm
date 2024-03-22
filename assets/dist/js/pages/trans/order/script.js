@@ -343,10 +343,27 @@ $("#form_addOrder").on("submit", function (e) {
 
       $("#modalAddSanguOrder").modal("hide");
 
+      const parsedData = JSON.parse(data);
+
       Swal.fire({
-        icon: "success",
-        title: "Success!",
-        text: "Data Order ditambahkan!",
+        title: "Data Order ditambahkan!",
+        text: "Cetak DO ??",
+        icon: "info",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "Batal",
+        confirmButtonText: "Ya, Cetak !",
+      }).then((result) => {
+        if (result.value) {
+          window.open("http://localhost/hira-to-adm/order/print/" + parsedData);
+
+          setTimeout(function () {
+            window.open(
+              "http://localhost/hira-to-adm/sangu/print/" + parsedData
+            );
+          }, 1000);
+        }
       });
 
       $("#orderTables").DataTable().ajax.reload(null, false);

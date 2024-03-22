@@ -3,6 +3,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 date_default_timezone_set('Asia/Jakarta');
 
+use Mpdf\Mpdf;
+
 class Penjualan extends CI_Controller
 {
   public function __construct()
@@ -200,28 +202,52 @@ class Penjualan extends CI_Controller
     echo json_encode($data);
   }
 
-  public function printAfterAdd($kd)
+  public function printAfterAddCopy($kd)
   {
-    $this->load->library('pdf');
+    $data = [
+      'title' => 'Hira Express - Print Reccu',
+      'plat'  => $this->Sangu->getPlatByOrder($kd),
+      'sales' => $this->Sales->getDataByKd($kd)
+    ];
 
-    $data['title']  = 'Hira Express - Print Reccu';
-    $data['plat']   = $this->Sangu->getPlatByOrder($kd);
-    $data['sales']  = $this->Sales->getDataByKd($kd);
+    $a = $data['sales']->pembayaran;
+    $b = strtoupper($a);
 
-    $this->pdf->generate('print/print-penjualan-a5', $data, "reccu-$kd", 'A6', 'portrait');
+    $content  = $this->load->view('layout/trans/penjualan/print', $data, true);
+
+    $mpdf = new Mpdf([
+      'mode'          => 'utf-8',
+      'format'        => 'A6',
+      'orientation'   => 'P',
+      'SetTitle'      => "reccu-$kd",
+      'margin_left'   => 4,
+      'margin_right'  => 4,
+      'margin_top'    => 4,
+      'margin_bottom' => 3,
+    ]);
+
+    $mpdf->SetWatermarkText($b, 0.2);
+    $mpdf->showWatermarkText = true;
+
+    $mpdf->watermarkAngle = 0;
+
+    $mpdf->AddPage();
+    $mpdf->WriteHTML($content);
+
+    $mpdf->Output();
   }
 
-  public function print()
+  public function print($kd)
   {
     $this->load->library('pdf');
 
-    $kd = $this->input->post('pilihreccu');
+    $data = [
+      'title' => 'Hira Express - Print Reccu',
+      'plat'  => $this->Sangu->getPlatByOrder($kd),
+      'sales' => $this->Sales->getDataByKd($kd)
+    ];
 
-    $data['title']  = 'Hira Express - Print Reccu';
-    $data['plat']   = $this->Sangu->getPlatByOrder($kd);
-    $data['sales']  = $this->Sales->getDataByKd($kd);
-
-    $this->pdf->generate('print/print-penjualan-a5', $data, "reccu-$kd", 'A6', 'portrait');
+    $this->pdf->generate('layout/trans/penjualan/print', $data, "Reccu-$kd", 'A6', 'portrait');
   }
 
   public function delete()

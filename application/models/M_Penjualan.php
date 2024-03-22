@@ -41,6 +41,9 @@ class M_Penjualan extends CI_Model
                             <a href="javascript:void(0);" class="btn btn-sm btn-secondary border border-light btn-detail" data-toggle="tooltip" title="Update Status" data-kd="' . $row['order_id'] . '">
                               <i class="fas fa-check fa-sm"></i>
                             </a>
+                            <a href="http://localhost/hira-to-adm/penjualan/print/' . $row['no_order'] . '" target="_blank" class="btn btn-sm btn-info text-white border border-light btn-print" data-toggle="tooltip" title="Cetak">
+                              <i class="fas fa-print fa-sm"></i>
+                            </a>
                             <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-toggle="tooltip" title="Detail" data-kd="' . $row['no_order'] . '">
                               <i class="fas fa-eye fa-sm"></i>
                             </a>
@@ -53,6 +56,9 @@ class M_Penjualan extends CI_Model
                           </div>';
       } else {
         $row['view'] = '<div class="btn-group" role="group">
+                            <a href="http://localhost/hira-to-adm/penjualan/print/' . $row['no_order'] . '" target="_blank" class="btn btn-sm btn-info text-white border border-light btn-print" data-toggle="tooltip" title="Cetak">
+                              <i class="fas fa-print fa-sm"></i>
+                            </a>
                             <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-toggle="tooltip" title="Detail" data-kd="' . $row['no_order'] . '">
                               <i class="fas fa-eye fa-sm"></i>
                             </a>
