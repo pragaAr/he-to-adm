@@ -1,16 +1,16 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+date_default_timezone_set('Asia/Jakarta');
+
 class Persensopir extends CI_Controller
 {
   public function __construct()
   {
     parent::__construct();
-    $this->load->model('M_Persensopir', 'Persensopir');
-    $this->load->model('M_Order', 'Order');
-    $this->load->model('M_Sopir', 'Sopir');
-    $this->load->model('M_Sangu', 'Sangu');
-    $this->load->model('M_Penjualan', 'Sales');
+    $this->load->library('datatables');
+
+    $this->load->model('M_Persensopir', 'Persen');
 
     if (empty($this->session->userdata('id'))) {
       $this->session->set_flashdata('flashrole', 'Silahkan Login terlebih dahulu!');
@@ -20,27 +20,34 @@ class Persensopir extends CI_Controller
 
   public function index()
   {
-    $data['title']        = 'Data Persen Sopir';
-    $data['persensopir']  = $this->Persensopir->getData();
+    $data['title'] = 'Data Persen Sopir';
 
     $this->load->view('layout/template/header', $data);
     $this->load->view('layout/template/navbar');
     $this->load->view('layout/template/sidebar');
-    $this->load->view('layout/administrasi/persensopir', $data);
+    $this->load->view('layout/adm/persen/index', $data);
     $this->load->view('layout/template/footer');
   }
 
-  public function addPersensopir()
+  public function getPersenSopir()
   {
-    $data['title']    = 'Tambah Data Persen Sopir';
-    $data['order']    = $this->Order->getData();
-    $data['sopir']    = $this->Sopir->getData();
-    $data['kdpersen'] = $this->Persensopir->getKd();
+    header('Content-Type: application/json');
+
+    echo $this->Persen->getData();
+  }
+
+  public function add()
+  {
+    $data = [
+      'title' => 'Tambah Data Persen Sopir',
+      'kd'    => $this->Persen->getKd()
+    ];
 
     $this->load->view('layout/template/header', $data);
     $this->load->view('layout/template/navbar');
     $this->load->view('layout/template/sidebar');
-    $this->load->view('layout/administrasi/add-persensopir', $data);
+    $this->load->view('layout/adm/persen/add', $data);
+    $this->load->view('layout/template/footer');
   }
 
   public function getOrderSopir()

@@ -93,6 +93,8 @@ class Penjualan extends CI_Controller
       $response[] = [
         'id'        => $reccu->no_order,
         'text'      => strtoupper($reccu->reccu),
+        'orderno'   => strtoupper($reccu->no_order),
+        'custid'    => $reccu->customer_id,
         'jenis'     => $reccu->jenis,
         'berat'     => $reccu->berat,
         'hrgkg'     => $reccu->hrg_kg,

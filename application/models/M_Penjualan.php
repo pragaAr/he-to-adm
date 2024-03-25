@@ -114,7 +114,7 @@ class M_Penjualan extends CI_Model
 
   public function getReccuForTravelDoc()
   {
-    $this->db->select('p.reccu, p.pengirim, p.penerima, p.jenis, p.berat, p.hrg_kg, p.hrg_borong, p.total_hrg, om.no_order')
+    $this->db->select('p.reccu, p.pengirim, p.penerima, p.jenis, p.berat, p.hrg_kg, p.hrg_borong, p.total_hrg, om.no_order, om.customer_id')
       ->from('penjualan p')
       ->join('order_masuk om', 'om.id = p.order_id')
       ->where('p.reccu NOT IN (SELECT reccu FROM detail_sj)');
@@ -126,7 +126,7 @@ class M_Penjualan extends CI_Model
 
   public function getSearchReccuForTravelDoc($keyword)
   {
-    $this->db->select('p.reccu, p.pengirim, p.penerima, p.jenis, p.berat, p.hrg_kg, p.hrg_borong, p.total_hrg, om.no_order')
+    $this->db->select('p.reccu, p.pengirim, p.penerima, p.jenis, p.berat, p.hrg_kg, p.hrg_borong, p.total_hrg, om.no_order, om.customer_id')
       ->from('penjualan')
       ->join('order_masuk om', 'om.id = p.order_id')
       ->where('p.reccu NOT IN (SELECT reccu FROM detail_sj)')

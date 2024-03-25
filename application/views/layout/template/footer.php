@@ -87,6 +87,10 @@
    <script src="<?= base_url('assets/') ?>dist/js/pages/trans/traveldoc/script.js"></script>
  <?php } else if ($this->uri->segment(1) == 'traveldoc' && $this->uri->segment(2) == 'add') { ?>
    <script src="<?= base_url('assets/') ?>dist/js/pages/trans/traveldoc/add.js"></script>
+ <?php } else if ($this->uri->segment(1) == 'persensopir' && $this->uri->segment(2) == '') { ?>
+   <script src="<?= base_url('assets/') ?>dist/js/pages/adm/persen/script.js"></script>
+ <?php } else if ($this->uri->segment(1) == 'persensopir' && $this->uri->segment(2) == 'add') { ?>
+   <script src="<?= base_url('assets/') ?>dist/js/pages/adm/persen/add.js"></script>
  <?php } ?>
 
  </body>

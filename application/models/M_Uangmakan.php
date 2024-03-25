@@ -10,6 +10,7 @@ class M_Uangmakan extends CI_Model
       ->limit(1);
 
     $query = $this->db->get('uang_makan');
+
     if ($query->num_rows() <> 0) {
       $data = $query->row();
       $kode = intval($data->kd_um) + 1;

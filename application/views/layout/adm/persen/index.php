@@ -1,7 +1,5 @@
 <div class="content-wrapper">
   <div class="inserted" data-flashdata="<?= $this->session->flashdata('inserted'); ?>"></div>
-  <div class="updated" data-flashdata="<?= $this->session->flashdata('updated'); ?>"></div>
-  <div class="deleted" data-flashdata="<?= $this->session->flashdata('deleted'); ?>"></div>
   <section class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
@@ -10,7 +8,7 @@
         </div>
         <div class="col-sm-6">
           <div class="breadcrumb float-sm-right">
-            <a href="<?= base_url('persensopir/addPersensopir') ?>" class="btn btn-dark">
+            <a href="<?= base_url('persensopir/add') ?>" class="btn btn-dark border border-light">
               <i class=" fas fa-plus"></i>
               Tambah
             </a>
@@ -26,44 +24,24 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <table id="dtable" class="table table-bordered table-striped">
-                <thead class="text-center">
-                  <tr>
-                    <th>No.</th>
-                    <th>Kd Persen</th>
-                    <th>Nama Sopir</th>
-                    <th>Jml Total</th>
-                    <th>Tanggal</th>
-                    <th width="15%">Actions</th>
-                  </tr>
-                </thead>
-                <tbody class="text-center">
-                  <?php $no = 1;
-                  foreach ($persensopir as $data) : ?>
+              <div class="table-responsive">
+                <table id="persenTables" class="table table-bordered table-striped" style="width:100%" cellspacing="0">
+                  <thead class="text-center">
                     <tr>
-                      <td><?= $no ?>.</td>
-                      <td><?= strtoupper($data->kd_persen) ?></td>
-                      <td><?= ucwords($data->nama_sopir) ?></td>
-                      <td>Rp. <?= number_format($data->nominal) ?></td>
-                      <td><?= date('d-m-Y', strtotime($data->dateAdd)) ?></td>
-                      <td>
-                        <div class="btn-group" role="group">
-                          <a href="<?= base_url('persensopir/update/') . $data->kd_persen ?>" class="btn btn-sm btn-warning text-white btn-edit-um" title="Edit">
-                            <i class="fas fa-pencil-alt"></i>
-                          </a>
-                          <a href="" class="btn btn-sm btn-info text-white btn-detail-persen" title="Detail" data-id="<?= $data->kd_persen ?>" data-tgl="<?= date('d-m-Y', strtotime(($data->dateAdd))) ?>">
-                            <i class="fas fa-eye"></i>
-                          </a>
-                          <a href="<?= base_url('persensopir/delete/') . $data->kd_persen ?>" class="btn btn-sm btn-danger text-white btn-delete" title="Hapus">
-                            <i class="fas fa-trash"></i>
-                          </a>
-                        </div>
-                      </td>
+                      <th>No.</th>
+                      <th>Kd Persen</th>
+                      <th>Nama Sopir</th>
+                      <th>Jml Reccu</th>
+                      <th>Jml Nominal</th>
+                      <th>Tanggal</th>
+                      <th>Aksi</th>
                     </tr>
-                    <?php $no++ ?>
-                  <?php endforeach ?>
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody class="text-center">
+
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -72,9 +50,9 @@
   </section>
 </div>
 
-<!-- detailUm -->
+<!-- detailPersenSopir -->
 <form action="<?= base_url('persensopir/print') ?>" method="POST" target="_blank">
-  <div class="modal fade" id="detailUm">
+  <div class="modal fade" id="detailPersenSopir">
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
       <div class="modal-content">
         <div class="modal-header">

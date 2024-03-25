@@ -32,6 +32,8 @@
 
                     </select>
                     <input type="hidden" name="selectedReccu" id="selectedReccu" class="form-control" required readonly>
+                    <input type="hidden" name="selectedOrder" id="selectedOrder" class="form-control" required readonly>
+                    <input type="hidden" name="selectedCust" id="selectedCust" class="form-control" required readonly>
                   </div>
                   <div class="form-group col-md-3">
                     <label for="pengirim">Pengirim</label>

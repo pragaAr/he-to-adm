@@ -29,6 +29,8 @@ $(document).ready(function () {
       const data = e.params.data;
 
       $("#selectedReccu").val(data.text);
+      $("#selectedOrder").val(data.orderno);
+      $("#selectedCust").val(data.custid);
       $("#jenis").val(data.jenis);
       $("#berat").val(data.berat);
       $("#pengirim").val(data.pengirim);

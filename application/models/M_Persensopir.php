@@ -6,18 +6,22 @@ class M_Persensopir extends CI_Model
 {
   public function getKd()
   {
-    $this->db->select('RIGHT(persensopir.kd_persen,3) as kd_persen', FALSE);
-    $this->db->order_by('kd_persen', 'DESC');
+    $this->db->select('RIGHT(persen_sopir.kd,3) as kd', FALSE);
+    $this->db->order_by('kd', 'DESC');
     $this->db->limit(1);
-    $query = $this->db->get('persensopir');
+
+    $query = $this->db->get('persen_sopir');
+
     if ($query->num_rows() <> 0) {
       $data = $query->row();
-      $kode = intval($data->kd_persen) + 1;
+      $kode = intval($data->kd) + 1;
     } else {
       $kode = 1;
     }
+
     $batas = str_pad($kode, 5, "0", STR_PAD_LEFT);
     $kodetampil = "ps-" . $batas;
+
     return $kodetampil;
   }
 

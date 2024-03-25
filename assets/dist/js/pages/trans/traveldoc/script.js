@@ -182,6 +182,71 @@ $("#sjTables").on("click", ".btn-delete", function () {
   });
 });
 
+$("#btn_tandaTerima").on("click", function () {
+  $("#modalTandaTerima").modal("show");
+});
+
+$("#modalTandaTerima").on("shown.bs.modal", function () {
+  $(".select-ttcust")
+    .select2({
+      placeholder: "PILIH CUSTOMER",
+      ajax: {
+        url: "http://localhost/hira-to-adm/customer/getListCustomer",
+        dataType: "json",
+        data: function (params) {
+          return {
+            q: params.term,
+          };
+        },
+        processResults: function (data) {
+          return {
+            results: data,
+          };
+        },
+      },
+    })
+    .on("select2:select", function (e) {
+      const data = e.params.data;
+
+      $("#ttcustname").val(data.text);
+
+      $.ajax({
+        url: "http://localhost/hira-to-adm/traveldoc/getReccuByCust",
+        type: "POST",
+        dataType: "json",
+        data: {
+          cust: $("#ttcust").val(),
+        },
+        success: function (data) {
+          if (data.length == 0) {
+            $("#btn_check").prop("disabled", true);
+          } else {
+            let html = "";
+            for (let count = 0; count < data.length; count++) {
+              html +=
+                '<option value="' +
+                data[count].reccu +
+                '">' +
+                data[count].reccu.toUpperCase() +
+                "</option>";
+            }
+            $("#ttreccu").empty();
+
+            $("#ttreccu").append(html);
+
+            $(".select-ttreccu").val(null).trigger("change");
+
+            $("#btn_check").prop("disabled", false);
+          }
+        },
+      });
+    });
+
+  $(".select-ttreccu").select2({
+    placeholder: "PILIH RECCU",
+  });
+});
+
 const inserted = $(".inserted").data("flashdata");
 
 if (inserted) {

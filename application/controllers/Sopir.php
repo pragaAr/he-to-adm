@@ -50,10 +50,10 @@ class Sopir extends CI_Controller
     $data = !$keyword ? $this->Sopir->getListData() : $this->Sopir->getSearchListData($keyword);
 
     $response = [];
-    foreach ($data as $cust) {
+    foreach ($data as $sopir) {
       $response[] = [
-        'id'    => $cust->id,
-        'text'  => ucwords($cust->nama),
+        'id'    => $sopir->id,
+        'text'  => ucwords($sopir->nama),
       ];
     }
 
