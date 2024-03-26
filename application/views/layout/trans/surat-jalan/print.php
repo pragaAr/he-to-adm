@@ -27,14 +27,13 @@
     }
 
     img {
-      width: 115px;
-      height: 78px;
+      width: 97px;
+      height: 65px;
     }
 
     .identity {
       text-align: center;
-      padding-right: 60px;
-
+      padding-right: 120px;
     }
 
     .cname {
@@ -51,8 +50,20 @@
       color: #303030;
     }
 
+    hr {
+      border: none;
+      height: 1px;
+      color: #000;
+      background-color: #000;
+    }
+
+    .data-title {
+      text-align: center;
+    }
+
     .data-title h4 {
-      text-transform: uppercase;
+      margin: 0;
+      font-size: 14px;
     }
 
     .data-content {
@@ -77,6 +88,31 @@
     .td-content {
       text-transform: uppercase;
     }
+
+    .td-content-numerik {
+      border: 1px solid #000;
+      font-size: 12px;
+      text-align: center;
+      padding: 5px;
+      vertical-align: middle;
+    }
+
+    .td-content-numerik {
+      text-transform: capitalize;
+    }
+
+    .td-content-empty {
+      border: 1px solid #000;
+      font-size: 12px;
+      text-align: center;
+      padding: 5px;
+      vertical-align: middle;
+      height: 25px;
+    }
+
+    .font-bold {
+      font-weight: bold;
+    }
   </style>
 </head>
 
@@ -99,53 +135,85 @@
     <hr>
 
     <div class="data-title">
-      <h4><?= $title ?></h4>
-      <h4><?= $nomor ?></h4>
+      <h4><?= strtoupper($title) ?></h4>
+      <h4>No : <?= strtoupper($nomor) ?></h4>
     </div>
 
     <div class="data-content">
       <table class="table-content">
         <thead>
           <tr>
-            <th class="th-content">No</th>
-            <th class="th-content">Reccu</th>
-            <th class="th-content">Tanggal</th>
-            <th class="th-content">No Surat Jalan</th>
-            <th class="th-content">Nopol</th>
-            <th class="th-content">Asal-Tujuan</th>
-            <th class="th-content">Berat</th>
-            <th class="th-content">Ongkir</th>
-            <th class="th-content">Tagihan</th>
+            <th class="th-content" style="width:5%">No.</th>
+            <th class="th-content" style="width:11%">Reccu</th>
+            <th class="th-content" style="width:11%">Tanggal</th>
+            <th class="th-content" style="width:15%">Surat Jalan</th>
+            <th class="th-content" style="width:10%">Nomor Polisi</th>
+            <th class="th-content" style="width:23%">Asal-Tujuan</th>
+            <th class="th-content" style="width:10%">Berat</th>
+            <th class="th-content" style="width:10%">Ongkir</th>
+            <th class="th-content" style="width:15%">Tagihan</th>
           </tr>
         </thead>
         <tbody>
-
           <?php $sumtotal = 0;
-          foreach ($content as $data) : ?>
+          $no = 1;
+          foreach ($rc as $data) : ?>
             <tr>
-              <td class="td-content"><?= $data['no'] ?></td>
-              <td class="td-content"><?= $data['reccu']; ?></td>
-              <td class="td-content"><?= $data['dateAdd']; ?></td>
-              <td class="td-content"><?= $data['nosj']; ?></td>
-              <td class="td-content"><?= $data['platno']; ?></td>
-              <td class="td-content"><?= $data['kota']; ?></td>
-              <td class="td-content"><?= $data['berat']; ?></td>
-              <td class="td-content"><?= $data['hrg_kg']; ?></td>
-              <td class="td-content"><?= number_format($data['total_hrg']); ?></td>
+              <td class="td-content"><?= $no++ ?>.</td>
+              <td class="td-content"><?= $data->reccu ?></td>
+              <td class="td-content"><?= date('d/m/Y', strtotime($data->dateAdd)) ?></td>
+              <td class="td-content">Total SJ <?= $data->jml_sj ?></td>
+              <td class="td-content"><?= $data->platno ?></td>
+              <td class="td-content"><?= $data->kota_asal ?>-<?= $data->kota_tujuan ?></td>
+              <td class="td-content-numerik"><?= $data->berat ?> Kg</td>
+              <td class="td-content-numerik">Rp. <?= number_format($data->hrg_kg) ?></td>
+              <td class="td-content-numerik">Rp. <?= number_format($data->total_hrg) ?></td>
             </tr>
+            <?php foreach ($dt as $detail) : ?>
+              <?php if ($detail->reccu == $data->reccu) { ?>
+                <tr>
+                  <td class="td-content"></td>
+                  <td class="td-content"></td>
+                  <td class="td-content"></td>
+                  <td class="td-content"><?= $detail->surat_jalan ?></td>
+                  <td class="td-content"></td>
 
+                  <?php
+                  $retur = $detail->retur != 0 ? $detail->retur . ' batang' : ''
+                  ?>
+
+                  <td class="td-content"><?= $retur ?></td>
+                  <td class="td-content"></td>
+                  <td class="td-content"></td>
+                  <td class="td-content"></td>
+                </tr>
+              <?php } ?>
+            <?php endforeach ?>
+            <tr>
+              <td class="td-content-empty"></td>
+              <td class="td-content-empty"></td>
+              <td class="td-content-empty"></td>
+              <td class="td-content-empty"></td>
+              <td class="td-content-empty"></td>
+              <td class="td-content-empty"></td>
+              <td class="td-content-empty"></td>
+              <td class="td-content-empty"></td>
+              <td class="td-content-empty"></td>
+            </tr>
             <?php
-            $sumtotal += $data['total_hrg'];
+            $sumtotal += $data->total_hrg;
             ?>
+
           <?php endforeach ?>
           <tr>
-            <td colspan="8" class="td-content">Jumlah</td>
-            <td class="td-content"><?= number_format($sumtotal) ?></td>
+            <td colspan="8" class="td-content font-bold">Jumlah</td>
+            <td class="td-content-numerik font-bold">Rp. <?= number_format($sumtotal) ?></td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
+
 </body>
 
 </html>

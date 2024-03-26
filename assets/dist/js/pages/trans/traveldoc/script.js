@@ -219,6 +219,8 @@ $("#modalTandaTerima").on("shown.bs.modal", function () {
         },
         success: function (data) {
           if (data.length == 0) {
+            $("#ttreccu").empty();
+            $(".select-ttreccu").val(null).trigger("change");
             $("#btn_check").prop("disabled", true);
           } else {
             let html = "";
@@ -245,6 +247,10 @@ $("#modalTandaTerima").on("shown.bs.modal", function () {
   $(".select-ttreccu").select2({
     placeholder: "PILIH RECCU",
   });
+});
+
+$(".select-ttcust").on("change", function () {
+  $(".select-ttreccu").val(null).trigger("change");
 });
 
 const inserted = $(".inserted").data("flashdata");

@@ -112,14 +112,10 @@ class Traveldoc extends CI_Controller
     $cust   = $this->input->post('ttcustname');
     $reccu  = $this->input->post('ttreccu[]');
 
-    $query    = $this->SJ->tandaTerima($reccu);
-
-    // echo json_encode($query);
-    // die;
-
-    $data['title']    = "tanda terima surat jalan $cust";
-    $data['nomor']    = "36/HAN/XII/23";
-    $data['content']  = $query;
+    $data['title']  = "tanda terima surat jalan $cust";
+    $data['nomor']  = "36/HAN/XII/23";
+    $data['rc']     = $this->SJ->getTandaTerimaData($reccu);
+    $data['dt']     = $this->SJ->getDetailData($reccu);
 
     $content  = $this->load->view('layout/trans/surat-jalan/print', $data, true);
 
@@ -128,8 +124,8 @@ class Traveldoc extends CI_Controller
       'format'        => 'A4',
       'orientation'   => 'P',
       'SetTitle'      => "tanda-terima-surat-jalan ",
-      'margin_left'   => 10,
-      'margin_right'  => 10,
+      'margin_left'   => 5,
+      'margin_right'  => 5,
       'margin_top'    => 5,
       'margin_bottom' => 5,
     ]);
