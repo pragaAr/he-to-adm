@@ -68,17 +68,23 @@
                   </div>
                 </div>
                 <div class="form-row">
+                  <div class="form-group col-md">
+                    <label for="ket">Keterangan</label>
+                    <input type="text" name="ket" id="ket" class="form-control text-capitalize" placeholder="Keterangan.." autocomplete="off">
+                  </div>
+                </div>
+                <div class="form-row">
                   <div class="form-group col-md-3">
                     <label for="suratjalan">Surat Jalan</label>
-                    <input type="text" name="suratjalan" id="suratjalan" class="form-control" placeholder="Surat Jalan..">
+                    <input type="text" name="suratjalan" id="suratjalan" class="form-control text-capitalize" placeholder="Surat Jalan.." autocomplete="off">
                   </div>
                   <div class="form-group col-md-3">
                     <label for="beratsj">Berat/SJ(Kg)</label>
-                    <input type="text" name="beratsj" id="beratsj" class="form-control" placeholder="Berat/SJ(Kg)..">
+                    <input type="text" name="beratsj" id="beratsj" class="form-control" placeholder="Berat/SJ(Kg).." autocomplete="off">
                   </div>
                   <div class="form-group col-md-3">
                     <label for="retur">Retur</label>
-                    <input type="text" name="retur" id="retur" class="form-control" placeholder="Retur..">
+                    <input type="text" name="retur" id="retur" class="form-control" placeholder="Retur.." autocomplete="off">
                   </div>
                   <div class="form-group col-md-3 d-flex align-items-end">
                     <button type="button" class="btn btn-primary border border-light btn-block mt-4" id="tambah" style="height:calc(1.5em + 0.75rem + 2px);" disabled>

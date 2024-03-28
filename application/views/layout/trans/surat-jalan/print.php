@@ -85,8 +85,13 @@
       vertical-align: middle;
     }
 
-    .td-content {
+    .th-content {
       text-transform: uppercase;
+    }
+
+    .td-content {
+      text-transform: capitalize;
+      height: 50px;
     }
 
     .td-content-numerik {
@@ -95,6 +100,8 @@
       text-align: center;
       padding: 5px;
       vertical-align: middle;
+      height: 50px;
+
     }
 
     .td-content-numerik {
@@ -107,11 +114,15 @@
       text-align: center;
       padding: 5px;
       vertical-align: middle;
-      height: 25px;
+      height: 50px;
     }
 
     .font-bold {
       font-weight: bold;
+    }
+
+    .danger {
+      color: red;
     }
   </style>
 </head>
@@ -144,11 +155,10 @@
         <thead>
           <tr>
             <th class="th-content" style="width:5%">No.</th>
-            <th class="th-content" style="width:11%">Reccu</th>
-            <th class="th-content" style="width:11%">Tanggal</th>
-            <th class="th-content" style="width:15%">Surat Jalan</th>
+            <th class="th-content" style="width:12%">Tanggal</th>
             <th class="th-content" style="width:10%">Nomor Polisi</th>
-            <th class="th-content" style="width:23%">Asal-Tujuan</th>
+            <th class="th-content" style="width:23%">Surat Jalan</th>
+            <th class="th-content" style="width:20%">Asal-Tujuan</th>
             <th class="th-content" style="width:10%">Berat</th>
             <th class="th-content" style="width:10%">Ongkir</th>
             <th class="th-content" style="width:15%">Tagihan</th>
@@ -158,55 +168,58 @@
           <?php $sumtotal = 0;
           $no = 1;
           foreach ($rc as $data) : ?>
+
             <tr>
               <td class="td-content"><?= $no++ ?>.</td>
-              <td class="td-content"><?= $data->reccu ?></td>
               <td class="td-content"><?= date('d/m/Y', strtotime($data->dateAdd)) ?></td>
-              <td class="td-content">Total SJ <?= $data->jml_sj ?></td>
               <td class="td-content"><?= $data->platno ?></td>
+              <td class="td-content">Total Surat Jalan <?= $data->jml_sj ?></td>
               <td class="td-content"><?= $data->kota_asal ?>-<?= $data->kota_tujuan ?></td>
               <td class="td-content-numerik"><?= $data->berat ?> Kg</td>
               <td class="td-content-numerik">Rp. <?= number_format($data->hrg_kg) ?></td>
               <td class="td-content-numerik">Rp. <?= number_format($data->total_hrg) ?></td>
             </tr>
+
             <?php foreach ($dt as $detail) : ?>
               <?php if ($detail->reccu == $data->reccu) { ?>
                 <tr>
                   <td class="td-content"></td>
-                  <td class="td-content"></td>
+                  <td class="td-content"><?= $data->keterangan ?></td>
                   <td class="td-content"></td>
                   <td class="td-content"><?= $detail->surat_jalan ?></td>
-                  <td class="td-content"></td>
 
-                  <?php
-                  $retur = $detail->retur != 0 ? $detail->retur . ' batang' : ''
-                  ?>
+                  <?php if ($detail->retur == 0) { ?>
+                    <td class="td-content"> </td>
+                  <?php } else { ?>
+                    <td class="td-content danger">Retur <?= $detail->retur ?></td>
+                  <?php } ?>
 
-                  <td class="td-content"><?= $retur ?></td>
                   <td class="td-content"></td>
                   <td class="td-content"></td>
                   <td class="td-content"></td>
                 </tr>
               <?php } ?>
             <?php endforeach ?>
+
             <tr>
               <td class="td-content-empty"></td>
               <td class="td-content-empty"></td>
               <td class="td-content-empty"></td>
-              <td class="td-content-empty"></td>
-              <td class="td-content-empty"></td>
+              <td class="td-content-empty">test surat jalan 1142/12/23</td>
               <td class="td-content-empty"></td>
               <td class="td-content-empty"></td>
               <td class="td-content-empty"></td>
               <td class="td-content-empty"></td>
             </tr>
+
             <?php
             $sumtotal += $data->total_hrg;
             ?>
 
           <?php endforeach ?>
+
           <tr>
-            <td colspan="8" class="td-content font-bold">Jumlah</td>
+            <td colspan="7" class="td-content font-bold">Jumlah</td>
             <td class="td-content-numerik font-bold">Rp. <?= number_format($sumtotal) ?></td>
           </tr>
         </tbody>

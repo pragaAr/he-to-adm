@@ -39,7 +39,7 @@ $(document).ready(function () {
       $("#hrgbrg").val(format(data.hrgbrg));
       $("#tothrg").val(format(data.totalhrg));
 
-      $("#suratjalan").focus();
+      $("#ket").focus();
     });
 
   $("#suratjalan").on("keydown keyup click change blur input", function (e) {

@@ -78,17 +78,19 @@ class Traveldoc extends CI_Controller
     $reccu    = strtolower($this->input->post('selectedReccu'));
     $order    = strtolower($this->input->post('selectedOrder'));
     $cust     = $this->input->post('selectedCust');
+    $ket      = $this->input->post('ket');
     $berat    = $this->input->post('valueBerat_hidden');
     $retur    = $this->input->post('valueRetur_hidden');
     $dateAdd  = date('Y-m-d H:i:s');
 
     $datasj = [
-      'reccu'     => strtolower($reccu),
-      'order_no'  => strtolower($order),
-      'cust_id'   => $cust,
-      'jml_sj'    => $jmlSj,
-      'user_id'   => $userid,
-      'dateAdd'   => $dateAdd,
+      'reccu'       => strtolower($reccu),
+      'order_no'    => strtolower($order),
+      'cust_id'     => $cust,
+      'jml_sj'      => $jmlSj,
+      'keterangan'  => strtolower($ket),
+      'user_id'     => $userid,
+      'dateAdd'     => $dateAdd,
     ];
 
     $datadt = [];

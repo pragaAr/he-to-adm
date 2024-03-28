@@ -26,7 +26,7 @@ class M_Traveldoc extends CI_Model
 
   public function getTandaTerimaData($reccu)
   {
-    $this->db->select('sj.reccu, sj.order_no, sj.jml_sj, p.kota_asal, p.kota_tujuan, p.berat, p.hrg_kg, p.total_hrg, p.dateAdd, a.platno')
+    $this->db->select('sj.reccu, sj.order_no, sj.jml_sj, sj.keterangan, p.kota_asal, p.kota_tujuan, p.berat, p.hrg_kg, p.total_hrg, p.dateAdd, a.platno')
       ->from('surat_jalan sj')
       ->join('penjualan p', 'p.reccu = sj.reccu')
       ->join('order_masuk om', 'om.no_order = sj.order_no')
