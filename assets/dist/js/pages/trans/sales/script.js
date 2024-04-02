@@ -699,6 +699,51 @@ $("#salesTables").on("click", ".btn-delete", function () {
   });
 });
 
+$("#salesTables").on("click", ".btn-update", function () {
+  const id = $(this).data("id");
+
+  $.ajax({
+    url: "http://localhost/hira-to-adm/penjualan/getOrderId",
+    method: "POST",
+    data: { id: id },
+    success: function (data) {
+      const parsedData = JSON.parse(data);
+
+      const id = parsedData.order_id;
+      Swal.fire({
+        title: "Apakah anda yakin ?",
+        text: "Status akan di update !!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "Batal",
+        confirmButtonText: "Ya, Update !",
+      }).then((result) => {
+        if (result.value) {
+          $.ajax({
+            url: "http://localhost/hira-to-adm/penjualan/updateStatus",
+            method: "POST",
+            data: {
+              id: id,
+            },
+            success: function (data) {
+              console.log(data);
+              Swal.fire({
+                icon: "success",
+                title: "Success!",
+                text: "Status Penjualan diupdate!",
+              });
+
+              $("#salesTables").DataTable().ajax.reload(null, false);
+            },
+          });
+        }
+      });
+    },
+  });
+});
+
 $(document).on("select2:open", () => {
   document
     .querySelector(".select2-container--open .select2-search__field")

@@ -48,10 +48,10 @@ class Penjualan extends CI_Controller
     echo json_encode($data);
   }
 
-  public function getDataId()
+  public function getOrderId()
   {
-    $kd   = $this->input->post('kd');
-    $data = $this->Sales->getDataByKd($kd);
+    $id   = $this->input->post('id');
+    $data = $this->Sales->getDataOrderById($id);
 
     echo json_encode($data);
   }
@@ -128,26 +128,6 @@ class Penjualan extends CI_Controller
     $biaya        = preg_replace("/[^0-9\.]/", "", $this->input->post('biaya'));
     $pembayaran   = trim($this->input->post('pembayaran'));
     $dateAdd      = date('Y-m-d H:i:s');
-
-    // $data = array(
-    //   'order_id'      => strtolower($noorder),
-    //   'no_sj'         => strtolower($nosj),
-    //   'jenis'         => strtolower($jenis),
-    //   'muatan'        => strtolower($muatan),
-    //   'berat'         => $berat,
-    //   'hrg_borong'    => $hrgborong,
-    //   'hrg_kg'        => $hrgtonase,
-    //   'pengirim'      => strtolower($pengirim),
-    //   'kota_asal'     => strtolower($kotaasal),
-    //   'alamat_asal'   => strtolower($alamatasal),
-    //   'penerima'      => strtolower($penerima),
-    //   'kota_tujuan'   => strtolower($kotatujuan),
-    //   'alamat_tujuan' => strtolower($alamattujuan),
-    //   'total_hrg'     => $biaya,
-    //   'pembayaran'    => strtolower($pembayaran),
-    //   'user_id'       => $userid,
-    //   'dateAdd'       => $dateAdd,
-    // );
 
     $data = array(
       'reccu'         => strtolower($reccu),
@@ -275,6 +255,15 @@ class Penjualan extends CI_Controller
     ];
 
     $this->pdf->generate('layout/trans/penjualan/print', $data, "Reccu-$kd", 'A6', 'portrait');
+  }
+
+  public function updateStatus()
+  {
+    $id = $this->input->post('id');
+
+    $data = $this->Sales->updateStatusOrderPenjualan($id);
+
+    echo json_encode($data);
   }
 
   public function delete()

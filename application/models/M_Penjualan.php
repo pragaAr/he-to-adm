@@ -38,7 +38,7 @@ class M_Penjualan extends CI_Model
     foreach ($data['data'] as &$row) {
       if ($row['status'] == 'diproses') {
         $row['view'] = '<div class="btn-group" role="group">
-                            <a href="javascript:void(0);" class="btn btn-sm btn-secondary border border-light btn-detail" data-toggle="tooltip" title="Update Status" data-kd="' . $row['order_id'] . '">
+                            <a href="javascript:void(0);" class="btn btn-sm btn-secondary border border-light btn-update" data-toggle="tooltip" title="Update Status" data-id="' . $row['order_id'] . '">
                               <i class="fas fa-check fa-sm"></i>
                             </a>
                             <a href="http://localhost/hira-to-adm/penjualan/print/' . $row['no_order'] . '" target="_blank" class="btn btn-sm btn-info text-white border border-light btn-print" data-toggle="tooltip" title="Cetak">
@@ -83,6 +83,17 @@ class M_Penjualan extends CI_Model
       ->from('penjualan p')
       ->join('order_masuk om', 'om.id = p.order_id')
       ->where('om.no_order', $kd);
+
+    $query = $this->db->get()->row();
+
+    return $query;
+  }
+
+  public function getDataOrderById($id)
+  {
+    $this->db->select('order_id')
+      ->from('penjualan')
+      ->where('order_id', $id);
 
     $query = $this->db->get()->row();
 
@@ -222,5 +233,27 @@ class M_Penjualan extends CI_Model
 
     $this->db->delete('penjualan', $whereidorder);
     $this->db->update('order_masuk', $dataorder, $wherenoorder);
+  }
+
+  public function updateStatusOrderPenjualan($id)
+  {
+    $statusOrder = [
+      'status_order'  => 'selesai',
+    ];
+
+    $statusPenjualan = [
+      'status'  => 'selesai',
+    ];
+
+    $whereorderid = [
+      'order_id' => $id
+    ];
+
+    $whereidorder = [
+      'id' => $id
+    ];
+
+    $this->db->update('penjualan',  $statusPenjualan, $whereorderid);
+    $this->db->update('order_masuk', $statusOrder, $whereidorder);
   }
 }
