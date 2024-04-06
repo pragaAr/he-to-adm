@@ -59,11 +59,15 @@ class Sangu extends CI_Controller
 
   public function update()
   {
-    $noorder  = $this->input->post('noorder');
-    $tambahan = preg_replace("/[^0-9\.]/", "", $this->input->post('tambahan'));
+    $noorder    = $this->input->post('noorder');
+    $tambahan   = preg_replace("/[^0-9\.]/", "", $this->input->post('tambahan'));
+    $keterangan = $this->input->post('keterangan');
+    $tgl        = $this->input->post('tanggal');
 
     $data = [
-      'tambahan' => $tambahan
+      'tambahan'        => $tambahan,
+      'keterangan'      => $keterangan,
+      'dateTambahanAdd' => $tgl
     ];
 
     $where = [
@@ -92,6 +96,7 @@ class Sangu extends CI_Controller
       'keperluan' => "Sangu " . strtoupper($plat) . " " . ucwords($sopir),
       'nominal'   => $nominal,
       'desc'      => strtoupper($cust) . ' ' . strtoupper($asal) . '-' . strtoupper($tujuan) . ' (' . strtoupper($kd) . ') ',
+      'ket'       => ''
     ];
 
     $content  = $this->load->view('layout/adm/sangu/print', $data, true);
@@ -100,11 +105,11 @@ class Sangu extends CI_Controller
       'mode'          => 'utf-8',
       'format'        => 'A5',
       'orientation'   => 'L',
-      'SetTitle'      => "pengeluaran kas-$kd",
+      'SetTitle'      => "pengeluaran-kas-sangu-$kd",
       'margin_left'   => 10,
       'margin_right'  => 10,
-      'margin_top'    => 5,
-      'margin_bottom' => 5,
+      'margin_top'    => 10,
+      'margin_bottom' => 10,
     ]);
 
     $mpdf->AddPage();
@@ -123,21 +128,29 @@ class Sangu extends CI_Controller
     $cust     = $query->nama_cust;
     $asal     = $query->asal_order;
     $tujuan   = $query->tujuan_order;
+    $ket      = $query->keterangan;
+    $date     = $query->dateTambahanAdd;
 
     $data = [
       'title'     => 'Pengeluaran Kas',
       'sopir'     => $sopir,
       'keperluan' => "Tambahan Sangu " . strtoupper($plat) . " " . ucwords($sopir),
       'nominal'   => $nominal,
-      'desc'      => strtoupper($cust) . ' ' . strtoupper($asal) . '-' . strtoupper($tujuan) . ' (' . strtoupper($kd) . ') ',
+      'desc'      => strtoupper($cust) . ', ' . strtoupper($asal) . '-' . strtoupper($tujuan) . ' (' . strtoupper($kd) . ') ',
+      'ket'       => date('d F Y', strtotime($date)) . ', ' . ucwords($ket)
     ];
 
     $content  = $this->load->view('layout/adm/sangu/print', $data, true);
 
     $mpdf = new Mpdf([
-      'mode' => 'utf-8',
-      'format' => 'A5',
-      'orientation' => 'L'
+      'mode'          => 'utf-8',
+      'format'        => 'A5',
+      'orientation'   => 'L',
+      'SetTitle'      => "pengeluaran-kas-tambahan-sangu-$kd",
+      'margin_left'   => 10,
+      'margin_right'  => 10,
+      'margin_top'    => 10,
+      'margin_bottom' => 10,
     ]);
 
     $mpdf->AddPage();

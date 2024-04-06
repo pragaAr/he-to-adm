@@ -62,30 +62,51 @@
             </label>
             <input type="text" class="form-control text-uppercase" name="noorder" id="noorder" readonly>
           </div>
-          <div class="form-group">
-            <label for="platno">
-              Truck
-            </label>
-            <input type="text" class="form-control text-uppercase" name="platno" id="platno" readonly>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="platno">
+                Truck
+              </label>
+              <input type="text" class="form-control text-uppercase" name="platno" id="platno" readonly>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="sopir">
+                Sopir
+              </label>
+              <input type="text" class="form-control text-uppercase" name="sopir" id="sopir" readonly>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="sopir">
-              Sopir
-            </label>
-            <input type="text" class="form-control text-uppercase" name="sopir" id="sopir" readonly>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="nominal">
+                Nominal
+              </label>
+              <input type="text" class="form-control" name="nominal" id="nominal" placeholder="Nominal.." readonly>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="tambahan">
+                Tambahan
+              </label>
+              <input type="text" class="form-control" name="tambahan" id="tambahan" value="0" placeholder="Tambahan..">
+            </div>
           </div>
-          <div class="form-group">
-            <label for="nominal">
-              Nominal
-            </label>
-            <input type="text" class="form-control" name="nominal" id="nominal" placeholder="Nominal.." readonly>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="keterangan">
+                Keterangan
+              </label>
+              <input type="text" class="form-control text-capitalize" name="keterangan" id="keterangan" placeholder="Keterangan..">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="tanggal">
+                Tanggal
+              </label>
+              <input type="date" class="form-control" name="tanggal" id="tanggal">
+            </div>
           </div>
-          <div class="form-group">
-            <label for="tambahan">
-              Tambahan
-            </label>
-            <input type="text" class="form-control" name="tambahan" id="tambahan" value="0" placeholder="Tambahan..">
-          </div>
+
           <div>
             <button type="submit" class="btn btn-dark border border-light float-right">
               Simpan

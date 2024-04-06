@@ -44,14 +44,14 @@ $("#customerTables").DataTable({
       },
     },
     {
-      data: "notelp",
+      data: "alamat",
       className: "text-center",
       render: function (data, type, row) {
         return data.toUpperCase();
       },
     },
     {
-      data: "alamat",
+      data: "notelp",
       className: "text-center",
       render: function (data, type, row) {
         return data.toUpperCase();

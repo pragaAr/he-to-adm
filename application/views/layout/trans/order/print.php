@@ -3,47 +3,34 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?= $title ?></title>
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
+    body {
+      color: #1d1d1d;
     }
 
-    body {
-      font-family: 'Times New Roman', Times, serif;
-      color: #1d1d1d;
+    p {
+      margin: 0;
     }
 
     .container {
       margin: 0 10px;
     }
 
-    .fw-bold {
-      font-weight: bold;
-    }
-
-    .f-upper {
-      text-transform: uppercase;
-    }
-
     .logo {
-      width: 20%;
+      width: 17%;
       float: left;
     }
 
     img {
-      width: 115px;
-      height: 78px;
+      width: 100%;
     }
 
     .identity {
       text-align: center;
-      padding-right: 60px;
-
+      padding-right: 100px;
     }
 
     .cname {
@@ -60,40 +47,39 @@
       color: #303030;
     }
 
-    .intro {
-      margin-top: 20px;
+    hr {
+      border: none;
+      height: 1.5px;
+      color: #000;
+      background-color: #000;
     }
 
-    .intro:after {
-      content: "";
-      display: table;
-      clear: both;
-    }
-
-    .order-detail {
-      float: left;
-      width: 50%;
-    }
-
-    .order-number {
-      width: 350px;
+    .data-title .p-no-order {
+      margin: 20px 0;
+      font-weight: bold;
+      text-transform: uppercase;
       font-size: 16px;
+    }
+
+    .data-title .p-title-desc {
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+
+    .uppercase {
+      text-transform: uppercase;
+    }
+
+    .bold {
       font-weight: bold;
     }
 
-    .cust-data {
-      font-size: 14px;
-      width: 350px;
-      word-wrap: break-word;
+    .content {
+      margin-top: 20px;
     }
 
-    .body-order p {
-      font-size: 14px;
-    }
-
-    footer {
-      width: 100%;
-      margin-top: 40px;
+    .content p {
+      margin-bottom: 3px;
     }
 
     .w-60 {
@@ -104,24 +90,35 @@
       width: 40%;
     }
 
-    footer .ttd {
+    .signature {
+      margin-top: 40px;
+    }
+
+    .signature .ttd {
       float: right;
       text-align: center;
     }
 
-    footer .ttd p {
+    .signature .ttd p {
       font-size: 14px;
     }
 
-    footer .ttd h4 {
+    .signature .ttd h4 {
       font-size: 16px;
     }
-  </style>
 
+    .page-number-footer {
+      text-align: right;
+      font-style: italic;
+      font-size: 11px;
+    }
+  </style>
 </head>
 
 <body>
+
   <div class="container">
+
     <div class="logo">
       <img src="<?= base_url('assets/dist/img/logo-red.png') ?>">
     </div>
@@ -130,45 +127,52 @@
       <p class="cname">
         pt. hira adya naranata
       </p>
-      <p class="cdetail">Komplek Pangkalan Truk Genuk Blok AA No.35</p>
-      <p class="cdetail">Jl. Raya Kaligawe Km 56, Semarang</p>
+      <p class="cdetail">Komplek Pangkalan Truk Genuk Blok AA No.35, Jl. Raya Kaligawe Km 56, Semarang</p>
       <p class="cdetail">Telp : (024) 6582208; +628112940481</p>
       <p class="cdetail">Website : https://hira-express.com Email : hira.express.transport@gmail.com</p>
     </div>
 
     <hr>
-    <section class="intro">
-      <div class="order-detail order-number">
-        <p class="f-upper">no order : <?= $detail->no_order ?></p>
-      </div>
-      <div class="order-detail cust-data">
-        <p>Semarang, <?= date('d-m-Y', strtotime($detail->dateAdd)) ?></p>
-        <p>Kepada Yth,</p>
-        <p class="f-upper"><?= $detail->nama_customer ?></p>
-        <p>Di <?= ucwords($detail->asal_order) ?>.</p>
-      </div>
-    </section>
 
-    <section class="body-order">
+    <div class="data-title">
+      <p class="p-no-order">no order : <?= $detail->no_order ?></p>
+      <p class="p-title-desc">Semarang, <?= date('d F Y', strtotime($detail->dateAdd)) ?></p>
+      <p class="p-title-desc">Kepada Yth,</p>
+      <p class="p-title-desc uppercase"><?= $detail->nama_customer ?></p>
+      <p class="p-title-desc">Di <?= ucwords($detail->asal_order) ?>.</p>
+    </div>
+
+    <div class="content">
       <p>Dengan hormat,</p>
       <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Bersama ini, truk kami dengan Nomor Polisi
-        <span class="fw-bold f-upper"> <?= $detail->platno ?></span>,
-        Pengemudi <span class="fw-bold"> <?= ucwords($detail->nama_sopir) ?></span> dan Kernet <span class="fw-bold">-</span>.
+        <span class="bold uppercase">
+          <?= $detail->platno ?>,
+        </span>
+        Pengemudi
+        <span class="bold">
+          <?= ucwords($detail->nama_sopir) ?>
+        </span>
+        dan Kernet
+        <span class="bold">-.</span>
       </p>
       <p>Mohon diberi muatan berupa
-        <span class="fw-bold"><?= ucwords($detail->jenis_muatan) ?></span>,
+        <span class="bold">
+          <?= ucwords($detail->jenis_muatan) ?>,
+        </span>
         dengan tujuan ke
-        <span class="fw-bold"><?= ucwords($detail->tujuan_order) ?></span>
+        <span class="bold">
+          <?= ucwords($detail->tujuan_order) ?>.
+        </span>
       </p>
-    </section>
+    </div>
 
-    <footer>
+    <div class="signature">
       <div class="w-60"></div>
       <div class="ttd w-40">
         <p>Hormat kami,</p>
-        <h4 class="f-upper"> pt. hira adya naranata</h4>
+        <h4 class="uppercase"> pt. hira adya naranata</h4>
       </div>
-    </footer>
+    </div>
 
   </div>
 

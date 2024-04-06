@@ -2,6 +2,9 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 date_default_timezone_set('Asia/Jakarta');
+
+use Mpdf\Mpdf;
+
 class Uangmakan extends CI_Controller
 {
   public function __construct()
@@ -44,30 +47,25 @@ class Uangmakan extends CI_Controller
     echo json_encode($data);
   }
 
-  public function add()
+  public function getGenerateKd()
   {
-    $data = [
-      'title' => 'Tambah Data Uang Makan',
-      'kd'    => $this->Um->getKd()
-    ];
+    $data = $this->Um->getKd();
 
-    $this->load->view('layout/template/header', $data);
-    $this->load->view('layout/template/navbar');
-    $this->load->view('layout/template/sidebar');
-    $this->load->view('layout/adm/uang-makan/add', $data);
-    $this->load->view('layout/template/footer');
+    echo json_encode($data);
   }
 
-  public function prosesAdd()
+  public function add()
   {
     $userid   = $this->session->userdata('id');
-    $jmlorang = count($this->input->post('id_hidden'));
-    $nominal  = preg_replace("/[^0-9\.]/", "", $this->input->post('nominal_hidden'));
-    $total    = preg_replace("/[^0-9\.]/", "", $this->input->post('total_hidden'));
+    $kryid    = $this->input->post('id');
+    $countid  = count($this->input->post('id'));
+    $kd       = $this->input->post('kd');
+    $nominal  = preg_replace("/[^0-9\.]/", "", $this->input->post('nominal'));
+    $total    = preg_replace("/[^0-9\.]/", "", $this->input->post('total'));
 
     $data  = [
-      'kd_um'         => $this->input->post('kd'),
-      'jml_penerima'  => $jmlorang,
+      'kd_um'         => $kd,
+      'jml_penerima'  => $countid,
       'jml_nominal'   => $total,
       'user_id'       => $userid,
       'dateAdd'       => date('Y-m-d H:i:s'),
@@ -75,16 +73,29 @@ class Uangmakan extends CI_Controller
 
     $detail = [];
 
-    for ($i = 0; $i < $jmlorang; $i++) {
-      array_push($detail, ['karyawan_id'  => $this->input->post('id_hidden')[$i]]);
-      $detail[$i]['kd_um']        = $this->input->post('kd');
+    for ($i = 0; $i < $countid; $i++) {
+      array_push($detail, ['karyawan_id'  => $kryid[$i]]);
+      $detail[$i]['kd_um']        = $kd;
       $detail[$i]['nominal']      = $nominal[$i];
     }
 
-    $this->Um->addData($data, $detail);
-    $this->session->set_flashdata('inserted', 'Data berhasil ditambahkan!');
+    $proses = $this->Um->addData($data, $detail);
 
-    redirect('uangmakan');
+    if ($proses) {
+      $response = [
+        'kd_um'   => $kd,
+        'status'  => 'success',
+        'text'    => 'Data Berhasil Ditambahkan'
+      ];
+    } else {
+      $response = [
+        'kd_um'   => null,
+        'status'  => 'error',
+        'text'    => 'Data Gagal Ditambahkan'
+      ];
+    }
+
+    echo json_encode($response);
   }
 
   public function getDetailkd()
@@ -107,17 +118,34 @@ class Uangmakan extends CI_Controller
     echo json_encode($response);
   }
 
-  public function print()
+  public function print($kd)
   {
-    $kd = $this->input->post('kdum');
+    $date = date('d/F/Y');
 
-    $this->load->library('pdf');
+    $data = [
+      'title'     => 'List Uang Makan',
+      'dataum'    => $this->Um->getDataByKd($kd),
+      'detailum'  => $this->Um->getDetailByKd($kd)
+    ];
 
-    $data['title']    = 'Hira Express - Print Uang Makan';
-    $data['dataum']   = $this->Um->getDataByKd($kd);
-    $data['detailum'] = $this->Um->getDetailByKd($kd);
+    $content  = $this->load->view('layout/adm/uang-makan/print', $data, true);
 
-    $this->pdf->generate('print/print-uangmakan', $data, 'Data-Uang-Makan', 'A4', 'portrait');
+    $mpdf = new Mpdf([
+      'mode'          => 'utf-8',
+      'format'        => 'A4',
+      'orientation'   => 'P',
+      'SetTitle'      => "list-uang-makan-$date",
+      'margin_left'   => 10,
+      'margin_right'  => 10,
+      'margin_top'    => 10,
+      'margin_bottom' => 10,
+    ]);
+
+    $mpdf->SetHTMLFooter("<p class='page-number-footer'>list uangmakan $date | halaman {PAGENO} dari {nb}</p>");
+    $mpdf->AddPage();
+    $mpdf->WriteHTML($content);
+
+    $mpdf->Output();
   }
 
   public function delete()

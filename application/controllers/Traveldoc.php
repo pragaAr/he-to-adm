@@ -5,6 +5,8 @@ date_default_timezone_set('Asia/Jakarta');
 
 use Mpdf\Mpdf;
 
+use function PHPUnit\Framework\isNull;
+
 class Traveldoc extends CI_Controller
 {
   public function __construct()
@@ -61,26 +63,15 @@ class Traveldoc extends CI_Controller
 
   public function add()
   {
-    $data['title']  = 'Tambah Data Surat Jalan';
-
-    $this->load->view('layout/template/header', $data);
-    $this->load->view('layout/template/navbar');
-    $this->load->view('layout/template/sidebar');
-    $this->load->view('layout/trans/surat-jalan/add', $data);
-    $this->load->view('layout/template/footer');
-  }
-
-  public function proses()
-  {
     $userid   = $this->session->userdata('id');
-    $jmlSj    = count($this->input->post('sj_hidden'));
-    $sj       = $this->input->post('sj_hidden');
+    $jmlSj    = count($this->input->post('sj'));
+    $sj       = $this->input->post('sj');
     $reccu    = strtolower($this->input->post('selectedReccu'));
     $order    = strtolower($this->input->post('selectedOrder'));
     $cust     = $this->input->post('selectedCust');
     $ket      = $this->input->post('ket');
-    $berat    = $this->input->post('valueBerat_hidden');
-    $retur    = $this->input->post('valueRetur_hidden');
+    $berat    = $this->input->post('valberat');
+    $retur    = $this->input->post('valretur');
     $dateAdd  = date('Y-m-d H:i:s');
 
     $datasj = [
@@ -102,40 +93,72 @@ class Traveldoc extends CI_Controller
       $datadt[$i]['retur']        = $retur[$i];
     }
 
-    $this->SJ->addData($datasj, $datadt);
+    $proses = $this->SJ->addData($datasj, $datadt);
 
-    $this->session->set_flashdata('inserted', 'Data berhasil ditambahkan!');
+    if ($proses) {
+      $response = [
+        'status'  => 'success',
+        'title'   => 'Success',
+        'text'    => 'Data Berhasil Ditambahkan'
+      ];
+    } else {
+      $response = [
+        'status'  => 'error',
+        'title'   => 'Error',
+        'text'    => 'Data Gagal Ditambahkan'
+      ];
+    }
 
-    redirect('traveldoc');
+    echo json_encode($response);
   }
 
   public function print()
   {
-    $cust   = $this->input->post('ttcustname');
-    $reccu  = $this->input->post('ttreccu[]');
+    $cust             = $this->input->post('ttcustname');
+    $reccu            = $this->input->post('ttreccu[]');
+    $jenis            = $this->input->post('jenis');
+    $dpp              = $this->input->post('dpp');
+    $valJenis         = preg_replace('/-/', ' ', $jenis);
+    $nomor = "36/HAN/XII/23";
 
-    $data['title']  = "tanda terima surat jalan $cust";
-    $data['nomor']  = "36/HAN/XII/23";
-    $data['rc']     = $this->SJ->getTandaTerimaData($reccu);
-    $data['dt']     = $this->SJ->getDetailData($reccu);
-
-    $content  = $this->load->view('layout/trans/surat-jalan/print', $data, true);
+    $data['title']    = $valJenis . ' ' . $cust;
+    $data['nomor']    = $nomor;
+    $data['rc']       = $this->SJ->getTandaTerimaData($reccu);
+    $data['dt']       = $this->SJ->getDetailData($reccu);
+    $data['dpp']      = $dpp;
 
     $mpdf = new Mpdf([
       'mode'          => 'utf-8',
       'format'        => 'A4',
       'orientation'   => 'P',
-      'SetTitle'      => "tanda-terima-surat-jalan ",
+      'SetTitle'      => $jenis,
       'margin_left'   => 5,
       'margin_right'  => 5,
       'margin_top'    => 5,
       'margin_bottom' => 5,
     ]);
 
-    $mpdf->AddPage();
-    $mpdf->WriteHTML($content);
+    if ($jenis === 'tanda-terima-surat-jalan') {
 
-    $mpdf->Output();
+      $content  = $this->load->view('layout/trans/surat-jalan/print', $data, true);
+
+      $mpdf->SetHTMLFooter("<p class='page-number-footer'>Tanda Terima Surat Jalan ( $nomor ) | Halaman {PAGENO} Dari {nb}</p>");
+      $mpdf->AddPage();
+      $mpdf->WriteHTML($content);
+
+      $mpdf->Output();
+    } else if ($jenis === 'invoice') {
+
+      $content  = $this->load->view('layout/trans/surat-jalan/print-invoice', $data, true);
+
+      $mpdf->SetHTMLFooter("<p class='page-number-footer'>Invoice ( $nomor ) | Halaman {PAGENO} Dari {nb}</p>");
+      $mpdf->AddPage();
+      $mpdf->WriteHTML($content);
+
+      $mpdf->Output();
+    } else {
+      echo 'data tidak valid, silahkan pilih jenis dokumen';
+    }
   }
 
   public function delete()

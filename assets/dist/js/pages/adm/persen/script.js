@@ -44,21 +44,21 @@ $("#persenTables").DataTable({
       },
     },
     {
-      data: "sopir",
+      data: "nama",
       className: "text-center",
       render: function (data, type, row) {
-        return data + " Orang";
+        return data.toUpperCase();
       },
     },
     {
-      data: "jml_reccu",
+      data: "jml_order",
       className: "text-center",
       render: function (data, type, row) {
-        return data + " Orang";
+        return data;
       },
     },
     {
-      data: "jml_nominal",
+      data: "total_diterima",
       className: "text-center",
       render: function (data, type, row) {
         var value = parseFloat(data);

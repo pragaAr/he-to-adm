@@ -42,14 +42,7 @@
              <p>User</p>
            </a>
          </li>
-         <li class="nav-header">Pemasukan</li>
-         <li class="nav-item">
-           <a href="<?= base_url('pemasukan_kas') ?>" class="nav-link <?= $this->uri->segment(1) == 'pemasukan_kas' || $this->uri->segment(1) == '' ? 'active' : '' ?>" class="nav-link">
-             <i class="nav-icon fas fa-money-check-alt"></i>
-             <p>Pemasukan Kas</p>
-           </a>
-         </li>
-         <li class="nav-header">Pengeluaran</li>
+         <li class="nav-header">Administrasi</li>
          <li class="nav-item">
            <a href="<?= base_url('uangmakan') ?>" class="nav-link <?= $this->uri->segment(1) == 'uangmakan' || $this->uri->segment(1) == '' ? 'active' : '' ?>" class="nav-link">
              <i class="nav-icon fas fa-hand-holding-usd"></i>
@@ -59,7 +52,7 @@
          <li class="nav-item">
            <a href="<?= base_url('sangu') ?>" class="nav-link <?= $this->uri->segment(1) == 'sangu' || $this->uri->segment(1) == '' ? 'active' : '' ?>" class="nav-link">
              <i class="nav-icon fas fa-wallet"></i>
-             <p>Sangu</p>
+             <p>Sangu Sopir</p>
            </a>
          </li>
          <li class="nav-item">
@@ -68,13 +61,7 @@
              <p>Persen Sopir</p>
            </a>
          </li>
-         <li class="nav-item">
-           <a href="<?= base_url('pengeluaran_lain') ?>" class="nav-link <?= $this->uri->segment(1) == 'pengeluaran_lain' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
-             <i class="nav-icon fas fa-search-dollar"></i>
-             <p>Lain-lain</p>
-           </a>
-         </li>
-         <li class="nav-header">Penjualan</li>
+         <li class="nav-header">Transaksi</li>
          <li class="nav-item">
            <a href="<?= base_url('customer') ?>" class="nav-link <?= $this->uri->segment(1) == 'customer' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
              <i class="nav-icon fas fa-portrait"></i>
@@ -103,15 +90,7 @@
              </p>
            </a>
          </li>
-         <li class="nav-item">
-           <a href="<?= base_url('invoice') ?>" class="nav-link <?= $this->uri->segment(1) == 'invoice' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
-             <i class="nav-icon fas fa-envelope-open-text"></i>
-             <p>
-               Invoice
-             </p>
-           </a>
-         </li>
-         <li class="nav-item">
+         <!-- <li class="nav-item">
            <a href="#" class="nav-link">
              <i class="nav-icon fas fa-file-alt"></i>
              <p>
@@ -127,8 +106,8 @@
                </a>
              </li>
            </ul>
-         </li>
-         <li class="nav-header">Akuntansi</li>
+         </li> -->
+         <!-- <li class="nav-header">Akuntansi</li>
          <li class="nav-item">
            <a href="<?= base_url('rekening') ?>" class="nav-link <?= $this->uri->segment(1) == 'rekening' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
              <i class="nav-icon fas fa-book"></i>
@@ -140,7 +119,7 @@
              <i class="nav-icon fas fa-file-invoice-dollar"></i>
              <p>LKH</p>
            </a>
-         </li>
+         </li> -->
          <!-- <li class="nav-header">Report</li>
          <li class="nav-item">
            <a href="#" class="nav-link">

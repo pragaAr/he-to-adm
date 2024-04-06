@@ -7,13 +7,7 @@
   <title>Tanda Terima Surat Jalan</title>
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-    }
-
     body {
-      font-family: 'Times New Roman', Times, serif;
       color: #1d1d1d;
     }
 
@@ -22,18 +16,18 @@
     }
 
     .logo {
-      width: 20%;
+      width: 17%;
       float: left;
     }
 
     img {
-      width: 97px;
-      height: 65px;
+      width: 100%;
     }
 
     .identity {
       text-align: center;
-      padding-right: 120px;
+      padding-right: 100px;
+      margin-bottom: 1.5px;
     }
 
     .cname {
@@ -52,7 +46,7 @@
 
     hr {
       border: none;
-      height: 1px;
+      height: 1.5px;
       color: #000;
       background-color: #000;
     }
@@ -63,7 +57,7 @@
 
     .data-title h4 {
       margin: 0;
-      font-size: 14px;
+      font-size: 16px;
     }
 
     .data-content {
@@ -121,14 +115,25 @@
       font-weight: bold;
     }
 
+    .uppercase {
+      text-transform: uppercase;
+    }
+
     .danger {
       color: red;
+    }
+
+    .page-number-footer {
+      text-align: right;
+      font-style: italic;
+      font-size: 11px;
     }
   </style>
 </head>
 
 <body>
   <div class="container">
+
     <div class="logo">
       <img src="<?= base_url('assets/dist/img/logo-red.png') ?>">
     </div>
@@ -137,8 +142,7 @@
       <p class="cname">
         pt. hira adya naranata
       </p>
-      <p class="cdetail">Komplek Pangkalan Truk Genuk Blok AA No.35</p>
-      <p class="cdetail">Jl. Raya Kaligawe Km 56, Semarang</p>
+      <p class="cdetail">Komplek Pangkalan Truk Genuk Blok AA No.35, Jl. Raya Kaligawe Km 56, Semarang</p>
       <p class="cdetail">Telp : (024) 6582208; +628112940481</p>
       <p class="cdetail">Website : https://hira-express.com Email : hira.express.transport@gmail.com</p>
     </div>
@@ -155,12 +159,12 @@
         <thead>
           <tr>
             <th class="th-content" style="width:5%">No.</th>
-            <th class="th-content" style="width:12%">Tanggal</th>
+            <th class="th-content" style="width:10%">Tanggal</th>
             <th class="th-content" style="width:10%">Nomor Polisi</th>
-            <th class="th-content" style="width:23%">Surat Jalan</th>
+            <th class="th-content" style="width:20%">Surat Jalan</th>
             <th class="th-content" style="width:20%">Asal-Tujuan</th>
-            <th class="th-content" style="width:10%">Berat</th>
-            <th class="th-content" style="width:10%">Ongkir</th>
+            <th class="th-content" style="width:9%">Berat</th>
+            <th class="th-content" style="width:9%">Ongkir</th>
             <th class="th-content" style="width:15%">Tagihan</th>
           </tr>
         </thead>
@@ -172,7 +176,7 @@
             <tr>
               <td class="td-content"><?= $no++ ?>.</td>
               <td class="td-content"><?= date('d/m/Y', strtotime($data->dateAdd)) ?></td>
-              <td class="td-content"><?= $data->platno ?></td>
+              <td class="td-content uppercase"><?= $data->platno ?></td>
               <td class="td-content">Total Surat Jalan <?= $data->jml_sj ?></td>
               <td class="td-content"><?= $data->kota_asal ?>-<?= $data->kota_tujuan ?></td>
               <td class="td-content-numerik"><?= $data->berat ?> Kg</td>
@@ -205,7 +209,7 @@
               <td class="td-content-empty"></td>
               <td class="td-content-empty"></td>
               <td class="td-content-empty"></td>
-              <td class="td-content-empty">test surat jalan 1142/12/23</td>
+              <td class="td-content-empty"></td>
               <td class="td-content-empty"></td>
               <td class="td-content-empty"></td>
               <td class="td-content-empty"></td>
@@ -219,7 +223,7 @@
           <?php endforeach ?>
 
           <tr>
-            <td colspan="7" class="td-content font-bold">Jumlah</td>
+            <td colspan="7" class="td-content font-bold uppercase">Jumlah</td>
             <td class="td-content-numerik font-bold">Rp. <?= number_format($sumtotal) ?></td>
           </tr>
         </tbody>

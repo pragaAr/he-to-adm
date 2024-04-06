@@ -24,13 +24,19 @@ class Penjualan extends CI_Controller
   public function index()
   {
     $data['title']  = 'Data Penjualan';
-    $data['reccu']  = $this->Sales->generateReccu();
 
     $this->load->view('layout/template/header', $data);
     $this->load->view('layout/template/navbar');
     $this->load->view('layout/template/sidebar');
     $this->load->view('layout/trans/penjualan/index', $data);
     $this->load->view('layout/template/footer');
+  }
+
+  public function getReccu()
+  {
+    $data = $this->Sales->generateReccu();
+
+    echo json_encode($data);
   }
 
   public function getPenjualan()

@@ -23,17 +23,19 @@
     }
 
     .logo {
-      width: 20%;
+      width: 27%;
+      height: 13%;
       float: left;
     }
 
     img {
-      width: 95px;
-      height: 67px;
+      width: 100%;
+      height: 100%;
     }
 
     .identity {
       text-align: center;
+      padding-right: 68px;
     }
 
     .cname {
@@ -149,6 +151,10 @@
       opacity: 0.2;
       transform: rotate(-45deg);
     }
+
+    .pt-2 {
+      padding-top: 10px;
+    }
   </style>
 </head>
 
@@ -184,12 +190,12 @@
       <table class="table-data">
         <tr>
           <td class="td-reccu-lg w-sm">RECCU</td>
-          <td style="width:3%">:</td>
+          <td class="td-reccu-lg" style="width:3%">:</td>
           <td class="td-reccu-lg"><?= strtoupper($sales->reccu) ?></td>
         </tr>
         <tr>
           <td class="td-reccu-lg w-sm">NO ORDER</td>
-          <td style="width:3%">:</td>
+          <td class="td-reccu-lg" style="width:3%">:</td>
           <td class="td-reccu-lg"><?= strtoupper($sales->no_order) ?></td>
         </tr>
         <tr>
@@ -206,17 +212,17 @@
         </tr>
         <tr>
           <td class="td-data w-sm">TANGGAL</td>
-          <td style="width:3%">:</td>
+          <td class="td-data" style="width:3%">:</td>
           <td class="td-data"><?= date('d-m-Y', strtotime($sales->dateorder)) ?></td>
         </tr>
         <tr>
           <td class="td-data w-sm">PENGIRIM</td>
-          <td style="width:3%">:</td>
+          <td class="td-data" style="width:3%">:</td>
           <td class="td-data"><?= strtoupper($sales->pengirim) ?></td>
         </tr>
         <tr>
           <td class="td-data w-sm addr">ALAMAT</td>
-          <td class="addr" style="width:3%">:</td>
+          <td class="addr td-data" style="width:3%">:</td>
           <td class="td-data addr"><?= strtoupper($sales->kota_asal) ?>, <?= strtoupper($sales->alamat_asal) ?></td>
         </tr>
       </table>
@@ -230,12 +236,12 @@
         </tr>
         <tr>
           <td class="td-data w-sm">PENERIMA</td>
-          <td style="width:3%">:</td>
+          <td class="td-data" style="width:3%">:</td>
           <td class="td-data"> <?= strtoupper($sales->penerima) ?></td>
         </tr>
         <tr>
           <td class="td-data w-sm addr">ALAMAT</td>
-          <td class="addr" style="width:3%">:</td>
+          <td class="addr td-data" style="width:3%">:</td>
           <td class="td-data addr"><?= strtoupper($sales->kota_tujuan) ?>, <?= strtoupper($sales->alamat_tujuan) ?></td>
         </tr>
       </table>
@@ -249,14 +255,14 @@
         </tr>
         <tr>
           <td class="td-data w-sm">MUATAN</td>
-          <td style="width:3%">:</td>
+          <td class="td-data" style="width:3%">:</td>
           <td class="td-data">
             <?= strtoupper($sales->muatan) ?>
           </td>
         </tr>
         <tr>
           <td class="td-data w-sm">BERAT</td>
-          <td style="width:3%">:</td>
+          <td class="td-data" style="width:3%">:</td>
           <td class="td-data">
             <?= $sales->berat ?> Kg,
           </td>
@@ -265,19 +271,19 @@
 
       <table class="table-data">
         <tr>
-          <td colspan="3" class="td-header">
+          <td colspan="3" class="td-header pt-2">
             DATA HARGA <span> (<?= ucwords($sales->jenis) ?>)</span>
             <div class="line"></div>
           </td>
         </tr>
         <tr>
           <td class="td-data w-sm">HARGA KG</td>
-          <td style="width:3%">:</td>
+          <td class="td-data" style="width:3%">:</td>
           <td class="td-data right">Rp. <?= number_format($sales->hrg_kg) ?> </td>
         </tr>
         <tr>
           <td class="td-data bold w-sm">JUMLAH</td>
-          <td style="width:3%">:</td>
+          <td class="td-data" style="width:3%">:</td>
           <td class="td-data bold right">Rp. <?= number_format($sales->total_hrg) ?></td>
         </tr>
       </table>

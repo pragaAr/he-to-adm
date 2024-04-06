@@ -66,58 +66,77 @@ class Persensopir extends CI_Controller
     echo json_encode($data);
   }
 
-  public function getId()
+  public function proses()
   {
-    $id   = $this->input->post('id_persen');
-    $data = $this->Persensopir->getId($id);
+    $count        = count($this->input->post('noorder_hidden'));
 
-    echo json_encode($data);
-  }
+    $kd           = $this->input->post('kd');
+    $date         = date('Y-m-d H:i:s');
+    $sopirid      = $this->input->post('sopirid');
+    $namasopir    = $this->input->post('namasopir');
+    $noorder      = $this->input->post('noorder_hidden');
+    $platno       = $this->input->post('platno_hidden');
+    $totharga     = preg_replace("/[^0-9\.]/", "", $this->input->post('totharga_hidden'));
+    $persen1      = $this->input->post('persen1_hidden');
+    $persen2      = $this->input->post('persen2_hidden');
+    $totsangu     = preg_replace("/[^0-9\.]/", "", $this->input->post('totsangu_hidden'));
+    $diterima     = preg_replace("/[^0-9\.]/", "", $this->input->post('diterima_hidden'));
+    $totditerima  = preg_replace("/[^0-9\.]/", "", $this->input->post('total_hidden'));
 
-  public function cart()
-  {
-    $this->load->view('layout/administrasi/cart-persensopir');
-  }
-
-  public function prosesAdd()
-  {
-    $order    = count($this->input->post('noorder_hidden'));
-    $sopir    = $this->input->post('sopirid');
-    $nominal  = preg_replace("/[^0-9\.]/", "", $this->input->post('nominalterima_hidden'));
-    $total    = preg_replace("/[^0-9\.]/", "", $this->input->post('total_hidden'));
-
-    $data  = [
-      'kd_persen'   => $this->input->post('kdpersen'),
-      'sopir_id'    => $sopir,
-      'nominal'     => $total,
-      'dateAdd'     => date('Y-m-d H:i:s'),
+    $data = [
+      'kd'              => $kd,
+      'sopir_id'        => $sopirid,
+      'jml_order'       => $count,
+      'total_diterima'  => $totditerima,
+      'user_id'         => $this->session->userdata('id'),
+      'dateAdd'         => $date,
     ];
 
     $detail = [];
 
-    for ($i = 0; $i < $order; $i++) {
-      array_push($detail, ['no_order'  => $this->input->post('noorder_hidden')[$i]]);
-      $detail[$i]['kd_persen']        = $this->input->post('kdpersen');
-      $detail[$i]['jumlah']           = $nominal[$i];
+    for ($i = 0; $i < $count; $i++) {
+      array_push($detail, ['no_order'  => $noorder[$i]]);
+      $detail[$i]['kd']         = $kd;
+      $detail[$i]['platno']     = $platno[$i];
+      $detail[$i]['persen1']    = $persen1[$i];
+      $detail[$i]['persen2']    = $persen2[$i];
+      $detail[$i]['tot_biaya']  = $totharga[$i];
+      $detail[$i]['tot_sangu']  = $totsangu[$i];
+      $detail[$i]['diterima']   = $diterima[$i];
     }
 
-    $this->Persensopir->addData($data, $detail);
-    $this->session->set_flashdata('inserted', 'Data berhasil ditambahkan!');
+    $dataOrder = [];
+
+    for ($j = 0; $j < $count; $j++) {
+      $dataOrder[] = array(
+        'no_order'          => $noorder[$j],
+        'status_persen'     => 1,
+      );
+    }
+
+    $this->Persen->addData($data, $detail, $dataOrder);
+
+    $this->session->set_flashdata('storedPersen', 'Data berhasil ditambahkan!');
+
     redirect('persensopir');
   }
 
-  public function update()
+  public function delete()
   {
-    $id = $this->input->post('idpersen');
-    $this->Persensopir->editData($id);
-    $this->session->set_flashdata('updated', 'Data berhasil diubah!');
-    redirect('persensopir');
-  }
+    $kd   = $this->input->post('kd');
+    $noorder = $this->Persen->getDataDetailPersenByKd($kd);
 
-  public function delete($id)
-  {
-    $this->Persensopir->deleteData($id);
-    $this->session->set_flashdata('deleted', 'Data berhasil dihapus!');
-    redirect('persensopir');
+    $updateOrder = [];
+
+    foreach ($noorder as $res) {
+      $updateOrder[] = array(
+        'no_order'      => $res['no_order'],
+        'status_persen' => 0,
+      );
+    }
+
+    $response = $this->Persen->deleteData($kd, $updateOrder);
+
+    echo json_encode($response);
   }
 }

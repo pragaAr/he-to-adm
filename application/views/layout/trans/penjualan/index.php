@@ -64,13 +64,13 @@
       <div class="modal-body" style="padding:1rem 2rem;">
         <form id="form_add">
           <div class="form-row">
-            <div class="form-group col-md-3">
+            <div class="form-group col-lg-3 col-md-6">
               <label for="reccu">
                 Reccu
               </label>
-              <input type="text" class="form-control text-uppercase" name="reccu" id="reccu" value="<?= $reccu ?>" placeholder="Reccu.." readonly>
+              <input type="text" class="form-control text-uppercase" name="reccu" id="reccu" placeholder="Reccu.." readonly>
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-lg-3 col-md-6">
               <label for="noorder">
                 No Order
               </label>
@@ -80,13 +80,13 @@
               </select>
               <input type="hidden" class="form-control" name="textnoorder" id="textnoorder" readonly>
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-lg-3 col-md-6">
               <label for="tglorder">
                 Tanggal Order
               </label>
               <input type="text" class="form-control text-uppercase" name="tglorder" id="tglorder" placeholder="Tanggal Order.." readonly>
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-lg-3 col-md-6">
               <label for="pengirim">
                 Customer Order
               </label>
@@ -94,19 +94,19 @@
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-lg-4 col-md-6">
               <label for="asal">
                 Asal
               </label>
               <input type="text" class="form-control text-uppercase" name="asal" id="asal" placeholder="Asal.." readonly>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-lg-4 col-md-6">
               <label for="tujuan">
                 Tujuan
               </label>
               <input type="text" class="form-control text-uppercase" name="tujuan" id="tujuan" placeholder="Tujuan.." readonly>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-lg-4 col-md-12">
               <label for="muatan">
                 Muatan
               </label>
@@ -183,8 +183,8 @@
               </select>
             </div>
           </div>
-          <div class="form-group">
-            <button type="submit" class="btn btn-dark border border-light float-right">
+          <div class="form-group col-md d-flex justify-content-end px-0">
+            <button type="submit" class="btn btn-dark border border-light">
               Simpan
               <i class="fas fa-save ml-1"></i>
             </button>
@@ -208,26 +208,26 @@
       <div class="modal-body" style="padding:1rem 2rem;">
         <form id="form_update">
           <div class="form-row">
-            <div class="form-group col-md-3">
+            <div class="form-group col-lg-3 col-md-6">
               <label for="reccuedit">
                 Reccu
               </label>
               <input type="text" class="form-control text-uppercase" name="reccuedit" id="reccuedit" placeholder="Reccu.." readonly>
               <input type="hidden" class="form-control" name="penjualanid" id="penjualanid" readonly>
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-lg-3 col-md-6">
               <label for="noorderedit">
                 No Order
               </label>
               <input type="text" class="form-control text-uppercase" name="noorderedit" id="noorderedit" placeholder="No Order.." readonly>
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-lg-3 col-md-6">
               <label for="tglorderedit">
                 Tanggal Order
               </label>
               <input type="text" class="form-control text-uppercase" name="tglorderedit" id="tglorderedit" placeholder="Tanggal Order.." readonly>
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-lg-3 col-md-6">
               <label for="pengirimedit">
                 Customer Order
               </label>
@@ -235,19 +235,19 @@
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group col-md-4">
+            <div class="form-group col-lg-4 col-md-6">
               <label for="asaledit">
                 Asal
               </label>
               <input type="text" class="form-control text-uppercase" name="asaledit" id="asaledit" placeholder="Asal.." readonly>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-lg-4 col-md-6">
               <label for="tujuanedit">
                 Tujuan
               </label>
               <input type="text" class="form-control text-uppercase" name="tujuanedit" id="tujuanedit" placeholder="Tujuan.." readonly>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group col-lg-4 col-md-12">
               <label for="muatanedit">
                 Muatan
               </label>
@@ -324,8 +324,8 @@
               </select>
             </div>
           </div>
-          <div class="form-group">
-            <button type="submit" class="btn btn-dark border border-light float-right">
+          <div class="form-group col-md d-flex justify-content-end px-0">
+            <button type="submit" class="btn btn-dark border border-light">
               Simpan
               <i class="fas fa-save ml-1"></i>
             </button>

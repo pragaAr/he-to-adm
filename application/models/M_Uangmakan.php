@@ -106,8 +106,14 @@ class M_Uangmakan extends CI_Model
 
   public function addData($data, $detail)
   {
-    $this->db->insert('uang_makan', $data);
-    $this->db->insert_batch('detail_um', $detail);
+    $query = $this->db->insert('uang_makan', $data);
+    $query = $this->db->insert_batch('detail_um', $detail);
+
+    if ($query) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public function deleteData($kd)

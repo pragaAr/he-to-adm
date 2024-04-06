@@ -145,8 +145,14 @@ class M_Traveldoc extends CI_Model
 
   public function addData($datasj, $datadt)
   {
-    $this->db->insert('surat_jalan', $datasj);
-    $this->db->insert_batch('detail_sj', $datadt);
+    $query = $this->db->insert('surat_jalan', $datasj);
+    $query = $this->db->insert_batch('detail_sj', $datadt);
+
+    if ($query) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public function editData($data, $dataorder, $where, $wherepenjualanid)

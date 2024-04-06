@@ -123,6 +123,16 @@ $("#addPenjualan").on("click", function () {
 });
 
 $("#modalAddPenjualan").on("shown.bs.modal", function () {
+  $.ajax({
+    url: "http://localhost/hira-to-adm/penjualan/getReccu",
+    type: "GET",
+    success: function (data) {
+      const parsedata = JSON.parse(data);
+
+      $("#reccu").val(parsedata);
+    },
+  });
+
   $("#berat").on("keypress", function (key) {
     if (key.charCode < 48 || key.charCode > 57) return false;
   });

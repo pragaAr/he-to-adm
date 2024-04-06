@@ -1,5 +1,5 @@
 <div class="content-wrapper">
-  <div class="inserted" data-flashdata="<?= $this->session->flashdata('inserted'); ?>"></div>
+  <div class="storedPersen" data-flashdata="<?= $this->session->flashdata('storedPersen'); ?>"></div>
   <section class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
@@ -29,10 +29,10 @@
                   <thead class="text-center">
                     <tr>
                       <th>No.</th>
-                      <th>Kd Persen</th>
-                      <th>Nama Sopir</th>
-                      <th>Jml Reccu</th>
-                      <th>Jml Nominal</th>
+                      <th>Kd</th>
+                      <th>Sopir</th>
+                      <th>Jml Order</th>
+                      <th>Total Diterima</th>
                       <th>Tanggal</th>
                       <th>Aksi</th>
                     </tr>

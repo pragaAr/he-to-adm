@@ -100,6 +100,24 @@ class Order extends CI_Controller
     echo json_encode($response);
   }
 
+  public function getOrderBySopir()
+  {
+    $sopir    = $this->input->post('sopir');
+
+    $response = $this->Order->getDataOrderBySopir($sopir);
+
+    echo json_encode($response);
+  }
+
+  public function getOrderPenjualanDetail()
+  {
+    $noorder  = $this->input->post('noorder');
+
+    $response = $this->Order->getDataOrderPenjualanDetail($noorder);
+
+    echo json_encode($response);
+  }
+
   public function getId()
   {
     $kd   = $this->input->post('kd');
@@ -221,9 +239,11 @@ class Order extends CI_Controller
   public function print($kd)
   {
     $data = [
-      'title'   => 'Hira TO - Print Order',
+      'title'   => 'DO Order',
       'detail'  => $this->Order->printOrder($kd)
     ];
+
+    $formatKd = strtoupper($kd);
 
     $content  = $this->load->view('layout/trans/order/print', $data, true);
 
@@ -238,6 +258,7 @@ class Order extends CI_Controller
       'margin_bottom' => 10,
     ]);
 
+    $mpdf->SetHTMLFooter("<p class='page-number-footer'>No Order : $formatKd | Halaman {PAGENO} Dari {nb}</p>");
     $mpdf->AddPage();
     $mpdf->WriteHTML($content);
 

@@ -74,7 +74,7 @@ class M_Sangu extends CI_Model
 
   public function tambahanByOrder($kd)
   {
-    $this->db->select('ss.no_order, ss.tambahan, ar.platno, s.nama, om.asal_order, om.tujuan_order, cust.nama as nama_cust')
+    $this->db->select('ss.no_order, ss.tambahan, ss.keterangan, ss.dateTambahanAdd, ar.platno, s.nama, om.asal_order, om.tujuan_order, cust.nama as nama_cust')
       ->from('sangu_sopir ss')
       ->where('ss.no_order', $kd)
       ->join('sopir s', 's.id = ss.sopir_id')
@@ -89,7 +89,7 @@ class M_Sangu extends CI_Model
 
   public function getDataByKd($kd)
   {
-    $this->db->select('ss.id, ss.no_order, ss.nominal, ss.tambahan, ar.platno, s.nama')
+    $this->db->select('ss.id, ss.no_order, ss.nominal, ss.tambahan, ss.keterangan, ss.dateTambahanAdd, ar.platno, s.nama')
       ->from('sangu_sopir ss')
       ->where('ss.no_order', $kd)
       ->join('sopir s', 's.id = ss.sopir_id')

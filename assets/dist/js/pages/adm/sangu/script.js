@@ -122,6 +122,15 @@ $("#sanguTables").on("click", ".btn-edit", function () {
       $("#nominal").val(format(data.nominal));
       $("#tambahan").val(format(data.tambahan));
 
+      $("#keterangan").val(data.keterangan);
+
+      const d = new Date(data.dateTambahanAdd);
+      const tanggal = String(d.getDate()).padStart(2, "0");
+      const bulan = String(d.getMonth() + 1).padStart(2, "0");
+      const tahun = d.getFullYear();
+
+      $("#tanggal").val(`${tahun}-${bulan}-${tanggal}`);
+
       $("#modalEditSangu").modal("show");
 
       $('[data-toggle="tooltip"]').tooltip("hide");
@@ -148,6 +157,8 @@ $("#form_updateSangu").on("submit", function (e) {
 
   const noorder = $("#noorder").val();
   const tambahan = $("#tambahan").val();
+  const keterangan = $("#keterangan").val();
+  const tgl = $("#tgl").val();
 
   $.ajax({
     url: "http://localhost/hira-to-adm/sangu/update",
@@ -155,6 +166,8 @@ $("#form_updateSangu").on("submit", function (e) {
     data: {
       noorder: noorder,
       tambahan: tambahan,
+      keterangan: keterangan,
+      tgl: tgl,
     },
     success: function (data) {
       $("#noorder").val("");

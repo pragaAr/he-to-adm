@@ -48,18 +48,13 @@ function penyebut($nilai)
   <title><?= $title ?></title>
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-    }
-
     body {
-      font-family: 'Times New Roman', Times, serif;
       color: #1d1d1d;
     }
 
     p {
       font-size: 12px;
+      margin: 0;
     }
 
     .container {
@@ -67,15 +62,12 @@ function penyebut($nilai)
     }
 
     .logo {
-      width: 20%;
+      width: 17%;
       float: left;
-      box-sizing: border-box;
-      padding: 5px;
     }
 
     img {
-      width: 95px;
-      height: 67px;
+      width: 100%;
     }
 
     .identity {
@@ -90,6 +82,13 @@ function penyebut($nilai)
 
     .clear {
       clear: both;
+    }
+
+    hr {
+      border: none;
+      height: 1.5px;
+      color: #000;
+      background-color: #000;
     }
 
     .text-capitalize {
@@ -140,7 +139,7 @@ function penyebut($nilai)
     .td-data {
       font-size: 14px;
       padding: 3px 2px;
-      line-height: 1.5;
+      line-height: 1.3;
     }
 
     .page-number-footer {
@@ -178,7 +177,7 @@ function penyebut($nilai)
         <tr>
           <td class="td-data" style="width:25%">Nominal</td>
           <td class="td-data" style="width:5%">:</td>
-          <td class="td-data"> Rp. <?= number_format($nominal) ?> (<?= penyebut($nominal) ?> rupiah)</td>
+          <td class="td-data"> Rp. <?= number_format($nominal) ?> (<?= penyebut($nominal) ?> rupiah )</td>
         </tr>
         <tr>
           <td class="td-data" style="width:25%">Untuk Keperluan</td>
@@ -190,9 +189,14 @@ function penyebut($nilai)
           <td class="td-data" style="width:5%"></td>
           <td class="td-data"> <?= $desc ?></td>
         </tr>
+        <tr>
+          <td class="td-data" style="width:25%"></td>
+          <td class="td-data" style="width:5%"></td>
+          <td class="td-data"> <?= $ket ?></td>
+        </tr>
       </table>
       <div class="end">
-        <p>Semarang, <?= date('d-m-Y') ?></p>
+        <p>Semarang, <?= date('d F Y') ?></p>
       </div>
       <table id="table-foot" style="width:100%; margin-top:20px; font-size:12px;">
         <tr>

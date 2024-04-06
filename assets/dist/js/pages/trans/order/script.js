@@ -75,15 +75,21 @@ $("#orderTables").DataTable({
       data: "status_order",
       className: "text-center text-capitalize align-middle",
       render: function (data, type, row) {
-        if (data == "diproses") {
+        if (data === "diproses") {
           return (
-            "<button type='button' class='btn btn-outline-light font-weight-bold text-success' style='cursor: default;'>" +
+            "<button type='button' class='btn btn-outline-light font-weight-bold text-info' style='cursor: default;'>" +
             data.toUpperCase() +
             "</button>"
           );
-        } else if (data == "disiapkan") {
+        } else if (data === "disiapkan") {
           return (
             "<button type='button' class='btn btn-outline-light font-weight-bold text-warning' style='cursor: default;'>" +
+            data.toUpperCase() +
+            "</button>"
+          );
+        } else if (data === "selesai") {
+          return (
+            "<button type='button' class='btn btn-outline-light font-weight-bold text-success' style='cursor: default;'>" +
             data.toUpperCase() +
             "</button>"
           );

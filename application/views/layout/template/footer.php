@@ -62,17 +62,6 @@
    <script src="<?= base_url('assets/') ?>dist/js/pages/master/user.js"></script>
  <?php } else if ($this->uri->segment(1) == 'uangmakan' && $this->uri->segment(2) == '') { ?>
    <script src="<?= base_url('assets/') ?>dist/js/pages/adm/uangmakan/script.js"></script>
-   <script>
-     const inserted = $(".inserted").data("flashdata");
-
-     if (inserted) {
-       Swal.fire({
-         icon: "success",
-         title: "Success",
-         text: inserted,
-       });
-     }
-   </script>
  <?php } else if ($this->uri->segment(1) == 'uangmakan' && $this->uri->segment(2) == 'add') { ?>
    <script src="<?= base_url('assets/') ?>dist/js/pages/adm/uangmakan/add.js"></script>
  <?php } else if ($this->uri->segment(1) == 'uangmakan' && $this->uri->segment(2) == 'update') { ?>
@@ -89,6 +78,17 @@
    <script src="<?= base_url('assets/') ?>dist/js/pages/trans/traveldoc/add.js"></script>
  <?php } else if ($this->uri->segment(1) == 'persensopir' && $this->uri->segment(2) == '') { ?>
    <script src="<?= base_url('assets/') ?>dist/js/pages/adm/persen/script.js"></script>
+   <script>
+     const storedPersen = $(".storedPersen").data("flashdata");
+
+     if (storedPersen) {
+       Swal.fire({
+         icon: "success",
+         title: "Success",
+         text: storedPersen,
+       });
+     }
+   </script>
  <?php } else if ($this->uri->segment(1) == 'persensopir' && $this->uri->segment(2) == 'add') { ?>
    <script src="<?= base_url('assets/') ?>dist/js/pages/adm/persen/add.js"></script>
  <?php } ?>

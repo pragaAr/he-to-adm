@@ -19,7 +19,7 @@
 
   <section class="content">
     <div class="container-fluid">
-      <form action="<?= base_url('persensopir/prosesAdd') ?>" method="post">
+      <form action="<?= base_url('persensopir/proses') ?>" method="post">
         <div class="row">
           <div class="col-lg col-md">
             <div class="card">
@@ -31,47 +31,53 @@
                   </div>
                   <div class="form-group col-md-6">
                     <label for="tgl">Tanggal</label>
-                    <input type="text" name="tgl" id="tgl" class="form-control text-capitalize" value="<?= date('d-F-Y') ?>" readonly>
+                    <input type="text" name="tgl" id="tgl" class="form-control text-capitalize" value="<?= date('d-m-Y') ?>" readonly>
                   </div>
                 </div>
                 <h6 class="font-weight-bold">Data Order Penjualan</h6>
                 <hr class="bg-secondary">
                 <div class="form-row">
-                  <div class="form-group col-md-3">
+                  <div class="form-group col-md-4">
                     <label for="sopirid">Nama Sopir</label>
                     <select name="sopirid" id="sopirid" class="form-control select-sopir" style="width:100%;" required>
                       <option value=""></option>
                     </select>
                     <input type="hidden" name="namasopir" id="namasopir" class="form-control text-capitalize" readonly>
                   </div>
-                  <div class="form-group col-md-3">
+                  <div class="form-group col-md-4">
                     <label for="noorder">No Order</label>
                     <select name="noorder" id="noorder" class="form-control select-noorder" style="width:100%;">
                       <option value=""></option>
 
                     </select>
                   </div>
-                  <div class="form-group col-md-3">
+                  <div class="form-group col-md-4">
+                    <label for="platno">Plat No</label>
+                    <input type="text" name="platno" id="platno" class="form-control text-uppercase" placeholder="Plat No..." readonly>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
                     <label for="pengirim">Pengirim</label>
                     <input type="text" name="pengirim" id="pengirim" class="form-control text-capitalize" placeholder="Pengirim..." readonly>
                   </div>
-                  <div class="form-group col-md-3">
+                  <div class="form-group col-md-6">
                     <label for="penerima">Penerima</label>
                     <input type="text" name="penerima" id="penerima" class="form-control text-capitalize" placeholder="Penerima..." readonly>
                   </div>
                 </div>
                 <div class="form-row">
                   <div class="form-group col-md-4">
-                    <label for="asaltujuan">Asal-Tujuan</label>
-                    <input type="text" name="asaltujuan" id="asaltujuan" class="form-control text-capitalize" placeholder="Asal-Tujuan..." readonly>
-                  </div>
-                  <div class="form-group col-md-4">
                     <label for="muatan">Muatan</label>
                     <input type="text" name="muatan" id="muatan" class="form-control text-capitalize" placeholder="Muatan..." readonly>
                   </div>
                   <div class="form-group col-md-4">
-                    <label for="totalharga">Total Biaya</label>
-                    <input type="text" name="totalharga" id="totalharga" class="form-control" placeholder="Total Biaya..." readonly>
+                    <label for="asaltujuan">Asal-Tujuan</label>
+                    <input type="text" name="asaltujuan" id="asaltujuan" class="form-control text-capitalize" placeholder="Asal-Tujuan..." readonly>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="totharga">Total Biaya</label>
+                    <input type="text" name="totharga" id="totharga" class="form-control" placeholder="Total Biaya..." readonly>
                   </div>
                 </div>
                 <h6 class="font-weight-bold">Data Sangu</h6>
@@ -86,21 +92,27 @@
                     <input type="text" name="tambahan" id="tambahan" class="form-control" placeholder="Tambahan..." readonly>
                   </div>
                   <div class="form-group col-md-4">
-                    <label for="jumlahsangu">Jumlah Sangu</label>
-                    <input type="text" name="jumlahsangu" id="jumlahsangu" class="form-control" placeholder="Jumlah Sangu..." readonly>
+                    <label for="totsangu">Total Sangu</label>
+                    <input type="text" name="totsangu" id="totsangu" class="form-control" placeholder="Total Sangu..." readonly>
                   </div>
                 </div>
                 <div class="form-row">
                   <div class="form-group col-md-4">
-                    <label for="jumlahpersen">Jumlah Persen</label>
-                    <input type="text" name="jumlahpersen" id="jumlahpersen" class="form-control" placeholder="Jumlah Persen..." required>
+                    <label for="persen1">Persen 1</label>
+                    <input type="text" name="persen1" id="persen1" class="form-control" placeholder="Persen 1...">
                   </div>
                   <div class="form-group col-md-4">
-                    <label for="jumlahterima">Jumlah Diterima</label>
-                    <input type="text" name="jumlahterima" id="jumlahterima" class="form-control" placeholder="Jumlah Diterima..." readonly>
+                    <label for="persen2">Persen 2</label>
+                    <input type="text" name="persen2" id="persen2" class="form-control" placeholder="Persen 2...">
                   </div>
-                  <div class="form-group col-md-4 d-flex align-items-end">
-                    <button type="button" class="btn btn-primary border border-light btn-block mt-4" id="tambah" style="height:calc(1.5em + 0.75rem + 2px);" disabled>
+                  <div class="form-group col-md-4">
+                    <label for="biayaxpersen">Biaya X Persen</label>
+                    <input type="text" name="biayaxpersen" id="biayaxpersen" class="form-control" placeholder="Jumlah Diterima..." readonly>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md">
+                    <button type="button" class="btn btn-primary border border-light btn-block mt-1" id="tambah" disabled>
                       <i class="fa fa-plus"></i>
                       Tambah
                     </button>
@@ -118,30 +130,44 @@
                 <h5>List Persen Sopir</h5>
                 <div class="table-responsive mt-4">
                   <table class="table table-bordered" id="cart" width="100%" cellspacing="0">
-                    <thead align="center">
+                    <thead class="text-center">
                       <tr>
-                        <td width="40%">
+                        <td class="align-middle">
                           <strong>No Order</strong>
                         </td>
-                        <td width="40%">
-                          <strong>Nominal Diterima</strong>
+                        <td class="align-middle">
+                          <strong>Jml Biaya</strong>
                         </td>
-                        <td>
+                        <td class="align-middle" style="width:7%">
+                          <strong>% 1</strong>
+                        </td>
+                        <td class="align-middle" style="width:7%">
+                          <strong>% 2</strong>
+                        </td>
+                        <td class="align-middle">
+                          <strong>Jml Sangu</strong>
+                        </td>
+                        <td class="align-middle">
+                          <strong>(Jml Biaya X % 1 X % 2) - Jml Sangu</strong>
+                        </td>
+                        <td class="align-middle">
                           <strong>Aksi</strong>
                         </td>
                       </tr>
                     </thead>
                     <tbody>
                     </tbody>
-                    <tfoot id="tfoot" align="center">
+                    <tfoot id="tfoot">
                       <tr>
-                        <td colspan="2">
+                        <td colspan="2" class="align-middle text-right pr-4">
+                          <h4 class="font-weight-bold">Diterima</h4>
+                        </td>
+                        <td colspan="4" class="align-middle text-right pr-4">
                           <h4 class="font-weight-bold" id="total"></h4>
                         </td>
-                        <td>
-                          <input type="hidden" name="total_hidden" value="">
+                        <td class="align-middle text-center">
+                          <input type="hidden" name="total_hidden" id="total_hidden" value="">
                           <button type="submit" class="btn btn-dark btn-sm border border-light" data-toggle="tooltip" title="Simpan">
-                            <i class="fas fa-save"></i>
                             Simpan
                           </button>
                         </td>

@@ -27,11 +27,37 @@ class M_Persensopir extends CI_Model
 
   public function getData()
   {
-    $this->db->select('persensopir.kd_persen, persensopir.sopir_id, persensopir.nominal, persensopir.dateAdd, sopir.id_sopir, sopir.nama_sopir');
-    $this->db->from('persensopir');
-    $this->db->join('sopir', 'sopir.id_sopir = persensopir.sopir_id');
-    $res = $this->db->get()->result();
-    return $res;
+    $this->datatables->select('ps.id, ps.kd, s.nama, ps.jml_order, ps.total_diterima, ps.dateAdd')
+      ->from('persen_sopir ps')
+      ->join('sopir s', 's.id = ps.sopir_id')
+      ->add_column(
+        'view',
+        '<div class="btn-group" role="group">
+          <a href="http://localhost/hira-to-adm/order/print/$2" target="_blank" class="btn btn-sm btn-info text-white border border-light btn-print" data-kd="$2" data-toggle="tooltip" title="Cetak">
+            <i class="fas fa-print fa-sm"></i>
+          </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-kd="$2" data-toggle="tooltip" title="Detail">
+            <i class="fas fa-eye fa-sm"></i>
+          </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-kd="$2" data-toggle="tooltip" title="Hapus">
+            <i class="fas fa-trash fa-sm"></i>
+          </a>
+        </div>',
+        'id, kd, nama, jml_order, total_diterima, dateAdd'
+      );
+
+    return $this->datatables->generate();
+  }
+
+  public function getDataDetailPersenByKd($kd)
+  {
+    $this->db->select('no_order')
+      ->from('detail_ps')
+      ->where('kd', $kd);
+
+    $query = $this->db->get()->result_array();
+
+    return $query;
   }
 
   public function getId($kd)
@@ -44,29 +70,18 @@ class M_Persensopir extends CI_Model
     return $res;
   }
 
-  public function addData($data, $detail)
+  public function addData($data, $detail, $dataOrder)
   {
-    $this->db->insert('persensopir', $data);
-    $this->db->insert_batch('detail_persen', $detail);
+    $this->db->insert('persen_sopir', $data);
+    $this->db->insert_batch('detail_ps', $detail);
+    $this->db->update_batch('order_masuk', $dataOrder, 'no_order');
   }
 
-  public function editData($id)
+  public function deleteData($kd, $updateOrder)
   {
-    $sopirid  = $this->input->post('sopirid');
-    $nominal  = preg_replace("/[^0-9\.]/", "", $this->input->post('nominal'));
+    $this->db->delete('persen_sopir', ['kd' => $kd]);
+    $this->db->delete('detail_ps', ['kd' => $kd]);
 
-    $data = array(
-      'sopir_id'  => $sopirid,
-      'nominal'   => $nominal,
-    );
-
-    $where = array('id_persen' => $id);
-
-    $this->db->update('persensopir', $data, $where);
-  }
-
-  public function deleteData($id)
-  {
-    return $this->db->delete('persensopir', ['id_persen' => $id]);
+    $this->db->update_batch('order_masuk', $updateOrder, 'no_order');
   }
 }

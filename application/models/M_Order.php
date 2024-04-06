@@ -122,9 +122,37 @@ class M_Order extends CI_Model
     $this->db->select('om.id, om.no_order, om.asal_order, om.tujuan_order, om.jenis_muatan, om.status_order, om.keterangan, om.dateAdd, cust.nama')
       ->from('order_masuk om')
       ->join('customer cust', 'cust.id = om.customer_id')
-      ->like('om.no_order', $keyword);;
+      ->like('om.no_order', $keyword);
 
     $query = $this->db->get()->result();
+
+    return $query;
+  }
+
+  public function getDataOrderBySopir($sopir)
+  {
+    $this->db->select('ss.id, ss.no_order')
+      ->from('sangu_sopir ss')
+      ->where('sopir_id', $sopir)
+      ->join('order_masuk om', 'om.no_order = ss.no_order')
+      ->where('om.status_order', 'selesai')
+      ->where('om.status_persen', 0);
+
+    $query = $this->db->get()->result();
+
+    return $query;
+  }
+
+  public function getDataOrderPenjualanDetail($noorder)
+  {
+    $this->db->select('ss.id as id_sangu, ss.no_order, ss.nominal as sangu, ss.tambahan, om.id as id_order, ar.platno, p.pengirim, p.penerima, p.kota_asal, p.kota_tujuan, p.muatan, p.total_hrg')
+      ->from('sangu_sopir ss')
+      ->where('ss.no_order', $noorder)
+      ->join('armada ar', 'ar.id = ss.truck_id')
+      ->join('order_masuk om', 'om.no_order = ss.no_order')
+      ->join('penjualan p', 'p.order_id = om.id');
+
+    $query = $this->db->get()->row();
 
     return $query;
   }
