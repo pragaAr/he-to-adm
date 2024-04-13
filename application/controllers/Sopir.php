@@ -60,6 +60,23 @@ class Sopir extends CI_Controller
     echo json_encode($response);
   }
 
+  public function getListSopirAvailable()
+  {
+    $keyword = $this->input->get('q');
+
+    $data = !$keyword ? $this->Sopir->getListDataAvailable() : $this->Sopir->getSearchListDataAvailable($keyword);
+
+    $response = [];
+    foreach ($data as $sopir) {
+      $response[] = [
+        'id'    => $sopir->id,
+        'text'  => ucwords($sopir->nama),
+      ];
+    }
+
+    echo json_encode($response);
+  }
+
   public function add()
   {
     $nama   = trim($this->input->post('nama'));

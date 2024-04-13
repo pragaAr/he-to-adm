@@ -30,6 +30,7 @@
                       <th class="align-middle">No.</th>
                       <th class="align-middle">Plat Nomor</th>
                       <th class="align-middle">Merk</th>
+                      <th class="align-middle">Status</th>
                       <th class="align-middle">Tanggal Keur</th>
                       <th class="align-middle">Tanggal Add</th>
                       <th class="align-middle">Aksi</th>

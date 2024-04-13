@@ -286,6 +286,7 @@
               <select name="platedit" id="platedit" class="form-control text-uppercase select-truckedit" style="width: 100%;" required oninvalid="this.setCustomValidity('Plat Nomor wajib di isi!')" oninput="setCustomValidity('')">
                 <option value=""></option>
               </select>
+              <input type="hidden" class="form-control" name="oldtruckid" id="oldtruckid">
               <input type="hidden" class="form-control" name="platnoedit" id="platnoedit">
             </div>
             <div class="form-group col-md-6">
@@ -295,6 +296,7 @@
               <select name="sopiredit" id="sopiredit" class="form-control text-uppercase select-sopiredit" style="width: 100%;" required oninvalid="this.setCustomValidity('Sopir wajib di isi!')" oninput="setCustomValidity('')">
                 <option value=""></option>
               </select>
+              <input type="hidden" class="form-control" name="oldsopirid" id="oldsopirid">
               <input type="hidden" class="form-control" name="namasopiredit" id="namasopiredit">
             </div>
           </div>

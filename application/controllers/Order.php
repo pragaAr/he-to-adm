@@ -13,6 +13,7 @@ class Order extends CI_Controller
     $this->load->library('datatables');
 
     $this->load->model('M_Order', 'Order');
+    $this->load->model('M_Sangu', 'Sangu');
 
     if (empty($this->session->userdata('id'))) {
       $this->session->set_flashdata('flashrole', 'Silahkan Login terlebih dahulu!');
@@ -43,6 +44,19 @@ class Order extends CI_Controller
     header('Content-Type: application/json');
 
     echo $this->Order->getData();
+  }
+
+  public function getStatusOrderKd()
+  {
+    $kd   = $this->input->post('kd');
+
+    $query = $this->Order->getOrderStatusByKd($kd);
+
+    $data = [
+      'status' => $query->status_order
+    ];
+
+    echo json_encode($data);
   }
 
   public function getDataKd()
@@ -140,7 +154,6 @@ class Order extends CI_Controller
   {
     $noorder      = strtolower($this->input->post('ordernumber'));
     $custid       = $this->input->post('custid');
-    // $namecust     = strtolower($this->input->post('namecust'));
     $notelp       = $this->input->post('notelp');
     $asal         = strtolower($this->input->post('asal'));
     $tujuan       = strtolower($this->input->post('tujuan'));
@@ -148,15 +161,13 @@ class Order extends CI_Controller
     $keterangan   = strtolower($this->input->post('keterangan'));
 
     $plat         = $this->input->post('plat');
-    // $platno       = strtolower($this->input->post('platno'));
     $sopir        = $this->input->post('sopir');
-    // $namasopir    = strtolower($this->input->post('namasopir'));
     $nominal      = preg_replace("/[^0-9\.]/", "", $this->input->post('nominal'));
 
     $user         = $this->session->userdata('id');
     $addAt        = date('Y-m-d H:i:s');
 
-    $dataorder = [
+    $dataOrder = [
       'no_order'      => $noorder,
       'customer_id'   => $custid,
       'asal_order'    => $asal,
@@ -169,7 +180,7 @@ class Order extends CI_Controller
       'dateAdd'       => $addAt,
     ];
 
-    $datasangu = [
+    $dataSangu = [
       'no_order'  => strtolower($noorder),
       'truck_id'  => $plat,
       'sopir_id'  => $sopir,
@@ -179,7 +190,23 @@ class Order extends CI_Controller
       'dateAdd'   => $addAt
     ];
 
-    $this->Order->addData($dataorder, $datasangu);
+    $whereTruck = [
+      'id' => $plat
+    ];
+
+    $whereSopir = [
+      'id' => $sopir
+    ];
+
+    $updateStatusTruck = [
+      'status_truck' => 1
+    ];
+
+    $updateStatusSopir = [
+      'status_sopir' => 1
+    ];
+
+    $this->Order->addData($dataOrder, $dataSangu, $whereTruck, $whereSopir, $updateStatusTruck, $updateStatusSopir);
 
     $dataOrder = strtolower($noorder);
 
@@ -190,7 +217,6 @@ class Order extends CI_Controller
   {
     $noorder      = strtolower($this->input->post('ordernumber'));
     $custid       = $this->input->post('custid');
-    // $namecust     = strtolower($this->input->post('namecust'));
     $notelp       = $this->input->post('notelp');
     $asal         = strtolower($this->input->post('asal'));
     $tujuan       = strtolower($this->input->post('tujuan'));
@@ -198,12 +224,12 @@ class Order extends CI_Controller
     $keterangan   = strtolower($this->input->post('keterangan'));
 
     $plat         = $this->input->post('plat');
-    // $platno       = strtolower($this->input->post('platno'));
     $sopir        = $this->input->post('sopir');
-    // $namasopir    = strtolower($this->input->post('namasopir'));
+    $oldplat      = $this->input->post('oldplat');
+    $oldsopir     = $this->input->post('oldsopir');
     $nominal      = preg_replace("/[^0-9\.]/", "", $this->input->post('nominal'));
 
-    $dataorder = [
+    $dataOrder = [
       'customer_id'   => $custid,
       'asal_order'    => $asal,
       'tujuan_order'  => $tujuan,
@@ -212,7 +238,7 @@ class Order extends CI_Controller
       'keterangan'    => $keterangan,
     ];
 
-    $datasangu = [
+    $dataSangu = [
       'truck_id'  => $plat,
       'sopir_id'  => $sopir,
       'nominal'   => strtolower($nominal),
@@ -222,7 +248,39 @@ class Order extends CI_Controller
       'no_order' => $noorder
     ];
 
-    $response = $this->Order->updateData($dataorder, $datasangu, $where);
+    $whereOldTruck = [
+      'id' => $oldplat
+    ];
+
+    $whereOldSopir = [
+      'id' => $oldsopir
+    ];
+
+    $oldDataTruck = [
+      'status_truck' => 0
+    ];
+
+    $oldDataSopir = [
+      'status_sopir' => 0
+    ];
+
+    $whereNewTruck = [
+      'id' => $plat
+    ];
+
+    $whereNewSopir = [
+      'id' => $sopir
+    ];
+
+    $newDataTruck = [
+      'status_truck' => 1
+    ];
+
+    $newDataSopir = [
+      'status_sopir' => 1
+    ];
+
+    $response = $this->Order->updateData($dataOrder, $dataSangu, $where, $whereOldTruck, $whereOldSopir, $oldDataTruck, $oldDataSopir, $whereNewTruck, $whereNewSopir, $newDataTruck, $newDataSopir);
 
     echo json_encode($response);
   }
@@ -231,7 +289,25 @@ class Order extends CI_Controller
   {
     $kd = $this->input->post('kd');
 
-    $response = $this->Order->deleteData($kd);
+    $dataTruckSopir = $this->Sangu->getDataTrucSopirkByKdOrder($kd);
+
+    $whereSopir = [
+      'id' => $dataTruckSopir->sopir_id
+    ];
+
+    $whereTruck = [
+      'id' => $dataTruckSopir->truck_id
+    ];
+
+    $updateSopir = [
+      'status_sopir' => 0
+    ];
+
+    $updateTruck = [
+      'status_truck' => 0
+    ];
+
+    $response = $this->Order->deleteData($kd, $whereSopir, $whereTruck, $updateSopir, $updateTruck);
 
     echo json_encode($response);
   }

@@ -3,6 +3,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 date_default_timezone_set('Asia/Jakarta');
 
+use Mpdf\Mpdf;
+
 class Persensopir extends CI_Controller
 {
   public function __construct()
@@ -36,59 +38,36 @@ class Persensopir extends CI_Controller
     echo $this->Persen->getData();
   }
 
+  public function getGenerateKd()
+  {
+    $data = $this->Persen->getKd();
+
+    echo json_encode($data);
+  }
+
   public function add()
   {
-    $data = [
-      'title' => 'Tambah Data Persen Sopir',
-      'kd'    => $this->Persen->getKd()
-    ];
-
-    $this->load->view('layout/template/header', $data);
-    $this->load->view('layout/template/navbar');
-    $this->load->view('layout/template/sidebar');
-    $this->load->view('layout/adm/persen/add', $data);
-    $this->load->view('layout/template/footer');
-  }
-
-  public function getOrderSopir()
-  {
-    $sopir  = $this->input->post('sopir_id');
-    $data   = $this->Sangu->getOrderSopir($sopir);
-
-    echo json_encode($data);
-  }
-
-  public function getDataOrderSopir()
-  {
-    $noorder  = $this->input->post('no_order');
-    $data     = $this->Sales->getOrderSopir($noorder);
-
-    echo json_encode($data);
-  }
-
-  public function proses()
-  {
-    $count        = count($this->input->post('noorder_hidden'));
+    $count        = count($this->input->post('noorder'));
 
     $kd           = $this->input->post('kd');
     $date         = date('Y-m-d H:i:s');
     $sopirid      = $this->input->post('sopirid');
-    $namasopir    = $this->input->post('namasopir');
-    $noorder      = $this->input->post('noorder_hidden');
-    $platno       = $this->input->post('platno_hidden');
-    $totharga     = preg_replace("/[^0-9\.]/", "", $this->input->post('totharga_hidden'));
-    $persen1      = $this->input->post('persen1_hidden');
-    $persen2      = $this->input->post('persen2_hidden');
-    $totsangu     = preg_replace("/[^0-9\.]/", "", $this->input->post('totsangu_hidden'));
-    $diterima     = preg_replace("/[^0-9\.]/", "", $this->input->post('diterima_hidden'));
-    $totditerima  = preg_replace("/[^0-9\.]/", "", $this->input->post('total_hidden'));
+    $noorder      = $this->input->post('noorder');
+    $platno       = $this->input->post('platno');
+    $totharga     = preg_replace("/[^0-9\.]/", "", $this->input->post('totharga'));
+    $persen1      = $this->input->post('persen1');
+    $persen2      = $this->input->post('persen2');
+    $totsangu     = preg_replace("/[^0-9\.]/", "", $this->input->post('totsangu'));
+    $diterima     = preg_replace("/[^0-9\.]/", "", $this->input->post('diterima'));
+    $totditerima  = preg_replace("/[^0-9\.]/", "", $this->input->post('total'));
+    $userid       = $this->session->userdata('id');
 
     $data = [
       'kd'              => $kd,
       'sopir_id'        => $sopirid,
       'jml_order'       => $count,
       'total_diterima'  => $totditerima,
-      'user_id'         => $this->session->userdata('id'),
+      'user_id'         => $userid,
       'dateAdd'         => $date,
     ];
 
@@ -111,14 +90,64 @@ class Persensopir extends CI_Controller
       $dataOrder[] = array(
         'no_order'          => $noorder[$j],
         'status_persen'     => 1,
+        'kd_persen'         => $kd
       );
     }
 
-    $this->Persen->addData($data, $detail, $dataOrder);
+    $proses = $this->Persen->addData($data, $detail, $dataOrder);
 
-    $this->session->set_flashdata('storedPersen', 'Data berhasil ditambahkan!');
+    if ($proses) {
+      $response = [
+        'status'  => 'success',
+        'title'   => 'Success',
+        'text'    => 'Data Berhasil Ditambahkan',
+        'kd'      => $kd
+      ];
+    } else {
+      $response = [
+        'status'  => 'error',
+        'title'   => 'Error',
+        'text'    => 'Data Gagal Ditambahkan',
+        'kd'      => null
+      ];
+    }
 
-    redirect('persensopir');
+    echo json_encode($response);
+  }
+
+  public function printDataPersen($kd)
+  {
+    $sopir = $this->Persen->getSopirByKdPersen($kd);
+    $order = $this->Persen->getDataOrderPersenByKdPersen($kd);
+    $sangu = $this->Persen->getDataSanguOrderByKdPersen($kd);
+
+    $data = [
+      'title' => 'Persen Sopir',
+      'sopir' => $sopir,
+      'order' => $order,
+      'sangu' => $sangu,
+    ];
+
+    $content  = $this->load->view('layout/adm/persen/print', $data, true);
+
+    $mpdf = new Mpdf([
+      'mode'          => 'utf-8',
+      'format'        => 'A5',
+      'orientation'   => 'L',
+      'SetTitle'      => "pengeluaran-kas-persen-sopir-$kd",
+      'margin_left'   => 10,
+      'margin_right'  => 10,
+      'margin_top'    => 10,
+      'margin_bottom' => 10,
+    ]);
+
+    $upper = strtoupper($kd);
+
+    $mpdf->SetHTMLFooter("<p class='page-number-footer'>Persen Sopir $upper | Halaman {PAGENO} dari {nb}</p>");
+    $mpdf->AddPage();
+    $mpdf->WriteHTML($content);
+
+    $mpdf->Output();
   }
 
   public function delete()
@@ -132,6 +161,7 @@ class Persensopir extends CI_Controller
       $updateOrder[] = array(
         'no_order'      => $res['no_order'],
         'status_persen' => 0,
+        'kd_persen'     => '',
       );
     }
 

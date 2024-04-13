@@ -247,11 +247,11 @@
             <th class="th-content" style="width:5%">No.</th>
             <th class="th-content" style="width:10%">Tanggal</th>
             <th class="th-content" style="width:10%">Nomor Polisi</th>
-            <th class="th-content" style="width:18%">Surat Jalan</th>
+            <th class="th-content" style="width:17%">Surat Jalan</th>
             <th class="th-content" style="width:9%">Reccu</th>
-            <th class="th-content" style="width:18%">Asal-Tujuan</th>
-            <th class="th-content" style="width:7%">Berat</th>
-            <th class="th-content" style="width:8%">Ongkir</th>
+            <th class="th-content" style="width:17%">Asal-Tujuan</th>
+            <th class="th-content" style="width:8%">Berat</th>
+            <th class="th-content" style="width:9%">Ongkir</th>
             <th class="th-content" style="width:15%">Total</th>
           </tr>
         </thead>

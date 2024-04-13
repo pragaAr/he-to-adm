@@ -76,23 +76,11 @@ $("#orderTables").DataTable({
       className: "text-center text-capitalize align-middle",
       render: function (data, type, row) {
         if (data === "diproses") {
-          return (
-            "<button type='button' class='btn btn-outline-light font-weight-bold text-info' style='cursor: default;'>" +
-            data.toUpperCase() +
-            "</button>"
-          );
+          return "<button type='button' class='btn border border-info btn-light text-info btn-sm' data-toggle='tooltip' title='Diproses' style='cursor: default;'> <i class='fas fa-clock'></i></button>";
         } else if (data === "disiapkan") {
-          return (
-            "<button type='button' class='btn btn-outline-light font-weight-bold text-warning' style='cursor: default;'>" +
-            data.toUpperCase() +
-            "</button>"
-          );
+          return "<button type='button' class='btn border border-warning btn-light text-warning btn-sm' data-toggle='tooltip' title='Disiapkan' style='cursor: default;'> <i class='fas fa-people-carry'></i></button>";
         } else if (data === "selesai") {
-          return (
-            "<button type='button' class='btn btn-outline-light font-weight-bold text-success' style='cursor: default;'>" +
-            data.toUpperCase() +
-            "</button>"
-          );
+          return "<button type='button' class='btn border border-success btn-light text-success btn-sm' data-toggle='tooltip' title='Selesai' style='cursor: default;'> <i class='fas fa-check'></i></button>";
         }
       },
     },
@@ -218,7 +206,12 @@ $("#modalAddOrder").on("shown.bs.modal", function () {
         });
 
         const dataparse = JSON.parse(response);
-        const newOption = new Option(dataparse.text, dataparse.id, true, true);
+        const newOption = new Option(
+          dataparse.text.toUpperCase(),
+          dataparse.id,
+          true,
+          true
+        );
 
         $("#custid").append(newOption).trigger("change");
 
@@ -237,7 +230,7 @@ $("#modalAddSanguOrder").on("shown.bs.modal", function () {
     .select2({
       placeholder: "Pilih Truck",
       ajax: {
-        url: "http://localhost/hira-to-adm/armada/getListArmada",
+        url: "http://localhost/hira-to-adm/armada/getListArmadaReady",
         dataType: "json",
         data: function (params) {
           return {
@@ -260,7 +253,7 @@ $("#modalAddSanguOrder").on("shown.bs.modal", function () {
     .select2({
       placeholder: "Pilih Sopir",
       ajax: {
-        url: "http://localhost/hira-to-adm/sopir/getListSopir",
+        url: "http://localhost/hira-to-adm/sopir/getListSopirAvailable",
         dataType: "json",
         data: function (params) {
           return {
@@ -456,7 +449,12 @@ $("#modalUpdateOrder").on("shown.bs.modal", function () {
         });
 
         const dataparse = JSON.parse(response);
-        const newOption = new Option(dataparse.text, dataparse.id, true, true);
+        const newOption = new Option(
+          dataparse.text.toUpperCase(),
+          dataparse.id,
+          true,
+          true
+        );
 
         $("#custidedit").append(newOption).trigger("change");
 
@@ -537,84 +535,97 @@ $("#orderTables").on("click", ".btn-edit", function (e) {
   const kd = $(this).data("kd");
 
   $.ajax({
-    url: "http://localhost/hira-to-adm/order/getDataKd",
+    url: "http://localhost/hira-to-adm/order/getStatusOrderKd",
     type: "POST",
     data: {
       kd: kd,
     },
-    success: function (data) {
-      const parsedata = JSON.parse(data);
+    success: function (response) {
+      parsedRes = JSON.parse(response);
 
-      const custid = parsedata.customer_id;
-      const truckid = parsedata.truck_id;
-      const sopirid = parsedata.sopir_id;
+      if (parsedRes.status == "disiapkan") {
+        $.ajax({
+          url: "http://localhost/hira-to-adm/order/getDataKd",
+          type: "POST",
+          data: {
+            kd: kd,
+          },
+          success: function (data) {
+            const parsedata = JSON.parse(data);
+            const custid = parsedata.customer_id;
+            const truckid = parsedata.truck_id;
+            const sopirid = parsedata.sopir_id;
+            $("#oldtruckid").val(parsedata.truck_id);
+            $("#oldsopirid").val(parsedata.sopir_id);
+            $("#ordernumberedit").val(parsedata.no_order);
+            $("#notelpedit").val(parsedata.kontak_order);
+            $("#muatanedit").val(parsedata.jenis_muatan);
+            $("#asaledit").val(parsedata.asal_order);
+            $("#tujuanedit").val(parsedata.tujuan_order);
+            $("#keteranganedit").val(parsedata.keterangan);
+            $("#nominaledit").val(format(parsedata.nominal));
+            $.ajax({
+              url: "http://localhost/hira-to-adm/customer/getListCustomer",
+              type: "GET",
+              dataType: "json",
+              success: function (custData) {
+                const custedit = $(".select-custedit").select2({
+                  placeholder: "Pilih Customer",
+                  data: custData,
+                });
+                $.each(custData, function (i, cust) {
+                  if (cust.id === custid) {
+                    custedit.val(cust.id).trigger("change");
+                    return false;
+                  }
+                });
+              },
+            });
+            $.ajax({
+              url: "http://localhost/hira-to-adm/armada/getListArmada",
+              type: "GET",
+              dataType: "json",
+              success: function (truckData) {
+                const truckedit = $(".select-truckedit").select2({
+                  placeholder: "Pilih Truck",
+                  data: truckData,
+                });
+                $.each(truckData, function (i, truck) {
+                  if (truck.id === truckid) {
+                    truckedit.val(truck.id).trigger("change");
+                    return false;
+                  }
+                });
+              },
+            });
+            $.ajax({
+              url: "http://localhost/hira-to-adm/sopir/getListSopir",
+              type: "GET",
+              dataType: "json",
+              success: function (sopirData) {
+                const sopiredit = $(".select-sopiredit").select2({
+                  placeholder: "Pilih Sopir",
+                  data: sopirData,
+                });
+                $.each(sopirData, function (i, sopir) {
+                  if (sopir.id === sopirid) {
+                    sopiredit.val(sopir.id).trigger("change");
+                    return false;
+                  }
+                });
+              },
+            });
+          },
+        });
 
-      $("#ordernumberedit").val(parsedata.no_order);
-      $("#notelpedit").val(parsedata.kontak_order);
-      $("#muatanedit").val(parsedata.jenis_muatan);
-      $("#asaledit").val(parsedata.asal_order);
-      $("#tujuanedit").val(parsedata.tujuan_order);
-      $("#keteranganedit").val(parsedata.keterangan);
-      $("#nominaledit").val(format(parsedata.nominal));
-
-      $.ajax({
-        url: "http://localhost/hira-to-adm/customer/getListCustomer",
-        type: "GET",
-        dataType: "json",
-        success: function (custData) {
-          const custedit = $(".select-custedit").select2({
-            placeholder: "Pilih Customer",
-            data: custData,
-          });
-
-          $.each(custData, function (i, cust) {
-            if (cust.id === custid) {
-              custedit.val(cust.id).trigger("change");
-              return false;
-            }
-          });
-        },
-      });
-
-      $.ajax({
-        url: "http://localhost/hira-to-adm/armada/getListArmada",
-        type: "GET",
-        dataType: "json",
-        success: function (truckData) {
-          const truckedit = $(".select-truckedit").select2({
-            placeholder: "Pilih Truck",
-            data: truckData,
-          });
-
-          $.each(truckData, function (i, truck) {
-            if (truck.id === truckid) {
-              truckedit.val(truck.id).trigger("change");
-              return false;
-            }
-          });
-        },
-      });
-
-      $.ajax({
-        url: "http://localhost/hira-to-adm/sopir/getListSopir",
-        type: "GET",
-        dataType: "json",
-        success: function (sopirData) {
-          const sopiredit = $(".select-sopiredit").select2({
-            placeholder: "Pilih Sopir",
-            data: sopirData,
-          });
-
-          $.each(sopirData, function (i, sopir) {
-            if (sopir.id === sopirid) {
-              sopiredit.val(sopir.id).trigger("change");
-              return false;
-            }
-          });
-        },
-      });
-
-      $("#modalUpdateOrder").modal("show");
+        $("#modalUpdateOrder").modal("show");
+      } else {
+        Swal.fire({
+          icon: "info",
+          title: "Order sudah " + parsedRes.status,
+          text: "Silahkan hapus data di penjualan dahulu!",
+        });
+      }
 
       $('[data-toggle="tooltip"]').tooltip("hide");
     },
@@ -634,8 +645,10 @@ $("#form_updateOrder").on("submit", function (e) {
   const keterangan = $("#keteranganedit").val();
 
   const plat = $("#platedit").val();
+  const oldplat = $("#oldtruckid").val();
   const platno = $("#platnoedit").val();
   const sopir = $("#sopiredit").val();
+  const oldsopir = $("#oldsopirid").val();
   const namasopir = $("#namasopiredit").val();
   const nominal = $("#nominaledit").val();
 
@@ -653,8 +666,10 @@ $("#form_updateOrder").on("submit", function (e) {
       keterangan: keterangan,
 
       plat: plat,
+      oldplat: oldplat,
       platno: platno,
       sopir: sopir,
+      oldsopir: oldsopir,
       namasopir: namasopir,
       nominal: nominal,
     },
@@ -745,7 +760,7 @@ $("#orderTables").on("click", ".btn-delete", function () {
 
   Swal.fire({
     title: "Apakah anda yakin ?",
-    text: "Data akan di hapus !!",
+    text: "Data yang terkait akan di hapus !!",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
@@ -762,7 +777,7 @@ $("#orderTables").on("click", ".btn-delete", function () {
           Swal.fire({
             icon: "success",
             title: "Success!",
-            text: "Data Order dihapus!",
+            text: "Data yang terkait dihapus!",
           });
 
           $("#orderTables").DataTable().ajax.reload(null, false);

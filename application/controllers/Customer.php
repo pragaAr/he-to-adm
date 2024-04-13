@@ -62,7 +62,7 @@ class Customer extends CI_Controller
 		foreach ($data as $cust) {
 			$response[] = [
 				'id'    => $cust->id,
-				'text'  => ucwords($cust->nama),
+				'text'  => strtoupper($cust->nama),
 				'telp'  => ucwords($cust->notelp),
 			];
 		}

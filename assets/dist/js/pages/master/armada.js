@@ -51,6 +51,13 @@ $("#armadaTables").DataTable({
       },
     },
     {
+      data: "status_truck",
+      className: "text-center",
+      render: function (data, type, row) {
+        return data === 1 ? "Dipakai" : "Ready";
+      },
+    },
+    {
       data: "dateKeur",
       searchable: false,
       className: "text-center",

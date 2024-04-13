@@ -58,6 +58,13 @@ $("#sopirTables").DataTable({
       },
     },
     {
+      data: "status_sopir",
+      className: "text-center",
+      render: function (data, type, row) {
+        return data === 1 ? "Terima Order" : "Available";
+      },
+    },
+    {
       data: "view",
       className: "text-center",
     },

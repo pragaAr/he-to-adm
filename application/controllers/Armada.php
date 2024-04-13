@@ -61,6 +61,23 @@ class Armada extends CI_Controller
     echo json_encode($response);
   }
 
+  public function getListArmadaReady()
+  {
+    $keyword = $this->input->get('q');
+
+    $data = !$keyword ? $this->Armada->getListDataReady() : $this->Armada->getSearchListDataReady($keyword);
+
+    $response = [];
+    foreach ($data as $cust) {
+      $response[] = [
+        'id'    => $cust->id,
+        'text'  => strtoupper($cust->platno),
+      ];
+    }
+
+    echo json_encode($response);
+  }
+
   public function add()
   {
     $platno = trim($this->input->post('platno'));

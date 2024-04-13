@@ -31,6 +31,7 @@
                       <th>Nama Sopir</th>
                       <th>Alamat</th>
                       <th>Kontak</th>
+                      <th>Status</th>
                       <th>Aksi</th>
                     </tr>
                   </thead>

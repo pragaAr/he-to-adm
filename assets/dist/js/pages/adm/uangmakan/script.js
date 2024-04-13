@@ -297,7 +297,7 @@ $("#modalAdd").on("shown.bs.modal", function () {
 
         Swal.fire({
           title: resText,
-          text: "Cetak List Uangmakan ??",
+          text: "Cetak List Uangmakan ?",
           icon: "info",
           showCancelButton: true,
           confirmButtonColor: "#3085d6",

@@ -4,7 +4,7 @@ class M_Sopir extends CI_Model
 {
   public function getData()
   {
-    $this->datatables->select('id, nama, alamat, notelp')
+    $this->datatables->select('id, nama, alamat, notelp, status_sopir')
       ->from('sopir')
       ->add_column(
         'view',
@@ -16,7 +16,7 @@ class M_Sopir extends CI_Model
             <i class="fas fa-trash fa-sm"></i>
           </a>
         </div>',
-        'id, nama, alamat, notelp'
+        'id, nama, alamat, notelp, status_sopir'
       );
 
     return $this->datatables->generate();
@@ -43,6 +43,32 @@ class M_Sopir extends CI_Model
   {
     $this->db->select('id, nama')
       ->from('sopir')
+      ->like('nama', $keyword);
+
+    $res = $this->db->get()->result();
+
+    return $res;
+  }
+  // end for select2 and search
+
+  // for select2 and search
+  public function getListDataAvailable()
+  {
+    $this->db->select('id, nama')
+      ->from('sopir')
+      ->where('status_sopir', 0)
+      ->order_by('nama', 'asc');
+
+    $res = $this->db->get()->result();
+
+    return $res;
+  }
+
+  public function getSearchListDataAvailable($keyword)
+  {
+    $this->db->select('id, nama')
+      ->from('sopir')
+      ->where('status_sopir', 0)
       ->like('nama', $keyword);
 
     $res = $this->db->get()->result();

@@ -67,6 +67,17 @@ class M_Order extends CI_Model
     return $query;
   }
 
+  public function getOrderStatusByKd($kd)
+  {
+    $this->db->select('status_order')
+      ->from('order_masuk')
+      ->where('no_order', $kd);
+
+    $query = $this->db->get()->row();
+
+    return $query;
+  }
+
   public function getDataByKd($kd)
   {
     $this->db->select('om.id as order_id, om.no_order, om.customer_id, om.asal_order, om.tujuan_order, om.kontak_order, om.jenis_muatan, om.keterangan, ss.truck_id, ss.sopir_id, ss.nominal')
@@ -172,31 +183,43 @@ class M_Order extends CI_Model
     return $query;
   }
 
-  public function addData($dataorder, $datasangu)
+  public function addData($dataOrder, $dataSangu, $whereTruck, $whereSopir, $updateStatusTruck, $updateStatusSopir)
   {
-    $this->db->insert('order_masuk', $dataorder);
-    $this->db->insert('sangu_sopir', $datasangu);
+    $this->db->insert('order_masuk', $dataOrder);
+    $this->db->insert('sangu_sopir', $dataSangu);
+    $this->db->update('armada', $updateStatusTruck, $whereTruck);
+    $this->db->update('sopir', $updateStatusSopir, $whereSopir);
   }
 
-  public function updateData($dataorder, $datasangu, $where)
+  public function updateData($dataOrder, $dataSangu, $where, $whereOldTruck, $whereOldSopir, $oldDataTruck, $oldDataSopir, $whereNewTruck, $whereNewSopir, $newDataTruck, $newDataSopir)
   {
-    $this->db->update('order_masuk', $dataorder, $where);
-    $this->db->update('sangu_sopir', $datasangu, $where);
+    $this->db->update('order_masuk', $dataOrder, $where);
+    $this->db->update('sangu_sopir', $dataSangu, $where);
+
+    $this->db->update('armada', $oldDataTruck, $whereOldTruck);
+    $this->db->update('armada', $newDataTruck, $whereNewTruck);
+
+    $this->db->update('sopir', $oldDataSopir, $whereOldSopir);
+    $this->db->update('sopir', $newDataSopir, $whereNewSopir);
   }
 
-  public function deleteData($kd)
+  public function deleteData($kd, $whereSopir, $whereTruck, $updateSopir, $updateTruck)
   {
-    $this->db->delete('order_masuk', ['no_order' => $kd]);
-    $this->db->delete('sangu_sopir', ['no_order' => $kd]);
+    $this->db->update('armada', $updateTruck, $whereTruck);
+    $this->db->update('sopir', $updateSopir, $whereSopir);
 
-    $this->db->select('no_order')
-      ->from('penjualan')
-      ->where('no_order', $kd);
+    $this->db->select('b.order_id')
+      ->from('order_masuk a')
+      ->join('penjualan b', 'b.order_id = a.id')
+      ->where('a.no_order', $kd);
 
     $query = $this->db->get()->row();
 
     if ($query == !null) {
-      $this->db->delete('penjualan', ['no_order' => $kd]);
+      $this->db->delete('penjualan', ['order_id' => $query->order_id]);
     }
+
+    $this->db->delete('order_masuk', ['no_order' => $kd]);
+    $this->db->delete('sangu_sopir', ['no_order' => $kd]);
   }
 }

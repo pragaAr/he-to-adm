@@ -4,7 +4,7 @@ class M_Armada extends CI_Model
 {
   public function getData()
   {
-    $this->datatables->select('id, platno, merk, dateKeur, dateAdd')
+    $this->datatables->select('id, platno, merk, status_truck, dateKeur, dateAdd')
       ->from('armada')
       ->add_column(
         'view',
@@ -16,7 +16,7 @@ class M_Armada extends CI_Model
             <i class="fas fa-trash fa-sm"></i>
           </a>
         </div>',
-        'id, platno, merk, dateKeur, dateAdd'
+        'id, platno, merk, status_truck, dateKeur, dateAdd'
       );
 
     return $this->datatables->generate();
@@ -43,6 +43,32 @@ class M_Armada extends CI_Model
   {
     $this->db->select('id, platno')
       ->from('armada')
+      ->like('platno', $keyword);
+
+    $res = $this->db->get()->result();
+
+    return $res;
+  }
+  // end for select2 and search
+
+  // for select2 and search
+  public function getListDataReady()
+  {
+    $this->db->select('id, platno')
+      ->from('armada')
+      ->where('status_truck', 0)
+      ->order_by('platno', 'asc');
+
+    $res = $this->db->get()->result();
+
+    return $res;
+  }
+
+  public function getSearchListDataReady($keyword)
+  {
+    $this->db->select('id, platno')
+      ->from('armada')
+      ->where('status_truck', 0)
       ->like('platno', $keyword);
 
     $res = $this->db->get()->result();
