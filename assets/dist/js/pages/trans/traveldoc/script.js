@@ -184,8 +184,6 @@ $("#modalAdd").on("shown.bs.modal", function () {
       $("#tambah").prop("disabled", true);
 
       $("#tfoot").show();
-
-      console.log(cartSj);
     }
   });
 
@@ -233,8 +231,6 @@ $("#modalAdd").on("shown.bs.modal", function () {
     newData = newData.filter((item) => item.sj !== idToRemove);
 
     if ($("#tbody").children().length == 0) $("#tfoot").hide();
-    console.log(idToRemove, cartSj);
-    console.log(typeof idToRemove);
   });
 
   $("#form_add").on("submit", function (e) {

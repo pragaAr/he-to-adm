@@ -347,8 +347,6 @@ $("#modalAdd").on("shown.bs.modal", function () {
       $("#tfoot").show();
 
       reset();
-
-      console.log(newData);
     }
   });
 
@@ -410,8 +408,6 @@ $("#modalAdd").on("shown.bs.modal", function () {
     $("#total_hidden").val(total_diterima());
 
     if ($("#tbody").children().length === 0) $("#tfoot").hide();
-
-    console.log(newData);
   });
 
   function total_diterima() {
@@ -496,7 +492,6 @@ $("#modalAdd").on("shown.bs.modal", function () {
         $("#modalAdd").modal("hide");
 
         const parsedRes = JSON.parse(response);
-        console.log(parsedRes);
 
         const resCode = parsedRes.kd;
         const resText = parsedRes.text;

@@ -137,8 +137,8 @@ class Persensopir extends CI_Controller
       'SetTitle'      => "pengeluaran-kas-persen-sopir-$kd",
       'margin_left'   => 10,
       'margin_right'  => 10,
-      'margin_top'    => 10,
-      'margin_bottom' => 10,
+      'margin_top'    => 5,
+      'margin_bottom' => 3,
     ]);
 
     $upper = strtoupper($kd);

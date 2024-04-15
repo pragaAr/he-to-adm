@@ -56,6 +56,21 @@ class M_Order extends CI_Model
     return $this->db->get('order_masuk')->num_rows();
   }
 
+  public function countPrepareData()
+  {
+    return $this->db->get_where('order_masuk', ['status_order' => 'disiapkan'])->num_rows();
+  }
+
+  public function countProsesData()
+  {
+    return $this->db->get_where('order_masuk', ['status_order' => 'diproses'])->num_rows();
+  }
+
+  public function countSuccessData()
+  {
+    return $this->db->get_where('order_masuk', ['status_order' => 'selesai'])->num_rows();
+  }
+
   public function getOrderId($kd)
   {
     $this->db->select('id as order_id, no_order')

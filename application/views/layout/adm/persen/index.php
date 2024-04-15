@@ -25,6 +25,7 @@
           <div class="card">
             <div class="card-body">
               <div class="table-responsive">
+                <p class="font-italic">#Untuk Searching tanggal, gunakan format Year-month-day</p>
                 <table id="persenTables" class="table table-bordered table-striped" style="width:100%" cellspacing="0">
                   <thead class="text-center">
                     <tr>
