@@ -89,29 +89,20 @@ class Penjualan extends CI_Controller
 
   public function getListReccuForTravelDoc()
   {
-    $keyword = $this->input->get('q');
+    $reccu = $this->input->post('reccu');
 
-    $data = !$keyword ? $this->Sales->getReccuForTravelDoc() : $this->Sales->getSearchReccuForTravelDoc($keyword);
+    $data = $this->Sales->getReccuForTravelDoc($reccu);
 
-    $response = [];
+    echo json_encode($data);
+  }
 
-    foreach ($data as $reccu) {
-      $response[] = [
-        'id'        => $reccu->no_order,
-        'text'      => strtoupper($reccu->reccu),
-        'orderno'   => strtoupper($reccu->no_order),
-        'custid'    => $reccu->customer_id,
-        'jenis'     => $reccu->jenis,
-        'berat'     => $reccu->berat,
-        'hrgkg'     => $reccu->hrg_kg,
-        'hrgbrg'    => $reccu->hrg_borong,
-        'totalhrg'  => $reccu->total_hrg,
-        'pengirim'  => strtoupper($reccu->pengirim),
-        'penerima'  => strtoupper($reccu->penerima),
-      ];
-    }
+  public function getListCustomerReccu()
+  {
+    $cust = $this->input->post('cust');
 
-    echo json_encode($response);
+    $data = $this->Sales->getDataCustomerReccu($cust);
+
+    echo json_encode($data);
   }
 
   public function add()
@@ -266,8 +257,14 @@ class Penjualan extends CI_Controller
   public function updateStatus()
   {
     $id = $this->input->post('id');
+    $kd = $this->input->post('no');
 
-    $data = $this->Sales->updateStatusOrderPenjualan($id);
+    $query = $this->Sangu->getDataTrucSopirkByKdOrder($kd);
+
+    $truckid = $query->truck_id;
+    $sopirid = $query->sopir_id;
+
+    $data = $this->Sales->updateStatusOrderPenjualan($id, $truckid, $sopirid);
 
     echo json_encode($data);
   }

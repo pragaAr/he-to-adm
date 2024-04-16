@@ -718,8 +718,9 @@ $("#salesTables").on("click", ".btn-update", function () {
     data: { id: id },
     success: function (data) {
       const parsedData = JSON.parse(data);
-
+      console.log(parsedData);
       const id = parsedData.order_id;
+      const no = parsedData.no_order;
       Swal.fire({
         title: "Apakah anda yakin ?",
         text: "Status akan di update !!",
@@ -736,8 +737,10 @@ $("#salesTables").on("click", ".btn-update", function () {
             method: "POST",
             data: {
               id: id,
+              no: no,
             },
             success: function (data) {
+              console.log(data);
               Swal.fire({
                 icon: "success",
                 title: "Success!",

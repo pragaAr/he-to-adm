@@ -82,14 +82,14 @@
              </p>
            </a>
          </li>
-         <li class="nav-item">
+         <!-- <li class="nav-item">
            <a href="<?= base_url('traveldoc') ?>" class="nav-link <?= $this->uri->segment(1) == 'traveldoc' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
              <i class="nav-icon fas fa-envelope-open"></i>
              <p>
                Surat Jalan
              </p>
            </a>
-         </li>
+         </li> -->
          <!-- <li class="nav-item">
            <a href="#" class="nav-link">
              <i class="nav-icon fas fa-file-alt"></i>
@@ -120,59 +120,29 @@
              <p>LKH</p>
            </a>
          </li> -->
-         <!-- <li class="nav-header">Report</li>
-         <li class="nav-item">
-           <a href="#" class="nav-link">
-             <i class="fas fa-circle nav-icon"></i>
-             <p>Level 1</p>
-           </a>
-         </li>
-         <li class="nav-item">
-           <a href="#" class="nav-link">
-             <i class="nav-icon fas fa-circle"></i>
+         <li class="nav-item <?= $this->uri->segment(1) == 'invoice' || $this->uri->segment(1) == 'traveldoc' || $this->uri->segment(1) == '' ? 'menu-open' : '' ?>">
+           <a href="#" class="nav-link <?= $this->uri->segment(1) == 'invoice' || $this->uri->segment(1) == 'traveldoc' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
+             <i class="nav-icon fas fa-folder"></i>
              <p>
-               Level 1
+               Dokumen
                <i class="right fas fa-angle-right"></i>
              </p>
            </a>
            <ul class="nav nav-treeview">
              <li class="nav-item">
-               <a href="#" class="nav-link">
-                 <i class="far fa-circle nav-icon"></i>
-                 <p>Level 2</p>
+               <a href="<?= base_url('traveldoc') ?>" class="nav-link <?= $this->uri->segment(1) == 'traveldoc' || $this->uri->segment(1) == '' ? 'active bg-secondary' : '' ?>">
+                 <i class="fas fa-envelope-open nav-icon"></i>
+                 <p>Surat Jalan</p>
                </a>
              </li>
              <li class="nav-item">
-               <a href="#" class="nav-link">
-                 <i class="far fa-circle nav-icon"></i>
-                 <p>
-                   Level 2
-                   <i class="right fas fa-angle-left"></i>
-                 </p>
+               <a href="<?= base_url('invoice') ?>" class="nav-link <?= $this->uri->segment(1) == 'invoice' || $this->uri->segment(1) == '' ? 'active bg-secondary' : '' ?>">
+                 <i class="nav-icon fas fa-file-invoice"></i>
+                 <p>Invoice</p>
                </a>
-               <ul class="nav nav-treeview">
-                 <li class="nav-item">
-                   <a href="#" class="nav-link">
-                     <i class="far fa-dot-circle nav-icon"></i>
-                     <p>Level 3</p>
-                   </a>
-                 </li>
-                 <li class="nav-item">
-                   <a href="#" class="nav-link">
-                     <i class="far fa-dot-circle nav-icon"></i>
-                     <p>Level 3</p>
-                   </a>
-                 </li>
-                 <li class="nav-item">
-                   <a href="#" class="nav-link">
-                     <i class="far fa-dot-circle nav-icon"></i>
-                     <p>Level 3</p>
-                   </a>
-                 </li>
-               </ul>
              </li>
            </ul>
-         </li> -->
+         </li>
        </ul>
      </nav>
    </div>

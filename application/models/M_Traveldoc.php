@@ -6,8 +6,9 @@ class M_Traveldoc extends CI_Model
 {
   public function getData()
   {
-    $this->datatables->select('id, reccu, jml_sj, dateAdd')
-      ->from('surat_jalan')
+    $this->datatables->select('a.id, b.nama, a.jml_reccu, a.jml_sj, a.dateAdd')
+      ->from('surat_jalan a')
+      ->join('customer b', 'b.id = a.cust_id')
       ->add_column(
         'view',
         '<div class="btn-group" role="group">
@@ -18,10 +19,24 @@ class M_Traveldoc extends CI_Model
             <i class="fas fa-trash fa-sm"></i>
           </a>
         </div>',
-        'id, reccu, jml_sj, dateAdd'
+        'id, nama, jml_reccu, jml_sj, dateAdd'
       );
 
     return $this->datatables->generate();
+  }
+
+  public function generateNomorSuratJalan($cust, $tipe)
+  {
+    $this->db->where('customer', $cust);
+    $this->db->where('jenis', $tipe);
+    $this->db->order_by('id', 'DESC');
+    $query = $this->db->get('nomor_surat', 1);
+    if ($query->num_rows() > 0) {
+      $row = $query->row();
+      return $row->nomor + 1;
+    } else {
+      return 1;
+    }
   }
 
   public function getTandaTerimaData($reccu)

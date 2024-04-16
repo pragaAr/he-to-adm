@@ -91,8 +91,9 @@ class M_Penjualan extends CI_Model
 
   public function getDataOrderById($id)
   {
-    $this->db->select('order_id')
-      ->from('penjualan')
+    $this->db->select('a.order_id, b.no_order')
+      ->from('penjualan a')
+      ->from('order_masuk b', 'b.id = a.order_id')
       ->where('order_id', $id);
 
     $query = $this->db->get()->row();
@@ -123,25 +124,37 @@ class M_Penjualan extends CI_Model
     return $query;
   }
 
-  public function getReccuForTravelDoc()
+  public function getReccuForTravelDoc($reccu)
   {
-    $this->db->select('p.reccu, p.pengirim, p.penerima, p.jenis, p.berat, p.hrg_kg, p.hrg_borong, p.total_hrg, om.no_order, om.customer_id')
+    $this->db->select('p.reccu, p.penerima, p.jenis, p.berat, p.hrg_kg, p.hrg_borong, p.total_hrg, om.no_order, om.customer_id')
       ->from('penjualan p')
       ->join('order_masuk om', 'om.id = p.order_id')
-      ->where('p.reccu NOT IN (SELECT reccu FROM detail_sj)');
+      ->where('p.reccu NOT IN (SELECT reccu FROM detail_sj)')
+      ->like('p.reccu', $reccu);
 
-    $query = $this->db->get()->result();
+    $query = $this->db->get()->row();
 
     return $query;
   }
 
-  public function getSearchReccuForTravelDoc($keyword)
+  // public function getSearchReccuForTravelDoc($keyword)
+  // {
+  //   $this->db->select('p.reccu, p.pengirim, p.penerima, p.jenis, p.berat, p.hrg_kg, p.hrg_borong, p.total_hrg, om.no_order, om.customer_id')
+  //     ->from('penjualan')
+  //     ->join('order_masuk om', 'om.id = p.order_id')
+  //     ->where('p.reccu NOT IN (SELECT reccu FROM detail_sj)')
+  //     ->like('p.reccu', $keyword);
+
+  //   $query = $this->db->get()->result();
+
+  //   return $query;
+  // }
+
+  public function getDataCustomerReccu($cust)
   {
-    $this->db->select('p.reccu, p.pengirim, p.penerima, p.jenis, p.berat, p.hrg_kg, p.hrg_borong, p.total_hrg, om.no_order, om.customer_id')
+    $this->db->select('reccu')
       ->from('penjualan')
-      ->join('order_masuk om', 'om.id = p.order_id')
-      ->where('p.reccu NOT IN (SELECT reccu FROM detail_sj)')
-      ->like('p.reccu', $keyword);
+      ->where('pengirim', $cust);
 
     $query = $this->db->get()->result();
 
@@ -235,7 +248,7 @@ class M_Penjualan extends CI_Model
     $this->db->update('order_masuk', $dataorder, $wherenoorder);
   }
 
-  public function updateStatusOrderPenjualan($id)
+  public function updateStatusOrderPenjualan($id, $truckid, $sopirid)
   {
     $statusOrder = [
       'status_order'  => 'selesai',
@@ -253,7 +266,25 @@ class M_Penjualan extends CI_Model
       'id' => $id
     ];
 
+    $wheresopirid = [
+      'id' => $sopirid
+    ];
+
+    $wheretruckid = [
+      'id' => $truckid
+    ];
+
+    $statussopir = [
+      'status_sopir' => 0
+    ];
+
+    $statustruck = [
+      'status_truck' => 0
+    ];
+
     $this->db->update('penjualan',  $statusPenjualan, $whereorderid);
     $this->db->update('order_masuk', $statusOrder, $whereidorder);
+    $this->db->update('armada', $statustruck, $wheretruckid);
+    $this->db->update('sopir', $statussopir, $wheresopirid);
   }
 }

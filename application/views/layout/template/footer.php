@@ -67,6 +67,8 @@
    <script src="<?= base_url('assets/') ?>dist/js/pages/trans/traveldoc/script.js"></script>
  <?php } else if ($this->uri->segment(1) == 'persensopir' && $this->uri->segment(2) == '') { ?>
    <script src="<?= base_url('assets/') ?>dist/js/pages/adm/persen/script.js"></script>
+ <?php } else if ($this->uri->segment(1) == 'invoice' && $this->uri->segment(2) == '') { ?>
+   <script src="<?= base_url('assets/') ?>dist/js/pages/trans/invoice/script.js"></script>
  <?php } ?>
 
  </body>

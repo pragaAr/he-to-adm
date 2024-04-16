@@ -1,7 +1,4 @@
 <div class="content-wrapper">
-  <div class="inserted" data-flashdata="<?= $this->session->flashdata('inserted'); ?>"></div>
-  <div class="updated" data-flashdata="<?= $this->session->flashdata('updated'); ?>"></div>
-  <div class="deleted" data-flashdata="<?= $this->session->flashdata('deleted'); ?>"></div>
   <section class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
@@ -10,9 +7,9 @@
         </div>
         <div class="col-sm-6">
           <div class="breadcrumb float-sm-right">
-            <a href="<?= base_url('invoice/addInvoice') ?>" class="btn btn-dark">
+            <a href="<?= base_url('invoice/addInvoice') ?>" class="btn btn-dark border border-light" id="btn_tambah">
               <i class=" fas fa-plus"></i>
-              Buat Invoice
+              Tambah
             </a>
           </div>
         </div>
@@ -26,21 +23,23 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <table id="dtable" class="table table-bordered table-striped">
-                <thead class="text-center">
-                  <tr>
-                    <th>No.</th>
-                    <th>No Inv</th>
-                    <th>Cust</th>
-                    <th>Jml Resi</th>
-                    <th>Tagihan</th>
-                    <th>Tanggal</th>
-                    <th width="15%">Actions</th>
-                  </tr>
-                </thead>
-                <tbody class="text-center">
-                  <?php $no = 1;
-                  foreach ($invoice as $data) : ?>
+              <div class="table-responsive">
+                <p class="font-italic">#Untuk Searching tanggal, gunakan format Year-month-day</p>
+                <table id="invTables" class="table table-bordered table-striped" width="100%" cellspacing="0">
+                  <thead class="text-center">
+                    <tr>
+                      <th class="align-middle">No.</th>
+                      <th class="align-middle">No. Inv</th>
+                      <th class="align-middle">Customer</th>
+                      <th class="align-middle">Jml Surat Jalan</th>
+                      <th class="align-middle">Tagihan</th>
+                      <th class="align-middle">Tanggal</th>
+                      <th class="align-middle">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody class="text-center">
+                    <!-- <?php $no = 1;
+                          foreach ($invoice as $data) : ?>
                     <tr>
                       <td><?= $no ?>.</td>
                       <td><?= strtoupper($data->kd_inv) ?></td>
@@ -63,9 +62,10 @@
                       </td>
                     </tr>
                     <?php $no++ ?>
-                  <?php endforeach ?>
-                </tbody>
-              </table>
+                  <?php endforeach ?> -->
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -74,8 +74,126 @@
   </section>
 </div>
 
+<!-- modalAdd -->
+<div class="modal fade" id="modalAdd" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Buat Invoice</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding: 1rem 2rem !important;">
+        <form id="form_add">
+          <div class="form-row">
+            <div class="form-group col-lg-3 col-md-6 col-sm-12">
+              <label for="cust">Customer</label>
+              <select name="cust" id="cust" class="form-control select-cust" style="width:100%" required>
+                <option value=""></option>
+
+              </select>
+              <input type="hidden" name="selectedCust" id="selectedCust" class="form-control" required readonly>
+            </div>
+            <div class="form-group col-lg-3 col-md-6 col-sm-12">
+              <label for="reccu">Reccu</label>
+              <select name="reccu" id="reccu" class="form-control select-reccu" style="width:100%" required>
+                <option value=""></option>
+
+              </select>
+            </div>
+            <div class="form-group col-lg-3 col-md-6 col-sm-12">
+              <label for="penerima">Penerima</label>
+              <input type="text" name="penerima" id="penerima" class="form-control text-capitalize" placeholder="Penerima.." required readonly>
+            </div>
+            <div class="form-group col-lg-3 col-md-6 col-sm-12">
+              <label for="jenis">Jenis</label>
+              <input type="text" name="jenis" id="jenis" class="form-control text-capitalize" placeholder="Jenis.." required readonly>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-lg-3 col-md-6 col-sm-12">
+              <label for="berat">Berat(Kg)</label>
+              <input type="text" name="berat" id="berat" class="form-control" placeholder="Berat(Kg).." required readonly>
+            </div>
+            <div class="form-group col-lg-3 col-md-6 col-sm-12">
+              <label for="hrgkg">Harga/Kg</label>
+              <input type="text" name="hrgkg" id="hrgkg" class="form-control" placeholder="Harga/Kg.." required readonly>
+            </div>
+            <div class="form-group col-lg-3 col-md-6 col-sm-12">
+              <label for="hrgbrg">Harga Borong</label>
+              <input type="text" name="hrgbrg" id="hrgbrg" class="form-control" placeholder="Harga Borong.." required readonly>
+            </div>
+            <div class="form-group col-lg-3 col-md-6 col-sm-12">
+              <label for="tothrg">Total Harga</label>
+              <input type="text" name="tothrg" id="tothrg" class="form-control" placeholder="Total.." required readonly>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-lg-3 col-md-6 col-sm-12">
+              <label for="suratjalan">Surat Jalan</label>
+              <select name="suratjalan" id="suratjalan" class="form-control select-suratjalan" style="width:100%" required>
+                <option value=""></option>
+
+              </select>
+            </div>
+            <div class="form-group col-lg-3 col-md-6 col-sm-12 d-flex align-items-end">
+              <button type="button" class="btn btn-primary border border-light btn-block mt-4" id="tambah" style="height:calc(1.5em + 0.75rem + 2px);" disabled>
+                <i class="fa fa-plus"></i>
+                Tambah
+              </button>
+            </div>
+          </div>
+
+          <hr style="border: 1px solid #6c757d;">
+
+          <h5 class="mb-3">List Surat Jalan</h5>
+          <div class="table-responsive">
+            <table class="table table-bordered" id="cart" width="100%" cellspacing="0">
+              <thead class="text-center">
+                <tr>
+                  <td>
+                    <strong>Surat Jalan</strong>
+                  </td>
+                  <td>
+                    <strong>Berat</strong>
+                  </td>
+                  <td>
+                    <strong>Retur</strong>
+                  </td>
+                  <td>
+                    <strong>Aksi</strong>
+                  </td>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+              <tfoot id="tfoot">
+                <tr>
+                  <td class="text-center">
+                  </td>
+                  <td class="align-middle">
+                  </td>
+                  <td class="align-middle">
+                  </td>
+                  <td class="align-middle text-center">
+                    <button type="submit" class="btn btn-dark border border-light btn-sm">
+                      Simpan
+                    </button>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- detailInv -->
-<form action="<?= base_url('invoice/print') ?>" method="POST" target="_blank">
+<!-- <form action="<?= base_url('invoice/print') ?>" method="POST" target="_blank">
   <div class="modal fade" id="detailInv">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
@@ -121,10 +239,10 @@
       </div>
     </div>
   </div>
-</form>
+</form> -->
 
 <!-- updateInvoice -->
-<form action="<?= base_url('invoice/prosesUpdate') ?>" method="post">
+<!-- <form action="<?= base_url('invoice/prosesUpdate') ?>" method="post">
   <div class="modal fade" id="updateInvoice">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
@@ -259,4 +377,4 @@
       </div>
     </div>
   </div>
-</form>
+</form> -->

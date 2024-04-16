@@ -1,11 +1,15 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+date_default_timezone_set('Asia/Jakarta');
+
 class Invoice extends CI_Controller
 {
   public function __construct()
   {
     parent::__construct();
+    $this->load->library('datatables');
+
     $this->load->model('M_Invoice', 'Invoice');
     $this->load->model('M_Penjualan', 'Sales');
 
@@ -17,13 +21,12 @@ class Invoice extends CI_Controller
 
   public function index()
   {
-    $data['title']      = 'Data Invoice';
-    $data['invoice']    = $this->Invoice->getData();
+    $data['title']  = 'Data Invoice';
 
     $this->load->view('layout/template/header', $data);
     $this->load->view('layout/template/navbar');
     $this->load->view('layout/template/sidebar');
-    $this->load->view('layout/trans/invoice', $data);
+    $this->load->view('layout/trans/invoice/index', $data);
     $this->load->view('layout/template/footer');
   }
 

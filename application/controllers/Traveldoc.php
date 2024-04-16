@@ -64,52 +64,109 @@ class Traveldoc extends CI_Controller
   public function add()
   {
     $userid   = $this->session->userdata('id');
-    $jmlSj    = count($this->input->post('sj'));
+    $countRow = count($this->input->post('sj'));
+    $rc       = $this->input->post('rc');
     $sj       = $this->input->post('sj');
-    $reccu    = strtolower($this->input->post('selectedReccu'));
-    $order    = strtolower($this->input->post('selectedOrder'));
-    $cust     = $this->input->post('selectedCust');
+    $custid   = $this->input->post('pengirim');
+    $cust     = strtolower($this->input->post('selectedCust'));
     $ket      = $this->input->post('ket');
     $berat    = $this->input->post('valberat');
     $retur    = $this->input->post('valretur');
     $dateAdd  = date('Y-m-d H:i:s');
+    $tipe     = 'surat_jalan';
+    $month    = date('m');
+    $querynomor = $this->SJ->generateNomorSuratJalan($cust, $tipe);
+
+    $inisial  = $this->getInitials($cust);
+    $romawi   = $this->bulanRomawi($month);
+
+    $nomor = $inisial . '/' . $querynomor . '/han/' . $romawi . '/' . date('y');
 
     $datasj = [
-      'reccu'       => strtolower($reccu),
-      'order_no'    => strtolower($order),
-      'cust_id'     => $cust,
-      'jml_sj'      => $jmlSj,
-      'keterangan'  => strtolower($ket),
-      'user_id'     => $userid,
-      'dateAdd'     => $dateAdd,
+      'nomor_sj'  => '',
+      'cust_id'   => $custid,
+      'jml_reccu' => $countRow,
+      'jml_sj'    => $countRow,
+      'ket'       => strtolower($ket),
+      'dateAdd'   => $dateAdd,
+      'user_id'   => $userid,
     ];
 
     $datadt = [];
 
-    for ($i = 0; $i < $jmlSj; $i++) {
-      array_push($datadt, ['reccu' => $reccu]);
+    for ($i = 0; $i < $countRow; $i++) {
+      array_push($datadt, ['nomor_sj' => '']);
+      $datadt[$i]['reccu']        = $rc[$i];
       $datadt[$i]['surat_jalan']  = $sj[$i];
       $datadt[$i]['berat']        = $berat[$i];
       $datadt[$i]['retur']        = $retur[$i];
     }
 
-    $proses = $this->SJ->addData($datasj, $datadt);
+    // $proses = $this->SJ->addData($datasj, $datadt);
 
-    if ($proses) {
-      $response = [
-        'status'  => 'success',
-        'title'   => 'Success',
-        'text'    => 'Data Berhasil Ditambahkan'
-      ];
-    } else {
-      $response = [
-        'status'  => 'error',
-        'title'   => 'Error',
-        'text'    => 'Data Gagal Ditambahkan'
-      ];
+    // if ($proses) {
+    //   $response = [
+    //     'status'  => 'success',
+    //     'title'   => 'Success',
+    //     'text'    => 'Data Berhasil Ditambahkan'
+    //   ];
+    // } else {
+    //   $response = [
+    //     'status'  => 'error',
+    //     'title'   => 'Error',
+    //     'text'    => 'Data Gagal Ditambahkan'
+    //   ];
+    // }
+
+    // echo json_encode($response);
+    echo json_encode($nomor);
+  }
+
+  function getInitials($nama)
+  {
+    $words = explode(" ", $nama);
+    $initials = '';
+
+    foreach ($words as $word) {
+      if (strpos($word, "pt.") !== false || strpos($word, "pt") !== false || strpos($word, "cv.") !== false || strpos($word, "cv") !== false || strpos($word, "ud.") !== false || strpos($word, "ud") !== false) {
+        continue;
+      }
+      $initials .= substr($word, 0, 1);
     }
 
-    echo json_encode($response);
+    return $initials;
+  }
+
+  function bulanRomawi($month)
+  {
+    switch ($month) {
+      case 1:
+        return 'i';
+      case 2:
+        return 'ii';
+      case 3:
+        return 'iii';
+      case 4:
+        return 'iv';
+      case 5:
+        return 'v';
+      case 6:
+        return 'vi';
+      case 7:
+        return 'vii';
+      case 8:
+        return 'viii';
+      case 9:
+        return 'ix';
+      case 10:
+        return 'x';
+      case 11:
+        return 'xi';
+      case 12:
+        return 'xii';
+      default:
+        return '';
+    }
   }
 
   public function print()

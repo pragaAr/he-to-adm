@@ -37,17 +37,14 @@ $("#sjTables").DataTable({
       className: "text-center align-middle",
     },
     {
-      data: "nama",
+      data: "reccu",
       className: "text-center align-middle",
       render: function (data, type, row) {
-        return data.toUpperCase();
-      },
-    },
-    {
-      data: "jml_reccu",
-      className: "text-center align-middle",
-      render: function (data, type, row) {
-        return data;
+        if (data === "") {
+          return "-";
+        } else {
+          return data.toUpperCase();
+        }
       },
     },
     {
@@ -96,20 +93,17 @@ $("#btn_tambah").on("click", function () {
 $("#modalAdd").on("shown.bs.modal", function () {
   $("#tfoot").hide();
 
-  $(document).keypress(function (e) {
-    if (e.which == "13") {
-      e.preventDefault();
+  $(document).keypress(function (event) {
+    if (event.which == "13") {
+      event.preventDefault();
     }
   });
 
-  let cartSj = [];
-  let newData = [];
-
-  $(".select-pengirim")
+  $(".select-reccu")
     .select2({
-      placeholder: "PILIH CUSTOMER",
+      placeholder: "PILIH RECCU",
       ajax: {
-        url: "http://localhost/hira-to-adm/customer/getListCustomer",
+        url: "http://localhost/hira-to-adm/penjualan/getListReccuForTravelDoc",
         dataType: "json",
         data: function (params) {
           return {
@@ -126,125 +120,61 @@ $("#modalAdd").on("shown.bs.modal", function () {
     .on("select2:select", function (e) {
       const data = e.params.data;
 
-      $("#selectedCust").val(data.text);
+      $("#selectedReccu").val(data.text);
+      $("#selectedOrder").val(data.orderno);
+      $("#selectedCust").val(data.custid);
+      $("#jenis").val(data.jenis);
+      $("#berat").val(data.berat);
+      $("#pengirim").val(data.pengirim);
+      $("#penerima").val(data.penerima);
+      $("#hrgkg").val(format(data.hrgkg));
+      $("#hrgbrg").val(format(data.hrgbrg));
+      $("#tothrg").val(format(data.totalhrg));
 
-      $.ajax({
-        url: "http://localhost/hira-to-adm/penjualan/getListCustomerReccu",
-        type: "POST",
-        dataType: "json",
-        data: {
-          cust: data.text,
-        },
-        success: function (data) {
-          if (data.length === 0) {
-            $("#reccu").empty();
-            $(".select-reccu").val(null).trigger("change");
-          } else {
-            let html = "";
-            for (let count = 0; count < data.length; count++) {
-              html +=
-                '<option value="' +
-                data[count].reccu +
-                '">' +
-                data[count].reccu.toUpperCase() +
-                "</option>";
-            }
-            $("#reccu").empty();
-
-            $("#reccu").append(html);
-
-            $(".select-reccu").val(null).trigger("change");
-          }
-        },
-      });
+      $("#ket").focus();
     });
 
-  $(".select-reccu")
-    .select2({
-      placeholder: "PILIH RECCU",
-    })
-    .on("select2:select", function (e) {
-      const selectedReccu = e.params.data.id;
-
-      $.ajax({
-        url: "http://localhost/hira-to-adm/penjualan/getListReccuForTravelDoc",
-        type: "POST",
-        dataType: "json",
-        data: {
-          reccu: selectedReccu,
-        },
-        success: function (data) {
-          console.log(data);
-
-          $("#selectedReccu").val(data.reccu);
-          $("#selectedOrder").val(data.no_order);
-          $("#jenis").val(data.jenis);
-          $("#berat").val(data.berat);
-          $("#penerima").val(data.penerima);
-          $("#hrgkg").val(format(data.hrg_kg));
-          $("#hrgbrg").val(format(data.hrg_borong));
-          $("#tothrg").val(format(data.total_hrg));
-
-          $("#ket").focus();
-        },
-        error: function (xhr, status, error) {
-          console.error("Error:", error);
-        },
-      });
-    });
-
-  $("#reccu").on("change", function (e) {
-    if ($(this).val() !== null && $("#suratjalan").val() !== "") {
+  $("#suratjalan").on("keydown keyup click change blur input", function (e) {
+    if ($(this).val() !== "") {
       $("#tambah").prop("disabled", false);
     } else {
       $("#tambah").prop("disabled", true);
     }
   });
 
-  $("#suratjalan").on("input", function (e) {
-    if ($(this).val() !== "" && $("#reccu").val() !== null) {
-      $("#tambah").prop("disabled", false);
-    } else {
-      $("#tambah").prop("disabled", true);
-    }
-  });
+  let cartSj = [];
+  let newData = [];
 
   $("button#tambah").on("click", function (e) {
-    const sjval = $("#suratjalan").val();
-    const trimmedSj = $.trim(sjval);
-    const rc = $("#selectedReccu").val();
+    const sj = $("#suratjalan").val();
 
-    const dataSuratJalan = {
-      id: trimmedSj,
-      text: trimmedSj,
+    const dataCart = {
+      id: sj,
+      text: sj,
     };
 
-    const isSuratJalanInCart = cartSj.some(
-      (emp) => emp.id === dataSuratJalan.id
-    );
+    const isInCart = cartSj.some((emp) => emp.id === dataCart.id);
 
-    if (isSuratJalanInCart) {
+    if (isInCart) {
       Swal.fire({
         icon: "warning",
         title: "Oops!",
         text: "Surat Jalan sudah ada di list!",
       });
     } else {
-      cartSj.push(dataSuratJalan);
+      cartSj.push(dataCart);
 
       const valueBerat = $("#beratsj").val() ? $("#beratsj").val() : 0;
       const valueRetur = $("#retur").val() ? $("#retur").val() : 0;
 
       newData.push({
-        sj: trimmedSj,
-        reccu: rc,
+        sj: sj,
         valueBerat: valueBerat,
         valueRetur: valueRetur,
       });
 
       tampilkanDataBaru();
 
-      $("#pengirim").prop("disabled", true);
       $("#suratjalan").val("");
       $("#beratsj").val("");
       $("#retur").val("");
@@ -252,6 +182,8 @@ $("#modalAdd").on("shown.bs.modal", function () {
       $("#suratjalan").focus();
 
       $("#tambah").prop("disabled", true);
+
+      $("#tfoot").show();
     }
   });
 
@@ -261,10 +193,6 @@ $("#modalAdd").on("shown.bs.modal", function () {
     newData.forEach(function (data) {
       const newRow = `
           <tr class="cart text-center">
-            <td class="text-uppercase rc">
-                ${data.reccu}
-                <input type="hidden" name="rc_hidden[]" value="${data.reccu}">
-            </td>
             <td class="text-uppercase sj">
                 ${data.sj}
                 <input type="hidden" name="sj_hidden[]" value="${data.sj}">
@@ -286,7 +214,6 @@ $("#modalAdd").on("shown.bs.modal", function () {
   	`;
 
       $("#cart tbody").append(newRow);
-      $("#tfoot").show();
     });
   }
 
@@ -304,26 +231,19 @@ $("#modalAdd").on("shown.bs.modal", function () {
     newData = newData.filter((item) => item.sj !== idToRemove);
 
     if ($("#tbody").children().length == 0) $("#tfoot").hide();
-
-    console.log(idToRemove, cartSj);
   });
 
   $("#form_add").on("submit", function (e) {
     e.preventDefault();
 
-    let rc = [];
     let sj = [];
     let valberat = [];
     let valretur = [];
 
-    const custid = $("#pengirim").val();
+    const selectedReccu = $("#selectedReccu").val();
+    const selectedOrder = $("#selectedOrder").val();
     const selectedCust = $("#selectedCust").val();
     const ket = $("#ket").val();
-
-    $('input[name="rc_hidden[]"]').each(function () {
-      const rc_hidden = $(this).val();
-      rc.push(rc_hidden);
-    });
 
     $('input[name="sj_hidden[]"]').each(function () {
       const sj_hidden = $(this).val();
@@ -344,24 +264,21 @@ $("#modalAdd").on("shown.bs.modal", function () {
       url: "http://localhost/hira-to-adm/traveldoc/add",
       method: "POST",
       data: {
-        pengirim: custid,
-        rc: rc,
         sj: sj,
         valberat: valberat,
         valretur: valretur,
+        selectedReccu: selectedReccu,
+        selectedOrder: selectedOrder,
         selectedCust: selectedCust,
         ket: ket,
       },
       success: function (response) {
         const parsedRes = JSON.parse(response);
-
-        console.log(parsedRes);
-
         const status = parsedRes.status;
         const title = parsedRes.title;
         const text = parsedRes.text;
 
-        // $("#modalAdd").modal("hide");
+        $("#modalAdd").modal("hide");
 
         Swal.fire({
           icon: status,
@@ -373,21 +290,17 @@ $("#modalAdd").on("shown.bs.modal", function () {
       },
     });
 
-    rc = [];
+    cartSj = [];
     sj = [];
     valberat = [];
     valretur = [];
+    newData = [];
 
-    reset();
-  });
-
-  function reset() {
-    $(".select-pengirim").val(null).trigger("change");
-    $(".select-pengirim").prop("disabled", false);
     $(".select-reccu").val(null).trigger("change");
     $("#selectedReccu").val("");
     $("#selectedOrder").val("");
     $("#selectedCust").val("");
+    $("#pengirim").val("");
     $("#penerima").val("");
     $("#jenis").val("");
     $("#berat").val("");
@@ -401,10 +314,7 @@ $("#modalAdd").on("shown.bs.modal", function () {
 
     $("#cart tbody").empty();
     $("#tfoot").hide();
-
-    cartSj = [];
-    newData = [];
-  }
+  });
 });
 
 $("#sjTables").on("click", ".btn-detail", function () {

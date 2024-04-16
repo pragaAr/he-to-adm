@@ -33,13 +33,11 @@
                 <table id="sjTables" class="table table-bordered table-striped" width="100%" cellspacing="0">
                   <thead class="text-center">
                     <tr>
-                      <th class="align-middle">No.</th>
-                      <th class="align-middle">No SJ</th>
-                      <th class="align-middle">Customer</th>
-                      <th class="align-middle">Jumlah Reccu</th>
-                      <th class="align-middle">Jumlah SJ</th>
-                      <th class="align-middle">Tanggal</th>
-                      <th class="align-middle">Aksi</th>
+                      <th>No.</th>
+                      <th>Reccu</th>
+                      <th>Jml SJ</th>
+                      <th>Tanggal</th>
+                      <th>Aksi</th>
                     </tr>
                   </thead>
                   <tbody class="text-center">
@@ -69,69 +67,65 @@
         <form id="form_add">
           <div class="form-row">
             <div class="form-group col-lg-3 col-md-6 col-sm-12">
-              <label for="pengirim">Pengirim</label>
-              <select name="pengirim" id="pengirim" class="form-control select-pengirim" style="width:100%" required>
+              <label for="reccu">Reccu</label>
+              <select name="reccu" id="reccu" class="form-control select-reccu" style="width:100%" required>
                 <option value=""></option>
 
               </select>
+              <input type="hidden" name="selectedReccu" id="selectedReccu" class="form-control" required readonly>
+              <input type="hidden" name="selectedOrder" id="selectedOrder" class="form-control" required readonly>
               <input type="hidden" name="selectedCust" id="selectedCust" class="form-control" required readonly>
             </div>
-
             <div class="form-group col-lg-3 col-md-6 col-sm-12">
-              <label for="reccu">Reccu</label>
-              <select name="reccu" id="reccu" class="form-control select-reccu" style="width:100%">
-                <option value=""></option>
-
-              </select>
-              <input type="hidden" name="selectedReccu" id="selectedReccu" class="form-control" readonly>
+              <label for="pengirim">Pengirim</label>
+              <input type="text" name="pengirim" id="pengirim" class="form-control text-capitalize" placeholder="Pengirim.." required readonly>
             </div>
-
             <div class="form-group col-lg-3 col-md-6 col-sm-12">
               <label for="penerima">Penerima</label>
-              <input type="text" name="penerima" id="penerima" class="form-control text-uppercase" placeholder="Penerima.." readonly>
+              <input type="text" name="penerima" id="penerima" class="form-control text-capitalize" placeholder="Penerima.." required readonly>
             </div>
             <div class="form-group col-lg-3 col-md-6 col-sm-12">
               <label for="jenis">Jenis</label>
-              <input type="text" name="jenis" id="jenis" class="form-control text-uppercase" placeholder="Jenis.." readonly>
+              <input type="text" name="jenis" id="jenis" class="form-control text-capitalize" placeholder="Jenis.." required readonly>
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group col-lg-3 col-md-6 col-sm-12">
               <label for="berat">Berat(Kg)</label>
-              <input type="text" name="berat" id="berat" class="form-control text-uppercase" placeholder="Berat(Kg).." readonly>
+              <input type="text" name="berat" id="berat" class="form-control" placeholder="Berat(Kg).." required readonly>
             </div>
             <div class="form-group col-lg-3 col-md-6 col-sm-12">
               <label for="hrgkg">Harga/Kg</label>
-              <input type="text" name="hrgkg" id="hrgkg" class="form-control text-uppercase" placeholder="Harga/Kg.." readonly>
+              <input type="text" name="hrgkg" id="hrgkg" class="form-control" placeholder="Harga/Kg.." required readonly>
             </div>
             <div class="form-group col-lg-3 col-md-6 col-sm-12">
               <label for="hrgbrg">Harga Borong</label>
-              <input type="text" name="hrgbrg" id="hrgbrg" class="form-control text-uppercase" placeholder="Harga Borong.." readonly>
+              <input type="text" name="hrgbrg" id="hrgbrg" class="form-control" placeholder="Harga Borong.." required readonly>
             </div>
             <div class="form-group col-lg-3 col-md-6 col-sm-12">
               <label for="tothrg">Total Harga</label>
-              <input type="text" name="tothrg" id="tothrg" class="form-control text-uppercase" placeholder="Total.." readonly>
+              <input type="text" name="tothrg" id="tothrg" class="form-control" placeholder="Total.." required readonly>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col-md">
               <label for="ket">Keterangan</label>
-              <input type="text" name="ket" id="ket" class="form-control text-uppercase" placeholder="Keterangan.." autocomplete="off">
+              <input type="text" name="ket" id="ket" class="form-control text-capitalize" placeholder="Keterangan.." autocomplete="off">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col-lg-3 col-md-6 col-sm-12">
               <label for="suratjalan">Surat Jalan</label>
-              <input type="text" name="suratjalan" id="suratjalan" class="form-control text-uppercase" placeholder="Surat Jalan.." autocomplete="off">
+              <input type="text" name="suratjalan" id="suratjalan" class="form-control text-capitalize" placeholder="Surat Jalan.." autocomplete="off">
             </div>
             <div class="form-group col-lg-3 col-md-6 col-sm-12">
               <label for="beratsj">Berat/SJ(Kg)</label>
-              <input type="text" name="beratsj" id="beratsj" class="form-control text-uppercase" placeholder="Berat/SJ(Kg).." autocomplete="off">
+              <input type="text" name="beratsj" id="beratsj" class="form-control" placeholder="Berat/SJ(Kg).." autocomplete="off">
             </div>
             <div class="form-group col-lg-3 col-md-6 col-sm-12">
               <label for="retur">Retur</label>
-              <input type="text" name="retur" id="retur" class="form-control text-uppercase" placeholder="Retur.." autocomplete="off">
+              <input type="text" name="retur" id="retur" class="form-control" placeholder="Retur.." autocomplete="off">
             </div>
             <div class="form-group col-lg-3 col-md-6 col-sm-12 d-flex align-items-end">
               <button type="button" class="btn btn-primary border border-light btn-block mt-4" id="tambah" style="height:calc(1.5em + 0.75rem + 2px);" disabled>
@@ -149,9 +143,6 @@
               <thead class="text-center">
                 <tr>
                   <td>
-                    <strong>Reccu</strong>
-                  </td>
-                  <td>
                     <strong>Surat Jalan</strong>
                   </td>
                   <td>
@@ -165,12 +156,18 @@
                   </td>
                 </tr>
               </thead>
-              <tbody id="tbody">
+              <tbody>
               </tbody>
               <tfoot id="tfoot">
                 <tr>
-                  <td class="align-middle text-center" colspan="5">
-                    <button type="submit" class="btn btn-dark border border-light btn-sm btn-block">
+                  <td class="text-center">
+                  </td>
+                  <td class="align-middle">
+                  </td>
+                  <td class="align-middle">
+                  </td>
+                  <td class="align-middle text-center">
+                    <button type="submit" class="btn btn-dark border border-light btn-sm">
                       Simpan
                     </button>
                   </td>
