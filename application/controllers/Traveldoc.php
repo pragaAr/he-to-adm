@@ -42,11 +42,25 @@ class Traveldoc extends CI_Controller
 
   public function getDetailData()
   {
-    $reccu = $this->input->post('reccu');
+    $nomor = $this->input->post('nomor');
+
+    $query  = $this->SJ->getDataByNomor($nomor);
+
+    $datasj = $this->SJ->getTandaTerimaData($nomor);
+
+    $reccu = [];
+
+    foreach ($datasj as $item) {
+      $reccu[] = $item->reccu;
+    }
+
+    $detail = $this->SJ->getDetailData($reccu);
 
     $response = [
-      'data'    => $this->SJ->getDataByReccu($reccu),
-      'detail'  => $this->SJ->getDetailByReccu($reccu)
+      'nomor'   => $query->nomor_surat,
+      'cust'    => $query->nama,
+      'datasj'  => $datasj,
+      'detail'  => $detail
     ];
 
     echo json_encode($response);
@@ -61,80 +75,97 @@ class Traveldoc extends CI_Controller
     echo json_encode($response);
   }
 
+  public function cekNomor()
+  {
+    $nomor    = $this->input->post('nomor');
+
+    $cekdata  = $this->SJ->getNomorSuratJalan($nomor);
+
+    $response = str_replace('/', '-', $cekdata->nomor_surat);
+
+    echo json_encode($response);
+  }
+
   public function add()
   {
-    $userid   = $this->session->userdata('id');
-    $countRow = count($this->input->post('sj'));
-    $rc       = $this->input->post('rc');
-    $sj       = $this->input->post('sj');
-    $custid   = $this->input->post('pengirim');
-    $cust     = strtolower($this->input->post('selectedCust'));
-    $ket      = $this->input->post('ket');
-    $berat    = $this->input->post('valberat');
-    $retur    = $this->input->post('valretur');
-    $dateAdd  = date('Y-m-d H:i:s');
-    $tipe     = 'surat_jalan';
-    $month    = date('m');
+    $userid     = $this->session->userdata('id');
+    $countRow   = count($this->input->post('sj'));
+    $rc         = $this->input->post('rc');
+    $noorder    = $this->input->post('noorder');
+    $sj         = $this->input->post('sj');
+    $custid     = $this->input->post('pengirim');
+    $cust       = strtolower($this->input->post('selectedCust'));
+    $kode       = strtolower($this->input->post('selectedKodeCust'));
+    $ket        = $this->input->post('ket');
+    $berat      = $this->input->post('valberat');
+    $retur      = $this->input->post('valretur');
+    $dateAdd    = date('Y-m-d H:i:s');
+    $tipe       = 'surat_jalan';
+    $month      = date('m');
+
     $querynomor = $this->SJ->generateNomorSuratJalan($cust, $tipe);
 
-    $inisial  = $this->getInitials($cust);
-    $romawi   = $this->bulanRomawi($month);
+    $romawi     = $this->bulanRomawi($month);
 
-    $nomor = $inisial . '/' . $querynomor . '/han/' . $romawi . '/' . date('y');
+    $nomor      = $kode . '/' . $querynomor . '/han/' . $romawi . '/' . date('y');
+
+    $dataReccu = [];
+
+    for ($a = 0; $a < $countRow; $a++) {
+      $reccu = $rc[$a];
+      if (!in_array($reccu, $dataReccu)) {
+        $dataReccu[] = $reccu;
+      }
+    }
+
+    $jmlreccu = count($dataReccu);
 
     $datasj = [
-      'nomor_sj'  => '',
-      'cust_id'   => $custid,
-      'jml_reccu' => $countRow,
-      'jml_sj'    => $countRow,
-      'ket'       => strtolower($ket),
-      'dateAdd'   => $dateAdd,
-      'user_id'   => $userid,
+      'nomor_surat' => $nomor,
+      'cust_id'     => $custid,
+      'jml_reccu'   => $jmlreccu,
+      'jml_sj'      => $countRow,
+      'dateAdd'     => $dateAdd,
+      'user_id'     => $userid,
     ];
 
     $datadt = [];
 
     for ($i = 0; $i < $countRow; $i++) {
-      array_push($datadt, ['nomor_sj' => '']);
+      array_push($datadt, ['nomor_surat' => $nomor]);
       $datadt[$i]['reccu']        = $rc[$i];
+      $datadt[$i]['no_order']     = $noorder[$i];
+      $datadt[$i]['ket']          = $ket[$i];
       $datadt[$i]['surat_jalan']  = $sj[$i];
       $datadt[$i]['berat']        = $berat[$i];
       $datadt[$i]['retur']        = $retur[$i];
     }
 
-    // $proses = $this->SJ->addData($datasj, $datadt);
+    $datasurat = [
+      'customer'    => $cust,
+      'jenis'       => $tipe,
+      'nomor_angka' => $querynomor,
+      'nomor'       => $nomor,
+      'dateAdd'     => $dateAdd
+    ];
 
-    // if ($proses) {
-    //   $response = [
-    //     'status'  => 'success',
-    //     'title'   => 'Success',
-    //     'text'    => 'Data Berhasil Ditambahkan'
-    //   ];
-    // } else {
-    //   $response = [
-    //     'status'  => 'error',
-    //     'title'   => 'Error',
-    //     'text'    => 'Data Gagal Ditambahkan'
-    //   ];
-    // }
+    $proses = $this->SJ->addData($datasj, $datadt, $datasurat);
 
-    // echo json_encode($response);
-    echo json_encode($nomor);
-  }
-
-  function getInitials($nama)
-  {
-    $words = explode(" ", $nama);
-    $initials = '';
-
-    foreach ($words as $word) {
-      if (strpos($word, "pt.") !== false || strpos($word, "pt") !== false || strpos($word, "cv.") !== false || strpos($word, "cv") !== false || strpos($word, "ud.") !== false || strpos($word, "ud") !== false) {
-        continue;
-      }
-      $initials .= substr($word, 0, 1);
+    if ($proses) {
+      $response = [
+        'status'  => 'success',
+        'title'   => 'Success',
+        'text'    => 'Data Berhasil Ditambahkan'
+      ];
+    } else {
+      $response = [
+        'status'  => 'error',
+        'title'   => 'Error',
+        'text'    => 'Data Gagal Ditambahkan'
+      ];
     }
 
-    return $initials;
+    echo json_encode($response);
   }
 
   function bulanRomawi($month)
@@ -169,60 +200,101 @@ class Traveldoc extends CI_Controller
     }
   }
 
-  public function print()
+  public function print($nomor)
   {
-    $cust             = $this->input->post('ttcustname');
-    $reccu            = $this->input->post('ttreccu[]');
-    $jenis            = $this->input->post('jenis');
-    $dpp              = $this->input->post('dpp');
-    $valJenis         = preg_replace('/-/', ' ', $jenis);
-    $nomor = "36/HAN/XII/23";
+    $str    = str_replace('-', '/', $nomor);
 
-    $data['title']    = $valJenis . ' ' . $cust;
-    $data['nomor']    = $nomor;
-    $data['rc']       = $this->SJ->getTandaTerimaData($reccu);
-    $data['dt']       = $this->SJ->getDetailData($reccu);
-    $data['dpp']      = $dpp;
+    $query  = $this->SJ->getDataByNomor($str);
+
+    $datasj = $this->SJ->getTandaTerimaData($str);
+
+    $reccu = [];
+
+    foreach ($datasj as $item) {
+      $reccu[] = $item->reccu;
+    }
+
+    $detail = $this->SJ->getDetailData($reccu);
+
+    $data = [
+      'title'   => 'Tanda Terima Surat Jalan',
+      'nomor'   => $query->nomor_surat,
+      'cust'    => $query->nama,
+      'datasj'  => $datasj,
+      'detail'  => $detail,
+    ];
 
     $mpdf = new Mpdf([
       'mode'          => 'utf-8',
       'format'        => 'A4',
       'orientation'   => 'P',
-      'SetTitle'      => $jenis,
+      'SetTitle'      => $str,
       'margin_left'   => 5,
       'margin_right'  => 5,
       'margin_top'    => 5,
       'margin_bottom' => 5,
     ]);
 
-    if ($jenis === 'tanda-terima-surat-jalan') {
+    $content  = $this->load->view('layout/trans/surat-jalan/print', $data, true);
 
-      $content  = $this->load->view('layout/trans/surat-jalan/print', $data, true);
+    $mpdf->SetHTMLFooter("<p class='page-number-footer'>Tanda Terima Surat Jalan ( $str ) | Halaman {PAGENO} Dari {nb}</p>");
+    $mpdf->AddPage();
+    $mpdf->WriteHTML($content);
 
-      $mpdf->SetHTMLFooter("<p class='page-number-footer'>Tanda Terima Surat Jalan ( $nomor ) | Halaman {PAGENO} Dari {nb}</p>");
-      $mpdf->AddPage();
-      $mpdf->WriteHTML($content);
+    $mpdf->Output("$str.pdf", 'I');
+  }
 
-      $mpdf->Output();
-    } else if ($jenis === 'invoice') {
+  public function printtest()
+  {
+    $str    = 'ims/4/han/iv/24';
 
-      $content  = $this->load->view('layout/trans/surat-jalan/print-invoice', $data, true);
+    $query  = $this->SJ->getDataByNomor($str);
 
-      $mpdf->SetHTMLFooter("<p class='page-number-footer'>Invoice ( $nomor ) | Halaman {PAGENO} Dari {nb}</p>");
-      $mpdf->AddPage();
-      $mpdf->WriteHTML($content);
+    $datasj = $this->SJ->getTandaTerimaData($str);
 
-      $mpdf->Output();
-    } else {
-      echo 'data tidak valid, silahkan pilih jenis dokumen';
+    $reccu = [];
+
+    foreach ($datasj as $item) {
+      $reccu[] = $item->reccu;
     }
+
+    $detail = $this->SJ->getDetailData($reccu);
+
+    echo json_encode($detail);
+  }
+
+  public function testpage()
+  {
+    $str    = 'ims/4/han/iv/24';
+
+    $query  = $this->SJ->getDataByNomor($str);
+
+    $datasj = $this->SJ->getTandaTerimaData($str);
+
+    $reccu = [];
+
+    foreach ($datasj as $item) {
+      $reccu[] = $item->reccu;
+    }
+
+    $detail = $this->SJ->getDetailData($reccu);
+
+    $data = [
+      'title'   => 'Tanda Terima Surat Jalan',
+      'nomor'   => $query->nomor_surat,
+      'cust'    => $query->nama,
+      'datasj'  => $datasj,
+      'detail'  => $detail,
+    ];
+
+    $this->load->view('layout/trans/surat-jalan/test', $data);
   }
 
   public function delete()
   {
-    $reccu = $this->input->post('reccu');
+    $nomor = $this->input->post('nomor');
 
-    $data = $this->SJ->deleteData($reccu);
+    $data = $this->SJ->deleteData($nomor);
 
     echo json_encode($data);
   }

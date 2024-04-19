@@ -8,10 +8,6 @@
         </div>
         <div class="col-sm-6">
           <div class="breadcrumb float-sm-right">
-            <button type="button" class="btn btn-primary border border-light mr-1" id="btn_cetak">
-              <i class=" fas fa-print"></i>
-              Cetak
-            </button>
             <button type="button" class="btn btn-dark border border-light" id="btn_tambah">
               <i class=" fas fa-plus"></i>
               Tambah
@@ -34,7 +30,7 @@
                   <thead class="text-center">
                     <tr>
                       <th class="align-middle">No.</th>
-                      <th class="align-middle">No SJ</th>
+                      <th class="align-middle">No Surat</th>
                       <th class="align-middle">Customer</th>
                       <th class="align-middle">Jumlah Reccu</th>
                       <th class="align-middle">Jumlah SJ</th>
@@ -75,6 +71,7 @@
 
               </select>
               <input type="hidden" name="selectedCust" id="selectedCust" class="form-control" required readonly>
+              <input type="hidden" name="selectedKodeCust" id="selectedKodeCust" class="form-control" required readonly>
             </div>
 
             <div class="form-group col-lg-3 col-md-6 col-sm-12">
@@ -84,6 +81,7 @@
 
               </select>
               <input type="hidden" name="selectedReccu" id="selectedReccu" class="form-control" readonly>
+              <input type="hidden" name="selectedOrder" id="selectedOrder" class="form-control" readonly>
             </div>
 
             <div class="form-group col-lg-3 col-md-6 col-sm-12">
@@ -186,7 +184,7 @@
 
 <!-- modalDetail -->
 <div class="modal fade" id="modalDetail" data-backdrop="static">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">Detail Surat Jalan</h4>
@@ -197,28 +195,33 @@
       <div class="modal-body" style="padding: 1rem 2rem !important;">
         <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
           <div>
-            <small class="text-uppercase mb-0 reccutgl"></small><br>
-            <small class="text-uppercase font-weight-bold mb-0 jmlsj"></small>
+            <p class="text-uppercase font-weight-bold mb-0 nosurat"></p>
+            <p class="text-uppercase font-weight-bold mb-0 customer"></p>
           </div>
         </div>
-        <table class="table table-bordered" width="100%">
-          <thead class="text-center" style="border:1.5px solid rgb(145, 143, 143) !important;">
-            <th width="10%" style="border-color: rgb(145, 143, 143) !important;">No.</th>
-            <th style="border-color: rgb(145, 143, 143) !important;">Reccu</th>
-            <th style="border-color: rgb(145, 143, 143) !important;">Surat Jalan</th>
-            <th style="border-color: rgb(145, 143, 143) !important;">Berat</th>
-            <th style="border-color: rgb(145, 143, 143) !important;">Retur</th>
-          </thead>
-          <tbody class="text-center" id="tbodyDetail" style="border:1.5px solid rgb(145, 143, 143) !important;">
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table class="table table-bordered" width="100%" cellspacing="0">
+            <thead class="text-center" style="border:1.5px solid rgb(145, 143, 143) !important;">
+              <th class="align-middle" width="5%" style="border-color: rgb(145, 143, 143) !important;">No.</th>
+              <th class="align-middle" style="border-color: rgb(145, 143, 143) !important;">Tanggal</th>
+              <th class="align-middle" style="border-color: rgb(145, 143, 143) !important;">No Polisi</th>
+              <th class="align-middle" style="border-color: rgb(145, 143, 143) !important;">Surat Jalan</th>
+              <th class="align-middle" style="border-color: rgb(145, 143, 143) !important;">Asal-Tujuan</th>
+              <th class="align-middle" style="border-color: rgb(145, 143, 143) !important;">Berat</th>
+              <th class="align-middle" style="border-color: rgb(145, 143, 143) !important;">Ongkir</th>
+              <th class="align-middle" style="border-color: rgb(145, 143, 143) !important;">Tagihan</th>
+            </thead>
+            <tbody class="text-center" id="tbodyDetail" style="border:1.5px solid rgb(145, 143, 143) !important;">
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <!-- modalTandaTerimaInvoice -->
-<div class="modal fade" id="modalTandaTerimaInvoice" data-backdrop="static">
+<!-- <div class="modal fade" id="modalTandaTerimaInvoice" data-backdrop="static">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -284,4 +287,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

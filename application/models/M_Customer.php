@@ -4,7 +4,7 @@ class M_Customer extends CI_Model
 {
   public function getData()
   {
-    $this->datatables->select('id, nama, notelp, alamat')
+    $this->datatables->select('id, nama, kode, notelp, alamat')
       ->from('customer')
       ->add_column(
         'view',
@@ -16,7 +16,7 @@ class M_Customer extends CI_Model
             <i class="fas fa-trash fa-sm"></i>
           </a>
         </div>',
-        'id, nama, notelp, alamat'
+        'id, nama, kode, notelp, alamat'
       );
 
     return $this->datatables->generate();
@@ -46,7 +46,7 @@ class M_Customer extends CI_Model
   // for select2 and search
   public function getListData()
   {
-    $this->db->select('id, nama, notelp')
+    $this->db->select('id, nama, kode, notelp')
       ->from('customer')
       ->order_by('nama', 'asc');
 
@@ -57,7 +57,7 @@ class M_Customer extends CI_Model
 
   public function getSearchListData($keyword)
   {
-    $this->db->select('id, nama, notelp')
+    $this->db->select('id, nama, kode, notelp')
       ->from('customer')
       ->like('nama', $keyword);
 

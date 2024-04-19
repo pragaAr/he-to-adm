@@ -6,20 +6,23 @@ class M_Traveldoc extends CI_Model
 {
   public function getData()
   {
-    $this->datatables->select('a.id, b.nama, a.jml_reccu, a.jml_sj, a.dateAdd')
+    $this->datatables->select('a.id, a.nomor_surat, b.nama, a.jml_reccu, a.jml_sj, a.dateAdd')
       ->from('surat_jalan a')
       ->join('customer b', 'b.id = a.cust_id')
       ->add_column(
         'view',
         '<div class="btn-group" role="group">
-          <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-reccu="$2" data-toggle="tooltip" title="Detail">
+          <a href="javascript:void(0);" class="btn btn-sm btn-primary text-white border border-light btn-print" data-nomor="$2" data-toggle="tooltip" title="Cetak">
+            <i class="fas fa-print fa-sm"></i>
+          </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-nomor="$2" data-toggle="tooltip" title="Detail">
             <i class="fas fa-eye fa-sm"></i>
           </a>
-          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-reccu="$2" data-toggle="tooltip" title="Hapus">
+          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-nomor="$2" data-toggle="tooltip" title="Hapus">
             <i class="fas fa-trash fa-sm"></i>
           </a>
         </div>',
-        'id, nama, jml_reccu, jml_sj, dateAdd'
+        'id, nomor_surat, nama, jml_reccu, jml_sj, dateAdd'
       );
 
     return $this->datatables->generate();
@@ -27,27 +30,38 @@ class M_Traveldoc extends CI_Model
 
   public function generateNomorSuratJalan($cust, $tipe)
   {
-    $this->db->where('customer', $cust);
-    $this->db->where('jenis', $tipe);
-    $this->db->order_by('id', 'DESC');
+    $this->db->where('customer', $cust)
+      ->where('jenis', $tipe)
+      ->order_by('id', 'DESC');
+
     $query = $this->db->get('nomor_surat', 1);
+
     if ($query->num_rows() > 0) {
       $row = $query->row();
-      return $row->nomor + 1;
+      return $row->nomor_angka + 1;
     } else {
       return 1;
     }
   }
 
-  public function getTandaTerimaData($reccu)
+  public function getTandaTerimaData($str)
   {
-    $this->db->select('sj.reccu, sj.order_no, sj.jml_sj, sj.keterangan, p.kota_asal, p.kota_tujuan, p.berat, p.hrg_kg, p.total_hrg, p.dateAdd, a.platno')
-      ->from('surat_jalan sj')
-      ->join('penjualan p', 'p.reccu = sj.reccu')
-      ->join('order_masuk om', 'om.no_order = sj.order_no')
-      ->join('sangu_sopir ss', 'ss.no_order = om.no_order')
-      ->join('armada a', 'a.id = ss.truck_id')
-      ->where_in('sj.reccu', $reccu);
+    $getreccu = $this->db->select('reccu')
+      ->from('detail_sj')
+      ->where('nomor_surat', $str)
+      ->get()->result();
+
+    $reccu_values = [];
+    foreach ($getreccu as $item) {
+      $reccu_values[] = $item->reccu;
+    }
+
+    $this->db->select('order_masuk.dateAdd as dateOrder, armada.platno, penjualan.reccu, penjualan.kota_asal, penjualan.kota_tujuan, penjualan.berat, penjualan.hrg_kg, penjualan.total_hrg')
+      ->from('penjualan')
+      ->join('order_masuk', 'order_masuk.id = penjualan.order_id')
+      ->join('sangu_sopir', 'sangu_sopir.no_order = order_masuk.no_order')
+      ->join('armada', 'armada.id = sangu_sopir.truck_id')
+      ->where_in('penjualan.reccu', $reccu_values);
 
     $query = $this->db->get()->result();
 
@@ -56,11 +70,34 @@ class M_Traveldoc extends CI_Model
 
   public function getDetailData($reccu)
   {
-    $this->db->select('reccu, surat_jalan, berat, retur')
+    $this->db->select('reccu, ket, surat_jalan, berat, retur')
       ->from('detail_sj')
       ->where_in('reccu', $reccu);
 
     $query = $this->db->get()->result();
+
+    return $query;
+  }
+
+  public function getNomorSuratJalan($nomor)
+  {
+    $this->db->select('nomor_surat')
+      ->from('surat_jalan')
+      ->where('nomor_surat', $nomor);
+
+    $query = $this->db->get()->row();
+
+    return $query;
+  }
+
+  public function getDataByNomor($str)
+  {
+    $this->db->select('a.nomor_surat, b.nama, a.jml_sj')
+      ->from('surat_jalan a')
+      ->where('a.nomor_surat', $str)
+      ->join('customer b', 'b.id = a.cust_id');
+
+    $query = $this->db->get()->row();
 
     return $query;
   }
@@ -158,10 +195,11 @@ class M_Traveldoc extends CI_Model
     return $query;
   }
 
-  public function addData($datasj, $datadt)
+  public function addData($datasj, $datadt, $datasurat)
   {
     $query = $this->db->insert('surat_jalan', $datasj);
     $query = $this->db->insert_batch('detail_sj', $datadt);
+    $query = $this->db->insert('nomor_surat', $datasurat);
 
     if ($query) {
       return true;
@@ -176,9 +214,10 @@ class M_Traveldoc extends CI_Model
     $this->db->update('order_masuk', $dataorder, $where);
   }
 
-  public function deleteData($reccu)
+  public function deleteData($nomor)
   {
-    $this->db->delete('surat_jalan', ['reccu' => $reccu]);
-    $this->db->delete('detail_sj', ['reccu' => $reccu]);
+    $this->db->delete('surat_jalan', ['nomor_surat' => $nomor]);
+    $this->db->delete('detail_sj', ['nomor_surat' => $nomor]);
+    $this->db->delete('nomor_surat', ['nomor' => $nomor]);
   }
 }

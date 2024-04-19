@@ -44,6 +44,13 @@ $("#customerTables").DataTable({
       },
     },
     {
+      data: "kode",
+      className: "text-center",
+      render: function (data, type, row) {
+        return data.toUpperCase();
+      },
+    },
+    {
       data: "alamat",
       className: "text-center",
       render: function (data, type, row) {
@@ -86,6 +93,7 @@ $("#modalAdd").on("shown.bs.modal", function () {
 
 $("#form_add").on("submit", function () {
   const nama = $("#nama").val();
+  const kode = $("#kode").val();
   const notelp = $("#notelp").val();
   const alamat = $("#alamat").val();
 
@@ -94,12 +102,14 @@ $("#form_add").on("submit", function () {
     type: "POST",
     data: {
       nama: nama,
+      kode: kode,
       notelp: notelp,
       alamat: alamat,
     },
     success: function (data) {
       if (data === "true") {
         $("#nama").val("");
+        $("#kode").val("");
         $("#notelp").val("");
         $("#alamat").val("");
 
@@ -137,6 +147,7 @@ $("#customerTables").on("click", ".btn-edit", function (e) {
 
       $("#id").val(parsedata.id);
       $("#namaedit").val(parsedata.nama);
+      $("#kodeedit").val(parsedata.kode);
       $("#notelpedit").val(parsedata.notelp);
       $("#alamatedit").val(parsedata.alamat);
 
@@ -149,6 +160,7 @@ $("#customerTables").on("click", ".btn-edit", function (e) {
 $("#form_edit").on("submit", function () {
   const id = $("#id").val();
   const nama = $("#namaedit").val();
+  const kode = $("#kodeedit").val();
   const notelp = $("#notelpedit").val();
   const alamat = $("#alamatedit").val();
 
@@ -158,6 +170,7 @@ $("#form_edit").on("submit", function () {
     data: {
       id: id,
       nama: nama,
+      kode: kode,
       notelp: notelp,
       alamat: alamat,
     },
@@ -165,6 +178,7 @@ $("#form_edit").on("submit", function () {
       if (data === "true") {
         $("#id").val("");
         $("#namaedit").val("");
+        $("#kodeedit").val("");
         $("#notelpedit").val("");
         $("#alamatedit").val("");
 

@@ -29,6 +29,7 @@
                     <tr>
                       <th>No.</th>
                       <th>Nama</th>
+                      <th>Kode</th>
                       <th>Alamat</th>
                       <th>Kontak</th>
                       <th>Aksi</th>
@@ -64,6 +65,12 @@
               Nama Customer
             </label>
             <input type="text" class="form-control text-uppercase" name="nama" id="nama" placeholder="Nama Customer.." autofocus autocomplete="off" oninvalid="this.setCustomValidity('Nama Customer wajib di isi!')" oninput="setCustomValidity('')">
+          </div>
+          <div class="form-group">
+            <label for="kode">
+              Kode Customer
+            </label>
+            <input type="text" class="form-control text-uppercase" name="kode" id="kode" placeholder="Kode Customer.." autocomplete="off" oninvalid="this.setCustomValidity('Kode Customer wajib di isi!')" oninput="setCustomValidity('')">
           </div>
           <div class="form-group">
             <label for="notelp">
@@ -106,6 +113,13 @@
             </label>
             <input type="hidden" class="form-control" name="id" id="id">
             <input type="text" class="form-control text-uppercase" name="namaedit" id="namaedit" placeholder="Nama Customer..">
+          </div>
+          <div class="form-group">
+            <label for="kodeedit">
+              Kode Customer
+            </label>
+            <input type="hidden" class="form-control" name="id" id="id">
+            <input type="text" class="form-control text-uppercase" name="kodeedit" id="kodeedit" placeholder="Kode Customer..">
           </div>
           <div class="form-group">
             <label for="notelpedit">

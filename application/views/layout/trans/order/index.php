@@ -429,6 +429,12 @@
             <input type="text" class="form-control text-uppercase" name="namacust" id="namacust" placeholder="Nama Customer.." autofocus autocomplete="off" oninvalid="this.setCustomValidity('Nama Customer wajib di isi!')" oninput="setCustomValidity('')">
           </div>
           <div class="form-group">
+            <label for="kodecust">
+              Kode Customer
+            </label>
+            <input type="text" class="form-control text-uppercase" name="kodecust" id="kodecust" placeholder="Kode Customer.."  autocomplete="off" oninvalid="this.setCustomValidity('Kode Customer wajib di isi!')" oninput="setCustomValidity('')">
+          </div>
+          <div class="form-group">
             <label for="notelpcust">
               No Telepon
             </label>

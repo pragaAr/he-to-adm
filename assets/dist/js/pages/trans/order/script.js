@@ -181,6 +181,7 @@ $("#modalAddOrder").on("shown.bs.modal", function () {
     e.preventDefault();
 
     const namacust = $("#namacust").val();
+    const kodecust = $("#kodecust").val();
     const notelpcust = $("#notelpcust").val();
     const alamatcust = $("#alamatcust").val();
 
@@ -189,11 +190,13 @@ $("#modalAddOrder").on("shown.bs.modal", function () {
       method: "POST",
       data: {
         nama: namacust,
+        kode: kodecust,
         notelp: notelpcust,
         alamat: alamatcust,
       },
       success: function (response) {
         $("#namacust").val("");
+        $("#kodecust").val("");
         $("#notelpcust").val("");
         $("#alamatcust").val("");
 

@@ -63,6 +63,7 @@ class Customer extends CI_Controller
 			$response[] = [
 				'id'    => $cust->id,
 				'text'  => strtoupper($cust->nama),
+				'kode'  => strtoupper($cust->kode),
 				'telp'  => ucwords($cust->notelp),
 			];
 		}
@@ -73,12 +74,14 @@ class Customer extends CI_Controller
 	public function add()
 	{
 		$nama 	= trim($this->input->post('nama'));
+		$kode 	= trim($this->input->post('kode'));
 		$notelp = trim($this->input->post('notelp'));
 		$alamat	= trim($this->input->post('alamat'));
 		$addAt  = date('Y-m-d H:i:s');
 
 		$data = [
 			'nama'    => strtolower($nama),
+			'kode'    => strtolower($kode),
 			'notelp'  => strtolower($notelp),
 			'alamat'  => strtolower($alamat),
 			'dateAdd'	=> $addAt,
@@ -92,14 +95,16 @@ class Customer extends CI_Controller
 	public function addNewSelect()
 	{
 		$nama 	= trim($this->input->post('nama'));
+		$kode 	= trim($this->input->post('kode'));
 		$notelp = trim($this->input->post('notelp'));
 		$alamat	= trim($this->input->post('alamat'));
 		$addAt  = date('Y-m-d H:i:s');
 
 		$datacust = array(
 			'nama'  	=> strtolower($nama),
-			'notelp'  => $notelp,
-			'alamat'  => $alamat,
+			'kode'    => strtolower($kode),
+			'notelp'  => strtolower($notelp),
+			'alamat'  => strtolower($alamat),
 			'dateAdd'	=> $addAt,
 		);
 
@@ -110,6 +115,7 @@ class Customer extends CI_Controller
 		$response = [
 			'id'		=> $custid,
 			'text'  => ucwords($nama),
+			'kode'  => ucwords($kode),
 			'telp'  => $notelp,
 		];
 
@@ -120,11 +126,13 @@ class Customer extends CI_Controller
 	{
 		$id     = $this->input->post('id');
 		$nama 	= trim($this->input->post('nama'));
+		$kode 	= trim($this->input->post('kode'));
 		$notelp = trim($this->input->post('notelp'));
 		$alamat	= trim($this->input->post('alamat'));
 
 		$data = [
 			'nama'    => strtolower($nama),
+			'kode'    => strtolower($kode),
 			'notelp'	=> strtolower($notelp),
 			'alamat'  => strtolower($alamat),
 		];

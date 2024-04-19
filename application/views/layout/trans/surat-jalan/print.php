@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tanda Terima Surat Jalan</title>
+  <title><?= $title ?></title>
 
   <style>
     body {
@@ -77,6 +77,7 @@
       text-align: center;
       padding: 5px;
       vertical-align: middle;
+      height: 40px;
     }
 
     .th-content {
@@ -85,7 +86,6 @@
 
     .td-content {
       text-transform: capitalize;
-      height: 50px;
     }
 
     .td-content-numerik {
@@ -94,8 +94,6 @@
       text-align: center;
       padding: 5px;
       vertical-align: middle;
-      height: 50px;
-
     }
 
     .td-content-numerik {
@@ -108,7 +106,7 @@
       text-align: center;
       padding: 5px;
       vertical-align: middle;
-      height: 50px;
+      height: 40px;
     }
 
     .font-bold {
@@ -121,6 +119,24 @@
 
     .danger {
       color: red;
+    }
+
+    .signature {
+      margin-top: 40px;
+    }
+
+    .table-signature {
+      width: 100%;
+    }
+
+    .td-signature {
+      font-size: 12px;
+      text-align: center;
+      padding: 5px 10px 0;
+    }
+
+    .space {
+      height: 80px;
     }
 
     .page-number-footer {
@@ -150,7 +166,7 @@
     <hr>
 
     <div class="data-title">
-      <h4><?= strtoupper($title) ?></h4>
+      <h4><?= strtoupper($title) ?> <?= strtoupper($cust) ?></h4>
       <h4>No : <?= strtoupper($nomor) ?></h4>
     </div>
 
@@ -160,7 +176,7 @@
           <tr>
             <th class="th-content" style="width:5%">No.</th>
             <th class="th-content" style="width:10%">Tanggal</th>
-            <th class="th-content" style="width:10%">Nomor Polisi</th>
+            <th class="th-content" style="width:10%">No Polisi</th>
             <th class="th-content" style="width:20%">Surat Jalan</th>
             <th class="th-content" style="width:20%">Asal-Tujuan</th>
             <th class="th-content" style="width:9%">Berat</th>
@@ -169,33 +185,43 @@
           </tr>
         </thead>
         <tbody>
-          <?php $sumtotal = 0;
+          <?php
+          $sumtotal = 0;
           $no = 1;
-          foreach ($rc as $data) : ?>
+
+          foreach ($datasj as $data) : ?>
 
             <tr>
               <td class="td-content"><?= $no++ ?>.</td>
-              <td class="td-content"><?= date('d/m/Y', strtotime($data->dateAdd)) ?></td>
+              <td class="td-content"><?= date('d/m/Y', strtotime($data->dateOrder)) ?></td>
               <td class="td-content uppercase"><?= $data->platno ?></td>
-              <td class="td-content">Total Surat Jalan <?= $data->jml_sj ?></td>
+
+              <?php
+              $total_reccu = 0;
+              foreach ($detail as $dtdetaildata) {
+                if ($dtdetaildata->reccu == $data->reccu)
+                  $total_reccu++;
+              } ?>
+
+              <td class="td-content">Total Surat Jalan <?= $total_reccu ?></td>
               <td class="td-content"><?= $data->kota_asal ?>-<?= $data->kota_tujuan ?></td>
-              <td class="td-content-numerik"><?= $data->berat ?> Kg</td>
-              <td class="td-content-numerik">Rp. <?= number_format($data->hrg_kg) ?></td>
-              <td class="td-content-numerik">Rp. <?= number_format($data->total_hrg) ?></td>
+              <td class="td-content"><?= $data->berat ?> Kg</td>
+              <td class="td-content">Rp. <?= number_format($data->hrg_kg) ?></td>
+              <td class="td-content">Rp. <?= number_format($data->total_hrg) ?></td>
             </tr>
 
-            <?php foreach ($dt as $detail) : ?>
-              <?php if ($detail->reccu == $data->reccu) { ?>
+            <?php foreach ($detail as $dtdetail) : ?>
+
+              <?php if ($dtdetail->reccu == $data->reccu) { ?>
                 <tr>
                   <td class="td-content"></td>
-                  <td class="td-content"><?= $data->keterangan ?></td>
-                  <td class="td-content"></td>
-                  <td class="td-content"><?= $detail->surat_jalan ?></td>
+                  <td class="td-content" colspan="2"><?= $dtdetail->ket ?></td>
+                  <td class="td-content uppercase"><?= $dtdetail->surat_jalan ?></td>
 
-                  <?php if ($detail->retur == 0) { ?>
+                  <?php if ($dtdetail->retur == 0) { ?>
                     <td class="td-content"> </td>
                   <?php } else { ?>
-                    <td class="td-content danger">Retur <?= $detail->retur ?></td>
+                    <td class="td-content danger">Retur <?= $dtdetail->retur ?></td>
                   <?php } ?>
 
                   <td class="td-content"></td>
@@ -206,14 +232,7 @@
             <?php endforeach ?>
 
             <tr>
-              <td class="td-content-empty"></td>
-              <td class="td-content-empty"></td>
-              <td class="td-content-empty"></td>
-              <td class="td-content-empty"></td>
-              <td class="td-content-empty"></td>
-              <td class="td-content-empty"></td>
-              <td class="td-content-empty"></td>
-              <td class="td-content-empty"></td>
+              <td class="td-content-empty" colspan="8"></td>
             </tr>
 
             <?php
@@ -224,10 +243,35 @@
 
           <tr>
             <td colspan="7" class="td-content font-bold uppercase">Jumlah</td>
-            <td class="td-content-numerik font-bold">Rp. <?= number_format($sumtotal) ?></td>
+            <td class="td-content font-bold">Rp. <?= number_format($sumtotal) ?></td>
           </tr>
         </tbody>
       </table>
+
+      <div class="signature">
+        <table class="table-signature">
+          <tr>
+            <td style="width:70%"></td>
+            <td class="td-signature">Semarang, <?= date('d F Y') ?></td>
+          </tr>
+          <tr>
+            <td style="width:70%"></td>
+            <td class="td-signature" style="width:30%">PT. HIRA ADYA NARANATA</td>
+          </tr>
+          <tr>
+            <td style="width:70%"></td>
+            <td class="td-signature" style="width:30%" class="space"></td>
+          </tr>
+          <tr>
+            <td style="width:70%"></td>
+            <td class="td-signature nama" style="width:30%">( David Prathama Widiatmo, S.Ak )</td>
+          </tr>
+          <tr>
+            <td style="width:70%"></td>
+            <td class="td-signature" style="width:30%">Manager</td>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
 
