@@ -47,6 +47,17 @@ class Uangmakan extends CI_Controller
     echo json_encode($data);
   }
 
+  public function add()
+  {
+    $data['title']  = 'Tambah Data Uang Makan';
+
+    $this->load->view('layout/template/header', $data);
+    $this->load->view('layout/template/navbar');
+    $this->load->view('layout/template/sidebar');
+    $this->load->view('layout/adm/uang-makan/add', $data);
+    $this->load->view('layout/template/footer');
+  }
+
   public function getGenerateKd()
   {
     $data = $this->Um->getKd();
@@ -54,18 +65,19 @@ class Uangmakan extends CI_Controller
     echo json_encode($data);
   }
 
-  public function add()
+  public function proses()
   {
     $userid   = $this->session->userdata('id');
-    $kryid    = $this->input->post('id');
-    $countid  = count($this->input->post('id'));
+    $count    = count($this->input->post('id'));
+
+    $idkry    = $this->input->post('id');
     $kd       = $this->input->post('kd');
     $nominal  = preg_replace("/[^0-9\.]/", "", $this->input->post('nominal'));
     $total    = preg_replace("/[^0-9\.]/", "", $this->input->post('total'));
 
     $data  = [
       'kd_um'         => $kd,
-      'jml_penerima'  => $countid,
+      'jml_penerima'  => $count,
       'jml_nominal'   => $total,
       'user_id'       => $userid,
       'dateAdd'       => date('Y-m-d H:i:s'),
@@ -73,8 +85,8 @@ class Uangmakan extends CI_Controller
 
     $detail = [];
 
-    for ($i = 0; $i < $countid; $i++) {
-      array_push($detail, ['karyawan_id'  => $kryid[$i]]);
+    for ($i = 0; $i < $count; $i++) {
+      array_push($detail, ['karyawan_id'  => $idkry[$i]]);
       $detail[$i]['kd_um']        = $kd;
       $detail[$i]['nominal']      = $nominal[$i];
     }

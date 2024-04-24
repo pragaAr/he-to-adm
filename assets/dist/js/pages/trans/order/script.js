@@ -14,6 +14,8 @@ $.fn.dataTableExt.oApi.fnPagingInfo = function (oSettings) {
 
 $("#orderTables").DataTable({
   ordering: true,
+  order: [[0, "desc"]],
+
   initComplete: function () {
     var api = this.api();
     $("#orderTables_filter input")
@@ -38,6 +40,13 @@ $("#orderTables").DataTable({
     },
     {
       data: "no_order",
+      className: "text-center align-middle",
+      render: function (data, type, row) {
+        return data.toUpperCase();
+      },
+    },
+    {
+      data: "nama_sopir",
       className: "text-center align-middle",
       render: function (data, type, row) {
         return data.toUpperCase();
@@ -121,7 +130,15 @@ $("#addOrder").on("click", function () {
 });
 
 $("#modalAddOrder").on("shown.bs.modal", function () {
-  $("#custid").focus();
+  $("#nominal").on("keypress", function (key) {
+    if (key.charCode < 48 || key.charCode > 57) return false;
+  });
+
+  $(function () {
+    $("#nominal").on("keydown keyup click change blur input", function (e) {
+      $(this).val(format($(this).val()));
+    });
+  });
 
   $(".select-cust")
     .select2({
@@ -149,11 +166,6 @@ $("#modalAddOrder").on("shown.bs.modal", function () {
       $("#muatan").focus();
     });
 
-  $("#nextStepOrder").on("click", function () {
-    $("#modalAddOrder").modal("hide");
-    $("#modalAddSanguOrder").modal("show");
-  });
-
   $.ajax({
     url: "http://localhost/hira-to-adm/order/getKdOrder",
     type: "GET",
@@ -163,72 +175,6 @@ $("#modalAddOrder").on("shown.bs.modal", function () {
     },
   });
 
-  // addNewCustModal
-  $("#addNewCust").on("click", function () {
-    $("#modalAddOrder").css("z-index", 1040);
-    $("#modalAddNewCust").modal("show");
-  });
-
-  $("#modalAddNewCust").on("hidden.bs.modal", function () {
-    $("#modalAddOrder").css("z-index", 1050);
-  });
-
-  $("#modalAddNewCust").on("shown.bs.modal", function () {
-    $("#namacust").focus();
-  });
-
-  $("#btn_submitNewCust").on("click", function (e) {
-    e.preventDefault();
-
-    const namacust = $("#namacust").val();
-    const kodecust = $("#kodecust").val();
-    const notelpcust = $("#notelpcust").val();
-    const alamatcust = $("#alamatcust").val();
-
-    $.ajax({
-      url: "http://localhost/hira-to-adm/customer/addNewSelect",
-      method: "POST",
-      data: {
-        nama: namacust,
-        kode: kodecust,
-        notelp: notelpcust,
-        alamat: alamatcust,
-      },
-      success: function (response) {
-        $("#namacust").val("");
-        $("#kodecust").val("");
-        $("#notelpcust").val("");
-        $("#alamatcust").val("");
-
-        $("#modalAddNewCust").modal("hide");
-
-        Swal.fire({
-          icon: "success",
-          title: "Success!",
-          text: "Customer Baru ditambahkan!",
-        });
-
-        const dataparse = JSON.parse(response);
-        const newOption = new Option(
-          dataparse.text.toUpperCase(),
-          dataparse.id,
-          true,
-          true
-        );
-
-        $("#custid").append(newOption).trigger("change");
-
-        $("#namecust").val(dataparse.text);
-        $("#notelp").val(dataparse.telp);
-
-        $("#muatan").focus();
-      },
-    });
-  });
-  // addNewCustModal
-});
-
-$("#modalAddSanguOrder").on("shown.bs.modal", function () {
   $(".select-truck")
     .select2({
       placeholder: "Pilih Truck",
@@ -274,22 +220,78 @@ $("#modalAddSanguOrder").on("shown.bs.modal", function () {
       const data = e.params.data;
       $("#namasopir").val(data.text);
     });
+});
 
-  $("#nominal").on("keypress", function (key) {
-    if (key.charCode < 48 || key.charCode > 57) return false;
-  });
+// addNewCustModal
+$("#addNewCust").on("click", function () {
+  $("#modalAddOrder").css("z-index", 1040);
+  $("#modalAddNewCust").modal("show");
+});
 
-  $(function () {
-    $("#nominal").on("keydown keyup click change blur input", function (e) {
-      $(this).val(format($(this).val()));
-    });
-  });
+$("#modalAddNewCust").on("hide.bs.modal", function () {
+  $("#modalAddOrder").css("z-index", 1050);
+  $("#namacust").val("");
+  $("#kodecust").val("");
+  $("#notelpcust").val("");
+  $("#alamatcust").val("");
+});
 
-  $("#backAddOrder").on("click", function () {
-    $("#modalAddSanguOrder").modal("hide");
-    $("#modalAddOrder").modal("show");
+$("#modalAddNewCust").on("shown.bs.modal", function () {
+  $("#namacust").focus();
+});
+
+$("#btn_submitNewCust").on("click", function (e) {
+  e.preventDefault();
+
+  const namacust = $("#namacust").val();
+  const kodecust = $("#kodecust").val();
+  const notelpcust = $("#notelpcust").val();
+  const alamatcust = $("#alamatcust").val();
+
+  $.ajax({
+    url: "http://localhost/hira-to-adm/customer/addNewSelect",
+    method: "POST",
+    data: {
+      nama: namacust,
+      kode: kodecust,
+      notelp: notelpcust,
+      alamat: alamatcust,
+    },
+    success: function (response) {
+      const res = JSON.parse(response);
+      console.log(res);
+      if (res.status != "error") {
+        $("#namacust").val("");
+        $("#kodecust").val("");
+        $("#notelpcust").val("");
+        $("#alamatcust").val("");
+
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Customer Baru ditambahkan!",
+        });
+
+        const newOption = new Option(
+          res.text.toUpperCase(),
+          res.id,
+          true,
+          true
+        );
+
+        $("#custid").append(newOption).trigger("change");
+
+        $("#modalAddNewCust").modal("hide");
+
+        $("#namecust").val(res.text);
+        $("#notelp").val(res.telp);
+
+        $("#muatan").focus();
+      }
+    },
   });
 });
+// addNewCustModal
 
 $("#form_addOrder").on("submit", function (e) {
   e.preventDefault();
@@ -343,7 +345,7 @@ $("#form_addOrder").on("submit", function (e) {
       $("#namasopir").val("");
       $("#nominal").val("");
 
-      $("#modalAddSanguOrder").modal("hide");
+      $("#modalAddOrder").modal("hide");
 
       const parsedData = JSON.parse(data);
 
@@ -375,8 +377,27 @@ $("#form_addOrder").on("submit", function (e) {
   return false;
 });
 
+$("#modalAddOrder").on("hide.bs.modal", function () {
+  $("#ordernumber").val("");
+  $("#custid").val(null).trigger("change");
+  $("#namecust").val("");
+  $("#notelp").val("");
+  $("#muatan").val("");
+  $("#asal").val("");
+  $("#tujuan").val("");
+  $("#keterangan").val("");
+});
+
 $("#modalUpdateOrder").on("shown.bs.modal", function () {
-  $("#custidedit").focus();
+  $("#nominaledit").on("keypress", function (key) {
+    if (key.charCode < 48 || key.charCode > 57) return false;
+  });
+
+  $(function () {
+    $("#nominaledit").on("keydown keyup click change blur input", function (e) {
+      $(this).val(format($(this).val()));
+    });
+  });
 
   $(".select-custedit")
     .select2({
@@ -403,74 +424,6 @@ $("#modalUpdateOrder").on("shown.bs.modal", function () {
 
       $("#muatan").focus();
     });
-
-  $("#nextStepUpdateOrder").on("click", function () {
-    $("#modalUpdateOrder").modal("hide");
-    $("#modalEditSanguOrder").modal("show");
-  });
-
-  // addNewCustModal
-  $("#addNewCustEdit").on("click", function () {
-    $("#modalUpdateOrder").css("z-index", 1040);
-    $("#modalAddNewCust").modal("show");
-  });
-
-  $("#modalAddNewCust").on("hidden.bs.modal", function () {
-    $("#modalUpdateOrder").css("z-index", 1050);
-  });
-
-  $("#modalAddNewCust").on("shown.bs.modal", function () {
-    $("#namacust").focus();
-  });
-
-  $("#btn_submitNewCust").on("click", function (e) {
-    e.preventDefault();
-
-    const namacust = $("#namacust").val();
-    const notelpcust = $("#notelpcust").val();
-    const alamatcust = $("#alamatcust").val();
-
-    $.ajax({
-      url: "http://localhost/hira-to-adm/customer/addNewSelect",
-      method: "POST",
-      data: {
-        nama: namacust,
-        notelp: notelpcust,
-        alamat: alamatcust,
-      },
-      success: function (response) {
-        $("#namacust").val("");
-        $("#notelpcust").val("");
-        $("#alamatcust").val("");
-
-        $("#modalAddNewCust").modal("hide");
-
-        Swal.fire({
-          icon: "success",
-          title: "Success!",
-          text: "Customer Baru ditambahkan!",
-        });
-
-        const dataparse = JSON.parse(response);
-        const newOption = new Option(
-          dataparse.text.toUpperCase(),
-          dataparse.id,
-          true,
-          true
-        );
-
-        $("#custidedit").append(newOption).trigger("change");
-
-        $("#namecustedit").val(dataparse.text);
-        $("#notelpedit").val(dataparse.telp);
-      },
-    });
-  });
-  // addNewCustModal
-});
-
-$("#modalEditSanguOrder").on("shown.bs.modal", function () {
-  $("#platedit").focus();
 
   $(".select-truckedit")
     .select2({
@@ -517,21 +470,6 @@ $("#modalEditSanguOrder").on("shown.bs.modal", function () {
       const data = e.params.data;
       $("#namasopiredit").val(data.text);
     });
-
-  $("#nominaledit").on("keypress", function (key) {
-    if (key.charCode < 48 || key.charCode > 57) return false;
-  });
-
-  $(function () {
-    $("#nominaledit").on("keydown keyup click change blur input", function (e) {
-      $(this).val(format($(this).val()));
-    });
-  });
-
-  $("#backEditOrder").on("click", function () {
-    $("#modalEditSanguOrder").modal("hide");
-    $("#modalUpdateOrder").modal("show");
-  });
 });
 
 $("#orderTables").on("click", ".btn-edit", function (e) {
@@ -691,7 +629,7 @@ $("#form_updateOrder").on("submit", function (e) {
       $("#namasopiredit").val("");
       $("#nominaledit").val("");
 
-      $("#modalEditSanguOrder").modal("hide");
+      $("#modalUpdateOrder").modal("hide");
 
       Swal.fire({
         icon: "success",

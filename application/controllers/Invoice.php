@@ -3,6 +3,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 date_default_timezone_set('Asia/Jakarta');
 
+use Mpdf\Mpdf;
+
 class Invoice extends CI_Controller
 {
   public function __construct()
@@ -11,7 +13,6 @@ class Invoice extends CI_Controller
     $this->load->library('datatables');
 
     $this->load->model('M_Invoice', 'Invoice');
-    $this->load->model('M_Penjualan', 'Sales');
 
     if (empty($this->session->userdata('id'))) {
       $this->session->set_flashdata('flashrole', 'Silahkan Login terlebih dahulu!');
@@ -30,153 +31,264 @@ class Invoice extends CI_Controller
     $this->load->view('layout/template/footer');
   }
 
-  public function addInvoice()
+  public function getInvoice()
   {
-    $data['title']    = 'Tambah Data Invoice';
-    $data['cust']     = $this->Sales->getDataCust();
-    $data['kd']       = $this->Invoice->getKd();
+    header('Content-Type: application/json');
+
+    echo $this->Invoice->getData();
+  }
+
+  public function getDetailData()
+  {
+    $nomor = $this->input->post('nomor');
+
+    $query  = $this->Invoice->getDataByNomor($nomor);
+
+    $datasj = $this->Invoice->getInvData($nomor);
+
+    $reccu = [];
+
+    foreach ($datasj as $item) {
+      $reccu[] = $item->reccu;
+    }
+
+    $detail = $this->Invoice->getDetailData($reccu);
+
+    $response = [
+      'nomor'   => $query->nomor_inv,
+      'cust'    => $query->nama,
+      'datasj'  => $datasj,
+      'detail'  => $detail
+    ];
+
+    echo json_encode($response);
+  }
+
+  public function add()
+  {
+    $data['title']  = 'Tambah Data Invoice';
 
     $this->load->view('layout/template/header', $data);
     $this->load->view('layout/template/navbar');
     $this->load->view('layout/template/sidebar');
-    $this->load->view('layout/trans/add-invoice', $data);
+    $this->load->view('layout/trans/invoice/add', $data);
+    $this->load->view('layout/template/footer');
   }
 
-  public function getOrderCust()
+  public function cekNomor()
   {
-    $post   = $this->input->post('pengirim');
-    $data   = $this->Sales->getOrderCust($post);
+    $nomor    = $this->input->post('nomor');
 
-    echo json_encode($data);
+    $cekdata  = $this->Invoice->getNomorInv($nomor);
+
+    $response = str_replace('/', '-', $cekdata->nomor_inv);
+
+    echo json_encode($response);
   }
 
-  public function getDataOrderCust()
+  public function proses()
   {
-    $no   = $this->input->post('no_order');
-    $data   = $this->Sales->getDataOrderCust($no);
+    $userid     = $this->session->userdata('id');
+    $countRow   = count($this->input->post('sj'));
+    $rc         = $this->input->post('rc');
+    $noorder    = $this->input->post('noorder');
+    $sj         = $this->input->post('sj');
+    $custid     = $this->input->post('pengirim');
+    $cust       = strtolower($this->input->post('selectedCust'));
+    $kode       = strtolower($this->input->post('selectedKodeCust'));
+    $berat      = $this->input->post('valberat');
+    $dateAdd    = date('Y-m-d H:i:s');
+    $tipe       = 'invoice';
+    $month      = date('m');
 
-    echo json_encode($data);
-  }
+    $querynomor = $this->Invoice->generateNomorInvoice($cust, $tipe);
 
-  public function cart()
-  {
-    $this->load->view('layout/trans/cart-invoice');
-  }
+    $romawi     = $this->bulanRomawi($month);
 
-  public function cartUpdate()
-  {
-    $this->load->view('layout/trans/cart-update-invoice');
-  }
+    $nomor      = $kode . '/' . $querynomor . '/han/' . $romawi . '/' . date('y');
+    $noReplace  = str_replace('/', '-', $nomor);
 
-  public function prosesAdd()
-  {
-    $userid     = $this->session->userdata('id_user');
-    $kd         = $this->input->post('kd');
-    $namacust   = $this->input->post('namacust');
-    $nosj       = $this->input->post('nosj_hidden');
-    $jmlresi    = count($this->input->post('noorder_hidden'));
-    $total      = preg_replace("/[^0-9\.]/", "", $this->input->post('total_hidden'));
+    $dataReccu = [];
 
-    $data  = [
-      'kd_inv'        => $kd,
-      'nama_cust'     => $namacust,
-      'jml_resi'      => $jmlresi,
-      'jml_nominal'   => $total,
-      'user_id'       => $userid,
-      'dateAdd'       => date('Y-m-d H:i:s'),
+    for ($a = 0; $a < $countRow; $a++) {
+      $reccu = $rc[$a];
+      if (!in_array($reccu, $dataReccu)) {
+        $dataReccu[] = $reccu;
+      }
+    }
+
+    $jmlreccu = count($dataReccu);
+
+    $datainv = [
+      'nomor_inv'   => $nomor,
+      'cust_id'     => $custid,
+      'jml_reccu'   => $jmlreccu,
+      'jml_sj'      => $countRow,
+      'dateAdd'     => $dateAdd,
+      'user_id'     => $userid,
     ];
 
-    $detail = [];
+    $datadt = [];
 
-    for ($i = 0; $i < $jmlresi; $i++) {
-      array_push($detail, ['no_order'  => $this->input->post('noorder_hidden')[$i]]);
-      $detail[$i]['kd_inv']        = $kd;
-      $detail[$i]['surat_jalan']   = $nosj[$i];
+    for ($i = 0; $i < $countRow; $i++) {
+      array_push($datadt, ['nomor_inv' => $nomor]);
+      $datadt[$i]['reccu']        = $rc[$i];
+      $datadt[$i]['no_order']     = $noorder[$i];
+      $datadt[$i]['surat_jalan']  = $sj[$i];
+      $datadt[$i]['berat']        = $berat[$i];
     }
 
-    $dateInv = [];
-
-    for ($j = 0; $j < $jmlresi; $j++) {
-      array_push($dateInv, ['no_order'  => $this->input->post('noorder_hidden')[$j]]);
-      $dateInv[$j]['invAdd']        = date('Y-m-d H:i:s');
-    }
-
-    $this->Invoice->addData($data, $detail, $dateInv);
-    $this->session->set_flashdata('inserted', 'Data berhasil ditambahkan!');
-    redirect('invoice');
-  }
-
-  public function getDetailkd()
-  {
-    $kd   = $this->input->post('kd_inv');
-    $data = $this->Invoice->getDetailKd($kd);
-
-    echo json_encode($data);
-  }
-
-  public function getDetailDataInvoice()
-  {
-    $kd   = $this->input->post('kd_inv');
-    $data = $this->Invoice->getDetailInv($kd);
-
-    echo json_encode($data);
-  }
-
-  public function getDetailDataCust()
-  {
-    $data = $this->Sales->getDataCust();
-
-    echo json_encode($data);
-  }
-
-  public function prosesupdate()
-  {
-    $userid     = $this->session->userdata('id_user');
-    $kd         = $this->input->post('editkd');
-    $cust       = $this->input->post('editcust_hidden');
-    $sj         = $this->input->post('sj_hidden');
-    $jmlresi    = count($this->input->post('noorder_hidden'));
-    $nominal    = preg_replace("/[^0-9\.]/", "", $this->input->post('edittotal_hidden'));
-
-    $data  = [
-      'kd_inv'        => $kd,
-      'nama_cust'     => $cust,
-      'jml_resi'      => $jmlresi,
-      'jml_nominal'   => $nominal,
-      'user_id'       => $userid,
-      'dateAdd'       => date('Y-m-d H:i:s'),
+    $datasurat = [
+      'customer'    => $cust,
+      'jenis'       => $tipe,
+      'nomor_angka' => $querynomor,
+      'nomor'       => $nomor,
+      'dateAdd'     => $dateAdd
     ];
 
-    $detail = [];
+    $proses = $this->Invoice->addData($datainv, $datadt, $datasurat);
 
-    for ($i = 0; $i < $jmlresi; $i++) {
-      array_push($detail, ['no_order'  => $this->input->post('noorder_hidden')[$i]]);
-      $detail[$i]['kd_inv']            = $kd;
-      $detail[$i]['surat_jalan']       = $sj[$i];
+    if ($proses) {
+      $response = [
+        'status'    => 'success',
+        'title'     => 'Success',
+        'text'      => 'Data Berhasil Ditambahkan',
+        'nomorinv'  => $noReplace
+      ];
+    } else {
+      $response = [
+        'status'    => 'error',
+        'title'     => 'Error',
+        'text'      => 'Data Gagal Ditambahkan',
+        'nomorinv'  => null
+      ];
     }
 
-    $this->Invoice->updateData($kd, $data, $detail);
-    $this->session->set_flashdata('updated', 'Data berhasil diubah!');
-    redirect('invoice');
+    echo json_encode($response);
+  }
+
+  function bulanRomawi($month)
+  {
+    switch ($month) {
+      case 1:
+        return 'i';
+      case 2:
+        return 'ii';
+      case 3:
+        return 'iii';
+      case 4:
+        return 'iv';
+      case 5:
+        return 'v';
+      case 6:
+        return 'vi';
+      case 7:
+        return 'vii';
+      case 8:
+        return 'viii';
+      case 9:
+        return 'ix';
+      case 10:
+        return 'x';
+      case 11:
+        return 'xi';
+      case 12:
+        return 'xii';
+      default:
+        return '';
+    }
   }
 
   public function print()
   {
-    $this->load->library('pdf');
+    $nomor  = $this->input->get('invoice');
+    $ppn    = $this->input->get('ppn');
 
-    $kd   = $this->input->post('kdinv');
+    if ($nomor === null) {
+      echo 'tidak ada data yang ditampilkan';
+    } else {
+      $str    = str_replace('-', '/', $nomor);
 
-    $data['title']      = 'Hira Express - Print Invoice';
-    $data['datacust']   = $this->Invoice->getCustKd($kd);
-    $data['detail']     = $this->Invoice->getDetailInv($kd);
+      $query  = $this->Invoice->getDataByNomor($str);
 
-    $this->pdf->generate('print/print-invoice', $data, 'Invoice-Penjualan', 'A4', 'portrait');
+      if ($query === null) {
+        echo 'tidak ada data yang ditampilkan';
+      } else {
+        $datainv  = $this->Invoice->getInvData($str);
+
+        $reccu = [];
+
+        foreach ($datainv as $item) {
+          $reccu[] = $item->reccu;
+        }
+
+        $detail = $this->Invoice->getDetailData($reccu);
+
+        $data = [
+          'title'     => 'Invoice',
+          'nomor'     => $query->nomor_inv,
+          'cust'      => $query->nama,
+          'datainv'   => $datainv,
+          'detail'    => $detail,
+          'ppnvalue'  => $ppn,
+        ];
+
+        $mpdf = new Mpdf([
+          'mode'          => 'utf-8',
+          'format'        => 'A4',
+          'orientation'   => 'P',
+          'SetTitle'      => $str,
+          'margin_left'   => 5,
+          'margin_right'  => 5,
+          'margin_top'    => 5,
+          'margin_bottom' => 5,
+        ]);
+
+        $content  = $this->load->view('layout/trans/invoice/print', $data, true);
+
+        $mpdf->SetHTMLFooter("<p class='page-number-footer'>Invoice ( $str ) | Halaman {PAGENO} Dari {nb}</p>");
+        $mpdf->AddPage();
+        $mpdf->WriteHTML($content);
+
+        $mpdf->Output("$str.pdf", 'I');
+      }
+    }
   }
 
-  public function delete($kd)
+  public function test()
   {
-    $this->Invoice->deleteData($kd);
-    $this->session->set_flashdata('deleted', 'Data berhasil dihapus!');
-    redirect('invoice');
+    $str      = 'ims/3/han/iv/24';
+
+    $query    = $this->Invoice->getDataByNomor($str);
+
+    $datainv  = $this->Invoice->getInvData($str);
+
+    $reccu = [];
+
+    foreach ($datainv as $item) {
+      $reccu[] = $item->reccu;
+    }
+
+    $detail = $this->Invoice->getDetailData($reccu);
+
+    $data = [
+      'title'   => 'Invoice',
+      'nomor'   => $query->nomor_inv,
+      'cust'    => $query->nama,
+      'datainv' => $datainv,
+      'detail'  => $detail,
+    ];
+
+    $this->load->view('layout/trans/invoice/test', $data);
+  }
+
+  public function delete()
+  {
+    $nomor = $this->input->post('nomor');
+    $jenis = 'invoice';
+
+    $data = $this->Invoice->deleteData($nomor, $jenis);
+
+    echo json_encode($data);
   }
 }

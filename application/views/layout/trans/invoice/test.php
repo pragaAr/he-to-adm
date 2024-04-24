@@ -236,7 +236,7 @@
     <hr>
 
     <div class="data-title">
-      <h4><?= strtoupper($title) ?></h4>
+      <h4><?= strtoupper($title) ?> <?= strtoupper($cust) ?></h4>
       <h4>No : <?= strtoupper($nomor) ?></h4>
     </div>
 
@@ -246,8 +246,8 @@
           <tr>
             <th class="th-content" style="width:5%">No.</th>
             <th class="th-content" style="width:10%">Tanggal</th>
-            <th class="th-content" style="width:10%">Nomor Polisi</th>
             <th class="th-content" style="width:17%">Surat Jalan</th>
+            <th class="th-content" style="width:10%">Nomor Polisi</th>
             <th class="th-content" style="width:9%">Reccu</th>
             <th class="th-content" style="width:17%">Asal-Tujuan</th>
             <th class="th-content" style="width:8%">Berat</th>
@@ -256,29 +256,43 @@
           </tr>
         </thead>
         <tbody>
-          <?php $sumtotal = 0;
+          <?php
+          $sumtotal = 0;
           $no = 1;
-          foreach ($rc as $data) : ?>
+
+          foreach ($datainv as $data) :
+            $panjang = count($datainv);
+          ?>
 
             <tr>
               <td class="td-content"><?= $no++ ?>.</td>
-              <td class="td-content"><?= date('d/m/Y', strtotime($data->dateAdd)) ?></td>
+              <td class="td-content"><?= date('d/m/Y', strtotime($data->dateOrder)) ?></td>
+
+              <?php
+              $total_reccu = 0;
+              foreach ($detail as $dtdetaildata) {
+                if ($dtdetaildata->reccu == $data->reccu)
+                  $total_reccu++;
+              } ?>
+
+              <td class="td-content">Total Surat Jalan <?= $total_reccu ?></td>
               <td class="td-content uppercase"><?= $data->platno ?></td>
-              <td class="td-content">Total Surat Jalan <?= $data->jml_sj ?></td>
+
               <td class="td-content uppercase"><?= $data->reccu ?></td>
               <td class="td-content"><?= $data->kota_asal ?>-<?= $data->kota_tujuan ?></td>
-              <td class="td-content-numerik"><?= $data->berat ?> Kg</td>
-              <td class="td-content-numerik">Rp. <?= number_format($data->hrg_kg) ?></td>
-              <td class="td-content-numerik">Rp. <?= number_format($data->total_hrg) ?></td>
+              <td class="td-content"><?= $data->berat ?> Kg</td>
+              <td class="td-content">Rp. <?= number_format($data->hrg_kg) ?></td>
+              <td class="td-content">Rp. <?= number_format($data->total_hrg) ?></td>
             </tr>
 
-            <?php foreach ($dt as $detail) : ?>
-              <?php if ($detail->reccu == $data->reccu) { ?>
+            <?php foreach ($detail as $dtdetail) : ?>
+
+              <?php if ($dtdetail->reccu == $data->reccu) { ?>
                 <tr>
                   <td class="td-content"></td>
                   <td class="td-content"></td>
+                  <td class="td-content uppercase"><?= $dtdetail->surat_jalan ?></td>
                   <td class="td-content"></td>
-                  <td class="td-content"><?= $detail->surat_jalan ?></td>
                   <td class="td-content"></td>
                   <td class="td-content"></td>
                   <td class="td-content"></td>
@@ -288,7 +302,22 @@
               <?php } ?>
             <?php endforeach ?>
 
-            <tr>
+            <?php if ($panjang < 2) { ?>
+            <?php } else { ?>
+              <tr>
+                <td class="td-content-empty"></td>
+                <td class="td-content-empty"></td>
+                <td class="td-content-empty"></td>
+                <td class="td-content-empty"></td>
+                <td class="td-content-empty"></td>
+                <td class="td-content-empty"></td>
+                <td class="td-content-empty"></td>
+                <td class="td-content-empty"></td>
+                <td class="td-content-empty"></td>
+              </tr>
+            <?php } ?>
+
+            <!-- <tr>
               <td class="td-content-empty"></td>
               <td class="td-content-empty"></td>
               <td class="td-content-empty"></td>
@@ -298,7 +327,7 @@
               <td class="td-content-empty"></td>
               <td class="td-content-empty"></td>
               <td class="td-content-empty"></td>
-            </tr>
+            </tr> -->
 
             <?php
             $sumtotal += $data->total_hrg;
@@ -313,7 +342,7 @@
         </tbody>
       </table>
 
-      <?php if ($dpp !== null) { ?>
+      <!-- <?php if ($dpp !== null) { ?>
         <div class="col-dpp">
           <table class="table-dpp">
             <tr>
@@ -359,7 +388,7 @@
         </div>
       <?php } else { ?>
 
-      <?php } ?>
+      <?php } ?> -->
 
       <div class="payment-metod">
         <p class="payment-desc">Mohon tagihan dapat ditransfer ke rekening :</p>

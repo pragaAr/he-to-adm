@@ -77,6 +77,11 @@ class M_Customer extends CI_Model
     return $this->db->get_where('customer', ['id' => $id])->row();
   }
 
+  public function getCustomerByNama($nama)
+  {
+    return $this->db->get_where('customer', ['nama' => $nama])->row();
+  }
+
   public function addData($data)
   {
     return $this->db->insert('customer', $data);

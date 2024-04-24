@@ -38,6 +38,32 @@ class Persensopir extends CI_Controller
     echo $this->Persen->getData();
   }
 
+  public function getDetailData()
+  {
+    $kd     = $this->input->post('kd');
+    $query  = $this->Persen->getDataByKd($kd);
+    $detail = $this->Persen->dataPersenByKd($kd);
+
+    $response = [
+      'kdpersen'  => $query->kd,
+      'sopir'     => $query->nama,
+      'detail'    => $detail
+    ];
+
+    echo json_encode($response);
+  }
+
+  public function add()
+  {
+    $data['title']  = 'Tambah Data Persen Sopir';
+
+    $this->load->view('layout/template/header', $data);
+    $this->load->view('layout/template/navbar');
+    $this->load->view('layout/template/sidebar');
+    $this->load->view('layout/adm/persen/add', $data);
+    $this->load->view('layout/template/footer');
+  }
+
   public function getGenerateKd()
   {
     $data = $this->Persen->getKd();
@@ -45,7 +71,7 @@ class Persensopir extends CI_Controller
     echo json_encode($data);
   }
 
-  public function add()
+  public function proses()
   {
     $count        = count($this->input->post('noorder'));
 
@@ -115,39 +141,52 @@ class Persensopir extends CI_Controller
     echo json_encode($response);
   }
 
-  public function printDataPersen($kd)
+  public function print()
   {
-    $sopir = $this->Persen->getSopirByKdPersen($kd);
-    $order = $this->Persen->getDataOrderPersenByKdPersen($kd);
-    $sangu = $this->Persen->getDataSanguOrderByKdPersen($kd);
+    $kd  = $this->input->get('nomor');
 
-    $data = [
-      'title' => 'Persen Sopir',
-      'sopir' => $sopir,
-      'order' => $order,
-      'sangu' => $sangu,
-    ];
+    if ($kd === null) {
+      echo 'tidak ada data yang ditampilkan';
+    } else {
 
-    $content  = $this->load->view('layout/adm/persen/print', $data, true);
+      $cekkd  = $this->Persen->getKdPersen($kd);
 
-    $mpdf = new Mpdf([
-      'mode'          => 'utf-8',
-      'format'        => 'A5',
-      'orientation'   => 'L',
-      'SetTitle'      => "pengeluaran-kas-persen-sopir-$kd",
-      'margin_left'   => 10,
-      'margin_right'  => 10,
-      'margin_top'    => 5,
-      'margin_bottom' => 3,
-    ]);
+      if ($cekkd === null) {
+        echo 'tidak ada data yang ditampilkan';
+      } else {
+        $sopir = $this->Persen->getSopirByKdPersen($kd);
+        $order = $this->Persen->getDataOrderPersenByKdPersen($kd);
+        $sangu = $this->Persen->getDataSanguOrderByKdPersen($kd);
 
-    $upper = strtoupper($kd);
+        $data = [
+          'title' => 'Persen Sopir',
+          'sopir' => $sopir,
+          'order' => $order,
+          'sangu' => $sangu,
+        ];
 
-    $mpdf->SetHTMLFooter("<p class='page-number-footer'>Persen Sopir $upper | Halaman {PAGENO} dari {nb}</p>");
-    $mpdf->AddPage();
-    $mpdf->WriteHTML($content);
+        $content  = $this->load->view('layout/adm/persen/print', $data, true);
 
-    $mpdf->Output();
+        $mpdf = new Mpdf([
+          'mode'          => 'utf-8',
+          'format'        => 'A5',
+          'orientation'   => 'L',
+          'SetTitle'      => "pengeluaran-kas-persen-sopir-$kd",
+          'margin_left'   => 10,
+          'margin_right'  => 10,
+          'margin_top'    => 5,
+          'margin_bottom' => 3,
+        ]);
+
+        $upper = strtoupper($kd);
+
+        $mpdf->SetHTMLFooter("<p class='page-number-footer'>Persen Sopir $upper | Halaman {PAGENO} dari {nb}</p>");
+        $mpdf->AddPage();
+        $mpdf->WriteHTML($content);
+
+        $mpdf->Output("$kd.pdf", 'I');
+      }
+    }
   }
 
   public function delete()

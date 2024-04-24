@@ -52,6 +52,7 @@ class M_Traveldoc extends CI_Model
       ->get()->result();
 
     $reccu_values = [];
+
     foreach ($getreccu as $item) {
       $reccu_values[] = $item->reccu;
     }
@@ -101,66 +102,6 @@ class M_Traveldoc extends CI_Model
 
     return $query;
   }
-
-  // ==============================================================================================
-  // for print tanda terima surat jalan opsi lain
-  // public function tandaTerima($reccu)
-  // {
-  //   $this->db->select('sj.reccu, sj.order_no, p.kota_asal, p.kota_tujuan, p.berat, p.hrg_kg, p.total_hrg, p.dateAdd, a.platno')
-  //     ->from('surat_jalan sj')
-  //     ->join('penjualan p', 'p.reccu = sj.reccu')
-  //     ->join('order_masuk om', 'om.no_order = sj.order_no')
-  //     ->join('sangu_sopir ss', 'ss.no_order = om.no_order')
-  //     ->join('armada a', 'a.id = ss.truck_id')
-  //     ->where_in('sj.reccu', $reccu);
-
-  //   $queryPenjualan = $this->db->get()->result();
-
-  //   $this->db->select('*')
-  //     ->from('detail_sj')
-  //     ->where_in('reccu', $reccu);
-
-  //   $queryDetail = $this->db->get()->result();
-
-  //   $merge = array();
-
-  //   $no = 1;
-
-  //   foreach ($queryPenjualan as $penjualan) {
-  //     $merge[] = array(
-  //       'no'        => $no++ . '.',
-  //       'reccu'     => $penjualan->reccu,
-  //       'dateAdd'   => date('d/m/Y', strtotime($penjualan->dateAdd)),
-  //       'nosj'      => null,
-  //       'platno'    => $penjualan->platno,
-  //       'kota'      => $penjualan->kota_asal . '-' . $penjualan->kota_tujuan,
-  //       'berat'     => $penjualan->berat,
-  //       'hrg_kg'    => $penjualan->hrg_kg,
-  //       'total_hrg' => $penjualan->total_hrg,
-  //     );
-
-  //     foreach ($queryDetail as $detail) {
-  //       if ($detail->reccu == $penjualan->reccu) {
-  //         $merge[] = array(
-  //           'no'        => null,
-  //           'reccu'     => null,
-  //           'dateAdd'   => null,
-  //           'nosj'      => $detail->surat_jalan,
-  //           'platno'    => null,
-  //           'kota'      => null,
-  //           'berat'     => $detail->retur != 0 ? $detail->retur . ' batang' : null,
-  //           'hrg_kg'    => null,
-  //           'total_hrg' => null,
-  //         );
-  //       }
-  //     }
-
-  //   }
-
-  //   return $merge;
-  // }
-  // for print tanda terima surat jalan opsi lain
-  // ==============================================================================================
 
   public function getDataReccuByCust($cust)
   {
@@ -214,10 +155,10 @@ class M_Traveldoc extends CI_Model
     $this->db->update('order_masuk', $dataorder, $where);
   }
 
-  public function deleteData($nomor)
+  public function deleteData($nomor, $jenis)
   {
     $this->db->delete('surat_jalan', ['nomor_surat' => $nomor]);
     $this->db->delete('detail_sj', ['nomor_surat' => $nomor]);
-    $this->db->delete('nomor_surat', ['nomor' => $nomor]);
+    $this->db->delete('nomor_surat', ['nomor' => $nomor, 'jenis' => $jenis]);
   }
 }

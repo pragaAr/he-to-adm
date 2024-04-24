@@ -154,7 +154,7 @@ class Order extends CI_Controller
   {
     $noorder      = strtolower($this->input->post('ordernumber'));
     $custid       = $this->input->post('custid');
-    $notelp       = $this->input->post('notelp');
+    $notelp       = strtolower($this->input->post('notelp'));
     $asal         = strtolower($this->input->post('asal'));
     $tujuan       = strtolower($this->input->post('tujuan'));
     $muatan       = strtolower($this->input->post('muatan'));

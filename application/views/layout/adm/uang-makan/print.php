@@ -84,6 +84,10 @@
       font-size: 11px;
       text-transform: capitalize;
     }
+
+    .upper {
+      text-transform: uppercase;
+    }
   </style>
 </head>
 
@@ -110,31 +114,31 @@
       <?php
       $dayUm = date('D', strtotime($dataum->dateAdd));
       if ($dayUm == 'Sun') {  ?>
-        <p>Daftar penerima uang makan <br>
+        <p class="upper">Daftar penerima uang makan <br>
           <?= 'Minggu, ' . date('d F Y', strtotime($dataum->dateAdd)) ?>
         </p>
       <?php } elseif ($dayUm == 'Mon') { ?>
-        <p>Daftar penerima uang makan <br>
+        <p class="upper">Daftar penerima uang makan <br>
           <?= 'Senin, ' . date('d F Y', strtotime($dataum->dateAdd)) ?>
         </p>
       <?php } elseif ($dayUm == 'Tue') { ?>
-        <p>Daftar penerima uang makan <br>
+        <p class="upper">Daftar penerima uang makan <br>
           <?= 'Selasa, ' . date('d F Y', strtotime($dataum->dateAdd)) ?>
         </p>
       <?php } elseif ($dayUm == 'Wed') { ?>
-        <p>Daftar penerima uang makan <br>
+        <p class="upper">Daftar penerima uang makan <br>
           <?= 'Rabu, ' . date('d F Y', strtotime($dataum->dateAdd)) ?>
         </p>
       <?php } elseif ($dayUm == 'Thu') { ?>
-        <p>Daftar penerima uang makan <br>
+        <p class="upper">Daftar penerima uang makan <br>
           <?= 'Kamis, ' . date('d F Y', strtotime($dataum->dateAdd)) ?>
         </p>
       <?php } elseif ($dayUm == 'Fri') { ?>
-        <p>Daftar penerima uang makan <br>
+        <p class="upper">Daftar penerima uang makan <br>
           <?= 'Jumat, ' . date('d F Y', strtotime($dataum->dateAdd)) ?>
         </p>
       <?php } elseif ($dayUm == 'Sat') { ?>
-        <p>Daftar penerima uang makan <br>
+        <p class="upper">Daftar penerima uang makan <br>
           <?= 'Sabtu, ' . date('d F Y', strtotime($dataum->dateAdd)) ?>
         </p>
       <?php } ?>
@@ -148,7 +152,6 @@
             <th class="th-content">NAMA</th>
             <th class="th-content">BAGIAN</th>
             <th class="th-content">NOMINAL</th>
-            <th class="th-content">DITERIMA</th>
             <th class="th-content">TANDA TANGAN</th>
           </tr>
         </thead>
@@ -160,7 +163,6 @@
               <td class="td-content"><?= strtoupper($detail->nama) ?></td>
               <td class="td-content"><?= strtoupper($detail->status) ?></td>
               <td class="td-content">Rp. <?= number_format($detail->nominal) ?></td>
-              <td class="td-content"></td>
               <td class="td-content"></td>
             </tr>
             <?php $no++ ?>

@@ -33,7 +33,7 @@ class M_Persensopir extends CI_Model
       ->add_column(
         'view',
         '<div class="btn-group" role="group">
-          <a href="http://localhost/hira-to-adm/persensopir/printDataPersen/$2" target="_blank" class="btn btn-sm btn-info text-white border border-light btn-print" data-kd="$2" data-toggle="tooltip" title="Cetak">
+          <a href="javascript:void(0);" class="btn btn-sm btn-info text-white border border-light btn-print" data-kd="$2" data-toggle="tooltip" title="Cetak">
             <i class="fas fa-print fa-sm"></i>
           </a>
           <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-kd="$2" data-toggle="tooltip" title="Detail">
@@ -47,6 +47,29 @@ class M_Persensopir extends CI_Model
       );
 
     return $this->datatables->generate();
+  }
+
+  public function getKdPersen($kd)
+  {
+    $this->db->select('kd')
+      ->from('persen_sopir')
+      ->where('kd', $kd);
+
+    $query = $this->db->get()->row();
+
+    return $query;
+  }
+
+  public function getDataByKd($kd)
+  {
+    $this->db->select('a.kd, b.nama')
+      ->from('persen_sopir a')
+      ->where('a.kd', $kd)
+      ->join('sopir b', 'b.id = a.sopir_id');
+
+    $res = $this->db->get()->row();
+
+    return $res;
   }
 
   public function getDataDetailPersenByKd($kd)

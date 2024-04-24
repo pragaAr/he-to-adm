@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?= $title ?></title>
+  <title>Invoice</title>
 
   <style>
     body {
@@ -28,6 +28,7 @@
       text-align: center;
       padding-right: 100px;
       margin-bottom: 1.5px;
+
     }
 
     .cname {
@@ -77,7 +78,6 @@
       text-align: center;
       padding: 5px;
       vertical-align: middle;
-      height: 40px;
     }
 
     .th-content {
@@ -86,6 +86,7 @@
 
     .td-content {
       text-transform: capitalize;
+      height: 40px;
     }
 
     .td-content-numerik {
@@ -94,6 +95,7 @@
       text-align: center;
       padding: 5px;
       vertical-align: middle;
+      height: 40px;
     }
 
     .td-content-numerik {
@@ -121,6 +123,26 @@
       color: red;
     }
 
+    .payment-metod {
+      margin-top: 15px;
+    }
+
+    .table-payment {
+      width: 60%;
+    }
+
+    .th-payment,
+    .td-payment {
+      border: none;
+      font-size: 12px;
+      text-align: left;
+      padding: 5px 10px 0;
+    }
+
+    .payment-desc {
+      font-size: 12px;
+    }
+
     .signature {
       margin-top: 40px;
     }
@@ -139,6 +161,58 @@
       height: 80px;
     }
 
+    .space-dpp {
+      height: 15px;
+    }
+
+    .nama,
+    .pembilang {
+      border-bottom: 1px solid black !important;
+    }
+
+    .border {
+      width: 65%;
+      float: right;
+      margin-bottom: 10px;
+      border-bottom: 3px double black;
+    }
+
+    .jumlah {
+      width: 100%;
+    }
+
+    .jumlah p {
+      text-align: right;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .col-dpp {
+      margin-top: 30px;
+    }
+
+    .table-dpp {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .td-dpp {
+      font-size: 12px;
+      padding: 5px;
+    }
+
+    .right {
+      text-align: right;
+    }
+
+    .pr-0 {
+      padding-right: 0;
+    }
+
     .page-number-footer {
       text-align: right;
       font-style: italic;
@@ -149,7 +223,6 @@
 
 <body>
   <div class="container">
-
     <div class="logo">
       <img src="<?= base_url('assets/dist/img/logo-red.png') ?>">
     </div>
@@ -176,12 +249,13 @@
           <tr>
             <th class="th-content" style="width:5%">No.</th>
             <th class="th-content" style="width:10%">Tanggal</th>
-            <th class="th-content" style="width:10%">No Polisi</th>
-            <th class="th-content" style="width:20%">Surat Jalan</th>
-            <th class="th-content" style="width:20%">Asal-Tujuan</th>
-            <th class="th-content" style="width:9%">Berat</th>
+            <th class="th-content" style="width:17%">Surat Jalan</th>
+            <th class="th-content" style="width:10%">Nomor Polisi</th>
+            <th class="th-content" style="width:9%">Reccu</th>
+            <th class="th-content" style="width:17%">Asal-Tujuan</th>
+            <th class="th-content" style="width:8%">Berat</th>
             <th class="th-content" style="width:9%">Ongkir</th>
-            <th class="th-content" style="width:15%">Tagihan</th>
+            <th class="th-content" style="width:15%">Total</th>
           </tr>
         </thead>
         <tbody>
@@ -189,28 +263,27 @@
           $sumtotal = 0;
           $no = 1;
 
-          foreach ($datasj as $data) :
-            $panjang = count($datasj)
+          foreach ($datainv as $data) :
+            $panjang = count($datainv);
           ?>
 
             <tr>
               <td class="td-content"><?= $no++ ?>.</td>
               <td class="td-content"><?= date('d/m/Y', strtotime($data->dateOrder)) ?></td>
-              <td class="td-content uppercase"><?= $data->platno ?></td>
 
               <?php
               $total_reccu = 0;
-              $total_berat = 0;
-
               foreach ($detail as $dtdetaildata) {
                 if ($dtdetaildata->reccu == $data->reccu)
                   $total_reccu++;
-                $total_berat += $dtdetaildata->berat;
               } ?>
 
               <td class="td-content">Total Surat Jalan <?= $total_reccu ?></td>
+              <td class="td-content uppercase"><?= $data->platno ?></td>
+
+              <td class="td-content uppercase"><?= $data->reccu ?></td>
               <td class="td-content"><?= $data->kota_asal ?>-<?= $data->kota_tujuan ?></td>
-              <td class="td-content"><?= $total_berat ?> Kg</td>
+              <td class="td-content"><?= $data->berat ?> Kg</td>
               <td class="td-content">Rp. <?= number_format($data->hrg_kg) ?></td>
               <td class="td-content">Rp. <?= number_format($data->total_hrg) ?></td>
             </tr>
@@ -220,21 +293,12 @@
               <?php if ($dtdetail->reccu == $data->reccu) { ?>
                 <tr>
                   <td class="td-content"></td>
-                  <td class="td-content" colspan="2"><?= $dtdetail->ket ?></td>
+                  <td class="td-content"></td>
                   <td class="td-content uppercase"><?= $dtdetail->surat_jalan ?></td>
-
-                  <?php if ($dtdetail->retur == 0) { ?>
-                    <td class="td-content"> </td>
-                  <?php } else { ?>
-                    <td class="td-content danger">Retur <?= $dtdetail->retur ?></td>
-                  <?php } ?>
-
-                  <?php if ($dtdetail->berat == 0) { ?>
-                    <td class="td-content"> </td>
-                  <?php } else { ?>
-                    <td class="td-content danger"> <?= $dtdetail->berat ?> Kg</td>
-                  <?php } ?>
-
+                  <td class="td-content"></td>
+                  <td class="td-content"></td>
+                  <td class="td-content"></td>
+                  <td class="td-content"></td>
                   <td class="td-content"></td>
                   <td class="td-content"></td>
                 </tr>
@@ -244,7 +308,15 @@
             <?php if ($panjang < 2) { ?>
             <?php } else { ?>
               <tr>
-                <td class="td-content-empty" colspan="8"></td>
+                <td class="td-content-empty"></td>
+                <td class="td-content-empty"></td>
+                <td class="td-content-empty"></td>
+                <td class="td-content-empty"></td>
+                <td class="td-content-empty"></td>
+                <td class="td-content-empty"></td>
+                <td class="td-content-empty"></td>
+                <td class="td-content-empty"></td>
+                <td class="td-content-empty"></td>
               </tr>
             <?php } ?>
 
@@ -255,11 +327,79 @@
           <?php endforeach ?>
 
           <tr>
-            <td colspan="7" class="td-content font-bold uppercase">Jumlah</td>
-            <td class="td-content font-bold">Rp. <?= number_format($sumtotal) ?></td>
+            <td colspan="8" class="td-content font-bold uppercase">Jumlah</td>
+            <td class="td-content-numerik font-bold">Rp. <?= number_format($sumtotal) ?></td>
           </tr>
         </tbody>
       </table>
+
+      <?php if ($ppnvalue === "true") { ?>
+        <div class="col-dpp">
+          <table class="table-dpp">
+            <tr>
+              <td class="td-dpp" rowspan="2" style="width:35%"></td>
+              <td class="td-dpp center" rowspan="2" style="width:9%">DPP</td>
+              <td class="td-dpp center" rowspan="2" style="width:18%">Rp. <?= number_format($sumtotal) ?></td>
+              <td class="td-dpp center" rowspan="2" style="width:5%">X</td>
+              <td class="td-dpp pembilang center" style="width:10%">100%</td>
+              <td class="td-dpp center" rowspan="2" style="width:5%">=</td>
+
+              <?php
+              $a = $sumtotal;
+              $pembilang = 100;
+              $penyebut = 101.1;
+              $persen = 1.1;
+              $mod = 100;
+
+              $dpp = $a * ($pembilang / $mod) / ($penyebut / $mod);
+
+              $ppn = $dpp * ($persen / $mod);
+
+              $jml = $dpp + $ppn;
+              ?>
+
+              <td class="td-dpp right" rowspan="2" style="width:18%">Rp. <?= number_format($dpp) ?></td>
+            </tr>
+            <tr>
+              <td class="td-dpp center">101.1%</td>
+            </tr>
+            <tr>
+              <td class="space-dpp" colspan="7"></td>
+            </tr>
+            <tr>
+              <td class="td-dpp"></td>
+              <td class="td-dpp center">PPN</td>
+              <td colspan="3" class="td-dpp center">1.1%</td>
+              <td class="td-dpp center">=</td>
+              <td class="td-dpp right">Rp. <?= number_format($ppn) ?></td>
+            </tr>
+          </table>
+        </div>
+        <div class="border"></div>
+        <div class="jumlah">
+          <p>JUMLAH &emsp;&emsp;&emsp;&emsp;&emsp; <span> Rp. <?= number_format($jml) ?></span></p>
+        </div>
+      <?php } else { ?>
+
+      <?php } ?>
+
+      <div class="payment-metod">
+        <p class="payment-desc">Mohon tagihan dapat ditransfer ke rekening :</p>
+        <table class="table-payment">
+          <tr>
+            <th class="th-payment" style="width:25%">Bank</th>
+            <td class="td-payment">: BCA KCU SOLO BARU</td>
+          </tr>
+          <tr>
+            <th class="th-payment" style="width:25%">Atas Nama</th>
+            <td class="td-payment">: PT. HIRA ADYA NARANATA</td>
+          </tr>
+          <tr>
+            <th class="th-payment" style="width:25%">No Acc</th>
+            <td class="td-payment">: 773 550 6161</td>
+          </tr>
+        </table>
+      </div>
 
       <div class="signature">
         <table class="table-signature">

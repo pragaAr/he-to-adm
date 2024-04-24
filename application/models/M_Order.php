@@ -26,29 +26,64 @@ class M_Order extends CI_Model
 
   public function getData()
   {
-    $this->datatables->select('om.id, om.no_order, om.asal_order, om.tujuan_order, om.jenis_muatan, om.status_order, om.dateAdd, cust.nama')
+    $this->datatables->select('om.id, om.no_order, s.nama as nama_sopir, om.asal_order, om.tujuan_order, om.jenis_muatan, om.status_order, om.dateAdd, cust.nama')
       ->from('order_masuk om')
       ->join('customer cust', 'cust.id = om.customer_id')
+      ->join('sangu_sopir ss', 'ss.no_order = om.no_order')
+      ->join('sopir s', 's.id = ss.sopir_id')
       ->add_column(
         'view',
         '<div class="btn-group" role="group">
-          <a href="http://localhost/hira-to-adm/order/print/$2" target="_blank" class="btn btn-sm btn-info text-white border border-light btn-print" data-kd="$2" data-toggle="tooltip" title="Cetak">
-            <i class="fas fa-print fa-sm"></i>
-          </a>
-          <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-kd="$2" data-toggle="tooltip" title="Detail">
-            <i class="fas fa-eye fa-sm"></i>
-          </a>
-          <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-kd="$2" data-toggle="tooltip" title="Edit">
-            <i class="fas fa-pencil-alt fa-sm"></i>
-          </a>
-          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-kd="$2" data-toggle="tooltip" title="Hapus">
-            <i class="fas fa-trash fa-sm"></i>
-          </a>
+          
         </div>',
-        'id, no_order, asal_order, tujuan_order, jenis_muatan, status_order, dateAdd, nama'
+        'id, no_order, nama_sopir, asal_order, tujuan_order, jenis_muatan, status_order, dateAdd, nama'
       );
 
-    return $this->datatables->generate();
+    $res  = $this->datatables->generate();
+
+    $data = json_decode($res, true);
+
+    foreach ($data['data'] as &$row) {
+      if ($row['status_order'] != 'selesai') {
+
+        $row['view'] = '<div class="btn-group" role="group">
+                          <a href="javascript:void(0);" class="btn btn-sm btn-light border border-light btn-update" data-toggle="tooltip" title="Update Status" data-kd="' . $row['no_order'] . '">
+                            <i class="fas fa-check fa-sm"></i>
+                          </a>
+                          <a href="http://localhost/hira-to-adm/order/print/' . $row['no_order'] . '" target="_blank" class="btn btn-sm btn-info text-white border border-light btn-print" data-toggle="tooltip" title="Cetak">
+                            <i class="fas fa-print fa-sm"></i>
+                          </a>
+                          <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-kd="' . $row['no_order'] . '" data-toggle="tooltip" title="Detail">
+                            <i class="fas fa-eye fa-sm"></i>
+                          </a>
+                          <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-kd="' . $row['no_order'] . '" data-toggle="tooltip" title="Edit">
+                            <i class="fas fa-pencil-alt fa-sm"></i>
+                          </a>
+                          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-kd="' . $row['no_order'] . '" data-toggle="tooltip" title="Hapus">
+                            <i class="fas fa-trash fa-sm"></i>
+                          </a>
+                        </div>';
+      } else {
+        $row['view'] = '<div class="btn-group" role="group">
+                          <a href="http://localhost/hira-to-adm/order/print/' . $row['no_order'] . '" target="_blank" class="btn btn-sm btn-info text-white border border-light btn-print" data-toggle="tooltip" title="Cetak">
+                            <i class="fas fa-print fa-sm"></i>
+                          </a>
+                          <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-kd="' . $row['no_order'] . '" data-toggle="tooltip" title="Detail">
+                            <i class="fas fa-eye fa-sm"></i>
+                          </a>
+                          <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-kd="' . $row['no_order'] . '" data-toggle="tooltip" title="Edit">
+                            <i class="fas fa-pencil-alt fa-sm"></i>
+                          </a>
+                          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-kd="' . $row['no_order'] . '" data-toggle="tooltip" title="Hapus">
+                            <i class="fas fa-trash fa-sm"></i>
+                          </a>
+                        </div>';
+      }
+    }
+
+    $res = json_encode($data);
+
+    echo $res;
   }
 
   public function countData()

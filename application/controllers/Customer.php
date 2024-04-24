@@ -100,6 +100,18 @@ class Customer extends CI_Controller
 		$alamat	= trim($this->input->post('alamat'));
 		$addAt  = date('Y-m-d H:i:s');
 
+		// Cek apakah nomor telepon sudah ada dalam database
+		$ceknama = $this->Customer->getCustomerByNama($nama);
+		if ($ceknama) {
+			// Jika nomor telepon sudah ada, kembalikan pesan error
+			$response = [
+				'status'	=> 'error',
+				'msg'			=> 'Customer sudah terdaftar.',
+			];
+			echo json_encode($response);
+			return;
+		}
+
 		$datacust = array(
 			'nama'  	=> strtolower($nama),
 			'kode'    => strtolower($kode),
@@ -113,10 +125,11 @@ class Customer extends CI_Controller
 		$custid = $this->db->insert_id();
 
 		$response = [
-			'id'		=> $custid,
-			'text'  => ucwords($nama),
-			'kode'  => ucwords($kode),
-			'telp'  => $notelp,
+			'id'			=> $custid,
+			'text'  	=> ucwords($nama),
+			'kode'  	=> ucwords($kode),
+			'telp'  	=> $notelp,
+			'status'	=> 'success',
 		];
 
 		echo json_encode($response);

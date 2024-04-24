@@ -5,8 +5,6 @@ date_default_timezone_set('Asia/Jakarta');
 
 use Mpdf\Mpdf;
 
-use function PHPUnit\Framework\isNull;
-
 class Traveldoc extends CI_Controller
 {
   public function __construct()
@@ -30,6 +28,17 @@ class Traveldoc extends CI_Controller
     $this->load->view('layout/template/navbar');
     $this->load->view('layout/template/sidebar');
     $this->load->view('layout/trans/surat-jalan/index', $data);
+    $this->load->view('layout/template/footer');
+  }
+
+  public function add()
+  {
+    $data['title']  = 'Tambah Data Surat Jalan';
+
+    $this->load->view('layout/template/header', $data);
+    $this->load->view('layout/template/navbar');
+    $this->load->view('layout/template/sidebar');
+    $this->load->view('layout/trans/surat-jalan/add', $data);
     $this->load->view('layout/template/footer');
   }
 
@@ -86,7 +95,7 @@ class Traveldoc extends CI_Controller
     echo json_encode($response);
   }
 
-  public function add()
+  public function proses()
   {
     $userid     = $this->session->userdata('id');
     $countRow   = count($this->input->post('sj'));
@@ -108,6 +117,7 @@ class Traveldoc extends CI_Controller
     $romawi     = $this->bulanRomawi($month);
 
     $nomor      = $kode . '/' . $querynomor . '/han/' . $romawi . '/' . date('y');
+    $noReplace  = str_replace('/', '-', $nomor);
 
     $dataReccu = [];
 
@@ -153,15 +163,17 @@ class Traveldoc extends CI_Controller
 
     if ($proses) {
       $response = [
-        'status'  => 'success',
-        'title'   => 'Success',
-        'text'    => 'Data Berhasil Ditambahkan'
+        'status'      => 'success',
+        'title'       => 'Success',
+        'text'        => 'Data Berhasil Ditambahkan',
+        'nomorsurat'  => $noReplace
       ];
     } else {
       $response = [
-        'status'  => 'error',
-        'title'   => 'Error',
-        'text'    => 'Data Gagal Ditambahkan'
+        'status'      => 'error',
+        'title'       => 'Error',
+        'text'        => 'Data Gagal Ditambahkan',
+        'nomorsurat'  => null
       ];
     }
 
@@ -200,101 +212,66 @@ class Traveldoc extends CI_Controller
     }
   }
 
-  public function print($nomor)
+  public function print()
   {
-    $str    = str_replace('-', '/', $nomor);
+    $nomor  = $this->input->get('surat_jalan');
 
-    $query  = $this->SJ->getDataByNomor($str);
+    if ($nomor === null) {
+      echo 'tidak ada data yang ditampilkan';
+    } else {
+      $str    = str_replace('-', '/', $nomor);
 
-    $datasj = $this->SJ->getTandaTerimaData($str);
+      $query  = $this->SJ->getDataByNomor($str);
 
-    $reccu = [];
+      if ($query === null) {
+        echo 'tidak ada data yang ditampilkan';
+      } else {
+        $datasj = $this->SJ->getTandaTerimaData($str);
 
-    foreach ($datasj as $item) {
-      $reccu[] = $item->reccu;
+        $reccu = [];
+
+        foreach ($datasj as $item) {
+          $reccu[] = $item->reccu;
+        }
+
+        $detail = $this->SJ->getDetailData($reccu);
+
+        $data = [
+          'title'   => 'Tanda Terima Surat Jalan',
+          'nomor'   => $query->nomor_surat,
+          'cust'    => $query->nama,
+          'datasj'  => $datasj,
+          'detail'  => $detail,
+        ];
+
+        $mpdf = new Mpdf([
+          'mode'          => 'utf-8',
+          'format'        => 'A4',
+          'orientation'   => 'P',
+          'SetTitle'      => $str,
+          'margin_left'   => 5,
+          'margin_right'  => 5,
+          'margin_top'    => 5,
+          'margin_bottom' => 5,
+        ]);
+
+        $content  = $this->load->view('layout/trans/surat-jalan/print', $data, true);
+
+        $mpdf->SetHTMLFooter("<p class='page-number-footer'>Tanda Terima Surat Jalan ( $str ) | Halaman {PAGENO} Dari {nb}</p>");
+        $mpdf->AddPage();
+        $mpdf->WriteHTML($content);
+
+        $mpdf->Output("$str.pdf", 'I');
+      }
     }
-
-    $detail = $this->SJ->getDetailData($reccu);
-
-    $data = [
-      'title'   => 'Tanda Terima Surat Jalan',
-      'nomor'   => $query->nomor_surat,
-      'cust'    => $query->nama,
-      'datasj'  => $datasj,
-      'detail'  => $detail,
-    ];
-
-    $mpdf = new Mpdf([
-      'mode'          => 'utf-8',
-      'format'        => 'A4',
-      'orientation'   => 'P',
-      'SetTitle'      => $str,
-      'margin_left'   => 5,
-      'margin_right'  => 5,
-      'margin_top'    => 5,
-      'margin_bottom' => 5,
-    ]);
-
-    $content  = $this->load->view('layout/trans/surat-jalan/print', $data, true);
-
-    $mpdf->SetHTMLFooter("<p class='page-number-footer'>Tanda Terima Surat Jalan ( $str ) | Halaman {PAGENO} Dari {nb}</p>");
-    $mpdf->AddPage();
-    $mpdf->WriteHTML($content);
-
-    $mpdf->Output("$str.pdf", 'I');
-  }
-
-  public function printtest()
-  {
-    $str    = 'ims/4/han/iv/24';
-
-    $query  = $this->SJ->getDataByNomor($str);
-
-    $datasj = $this->SJ->getTandaTerimaData($str);
-
-    $reccu = [];
-
-    foreach ($datasj as $item) {
-      $reccu[] = $item->reccu;
-    }
-
-    $detail = $this->SJ->getDetailData($reccu);
-
-    echo json_encode($detail);
-  }
-
-  public function testpage()
-  {
-    $str    = 'ims/4/han/iv/24';
-
-    $query  = $this->SJ->getDataByNomor($str);
-
-    $datasj = $this->SJ->getTandaTerimaData($str);
-
-    $reccu = [];
-
-    foreach ($datasj as $item) {
-      $reccu[] = $item->reccu;
-    }
-
-    $detail = $this->SJ->getDetailData($reccu);
-
-    $data = [
-      'title'   => 'Tanda Terima Surat Jalan',
-      'nomor'   => $query->nomor_surat,
-      'cust'    => $query->nama,
-      'datasj'  => $datasj,
-      'detail'  => $detail,
-    ];
-
-    $this->load->view('layout/trans/surat-jalan/test', $data);
   }
 
   public function delete()
   {
     $nomor = $this->input->post('nomor');
+    $jenis = 'surat_jalan';
 
-    $data = $this->SJ->deleteData($nomor);
+    $data = $this->SJ->deleteData($nomor, $jenis);
 
     echo json_encode($data);
   }

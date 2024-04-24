@@ -34,6 +34,7 @@
                     <tr>
                       <th>No.</th>
                       <th>No Order</th>
+                      <th>Sopir</th>
                       <th>Customer</th>
                       <th>Asal</th>
                       <th>Tujuan</th>
@@ -57,25 +58,27 @@
 </div>
 
 <!-- modalAddOrder -->
-<form id="form_addOrder">
-  <div class="modal fade" id="modalAddOrder" data-backdrop="static">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Tambah Order</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body" style="padding: 2rem !important;">
+<div class="modal fade" id="modalAddOrder" data-backdrop="static">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Tambah Order</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding-left: 2rem !important; padding-right: 2rem !important;">
+
+        <form id="form_addOrder">
+
           <div class="form-row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
               <label for="ordernumber">
                 No Order
               </label>
               <input type="text" class="form-control text-uppercase" name="ordernumber" id="ordernumber" required readonly>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
               <label for="custid">
                 Customer
               </label>
@@ -91,64 +94,46 @@
               </div>
               <input type="hidden" class="form-control" name="namecust" id="namecust">
             </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
               <label for="notelp">
                 No Telepon
               </label>
               <input type="text" class="form-control text-uppercase" name="notelp" id="notelp" placeholder="No Telepon.." autocomplete="off" required oninvalid="this.setCustomValidity('No Telepon Customer wajib di isi!')" oninput="setCustomValidity('')">
             </div>
-            <div class="form-group col-md-6">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
               <label for="muatan">
                 Jenis Muatan
               </label>
               <input type="text" class="form-control text-uppercase" name="muatan" id="muatan" placeholder="Jenis Muatan.." autocomplete="off" required oninvalid="this.setCustomValidity('Jenis Muatan wajib di isi!')" oninput="setCustomValidity('')">
             </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
               <label for="asal">
                 Asal Order
               </label>
               <input type="text" class="form-control text-uppercase" name="asal" id="asal" placeholder="Kota Asal.." autocomplete="off" required oninvalid="this.setCustomValidity('Kota Asal wajib di isi!')" oninput="setCustomValidity('')">
             </div>
-            <div class="form-group form-group col-md-6">
+            <div class="form-group col-md-4">
               <label for="tujuan">
                 Tujuan Order
               </label>
               <input type="text" class="form-control text-uppercase" name="tujuan" id="tujuan" placeholder="Kota Tujuan.." autocomplete="off" required oninvalid="this.setCustomValidity('Kota Tujuan wajib di isi!')" oninput="setCustomValidity('')">
             </div>
           </div>
-          <div class="form-group">
-            <label for="keterangan">
-              Keterangan
-            </label>
-            <input type="text" class="form-control text-uppercase" name="keterangan" id="keterangan" placeholder="Keterangan.." autocomplete="off">
-          </div>
-          <div>
-            <button type="button" id="nextStepOrder" class="btn btn-dark border border-light float-right">
-              Selanjutnya
-              <i class="fas fa-arrow-right ml-1"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="modal fade" id="modalAddSanguOrder" data-backdrop="static">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Tambah Sangu</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body" style="padding: 2rem !important;">
           <div class="form-row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md">
+              <label for="keterangan">
+                Keterangan
+              </label>
+              <input type="text" class="form-control text-uppercase" name="keterangan" id="keterangan" placeholder="Keterangan.." autocomplete="off">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
               <label for="plat">
                 Truck
               </label>
@@ -157,7 +142,7 @@
               </select>
               <input type="hidden" class="form-control" name="platno" id="platno">
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
               <label for="sopir">
                 Sopir
               </label>
@@ -166,121 +151,99 @@
               </select>
               <input type="hidden" class="form-control" name="namasopir" id="namasopir">
             </div>
+            <div class="form-group col-md-4">
+              <label for="nominal">
+                Nominal
+              </label>
+              <input type="text" name="nominal" id="nominal" class="form-control" placeholder="Nominal.." autocomplete="off" required oninvalid="this.setCustomValidity('Nominal wajib di isi!')" oninput="setCustomValidity('')">
+            </div>
           </div>
-          <div class="form-group">
-            <label for="nominal">
-              Nominal
-            </label>
-            <input type="text" name="nominal" id="nominal" class="form-control" placeholder="Nominal.." autocomplete="off" required oninvalid="this.setCustomValidity('Nominal wajib di isi!')" oninput="setCustomValidity('')">
+
+          <div class="form-row">
+            <div class="form-group col-md">
+              <button type="submit" class="btn btn-dark border border-light btn-block mt-2">
+                Simpan
+              </button>
+            </div>
           </div>
-          <div>
-            <button type="submit" class="btn btn-dark border border-light float-right">
-              Simpan
-            </button>
-            <button type="button" id="backAddOrder" class="btn btn-dark border border-light float-right mr-2">
-              <i class="fas fa-arrow-left mr-1"></i>
-              Kembali
-            </button>
-          </div>
-        </div>
+
+        </form>
+
       </div>
     </div>
   </div>
-</form>
+</div>
 
 <!-- modalUpdateOrder -->
-<form id="form_updateOrder">
-  <div class="modal fade" id="modalUpdateOrder" data-backdrop="static">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Update Order</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body" style="padding: 2rem !important;">
+<div class="modal fade" id="modalUpdateOrder" data-backdrop="static">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Update Order</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding-left: 2rem !important; padding-right: 2rem !important;">
+
+        <form id="form_updateOrder">
+
           <div class="form-row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
               <label for="ordernumberedit">
                 No Order
               </label>
               <input type="text" class="form-control text-uppercase" name="ordernumberedit" id="ordernumberedit" required readonly>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
               <label for="custidedit">
                 Customer
               </label>
-              <div class="input-group">
-                <select name="custidedit" id="custidedit" class="form-control select-custedit" style="width:100%" required oninvalid="this.setCustomValidity('Customer wajib di isi!')" oninput="setCustomValidity('')">
-                  <option value=""></option>
-                </select>
-                <div class="input-group-append">
-                  <button type="button" class="btn btn-info border border-light" id="addNewCustEdit">
-                    <i class="fas fa-plus"></i>
-                  </button>
-                </div>
-              </div>
+              <select name="custidedit" id="custidedit" class="form-control select-custedit" style="width:100%" required oninvalid="this.setCustomValidity('Customer wajib di isi!')" oninput="setCustomValidity('')">
+                <option value=""></option>
+              </select>
               <input type="hidden" class="form-control" name="namecustedit" id="namecustedit">
             </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
               <label for="notelpedit">
                 No Telepon
               </label>
               <input type="text" class="form-control text-uppercase" name="notelpedit" id="notelpedit" placeholder="No Telepon.." autocomplete="off" required oninvalid="this.setCustomValidity('No Telepon Customer wajib di isi!')" oninput="setCustomValidity('')">
             </div>
-            <div class="form-group col-md-6">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
               <label for="muatanedit">
                 Jenis Muatan
               </label>
               <input type="text" class="form-control text-uppercase" name="muatanedit" id="muatanedit" placeholder="Jenis Muatan.." autocomplete="off" required oninvalid="this.setCustomValidity('Jenis Muatan wajib di isi!')" oninput="setCustomValidity('')">
             </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
               <label for="asaledit">
                 Asal Order
               </label>
               <input type="text" class="form-control text-uppercase" name="asaledit" id="asaledit" placeholder="Kota Asal.." autocomplete="off" required oninvalid="this.setCustomValidity('Kota Asal wajib di isi!')" oninput="setCustomValidity('')">
             </div>
-            <div class="form-group form-group col-md-6">
+            <div class="form-group col-md-4">
               <label for="tujuanedit">
                 Tujuan Order
               </label>
               <input type="text" class="form-control text-uppercase" name="tujuanedit" id="tujuanedit" placeholder="Kota Tujuan.." autocomplete="off" required oninvalid="this.setCustomValidity('Kota Tujuan wajib di isi!')" oninput="setCustomValidity('')">
             </div>
           </div>
-          <div class="form-group">
-            <label for="keteranganedit">
-              Keterangan
-            </label>
-            <input type="text" class="form-control text-uppercase" name="keteranganedit" id="keteranganedit" placeholder="Keterangan.." autocomplete="off">
-          </div>
-          <div>
-            <button type="button" id="nextStepUpdateOrder" class="btn btn-dark border border-light float-right">
-              Selanjutnya
-              <i class="fas fa-arrow-right ml-1"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="modal fade" id="modalEditSanguOrder" data-backdrop="static">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Update Sangu</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body" style="padding: 2rem !important;">
           <div class="form-row">
-            <div class="form-group col-md-6">
+            <div class="form-group col-md">
+              <label for="keteranganedit">
+                Keterangan
+              </label>
+              <input type="text" class="form-control text-uppercase" name="keteranganedit" id="keteranganedit" placeholder="Keterangan.." autocomplete="off">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
               <label for="platedit">
                 Truck
               </label>
@@ -290,7 +253,7 @@
               <input type="hidden" class="form-control" name="oldtruckid" id="oldtruckid">
               <input type="hidden" class="form-control" name="platnoedit" id="platnoedit">
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
               <label for="sopiredit">
                 Sopir
               </label>
@@ -300,27 +263,29 @@
               <input type="hidden" class="form-control" name="oldsopirid" id="oldsopirid">
               <input type="hidden" class="form-control" name="namasopiredit" id="namasopiredit">
             </div>
+            <div class="form-group col-md-4">
+              <label for="nominaledit">
+                Nominal
+              </label>
+              <input type="text" name="nominaledit" id="nominaledit" class="form-control" placeholder="Nominal.." autocomplete="off" required oninvalid="this.setCustomValidity('Nominal wajib di isi!')" oninput="setCustomValidity('')">
+            </div>
           </div>
-          <div class="form-group">
-            <label for="nominaledit">
-              Nominal
-            </label>
-            <input type="text" name="nominaledit" id="nominaledit" class="form-control" placeholder="Nominal.." autocomplete="off" required oninvalid="this.setCustomValidity('Nominal wajib di isi!')" oninput="setCustomValidity('')">
+
+          <div class="form-row">
+            <div class="form-group col-md">
+              <button type="submit" class="btn btn-dark border border-light btn-block">
+                Simpan Perubahan
+              </button>
+            </div>
           </div>
-          <div>
-            <button type="submit" class="btn btn-dark border border-light float-right">
-              Simpan
-            </button>
-            <button type="button" id="backEditOrder" class="btn btn-dark border border-light float-right mr-2">
-              <i class="fas fa-arrow-left mr-1"></i>
-              Kembali
-            </button>
-          </div>
-        </div>
+
+        </form>
+
       </div>
     </div>
   </div>
-</form>
+</div>
+
 
 <!-- modalDetailOrder -->
 <div class="modal fade" id="modalDetailOrder" data-backdrop="static">
@@ -432,19 +397,19 @@
             <label for="kodecust">
               Kode Customer
             </label>
-            <input type="text" class="form-control text-uppercase" name="kodecust" id="kodecust" placeholder="Kode Customer.."  autocomplete="off" oninvalid="this.setCustomValidity('Kode Customer wajib di isi!')" oninput="setCustomValidity('')">
+            <input type="text" class="form-control text-uppercase" name="kodecust" id="kodecust" placeholder="Kode Customer.." autocomplete="off" oninvalid="this.setCustomValidity('Kode Customer wajib di isi!')" oninput="setCustomValidity('')">
           </div>
           <div class="form-group">
             <label for="notelpcust">
               No Telepon
             </label>
-            <input type="text" class="form-control" name="notelpcust" id="notelpcust" placeholder="No Telepon.." autocomplete="off" oninvalid="this.setCustomValidity('Telpon Customer wajib di isi!')" oninput="setCustomValidity('')">
+            <input type="text" class="form-control text-uppercase" name="notelpcust" id="notelpcust" placeholder="No Telepon.." autocomplete="off" oninvalid="this.setCustomValidity('Telpon Customer wajib di isi!')" oninput="setCustomValidity('')">
           </div>
           <div class="form-group">
             <label for="alamatcust">
               Alamat
             </label>
-            <input type="text" class="form-control text-capitalize" name="alamatcust" id="alamatcust" placeholder="Alamat.." autocomplete="off" oninvalid="this.setCustomValidity('Alamat Customer wajib di isi!')" oninput="setCustomValidity('')">
+            <input type="text" class="form-control text-uppercase" name="alamatcust" id="alamatcust" placeholder="Alamat.." autocomplete="off" oninvalid="this.setCustomValidity('Alamat Customer wajib di isi!')" oninput="setCustomValidity('')">
           </div>
           <div>
             <button type="submit" id="btn_submitNewCust" class="btn btn-dark border border-light float-right">
