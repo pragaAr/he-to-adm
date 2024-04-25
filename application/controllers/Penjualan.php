@@ -142,7 +142,6 @@ class Penjualan extends CI_Controller
       'alamat_tujuan' => strtolower($alamattujuan),
       'total_hrg'     => $biaya,
       'pembayaran'    => strtolower($pembayaran),
-      'status'        => 'diproses',
       'user_id'       => $userid,
       'dateAdd'       => $dateAdd,
     );
@@ -252,21 +251,6 @@ class Penjualan extends CI_Controller
     ];
 
     $this->pdf->generate('layout/trans/penjualan/print', $data, "Reccu-$kd", 'A6', 'portrait');
-  }
-
-  public function updateStatus()
-  {
-    $id = $this->input->post('id');
-    $kd = $this->input->post('no');
-
-    $query = $this->Sangu->getDataTrucSopirkByKdOrder($kd);
-
-    $truckid = $query->truck_id;
-    $sopirid = $query->sopir_id;
-
-    $data = $this->Sales->updateStatusOrderPenjualan($id, $truckid, $sopirid);
-
-    echo json_encode($data);
   }
 
   public function delete()

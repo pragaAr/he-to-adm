@@ -109,8 +109,6 @@ $("#persenTables").on("click", ".btn-detail", function () {
       kd: kd,
     },
     success: function (data) {
-      console.log(data);
-
       const tbodyDetail = $("#tbodyDetail");
       tbodyDetail.empty();
 

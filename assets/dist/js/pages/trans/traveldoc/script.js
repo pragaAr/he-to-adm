@@ -107,8 +107,6 @@ $("#sjTables").on("click", ".btn-print", function () {
       nomor: nomor,
     },
     success: function (data) {
-      console.log(data);
-
       Swal.fire({
         title: "Cetak surat jalan ?",
         icon: "question",

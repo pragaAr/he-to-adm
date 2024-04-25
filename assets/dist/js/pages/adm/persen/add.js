@@ -420,12 +420,12 @@ $(document).ready(function () {
     $("#penerima").val("");
     $("#muatan").val("");
     $("#asaltujuan").val("");
-    $("#totharga").val("");
-    $("#sangu").val("");
-    $("#tambahan").val("");
-    $("#totsangu").val("");
-    $("#persen1").val("");
-    $("#persen2").val("");
-    $("#biayaxpersen").val("");
+    $("#totharga").val("0");
+    $("#sangu").val("0");
+    $("#tambahan").val("0");
+    $("#totsangu").val("0");
+    $("#persen1").val("0");
+    $("#persen2").val("0");
+    $("#biayaxpersen").val("0");
   }
 });

@@ -50,7 +50,7 @@ class M_Order extends CI_Model
                           <a href="javascript:void(0);" class="btn btn-sm btn-light border border-light btn-update" data-toggle="tooltip" title="Update Status" data-kd="' . $row['no_order'] . '">
                             <i class="fas fa-check fa-sm"></i>
                           </a>
-                          <a href="http://localhost/hira-to-adm/order/print/' . $row['no_order'] . '" target="_blank" class="btn btn-sm btn-info text-white border border-light btn-print" data-toggle="tooltip" title="Cetak">
+                          <a href="javascript:void(0);" class="btn btn-sm btn-info text-white border border-light btn-print" data-toggle="tooltip" title="Cetak" data-kd="' . $row['no_order'] . '">
                             <i class="fas fa-print fa-sm"></i>
                           </a>
                           <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-kd="' . $row['no_order'] . '" data-toggle="tooltip" title="Detail">
@@ -65,7 +65,7 @@ class M_Order extends CI_Model
                         </div>';
       } else {
         $row['view'] = '<div class="btn-group" role="group">
-                          <a href="http://localhost/hira-to-adm/order/print/' . $row['no_order'] . '" target="_blank" class="btn btn-sm btn-info text-white border border-light btn-print" data-toggle="tooltip" title="Cetak">
+                          <a href="javascript:void(0);" class="btn btn-sm btn-info text-white border border-light btn-print" data-toggle="tooltip" title="Cetak" data-kd="' . $row['no_order'] . '">
                             <i class="fas fa-print fa-sm"></i>
                           </a>
                           <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-kd="' . $row['no_order'] . '" data-toggle="tooltip" title="Detail">
@@ -89,11 +89,6 @@ class M_Order extends CI_Model
   public function countData()
   {
     return $this->db->get('order_masuk')->num_rows();
-  }
-
-  public function countPrepareData()
-  {
-    return $this->db->get_where('order_masuk', ['status_order' => 'disiapkan'])->num_rows();
   }
 
   public function countProsesData()
@@ -271,5 +266,36 @@ class M_Order extends CI_Model
 
     $this->db->delete('order_masuk', ['no_order' => $kd]);
     $this->db->delete('sangu_sopir', ['no_order' => $kd]);
+  }
+
+  public function updateStatusOrder($id, $truckid, $sopirid)
+  {
+    $statusOrder = [
+      'status_order'  => 'selesai',
+    ];
+
+    $whereidorder = [
+      'id' => $id
+    ];
+
+    $wheresopirid = [
+      'id' => $sopirid
+    ];
+
+    $wheretruckid = [
+      'id' => $truckid
+    ];
+
+    $statussopir = [
+      'status_sopir' => 0
+    ];
+
+    $statustruck = [
+      'status_truck' => 0
+    ];
+
+    $this->db->update('order_masuk', $statusOrder, $whereidorder);
+    $this->db->update('armada', $statustruck, $wheretruckid);
+    $this->db->update('sopir', $statussopir, $wheresopirid);
   }
 }

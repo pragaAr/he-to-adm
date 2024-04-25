@@ -86,8 +86,6 @@ $("#orderTables").DataTable({
       render: function (data, type, row) {
         if (data === "diproses") {
           return "<button type='button' class='btn border border-info btn-light text-info btn-sm' data-toggle='tooltip' title='Diproses' style='cursor: default;'> <i class='fas fa-clock'></i></button>";
-        } else if (data === "disiapkan") {
-          return "<button type='button' class='btn border border-warning btn-light text-warning btn-sm' data-toggle='tooltip' title='Disiapkan' style='cursor: default;'> <i class='fas fa-people-carry'></i></button>";
         } else if (data === "selesai") {
           return "<button type='button' class='btn border border-success btn-light text-success btn-sm' data-toggle='tooltip' title='Selesai' style='cursor: default;'> <i class='fas fa-check'></i></button>";
         }
@@ -259,7 +257,7 @@ $("#btn_submitNewCust").on("click", function (e) {
     },
     success: function (response) {
       const res = JSON.parse(response);
-      console.log(res);
+
       if (res.status != "error") {
         $("#namacust").val("");
         $("#kodecust").val("");
@@ -359,12 +357,16 @@ $("#form_addOrder").on("submit", function (e) {
         cancelButtonText: "Batal",
         confirmButtonText: "Ya, Cetak !",
       }).then((result) => {
-        if (result.value) {
-          window.open("http://localhost/hira-to-adm/order/print/" + parsedData);
+        if (result.isConfirmed) {
+          window.open(
+            "http://localhost/hira-to-adm/order/print" + "?no_do=" + parsedData
+          );
 
           setTimeout(function () {
             window.open(
-              "http://localhost/hira-to-adm/sangu/print/" + parsedData
+              "http://localhost/hira-to-adm/sangu/print" +
+                "?no_do=" +
+                parsedData
             );
           }, 1000);
         }
@@ -725,6 +727,87 @@ $("#orderTables").on("click", ".btn-delete", function () {
         },
       });
     }
+  });
+});
+
+$("#orderTables").on("click", ".btn-update", function () {
+  const kd = $(this).data("kd");
+
+  $.ajax({
+    url: "http://localhost/hira-to-adm/order/getDataKd",
+    method: "POST",
+    data: { kd: kd },
+    success: function (data) {
+      const parsedData = JSON.parse(data);
+
+      const id = parsedData.order_id;
+      const no = parsedData.no_order;
+
+      Swal.fire({
+        title: "Apakah anda yakin ?",
+        text: "Status akan di update !!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "Batal",
+        confirmButtonText: "Ya, Update !",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: "http://localhost/hira-to-adm/order/updateStatus",
+            method: "POST",
+            data: {
+              id: id,
+              no: no,
+            },
+            success: function (data) {
+              Swal.fire({
+                icon: "success",
+                title: "Success!",
+                text: "Status Order diupdate!",
+              });
+
+              $("#orderTables").DataTable().ajax.reload(null, false);
+            },
+          });
+        }
+      });
+    },
+  });
+});
+
+$("#orderTables").on("click", ".btn-print", function () {
+  const kd = $(this).data("kd");
+
+  $.ajax({
+    url: "http://localhost/hira-to-adm/order/getDataKd",
+    method: "POST",
+    dataType: "JSON",
+    data: {
+      kd: kd,
+    },
+    success: function (data) {
+      Swal.fire({
+        title: "Cetak DO ?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "Batal",
+        confirmButtonText: "Ya, Cetak !",
+      }).then((result) => {
+        if (result.value) {
+          window.open(
+            "http://localhost/hira-to-adm/order/print" +
+              "?no_do=" +
+              data.no_order
+          );
+        }
+      });
+
+      $('[data-toggle="tooltip"]').tooltip("hide");
+    },
   });
 });
 

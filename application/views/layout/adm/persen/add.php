@@ -84,7 +84,7 @@
                   </div>
                   <div class="form-group col-md-4">
                     <label for="totharga">Total Biaya</label>
-                    <input type="text" name="totharga" id="totharga" class="form-control" placeholder="Total Biaya..." readonly>
+                    <input type="text" name="totharga" id="totharga" class="form-control" placeholder="Total Biaya..." value="0" readonly>
                   </div>
                 </div>
 
@@ -94,30 +94,30 @@
                 <div class="form-row">
                   <div class="form-group col-md-4">
                     <label for="sangu">Sangu</label>
-                    <input type="text" name="sangu" id="sangu" class="form-control" placeholder="Sangu..." readonly>
+                    <input type="text" name="sangu" id="sangu" class="form-control" placeholder="Sangu..." value="0" readonly>
                   </div>
                   <div class="form-group col-md-4">
                     <label for="tambahan">Tambahan</label>
-                    <input type="text" name="tambahan" id="tambahan" class="form-control" placeholder="Tambahan..." readonly>
+                    <input type="text" name="tambahan" id="tambahan" class="form-control" placeholder="Tambahan..." value="0" readonly>
                   </div>
                   <div class="form-group col-md-4">
                     <label for="totsangu">Total Sangu</label>
-                    <input type="text" name="totsangu" id="totsangu" class="form-control" placeholder="Total Sangu..." readonly>
+                    <input type="text" name="totsangu" id="totsangu" class="form-control" placeholder="Total Sangu..." value="0" readonly>
                   </div>
                 </div>
 
                 <div class="form-row">
                   <div class="form-group col-md-4">
                     <label for="persen1">Persen 1</label>
-                    <input type="text" name="persen1" id="persen1" class="form-control" maxlength="2" placeholder="Persen 1...">
+                    <input type="text" name="persen1" id="persen1" class="form-control" maxlength="2" placeholder="Persen 1..." value="0">
                   </div>
                   <div class="form-group col-md-4">
                     <label for="persen2">Persen 2</label>
-                    <input type="text" name="persen2" id="persen2" class="form-control" maxlength="2" placeholder="Persen 2...">
+                    <input type="text" name="persen2" id="persen2" class="form-control" maxlength="2" placeholder="Persen 2..." value="0">
                   </div>
                   <div class="form-group col-md-4">
                     <label for="biayaxpersen">Biaya X Persen</label>
-                    <input type="text" name="biayaxpersen" id="biayaxpersen" class="form-control" placeholder="Jumlah Diterima..." readonly>
+                    <input type="text" name="biayaxpersen" id="biayaxpersen" class="form-control" placeholder="Jumlah Diterima..." value="0" readonly>
                   </div>
                 </div>
 

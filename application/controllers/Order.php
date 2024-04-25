@@ -175,7 +175,7 @@ class Order extends CI_Controller
       'kontak_order'  => $notelp,
       'jenis_muatan'  => $muatan,
       'keterangan'    => $keterangan,
-      'status_order'  => 'disiapkan',
+      'status_order'  => 'diproses',
       'user_id'       => $user,
       'dateAdd'       => $addAt,
     ];
@@ -285,6 +285,21 @@ class Order extends CI_Controller
     echo json_encode($response);
   }
 
+  public function updateStatus()
+  {
+    $id = $this->input->post('id');
+    $kd = $this->input->post('no');
+
+    $query = $this->Sangu->getDataTrucSopirkByKdOrder($kd);
+
+    $truckid = $query->truck_id;
+    $sopirid = $query->sopir_id;
+
+    $data = $this->Order->updateStatusOrder($id, $truckid, $sopirid);
+
+    echo json_encode($data);
+  }
+
   public function delete()
   {
     $kd = $this->input->post('kd');
@@ -312,32 +327,45 @@ class Order extends CI_Controller
     echo json_encode($response);
   }
 
-  public function print($kd)
+  public function print()
   {
-    $data = [
-      'title'   => 'DO Order',
-      'detail'  => $this->Order->printOrder($kd)
-    ];
+    $kd  = $this->input->get('no_do');
 
-    $formatKd = strtoupper($kd);
+    if ($kd === null) {
+      echo 'tidak ada data yang ditampilkan';
+    } else {
 
-    $content  = $this->load->view('layout/trans/order/print', $data, true);
+      $query  = $this->Order->printOrder($kd);
 
-    $mpdf = new Mpdf([
-      'mode'          => 'utf-8',
-      'format'        => 'A4',
-      'orientation'   => 'P',
-      'SetTitle'      => "order-$kd",
-      'margin_left'   => 10,
-      'margin_right'  => 10,
-      'margin_top'    => 10,
-      'margin_bottom' => 10,
-    ]);
+      if ($query === null) {
+        echo 'tidak ada data yang ditampilkan';
+      } else {
+        $data = [
+          'title'   => 'DO Order',
+          'detail'  => $query
+        ];
 
-    $mpdf->SetHTMLFooter("<p class='page-number-footer'>No Order : $formatKd | Halaman {PAGENO} Dari {nb}</p>");
-    $mpdf->AddPage();
-    $mpdf->WriteHTML($content);
+        $formatKd = strtoupper($kd);
 
-    $mpdf->Output();
+        $content  = $this->load->view('layout/trans/order/print', $data, true);
+
+        $mpdf = new Mpdf([
+          'mode'          => 'utf-8',
+          'format'        => 'A4',
+          'orientation'   => 'P',
+          'SetTitle'      => "order-$kd",
+          'margin_left'   => 10,
+          'margin_right'  => 10,
+          'margin_top'    => 10,
+          'margin_bottom' => 10,
+        ]);
+
+        $mpdf->SetHTMLFooter("<p class='page-number-footer'>No Order : $formatKd | Halaman {PAGENO} Dari {nb}</p>");
+        $mpdf->AddPage();
+        $mpdf->WriteHTML($content);
+
+        $mpdf->Output();
+      }
+    }
   }
 }

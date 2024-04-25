@@ -24,7 +24,7 @@ class M_Sangu extends CI_Model
     foreach ($data['data'] as &$row) {
       if ($row['tambahan'] == '0') {
         $row['view'] = '<div class="btn-group" role="group">
-                            <a href="http://localhost/hira-to-adm/sangu/print/' . $row['no_order'] . '" target="_blank" class="btn btn-sm btn-info border border-light" data-toggle="tooltip" title="Print Sangu">
+                            <a href="javascript:void(0);" class="btn btn-sm btn-info border border-light btn-printsangu" data-toggle="tooltip" title="Print Sangu" data-kd="' . $row['no_order'] . '">
                               <i class="fas fa-print fa-sm"></i>
                             </a>
                             <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-toggle="tooltip" title="Detail" data-kd="' . $row['no_order'] . '">
@@ -36,10 +36,10 @@ class M_Sangu extends CI_Model
                           </div>';
       } else {
         $row['view'] = '<div class="btn-group" role="group">
-                            <a href="http://localhost/hira-to-adm/sangu/print/' . $row['no_order'] . '" target="_blank" class="btn btn-sm btn-info border border-light" data-toggle="tooltip" title="Print Sangu">
+                            <a href="javascript:void(0);" class="btn btn-sm btn-info border border-light btn-printsangu" data-toggle="tooltip" title="Print Sangu" data-kd="' . $row['no_order'] . '">
                               <i class="fas fa-print fa-sm"></i>
                             </a>
-                            <a href="http://localhost/hira-to-adm/sangu/printTambahan/' . $row['no_order'] . '" target="_blank" class="btn btn-sm btn-secondary border border-light" data-toggle="tooltip" title="Print Tambahan Sangu">
+                            <a href="javascript:void(0);" class="btn btn-sm btn-secondary border border-light btn-printtambahansangu" data-toggle="tooltip" title="Print Tambahan Sangu" data-kd="' . $row['no_order'] . '">
                               <i class="fas fa-plus-circle fa-sm"></i>
                             </a>
                             <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-toggle="tooltip" title="Detail" data-kd="' . $row['no_order'] . '">
@@ -55,6 +55,17 @@ class M_Sangu extends CI_Model
     $results = json_encode($data);
 
     echo $results;
+  }
+
+  public function getSanguByKd($kd)
+  {
+    $this->db->select('no_order')
+      ->from('sangu_sopir')
+      ->where('no_order', $kd);
+
+    $res = $this->db->get()->row();
+
+    return $res;
   }
 
   public function sanguByOrder($kd)

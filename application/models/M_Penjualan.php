@@ -20,61 +20,29 @@ class M_Penjualan extends CI_Model
 
   public function getData()
   {
-    $this->datatables->select('p.id, p.reccu, p.order_id, om.no_order, om.dateAdd as tgl_order, p.jenis, p.muatan, p.berat, p.hrg_borong, p.hrg_kg, p.pengirim, p.kota_asal, p.alamat_asal, p.penerima, p.kota_tujuan, p.alamat_tujuan, p.total_hrg, p.pembayaran, p.status')
+    $this->datatables->select('p.id, p.reccu, p.order_id, om.no_order, om.dateAdd as tgl_order, p.jenis, p.muatan, p.berat, p.hrg_borong, p.hrg_kg, p.pengirim, p.kota_asal, p.alamat_asal, p.penerima, p.kota_tujuan, p.alamat_tujuan, p.total_hrg, p.pembayaran')
       ->from('penjualan p')
       ->join('order_masuk om', 'om.id = p.order_id')
       ->add_column(
         'view',
         '<div class="btn-group" role="group">
-          
+          <a href="http://localhost/hira-to-adm/penjualan/print/$3" target="_blank" class="btn btn-sm btn-info text-white border border-light btn-print" data-toggle="tooltip" title="Cetak">
+            <i class="fas fa-print fa-sm"></i>
+          </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-toggle="tooltip" title="Detail" data-kd="$3">
+            <i class="fas fa-eye fa-sm"></i>
+          </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-kd="$3" data-toggle="tooltip" title="Edit">
+            <i class="fas fa-pencil-alt fa-sm"></i>
+          </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-kd="$3" data-toggle="tooltip" title="Hapus">
+            <i class="fas fa-trash fa-sm"></i>
+          </a>
         </div>',
-        'id, reccu, no_order, jenis, muatan, berat, hrg_borong, hrg_kg, pengirim, kota_asal, alamat_asal, penerima, kota_tujuan, alamat_tujuan, total_hrg, pembayaran, status, dateAdd'
+        'id, reccu, no_order, jenis, muatan, berat, hrg_borong, hrg_kg, pengirim, kota_asal, alamat_asal, penerima, kota_tujuan, alamat_tujuan, total_hrg, pembayaran, dateAdd'
       );
 
-    $results = $this->datatables->generate();
-
-    $data = json_decode($results, true);
-
-    foreach ($data['data'] as &$row) {
-      if ($row['status'] == 'diproses') {
-        $row['view'] = '<div class="btn-group" role="group">
-                            <a href="javascript:void(0);" class="btn btn-sm btn-secondary border border-light btn-update" data-toggle="tooltip" title="Update Status" data-id="' . $row['order_id'] . '">
-                              <i class="fas fa-check fa-sm"></i>
-                            </a>
-                            <a href="http://localhost/hira-to-adm/penjualan/print/' . $row['no_order'] . '" target="_blank" class="btn btn-sm btn-info text-white border border-light btn-print" data-toggle="tooltip" title="Cetak">
-                              <i class="fas fa-print fa-sm"></i>
-                            </a>
-                            <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-toggle="tooltip" title="Detail" data-kd="' . $row['no_order'] . '">
-                              <i class="fas fa-eye fa-sm"></i>
-                            </a>
-                            <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-kd="' . $row['no_order'] . '" data-toggle="tooltip" title="Edit">
-                              <i class="fas fa-pencil-alt fa-sm"></i>
-                            </a>
-                            <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-kd="' . $row['no_order'] . '" data-toggle="tooltip" title="Hapus">
-                              <i class="fas fa-trash fa-sm"></i>
-                            </a>
-                          </div>';
-      } else {
-        $row['view'] = '<div class="btn-group" role="group">
-                            <a href="http://localhost/hira-to-adm/penjualan/print/' . $row['no_order'] . '" target="_blank" class="btn btn-sm btn-info text-white border border-light btn-print" data-toggle="tooltip" title="Cetak">
-                              <i class="fas fa-print fa-sm"></i>
-                            </a>
-                            <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-toggle="tooltip" title="Detail" data-kd="' . $row['no_order'] . '">
-                              <i class="fas fa-eye fa-sm"></i>
-                            </a>
-                            <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-kd="' . $row['no_order'] . '" data-toggle="tooltip" title="Edit">
-                              <i class="fas fa-pencil-alt fa-sm"></i>
-                            </a>
-                            <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-kd="' . $row['no_order'] . '" data-toggle="tooltip" title="Hapus">
-                              <i class="fas fa-trash fa-sm"></i>
-                            </a>
-                          </div>';
-      }
-    }
-
-    $results = json_encode($data);
-
-    echo $results;
+    return $this->datatables->generate();
   }
 
   public function getDataByKd($kd)
@@ -246,45 +214,5 @@ class M_Penjualan extends CI_Model
 
     $this->db->delete('penjualan', $whereidorder);
     $this->db->update('order_masuk', $dataorder, $wherenoorder);
-  }
-
-  public function updateStatusOrderPenjualan($id, $truckid, $sopirid)
-  {
-    $statusOrder = [
-      'status_order'  => 'selesai',
-    ];
-
-    $statusPenjualan = [
-      'status'  => 'selesai',
-    ];
-
-    $whereorderid = [
-      'order_id' => $id
-    ];
-
-    $whereidorder = [
-      'id' => $id
-    ];
-
-    $wheresopirid = [
-      'id' => $sopirid
-    ];
-
-    $wheretruckid = [
-      'id' => $truckid
-    ];
-
-    $statussopir = [
-      'status_sopir' => 0
-    ];
-
-    $statustruck = [
-      'status_truck' => 0
-    ];
-
-    $this->db->update('penjualan',  $statusPenjualan, $whereorderid);
-    $this->db->update('order_masuk', $statusOrder, $whereidorder);
-    $this->db->update('armada', $statustruck, $wheretruckid);
-    $this->db->update('sopir', $statussopir, $wheresopirid);
   }
 }

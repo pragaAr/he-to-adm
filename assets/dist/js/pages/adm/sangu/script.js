@@ -227,8 +227,40 @@ $("#sanguTables").on("click", ".btn-detail", function () {
   });
 });
 
-$(document).on("select2:open", () => {
-  document
-    .querySelector(".select2-container--open .select2-search__field")
-    .focus();
+$("#sanguTables").on("click", ".btn-printsangu", function () {
+  const kd = $(this).data("kd");
+
+  $.ajax({
+    url: "http://localhost/hira-to-adm/sangu/cekKd",
+    method: "POST",
+    dataType: "JSON",
+    data: {
+      kd: kd,
+    },
+    success: function (data) {
+      if (data !== null) {
+        Swal.fire({
+          title: "Cetak Pengeluaran kas ?",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          cancelButtonText: "Batal",
+          confirmButtonText: "Ya, Cetak !",
+        }).then((result) => {
+          if (result.value) {
+            window.open(
+              "http://localhost/hira-to-adm/sangu/print" +
+                "?no_do=" +
+                data.no_order
+            );
+          }
+        });
+      } else {
+        console.log("data tidak ditemukan");
+      }
+
+      $('[data-toggle="tooltip"]').tooltip("hide");
+    },
+  });
 });

@@ -19,7 +19,6 @@ class Home extends CI_Controller
 		$data = [
 			'title' 				=> 'Home',
 			'totalOrder'		=> $this->Order->countData(),
-			'orderPrep' 		=> $this->Order->countPrepareData(),
 			'orderProses' 	=> $this->Order->countProsesData(),
 			'orderSuccess'	=> $this->Order->countSuccessData(),
 		];

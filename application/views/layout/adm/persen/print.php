@@ -263,11 +263,10 @@
           <tr>
             <th class="th-sangu" style="width:6%">No.</th>
             <th class="th-sangu" style="width:22%">Terima Sangu</th>
-            <th class="th-sangu" style="width:12%">Tanggal</th>
-            <th class="th-sangu" style="width:16%">Nominal</th>
-            <th class="th-sangu" style="width:12%">Tanggal</th>
+            <th class="th-sangu" style="width:20%">Tanggal</th>
+            <th class="th-sangu" style="width:18%">Nominal</th>
             <th class="th-sangu" style="width:16%">Tambahan</th>
-            <th class="th-sangu" style="width:16%">Total</th>
+            <th class="th-sangu" style="width:18%">Total</th>
           </tr>
         </thead>
         <tbody>
@@ -278,7 +277,6 @@
               <td class="td-sangu text-uppercase"><?= $sangu->nama ?></td>
               <td class="td-sangu"><?= date('d/m/y', strtotime($sangu->tglSangu)) ?></td>
               <td class="td-sangu text-right">Rp. <?= number_format($sangu->nominal_sangu) ?></td>
-              <td class="td-sangu"><?= date('d/m/y', strtotime($sangu->tglSangu)) ?></td>
               <td class="td-sangu text-right">Rp. <?= number_format($sangu->tambahan) ?></td>
 
               <?php
@@ -298,7 +296,7 @@
             ?>
           <?php endforeach ?>
           <tr>
-            <td class="td-sangu text-uppercase font-bold" colspan="6">jumlah</td>
+            <td class="td-sangu text-uppercase font-bold" colspan="5">jumlah</td>
             <td class="td-sangu text-right">Rp. <?= number_format($jmlTotalSangu) ?></td>
           </tr>
         </tbody>
@@ -308,7 +306,7 @@
     <div class="mt-2">
       <table class="table-persen">
         <tr>
-          <td class="td-persen font-bold" style="width:60%">Persen (Total Order Penjualan - Total Sangu) </td>
+          <td class="td-persen font-bold" style="width:60%">Persen (Jumlah Order Penjualan - Jumlah Sangu) </td>
           <td class="td-persen font-bold text-center" style="width:6%">:</td>
 
           <?php

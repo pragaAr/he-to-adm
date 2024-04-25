@@ -48,6 +48,15 @@ class Sangu extends CI_Controller
     echo json_encode($data);
   }
 
+  public function cekKd()
+  {
+    $kd   = $this->input->post('kd');
+
+    $data = $this->Sangu->getSanguByKd($kd);
+
+    echo json_encode($data);
+  }
+
   public function getDetail()
   {
     $kd   = $this->input->post('kd');
@@ -79,43 +88,56 @@ class Sangu extends CI_Controller
     echo json_encode($response);
   }
 
-  public function print($kd)
+  public function print()
   {
-    $query    = $this->Sangu->sanguByOrder($kd);
+    $kd  = $this->input->get('no_do');
 
-    $plat     = $query->platno;
-    $sopir    = $query->nama;
-    $nominal  = $query->nominal;
-    $cust     = $query->nama_cust;
-    $asal     = $query->asal_order;
-    $tujuan   = $query->tujuan_order;
+    if ($kd === null) {
+      echo 'tidak ada data yang ditampilkan';
+    } else {
 
-    $data = [
-      'title'     => 'Pengeluaran Kas',
-      'sopir'     => $sopir,
-      'keperluan' => "Sangu " . strtoupper($plat) . " " . ucwords($sopir),
-      'nominal'   => $nominal,
-      'desc'      => strtoupper($cust) . ' ' . strtoupper($asal) . '-' . strtoupper($tujuan) . ' (' . strtoupper($kd) . ') ',
-      'ket'       => ''
-    ];
+      $cek  = $this->Sangu->getSanguByKd($kd);
 
-    $content  = $this->load->view('layout/adm/sangu/print', $data, true);
+      if ($cek === null) {
+        echo 'tidak ada data yang ditampilkan';
+      } else {
+        $query    = $this->Sangu->sanguByOrder($kd);
 
-    $mpdf = new Mpdf([
-      'mode'          => 'utf-8',
-      'format'        => 'A5',
-      'orientation'   => 'L',
-      'SetTitle'      => "pengeluaran-kas-sangu-$kd",
-      'margin_left'   => 10,
-      'margin_right'  => 10,
-      'margin_top'    => 10,
-      'margin_bottom' => 10,
-    ]);
+        $plat     = $query->platno;
+        $sopir    = $query->nama;
+        $nominal  = $query->nominal;
+        $cust     = $query->nama_cust;
+        $asal     = $query->asal_order;
+        $tujuan   = $query->tujuan_order;
 
-    $mpdf->AddPage();
-    $mpdf->WriteHTML($content);
+        $data = [
+          'title'     => 'Pengeluaran Kas',
+          'sopir'     => $sopir,
+          'keperluan' => "Sangu " . strtoupper($plat) . " " . ucwords($sopir),
+          'nominal'   => $nominal,
+          'desc'      => strtoupper($cust) . ' ' . strtoupper($asal) . '-' . strtoupper($tujuan) . ' (' . strtoupper($kd) . ') ',
+          'ket'       => ''
+        ];
 
-    $mpdf->Output();
+        $content  = $this->load->view('layout/adm/sangu/print', $data, true);
+
+        $mpdf = new Mpdf([
+          'mode'          => 'utf-8',
+          'format'        => 'A5',
+          'orientation'   => 'L',
+          'SetTitle'      => "pengeluaran-kas-sangu-$kd",
+          'margin_left'   => 10,
+          'margin_right'  => 10,
+          'margin_top'    => 10,
+          'margin_bottom' => 10,
+        ]);
+
+        $mpdf->AddPage();
+        $mpdf->WriteHTML($content);
+
+        $mpdf->Output();
+      }
+    }
   }
 
   public function printTambahan($kd)
