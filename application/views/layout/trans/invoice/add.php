@@ -74,22 +74,6 @@
                     <input type="text" name="tothrg" id="tothrg" class="form-control text-uppercase" placeholder="Total.." readonly>
                   </div>
                 </div>
-                <div class="form-row">
-                  <div class="form-group col-lg-4 col-md-6 col-sm-12">
-                    <label for="suratjalan">Surat Jalan</label>
-                    <input type="text" name="suratjalan" id="suratjalan" class="form-control text-uppercase" placeholder="Surat Jalan.." autocomplete="off">
-                  </div>
-                  <div class="form-group col-lg-4 col-md-6 col-sm-12">
-                    <label for="beratsj">Berat/SJ(Kg)</label>
-                    <input type="text" name="beratsj" id="beratsj" class="form-control text-uppercase" placeholder="Berat/SJ(Kg).." autocomplete="off">
-                  </div>
-                  <div class="form-group col-lg-4 col-md-6 col-sm-12 d-flex align-items-end">
-                    <button type="button" class="btn btn-primary border border-light btn-block mt-4" id="tambah" style="height:calc(1.5em + 0.75rem + 2px);" disabled>
-                      <i class="fa fa-plus"></i>
-                      Tambah
-                    </button>
-                  </div>
-                </div>
 
                 <hr style="border: 1px solid #6c757d;">
 

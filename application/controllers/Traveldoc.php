@@ -84,6 +84,15 @@ class Traveldoc extends CI_Controller
     echo json_encode($response);
   }
 
+  public function getDataByReccu()
+  {
+    $reccu = $this->input->post('reccu');
+
+    $response = $this->SJ->getDataDetailByReccu($reccu);
+
+    echo json_encode($response);
+  }
+
   public function cekNomor()
   {
     $nomor    = $this->input->post('nomor');
@@ -252,7 +261,7 @@ class Traveldoc extends CI_Controller
           'margin_left'   => 5,
           'margin_right'  => 5,
           'margin_top'    => 5,
-          'margin_bottom' => 5,
+          'margin_bottom' => 20,
         ]);
 
         $content  = $this->load->view('layout/trans/surat-jalan/print', $data, true);

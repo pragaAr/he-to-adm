@@ -130,3 +130,24 @@
     </div>
   </div>
 </div>
+
+<!-- modalHistory -->
+<div class="modal fade" id="modalHistory" data-backdrop="static">
+  <div class="modal-dialog modal-xl modal-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title text-capitalize" id="modalTitle"></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="timeline" id="timeline">
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

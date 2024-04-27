@@ -72,7 +72,7 @@ class Order extends CI_Controller
   {
     $keyword = $this->input->get('q');
 
-    $data = !$keyword ? $this->Order->getOrderDisiapkan() : $this->Order->getSearchOrderDisiapkan($keyword);
+    $data = !$keyword ? $this->Order->getOrderDiproses() : $this->Order->getSearchOrderDiproses($keyword);
 
     $response = [];
     foreach ($data as $order) {

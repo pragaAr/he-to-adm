@@ -124,7 +124,7 @@
     }
 
     .payment-metod {
-      margin-top: 15px;
+      page-break-inside: avoid;
     }
 
     .table-payment {
@@ -144,7 +144,9 @@
     }
 
     .signature {
-      margin-top: 40px;
+      margin-top: 20px;
+      margin-bottom: 10px !important;
+      page-break-inside: avoid;
     }
 
     .table-signature {
@@ -192,7 +194,8 @@
     }
 
     .col-dpp {
-      margin-top: 30px;
+      margin-top: 15px;
+      page-break-inside: avoid;
     }
 
     .table-dpp {

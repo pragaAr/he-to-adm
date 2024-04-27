@@ -93,10 +93,11 @@ class M_Invoice extends CI_Model
     return $query;
   }
 
-  public function getDetailData($reccu)
+  public function getDetailData($nomor, $reccu)
   {
     $this->db->select('reccu, surat_jalan, berat')
       ->from('detail_inv')
+      ->where('nomor_inv', $nomor)
       ->where_in('reccu', $reccu);
 
     $query = $this->db->get()->result();

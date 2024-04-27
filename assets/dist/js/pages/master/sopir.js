@@ -224,8 +224,106 @@ $("#sopirTables").on("click", ".btn-delete", function () {
   });
 });
 
-$(document).on("select2:open", () => {
-  document
-    .querySelector(".select2-container--open .select2-search__field")
-    .focus();
+$("#sopirTables").on("click", ".btn-history", function () {
+  const id = $(this).data("id");
+  const nama = $(this).data("nama");
+
+  const modalTitle = $("#modalTitle");
+  modalTitle.text("History Order " + nama);
+
+  $.ajax({
+    url: "http://localhost/hira-to-adm/sopir/history",
+    method: "POST",
+    data: { id: id },
+    success: function (response) {
+      const res = JSON.parse(response);
+
+      console.log(res);
+      console.log(nama);
+
+      const timeline = $("#timeline");
+      timeline.empty();
+
+      $.each(res, function (index, item) {
+        const date = new Date(item.tgl_order);
+
+        const dateOrder = date.toLocaleDateString("id-ID", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        });
+
+        const status =
+          item.status_order == "selesai"
+            ? '<i class="fas fa-check-circle text-success"></i>'
+            : '<i class="fas fa-clock"></i>';
+
+        const tambahanSangu =
+          item.tambahan_sangu == "0"
+            ? ""
+            : '<p class="text-capitalize">' + item.ket_tambahan_sangu + "</p>";
+
+        const timelineItem = `
+            <div class="time-label">
+                <span class="bg-info" id="timelineDate">${dateOrder}</span>
+            </div>
+            <div>
+              <i class="fas fa-clock bg-info"></i>
+              <div class="timeline-item" style="background-color:#484d53">
+                <span class="time">
+                  ${status}
+                </span>
+                <h3 class="timeline-header text-uppercase" id="timelineHeader">
+                  do : ${item.no_order}
+                </h3>
+                <div class="timeline-body" id="timelineBody">
+                  <div class="table-responsive">
+                    <table id="tableTimeline" class="table table-borderless" style="width:100%" celspacing="0">
+                      <tr>
+                        <th class="align-middle text-uppercase p-1">Customer</th>
+                        <th class="align-middle text-uppercase p-1">Asal-Tujuan</th>
+                        <th class="align-middle text-uppercase p-1">Muatan</th>
+                      </tr>
+                      <tr>
+                        <td class="align-middle text-uppercase p-1">
+                          ${item.nama_cust}
+                        </td>
+                        <td class="align-middle text-uppercase p-1">
+                          ${item.asal_order} - ${item.tujuan_order}
+                        </td>
+                        <td class="align-middle text-uppercase p-1">
+                          ${item.jenis_muatan}
+                        </td>
+                      </tr>
+                      <tr>
+                        <th class="align-middle text-uppercase p-1">Plat Nomor</th>
+                        <th class="align-middle text-uppercase p-1">Sangu</th>
+                        <th class="align-middle text-uppercase p-1">Tambahan</th>
+                      </tr>
+                      <tr>
+                        <td class="align-middle text-uppercase p-1">
+                          ${item.platno}
+                        </td>
+                        <td class="align-middle p-1">
+                          Rp. ${format(item.nominal_sangu)}
+                        </td>
+                        <td class="align-middle p-1">
+                          Rp. ${format(item.tambahan_sangu)}
+                        </td>
+                      </tr>
+                    </table>
+                      ${tambahanSangu}
+                  </div>
+                </div>
+              </div>
+            </div>`;
+
+        timeline.append(timelineItem);
+      });
+
+      $("#modalHistory").modal("show");
+    },
+  });
+
+  $('[data-toggle="tooltip"]').tooltip("hide");
 });

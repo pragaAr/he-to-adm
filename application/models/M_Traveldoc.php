@@ -69,6 +69,17 @@ class M_Traveldoc extends CI_Model
     return $query;
   }
 
+  public function getDataDetailByReccu($reccu)
+  {
+    $this->db->select('no_order, reccu, surat_jalan, berat, retur')
+      ->from('detail_sj')
+      ->where('reccu', $reccu);
+
+    $query = $this->db->get()->result();
+
+    return $query;
+  }
+
   public function getDetailData($reccu)
   {
     $this->db->select('reccu, ket, surat_jalan, berat, retur')

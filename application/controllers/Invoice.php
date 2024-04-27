@@ -52,7 +52,7 @@ class Invoice extends CI_Controller
       $reccu[] = $item->reccu;
     }
 
-    $detail = $this->Invoice->getDetailData($reccu);
+    $detail = $this->Invoice->getDetailData($nomor, $reccu);
 
     $response = [
       'nomor'   => $query->nomor_inv,
@@ -138,6 +138,10 @@ class Invoice extends CI_Controller
       $datadt[$i]['berat']        = $berat[$i];
     }
 
+    // echo json_encode($datadt);
+    // die;
+
+
     $datasurat = [
       'customer'    => $cust,
       'jenis'       => $tipe,
@@ -208,6 +212,7 @@ class Invoice extends CI_Controller
       echo 'tidak ada data yang ditampilkan';
     } else {
       $str    = str_replace('-', '/', $nomor);
+      $upperstr = strtoupper($str);
 
       $query  = $this->Invoice->getDataByNomor($str);
 
@@ -222,7 +227,7 @@ class Invoice extends CI_Controller
           $reccu[] = $item->reccu;
         }
 
-        $detail = $this->Invoice->getDetailData($reccu);
+        $detail = $this->Invoice->getDetailData($str, $reccu);
 
         $data = [
           'title'     => 'Invoice',
@@ -241,12 +246,12 @@ class Invoice extends CI_Controller
           'margin_left'   => 5,
           'margin_right'  => 5,
           'margin_top'    => 5,
-          'margin_bottom' => 5,
+          'margin_bottom' => 20,
         ]);
 
         $content  = $this->load->view('layout/trans/invoice/print', $data, true);
 
-        $mpdf->SetHTMLFooter("<p class='page-number-footer'>Invoice ( $str ) | Halaman {PAGENO} Dari {nb}</p>");
+        $mpdf->SetHTMLFooter("<p class='page-number-footer'>Invoice ( $upperstr ) | Halaman {PAGENO} Dari {nb}</p>");
         $mpdf->AddPage();
         $mpdf->WriteHTML($content);
 

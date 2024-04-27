@@ -203,9 +203,10 @@
               $total_berat = 0;
 
               foreach ($detail as $dtdetaildata) {
-                if ($dtdetaildata->reccu == $data->reccu)
+                if ($dtdetaildata->reccu == $data->reccu) {
+                  $total_berat += floatval($dtdetaildata->berat);
                   $total_reccu++;
-                $total_berat += $dtdetaildata->berat;
+                }
               } ?>
 
               <td class="td-content">Total Surat Jalan <?= $total_reccu ?></td>

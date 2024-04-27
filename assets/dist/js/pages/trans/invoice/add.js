@@ -79,106 +79,96 @@ $(document).ready(function () {
     .on("select2:select", function (e) {
       const selectedReccu = e.params.data.id;
 
-      $.ajax({
-        url: "http://localhost/hira-to-adm/penjualan/getListReccuForTravelDoc",
-        type: "POST",
-        dataType: "json",
-        data: {
-          reccu: selectedReccu,
-        },
-        success: function (data) {
-          $("#selectedReccu").val(data.reccu);
-          $("#selectedOrder").val(data.no_order);
-          $("#jenis").val(data.jenis);
-          $("#berat").val(data.berat);
-          $("#penerima").val(data.penerima);
-          $("#hrgkg").val(format(data.hrg_kg));
-          $("#hrgbrg").val(format(data.hrg_borong));
-          $("#tothrg").val(format(data.total_hrg));
+      let dataCart = {
+        id: selectedReccu,
+        text: selectedReccu,
+      };
 
-          $("#suratjalan").focus();
-        },
-        error: function (xhr, status, error) {
-          console.error("Error:", error);
-        },
-      });
+      const isInCart = cartInvoice.some((emp) => emp.id === selectedReccu);
+
+      if (isInCart) {
+        Swal.fire({
+          icon: "warning",
+          title: "Oops!",
+          text: "Reccu sudah dipilih!",
+        });
+      } else {
+        cartInvoice.push(dataCart);
+
+        $.ajax({
+          url: "http://localhost/hira-to-adm/penjualan/getListReccuForTravelDoc",
+          type: "POST",
+          dataType: "json",
+          data: {
+            reccu: selectedReccu,
+          },
+          success: function (data) {
+            $("#selectedReccu").val(data.reccu);
+            $("#selectedOrder").val(data.no_order);
+            $("#jenis").val(data.jenis);
+            $("#berat").val(data.berat);
+            $("#penerima").val(data.penerima);
+            $("#hrgkg").val(format(data.hrg_kg));
+            $("#hrgbrg").val(format(data.hrg_borong));
+            $("#tothrg").val(format(data.total_hrg));
+          },
+          error: function (xhr, status, error) {
+            console.error("Error:", error);
+          },
+        });
+
+        $.ajax({
+          url: "http://localhost/hira-to-adm/traveldoc/getDataByReccu",
+          type: "POST",
+          dataType: "json",
+          data: {
+            reccu: selectedReccu,
+          },
+          success: function (data) {
+            if (data.length === 0) {
+              Swal.fire({
+                icon: "error",
+                title: "Silahkan pilih Reccu lain!",
+                text: "Tidak ada data Surat Jalan!",
+              });
+            } else {
+              $.each(data, function (index, item) {
+                const newRow = `
+                  <tr class="cart text-center">
+                    <input type="hidden" name="noorder_hidden[]" value="${item.no_order}">
+                    <td class="text-uppercase rc">
+                        ${item.reccu}
+                        <input type="hidden" name="rc_hidden[]" value="${item.reccu}">
+                    </td>
+                    <td class="text-uppercase sj">
+                        ${item.surat_jalan}
+                        <input type="hidden" name="sj_hidden[]" value="${item.surat_jalan}">
+                    </td>
+                    <td class="text-uppercase berat">
+                        ${item.berat}
+                        <input type="hidden" name="berat_hidden[]" value="${item.berat}">
+                    </td>
+                    <td class="aksi">
+                      <button type="button" class="btn btn-danger btn-sm border border-light" id="tombol-hapus" data-sj="${item.reccu}" data-id="${item.reccu}">
+                        Hapus
+                      </button>
+                    </td>
+                  </tr>
+                `;
+
+                $("#cart tbody").append(newRow);
+              });
+
+              $("#pengirim").prop("disabled", true);
+              $("#tfoot").show();
+            }
+          },
+          error: function (xhr, status, error) {
+            console.error("Error:", error);
+          },
+        });
+      }
     });
-
-  $("#reccu").on("change", function (e) {
-    if ($(this).val() !== null && $("#suratjalan").val() !== "") {
-      $("#tambah").prop("disabled", false);
-    } else {
-      $("#tambah").prop("disabled", true);
-    }
-  });
-
-  $("#suratjalan").on("input", function (e) {
-    if ($(this).val() !== "" && $("#reccu").val() !== null) {
-      $("#tambah").prop("disabled", false);
-    } else {
-      $("#tambah").prop("disabled", true);
-    }
-  });
-
-  $("button#tambah").on("click", function (e) {
-    const sjval = $("#suratjalan").val();
-    const trimmedSj = $.trim(sjval);
-    const reccu = $("#selectedReccu").val();
-    const noorder = $("#selectedOrder").val();
-
-    const valueBerat = $("#beratsj").val() ? $("#beratsj").val() : 0;
-
-    let dataCart = {
-      id: trimmedSj,
-      text: trimmedSj,
-    };
-
-    const isInCart = cartInvoice.some((emp) => emp.id === dataCart.id);
-
-    if (isInCart) {
-      Swal.fire({
-        icon: "warning",
-        title: "Oops!",
-        text: "Surat Jalan sudah ada di list!",
-      });
-    } else {
-      cartInvoice.push(dataCart);
-
-      const newRow = `
-          <tr class="cart text-center">
-            <input type="hidden" name="noorder_hidden[]" value="${noorder}">
-            <td class="text-uppercase rc">
-                ${reccu}
-                <input type="hidden" name="rc_hidden[]" value="${reccu}">
-            </td>
-            <td class="text-uppercase sj">
-                ${trimmedSj}
-                <input type="hidden" name="sj_hidden[]" value="${trimmedSj}">
-            </td>
-            <td class="text-uppercase valueBerat">
-                ${valueBerat}
-                <input type="hidden" name="valueBerat_hidden[]" value="${valueBerat}">
-            </td>
-            <td class="aksi">
-              <button type="button" class="btn btn-danger btn-sm border border-light" id="tombol-hapus" data-sj="${trimmedSj}" data-id="${trimmedSj}">
-                Hapus
-              </button>
-            </td>
-          </tr>
-  	`;
-
-      $("#cart tbody").append(newRow);
-      $("#tfoot").show();
-
-      $("#pengirim").prop("disabled", true);
-      $("#suratjalan").val("");
-      $("#beratsj").val("");
-
-      $("#suratjalan").focus();
-
-      $("#tambah").prop("disabled", true);
-    }
-  });
 
   $(document).on("click", "#tombol-hapus", function () {
     let idToRemove = $(this).data("id");
@@ -189,9 +179,16 @@ $(document).ready(function () {
 
     cartInvoice = cartInvoice.filter((item) => item.id !== idToRemove);
 
-    $(this).closest(".cart").remove();
+    $('[data-id="' + idToRemove + '"]')
+      .closest(".cart")
+      .remove();
 
-    if ($("#tbody").children().length === 0) $("#tfoot").hide();
+    if ($("#tbody").children().length === 0) {
+      $("#tfoot").hide();
+      $("#pengirim").prop("disabled", false);
+    }
+
+    resetOther();
   });
 
   // =================form on submit=================
@@ -222,9 +219,9 @@ $(document).ready(function () {
       sjInvoice.push(sj_hidden);
     });
 
-    $('input[name="valueBerat_hidden[]"]').each(function () {
-      const valueBerat_hidden = $(this).val();
-      valberatInvoice.push(valueBerat_hidden);
+    $('input[name="berat_hidden[]"]').each(function () {
+      const berat_hidden = $(this).val();
+      valberatInvoice.push(berat_hidden);
     });
 
     $.ajax({
@@ -293,8 +290,6 @@ $(document).ready(function () {
     $("#hrgkg").val("");
     $("#hrgbrg").val("");
     $("#tothrg").val("");
-    $("#suratjalan").val("");
-    $("#beratsj").val("");
   }
 
   function reset() {
@@ -311,8 +306,6 @@ $(document).ready(function () {
     $("#hrgkg").val("");
     $("#hrgbrg").val("");
     $("#tothrg").val("");
-    $("#suratjalan").val("");
-    $("#beratsj").val("");
 
     $("#cart tbody").empty();
     $("#tfoot").hide();

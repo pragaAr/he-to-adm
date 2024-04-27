@@ -43,6 +43,15 @@ class Sopir extends CI_Controller
     echo json_encode($data);
   }
 
+  public function history()
+  {
+    $id   = $this->input->post('id');
+
+    $data = $this->Sopir->getDataHistoryOrder($id);
+
+    echo json_encode($data);
+  }
+
   public function getListSopir()
   {
     $keyword = $this->input->get('q');

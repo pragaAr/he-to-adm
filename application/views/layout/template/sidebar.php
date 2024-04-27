@@ -50,7 +50,7 @@
                  <p>Sopir</p>
                </a>
              </li>
-             <hr>
+
            </ul>
          </li>
 
