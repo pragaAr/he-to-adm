@@ -44,37 +44,38 @@ class M_Order extends CI_Model
     $data = json_decode($res, true);
 
     foreach ($data['data'] as &$row) {
+      $no_order = html_escape($row['no_order']);
       if ($row['status_order'] != 'selesai') {
 
         $row['view'] = '<div class="btn-group" role="group">
-                          <a href="javascript:void(0);" class="btn btn-sm btn-light border border-light btn-update" data-toggle="tooltip" title="Update Status" data-kd="' . $row['no_order'] . '">
+                          <a href="javascript:void(0);" class="btn btn-sm btn-light border border-light btn-update" data-toggle="tooltip" title="Update Status" data-kd="' . $no_order . '">
                             <i class="fas fa-check fa-sm"></i>
                           </a>
-                          <a href="javascript:void(0);" class="btn btn-sm btn-info text-white border border-light btn-print" data-toggle="tooltip" title="Cetak" data-kd="' . $row['no_order'] . '">
+                          <a href="javascript:void(0);" class="btn btn-sm btn-info text-white border border-light btn-print" data-toggle="tooltip" title="Cetak" data-kd="' . $no_order . '">
                             <i class="fas fa-print fa-sm"></i>
                           </a>
-                          <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-kd="' . $row['no_order'] . '" data-toggle="tooltip" title="Detail">
+                          <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-kd="' . $no_order . '" data-toggle="tooltip" title="Detail">
                             <i class="fas fa-eye fa-sm"></i>
                           </a>
-                          <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-kd="' . $row['no_order'] . '" data-toggle="tooltip" title="Edit">
+                          <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-kd="' . $no_order . '" data-toggle="tooltip" title="Edit">
                             <i class="fas fa-pencil-alt fa-sm"></i>
                           </a>
-                          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-kd="' . $row['no_order'] . '" data-toggle="tooltip" title="Hapus">
+                          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-kd="' . $no_order . '" data-toggle="tooltip" title="Hapus">
                             <i class="fas fa-trash fa-sm"></i>
                           </a>
                         </div>';
       } else {
         $row['view'] = '<div class="btn-group" role="group">
-                          <a href="javascript:void(0);" class="btn btn-sm btn-info text-white border border-light btn-print" data-toggle="tooltip" title="Cetak" data-kd="' . $row['no_order'] . '">
+                          <a href="javascript:void(0);" class="btn btn-sm btn-info text-white border border-light btn-print" data-toggle="tooltip" title="Cetak" data-kd="' . $no_order . '">
                             <i class="fas fa-print fa-sm"></i>
                           </a>
-                          <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-kd="' . $row['no_order'] . '" data-toggle="tooltip" title="Detail">
+                          <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-kd="' . $no_order . '" data-toggle="tooltip" title="Detail">
                             <i class="fas fa-eye fa-sm"></i>
                           </a>
-                          <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-kd="' . $row['no_order'] . '" data-toggle="tooltip" title="Edit">
+                          <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-kd="' . $no_order . '" data-toggle="tooltip" title="Edit">
                             <i class="fas fa-pencil-alt fa-sm"></i>
                           </a>
-                          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-kd="' . $row['no_order'] . '" data-toggle="tooltip" title="Hapus">
+                          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-kd="' . $no_order . '" data-toggle="tooltip" title="Hapus">
                             <i class="fas fa-trash fa-sm"></i>
                           </a>
                         </div>';
@@ -270,32 +271,32 @@ class M_Order extends CI_Model
 
   public function updateStatusOrder($id, $truckid, $sopirid)
   {
-    $statusOrder = [
-      'status_order'  => 'selesai',
-    ];
+    $this->db->trans_start();
 
-    $whereidorder = [
-      'id' => $id
-    ];
+    $statusOrder  = ['status_order'  => 'selesai'];
 
-    $wheresopirid = [
-      'id' => $sopirid
-    ];
-
-    $wheretruckid = [
-      'id' => $truckid
-    ];
-
-    $statussopir = [
-      'status_sopir' => 0
-    ];
-
-    $statustruck = [
-      'status_truck' => 0
-    ];
+    $whereidorder = ['id' => $id];
 
     $this->db->update('order_masuk', $statusOrder, $whereidorder);
-    $this->db->update('armada', $statustruck, $wheretruckid);
+
+    $statussopir  = ['status_sopir' => 0];
+
+    $wheresopirid = ['id' => $sopirid];
+
     $this->db->update('sopir', $statussopir, $wheresopirid);
+
+    $statustruck  = ['status_truck' => 0];
+
+    $wheretruckid = ['id' => $truckid];
+
+    $this->db->update('armada', $statustruck, $wheretruckid);
+
+    $this->db->trans_complete();
+
+    if ($this->db->trans_status() === FALSE) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
