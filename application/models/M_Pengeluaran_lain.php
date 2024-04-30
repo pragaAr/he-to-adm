@@ -3,6 +3,27 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class M_Pengeluaran_lain extends CI_Model
 {
+  public function generateKode()
+  {
+    $this->db->select('RIGHT(pengeluaran_lain.kd,3) as kd', FALSE)
+      ->order_by('kd', 'DESC')
+      ->limit(1);
+
+    $query = $this->db->get('pengeluaran_lain');
+
+    if ($query->num_rows() <> 0) {
+      $data = $query->row();
+      $kode = intval($data->kd) + 1;
+    } else {
+      $kode = 1;
+    }
+
+    $batas = str_pad($kode, 5, "0", STR_PAD_LEFT);
+    $kodetampil = "pl-" . $batas;
+
+    return $kodetampil;
+  }
+
   public function getData()
   {
     $this->datatables->select('a.id, a.kd, a.nominal, a.keterangan, a.dateAdd, b.nama')
@@ -40,23 +61,22 @@ class M_Pengeluaran_lain extends CI_Model
     return $query;
   }
 
-  public function addData()
+  public function addData($data, $detail)
   {
-    $karyawan   = $this->input->post('karyawan');
-    $nominal    = preg_replace("/[^0-9\.]/", "", $this->input->post('nominal'));
-    $keterangan = $this->input->post('keterangan');
-    $user       = $this->session->userdata('id_user');
-    $dateAdd    = date('Y-m-d H:i:s');
-
-    $data = array(
-      'karyawan_id'   => strtolower($karyawan),
-      'nominal'       => strtolower($nominal),
-      'keterangan'    => strtolower($keterangan),
-      'user_id'       => strtolower($user),
-      'dateAdd'       => $dateAdd
-    );
+    $this->db->trans_start();
 
     $this->db->insert('pengeluaran_lain', $data);
+    $this->db->insert_batch('detail_pl', $detail);
+
+    $this->db->trans_complete();
+
+    if ($this->db->trans_status() === FALSE) {
+      // Transaksi gagal
+      return false;
+    } else {
+      // Transaksi berhasil
+      return true;
+    }
   }
 
   public function editData($id)

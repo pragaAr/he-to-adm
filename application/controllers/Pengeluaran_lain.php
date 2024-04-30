@@ -40,7 +40,7 @@ class Pengeluaran_lain extends CI_Controller
 
   public function getKode()
   {
-    $data = $this->Etc->getKd();
+    $data = $this->Etc->generateKode();
 
     echo json_encode($data);
   }
@@ -58,6 +58,56 @@ class Pengeluaran_lain extends CI_Controller
 
   public function proses()
   {
+    $count      = count($this->input->post('keperluan'));
+
+    $kd         = $this->input->post('kode');
+    $tanggal    = date('Y-m-d', strtotime($this->input->post('tanggal')));
+    $kryid      = $this->input->post('karyawan');
+
+    $keperluan  = $this->input->post('keperluan');
+    $item       = $this->input->post('item');
+    $nominal    = preg_replace("/[^0-9\.]/", "", $this->input->post('nominal'));
+    $total      = preg_replace("/[^0-9\.]/", "", $this->input->post('total'));
+    $userid     = $this->session->userdata('id');
+
+    $data = [
+      'kd'            => $kd,
+      'karyawan_id'   => $kryid,
+      'jml_nominal'   => $total,
+      'jml_keperluan' => $count,
+      'tanggal'       => $tanggal,
+      'dateAdd'       => date('Y-m-d H:i:s'),
+      'user_id'       => $userid,
+    ];
+
+    $detail = [];
+
+    for ($i = 0; $i < $count; $i++) {
+      array_push($detail, ['kd' => $kd]);
+      $detail[$i]['keperluan']  = $keperluan[$i];
+      $detail[$i]['jml_item']   = $item[$i];
+      $detail[$i]['nominal']    = $nominal[$i];
+    }
+
+    $proses = $this->Etc->addData($data, $detail);
+
+    if ($proses) {
+      $response = [
+        'status'  => 'success',
+        'title'   => 'Success',
+        'text'    => 'Data Berhasil Ditambahkan',
+        'kd'      => $kd
+      ];
+    } else {
+      $response = [
+        'status'  => 'error',
+        'title'   => 'Error',
+        'text'    => 'Data Gagal Ditambahkan',
+        'kd'      => null
+      ];
+    }
+
+    echo json_encode($response);
   }
 
   public function print()
