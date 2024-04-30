@@ -88,7 +88,7 @@
 
    <script src="<?= base_url('assets/') ?>dist/js/pages/adm/sangu/script.js"></script>
 
- <?php } else if ($this->uri->segment(1) == 'pengeluaran_lain') { ?>
+ <?php } else if ($this->uri->segment(1) == 'pengeluaran_lain' && $this->uri->segment(2) == '') { ?>
 
    <script src="<?= base_url('assets/') ?>dist/js/pages/adm/etc/script.js"></script>
 
