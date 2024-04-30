@@ -84,6 +84,13 @@
            </a>
          </li>
 
+         <li class="nav-item">
+           <a href="<?= base_url('pengeluaran_lain') ?>" class="nav-link <?= $this->uri->segment(1) == 'pengeluaran_lain' || $this->uri->segment(1) == '' ? 'active' : '' ?>" class="nav-link">
+             <i class="nav-icon fas fa-coins"></i>
+             <p>Lain-lain</p>
+           </a>
+         </li>
+
          <li class="nav-header">Transaksi</li>
 
          <li class="nav-item">

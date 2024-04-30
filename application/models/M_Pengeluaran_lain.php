@@ -1,23 +1,40 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-date_default_timezone_set('Asia/Jakarta');
 
 class M_Pengeluaran_lain extends CI_Model
 {
   public function getData()
   {
-    $this->db->select('pengeluaran_lain.id_lain, pengeluaran_lain.karyawan_id, pengeluaran_lain.nominal, pengeluaran_lain.keterangan, pengeluaran_lain.dateAdd, karyawan.id_karyawan, karyawan.nama');
-    $this->db->from('pengeluaran_lain');
-    $this->db->join('karyawan', 'karyawan.id_karyawan = pengeluaran_lain.karyawan_id');
-    $query = $this->db->get()->result();
-    return $query;
+    $this->datatables->select('a.id, a.kd, a.nominal, a.keterangan, a.dateAdd, b.nama')
+      ->from('pengeluaran_lain a')
+      ->join('karyawan b', 'b.id = a.karyawan_id')
+      ->add_column(
+        'view',
+        '<div class="btn-group" role="group">
+          <a href="http://localhost/hira-to-adm/penjualan/print/$3" target="_blank" class="btn btn-sm btn-info text-white border border-light btn-print" data-toggle="tooltip" title="Cetak">
+            <i class="fas fa-print fa-sm"></i>
+          </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-toggle="tooltip" title="Detail" data-kd="$3">
+            <i class="fas fa-eye fa-sm"></i>
+          </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-kd="$3" data-toggle="tooltip" title="Edit">
+            <i class="fas fa-pencil-alt fa-sm"></i>
+          </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-kd="$3" data-toggle="tooltip" title="Hapus">
+            <i class="fas fa-trash fa-sm"></i>
+          </a>
+        </div>',
+        'id, kd, nominal, keterangan, nama, dateAdd'
+      );
+
+    return $this->datatables->generate();
   }
 
   public function getId($id)
   {
-    $this->db->select('pengeluaran_lain.id_lain, pengeluaran_lain.karyawan_id, pengeluaran_lain.nominal, pengeluaran_lain.keterangan, karyawan.id_karyawan, karyawan.nama');
+    $this->db->select('pengeluaran_lain.id_lain, pengeluaran_lain.karyawan_id, pengeluaran_lain.nominal, pengeluaran_lain.keterangan, karyawan.id, karyawan.nama');
     $this->db->from('pengeluaran_lain');
-    $this->db->join('karyawan', 'karyawan.id_karyawan = pengeluaran_lain.karyawan_id');
+    $this->db->join('karyawan', 'karyawan.id = pengeluaran_lain.karyawan_id');
     $this->db->where('pengeluaran_lain.id_lain', $id);
     $query = $this->db->get()->row();
     return $query;

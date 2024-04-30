@@ -88,6 +88,14 @@
 
    <script src="<?= base_url('assets/') ?>dist/js/pages/adm/sangu/script.js"></script>
 
+ <?php } else if ($this->uri->segment(1) == 'pengeluaran_lain') { ?>
+
+   <script src="<?= base_url('assets/') ?>dist/js/pages/adm/etc/script.js"></script>
+
+ <?php } else if ($this->uri->segment(1) == 'pengeluaran_lain' && $this->uri->segment(2) == 'add') { ?>
+
+   <script src="<?= base_url('assets/') ?>dist/js/pages/adm/etc/add.js"></script>
+
  <?php } else if ($this->uri->segment(1) == 'penjualan') { ?>
 
    <script src="<?= base_url('assets/') ?>dist/js/pages/trans/sales/script.js"></script>

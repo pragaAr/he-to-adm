@@ -762,6 +762,7 @@ $("#orderTables").on("click", ".btn-update", function () {
               no: no,
             },
             success: function (data) {
+              console.log(data);
               Swal.fire({
                 icon: "success",
                 title: "Success!",
