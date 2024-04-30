@@ -107,14 +107,20 @@ class M_Invoice extends CI_Model
 
   public function addData($datainv, $datadt, $datasurat)
   {
-    $query = $this->db->insert('invoice', $datainv);
-    $query = $this->db->insert_batch('detail_inv', $datadt);
-    $query = $this->db->insert('nomor_surat', $datasurat);
+    $this->db->trans_start();
 
-    if ($query) {
-      return true;
-    } else {
+    $this->db->insert('invoice', $datainv);
+    $this->db->insert_batch('detail_inv', $datadt);
+    $this->db->insert('nomor_surat', $datasurat);
+
+    $this->db->trans_complete();
+
+    if ($this->db->trans_status() === FALSE) {
+      // Transaksi gagal
       return false;
+    } else {
+      // Transaksi berhasil
+      return true;
     }
   }
 
