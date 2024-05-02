@@ -135,6 +135,48 @@ class Pengeluaran_lain extends CI_Controller
 
   public function print()
   {
+    $kode  = $this->input->get('kode');
+
+    if ($kode === null) {
+      echo 'tidak ada data yang ditampilkan';
+    } else {
+      $query = $this->Etc->getDataByKd($kode);
+
+      if ($query === null) {
+        echo 'tidak ada data yang ditampilkan';
+      } else {
+        $detail   = $this->Etc->getDetailDataByKd($kode);
+        $upperstr = strtoupper($kode);
+
+        $data = [
+          'title'   => 'PENGELUARAN KAS',
+          'kode'    => $query->kd,
+          'kry'     => $query->nama,
+          'total'   => $query->jml_nominal,
+          'tgl'     => $query->tanggal,
+          'detail'  => $detail,
+        ];
+
+        $mpdf = new Mpdf([
+          'mode'          => 'utf-8',
+          'format'        => 'A5',
+          'orientation'   => 'L',
+          'SetTitle'      => "pengeluaran-kas-lain-lain-$kode",
+          'margin_left'   => 10,
+          'margin_right'  => 10,
+          'margin_top'    => 10,
+          'margin_bottom' => 10,
+        ]);
+
+        $content  = $this->load->view('layout/adm/etc/print', $data, true);
+
+        $mpdf->SetHTMLFooter("<p class='page-number-footer'>Pengeluaran Kas Lain-lain ( $upperstr ) | Halaman {PAGENO} Dari {nb}</p>");
+        $mpdf->AddPage();
+        $mpdf->WriteHTML($content);
+
+        $mpdf->Output("$kode.pdf", 'I');
+      }
+    }
   }
 
   public function delete()

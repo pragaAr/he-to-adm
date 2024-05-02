@@ -202,6 +202,54 @@ $("#etcTables").on("click", ".btn-detail", function () {
   $('[data-toggle="tooltip"]').tooltip("hide");
 });
 
+$("#etcTables").on("click", ".btn-print", function () {
+  const kd = $(this).data("kd");
+
+  $.ajax({
+    url: "http://localhost/hira-to-adm/pengeluaran_lain/cek",
+    method: "POST",
+    data: { kd: kd },
+    success: function (data) {
+      if (data !== "1") {
+        Swal.fire({
+          icon: "warning",
+          title: "Oops!",
+          text: "Data tidak ditemukan!",
+        });
+      } else {
+        Swal.fire({
+          title: "Cetak pengeluaran kas ?",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          cancelButtonText: "Batal",
+          confirmButtonText: "Ya, Cetak PDF",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const url =
+              "http://localhost/hira-to-adm/pengeluaran_lain/print" +
+              "?kode=" +
+              kd;
+            window.open(url);
+          }
+        });
+      }
+    },
+    error: function (xhr, status, error) {
+      console.error("Error:", error);
+
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "Permintaan tidak dapat diproses!",
+      });
+    },
+  });
+
+  $('[data-toggle="tooltip"]').tooltip("hide");
+});
+
 $("#etcTables").on("click", ".btn-delete", function () {
   const kd = $(this).data("kd");
 
