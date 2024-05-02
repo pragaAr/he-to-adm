@@ -52,7 +52,7 @@
 
 <!-- modalDetail -->
 <div class="modal fade" id="modalDetail" data-backdrop="static">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">Detail Persen Sopir</h4>

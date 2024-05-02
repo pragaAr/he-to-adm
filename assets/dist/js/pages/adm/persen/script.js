@@ -117,6 +117,7 @@ $("#persenTables").on("click", ".btn-detail", function () {
       $(".kd-sopir").text(kd + " - " + data.sopir);
 
       const detail = data.detail;
+      let sumTotal = 0;
 
       for (let i = 0; i < detail.length; i++) {
         const row = $("<tr>");
@@ -149,25 +150,40 @@ $("#persenTables").on("click", ".btn-detail", function () {
         );
 
         row.append(
-          "<td class='align-middle text-uppercase text-right pr-4'>" +
+          "<td class='align-middle text-right pr-4'>Rp. " +
             format(detail[i].tot_biaya) +
             "</td>"
         );
 
         row.append(
-          "<td class='align-middle text-uppercase text-right pr-4'>" +
+          "<td class='align-middle text-right pr-4'>Rp. " +
             format(detail[i].tot_sangu) +
             "</td>"
         );
 
         row.append(
-          "<td class='align-middle text-uppercase text-right pr-4'>" +
+          "<td class='align-middle text-right pr-4'>Rp. " +
             format(detail[i].diterima) +
             "</td>"
         );
 
+        sumTotal += parseFloat(detail[i].diterima);
         tbodyDetail.append(row);
       }
+
+      const foot = $("<tr>");
+
+      foot.append(
+        "<td colspan='6' class='align-middle text-uppercase text-center'>Jumlah diterima</td>"
+      );
+
+      foot.append(
+        "<td colspan='2' class='align-middle text-right pr-4'>Rp. " +
+          format(sumTotal) +
+          "</td>"
+      );
+
+      tbodyDetail.append(foot);
 
       $("#modalDetail").modal("show");
 
