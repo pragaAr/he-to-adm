@@ -42,7 +42,7 @@
 
                   <div class="form-group col-lg-4 col-md-4 col-sm-12">
                     <label for="tanggal">Tanggal</label>
-                    <input type="date" name="tanggal" id="tanggal" class="form-control text-uppercase">
+                    <input type="date" name="tanggal" id="tanggal" class="form-control text-uppercase" required>
                   </div>
                 </div>
 

@@ -45,6 +45,29 @@ class Pengeluaran_lain extends CI_Controller
     echo json_encode($data);
   }
 
+  public function cek()
+  {
+    $kd   = $this->input->post('kd');
+    $cek  = $this->Etc->cekKode($kd);
+
+    echo json_encode($cek);
+  }
+
+  public function getDetail()
+  {
+    $kd     = $this->input->post('kd');
+
+    $data   = $this->Etc->getDataByKd($kd);
+    $detail = $this->Etc->getDetailDataByKd($kd);
+
+    $response = [
+      'data'   => $data,
+      'detail' => $detail
+    ];
+
+    echo json_encode($response);
+  }
+
   public function add()
   {
     $data['title']  = 'Tambah Pengeluaran Lain-lain';
@@ -114,10 +137,12 @@ class Pengeluaran_lain extends CI_Controller
   {
   }
 
-  public function delete($id)
+  public function delete()
   {
-    $this->Etc->deleteData($id);
-    $this->session->set_flashdata('deleted', 'Data berhasil dihapus!');
-    redirect('pengeluaran_lain');
+    $kd   = $this->input->post('kd');
+
+    $data = $this->Etc->deleteData($kd);
+
+    echo json_encode($data);
   }
 }
