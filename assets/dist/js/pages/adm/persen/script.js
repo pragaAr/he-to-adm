@@ -114,8 +114,7 @@ $("#persenTables").on("click", ".btn-detail", function () {
       const tbodyDetail = $("#tbodyDetail");
       tbodyDetail.empty();
 
-      $(".kd").text(kd);
-      $(".sopir").text(data.sopir);
+      $(".kd-sopir").text(kd + " - " + data.sopir);
 
       const detail = data.detail;
 
@@ -140,13 +139,13 @@ $("#persenTables").on("click", ".btn-detail", function () {
         row.append(
           "<td class='align-middle text-uppercase text-center'>" +
             detail[i].persen1 +
-            "</td>"
+            "%</td>"
         );
 
         row.append(
           "<td class='align-middle text-uppercase text-center'>" +
             detail[i].persen2 +
-            "</td>"
+            "%</td>"
         );
 
         row.append(

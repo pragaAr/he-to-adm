@@ -63,8 +63,7 @@
       <div class="modal-body" style="padding: 2rem !important;">
         <div class="d-flex justify-content-between align-items-start flex-wrap mb-3">
           <div class="font-weight-bold">
-            <p class="text-uppercase kd"></p>
-            <p class="text-uppercase sopir"></p>
+            <p class="text-uppercase kd-sopir"></p>
           </div>
         </div>
         <table class="table table-bordered" width="100%">
