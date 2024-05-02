@@ -119,19 +119,31 @@ $(document).ready(function () {
             noorder: selectedNoOrder,
           },
           success: function (data) {
-            $("#platno").val(data.platno);
-            $("#pengirim").val(data.pengirim);
-            $("#penerima").val(data.penerima);
-            $("#muatan").val(data.muatan);
-            $("#asaltujuan").val(data.kota_asal + "-" + data.kota_tujuan);
-            $("#totharga").val(format(data.total_hrg));
-            $("#sangu").val(format(data.sangu));
-            $("#tambahan").val(format(data.tambahan));
-            const s = parseFloat(data.sangu);
-            const t = parseFloat(data.tambahan);
-            $("#totsangu").val(format(s + t));
+            if (data === null) {
+              Swal.fire({
+                icon: "warning",
+                title: "Oops!",
+                text:
+                  "Tidak ditemukan data penjualan dari " +
+                  selectedNoOrder.toUpperCase(),
+              });
 
-            $("#persen1").focus();
+              $(".select-noorder").val(null).trigger("change");
+            } else {
+              $("#platno").val(data.platno);
+              $("#pengirim").val(data.pengirim);
+              $("#penerima").val(data.penerima);
+              $("#muatan").val(data.muatan);
+              $("#asaltujuan").val(data.kota_asal + "-" + data.kota_tujuan);
+              $("#totharga").val(format(data.total_hrg));
+              $("#sangu").val(format(data.sangu));
+              $("#tambahan").val(format(data.tambahan));
+              const s = parseFloat(data.sangu);
+              const t = parseFloat(data.tambahan);
+              $("#totsangu").val(format(s + t));
+
+              $("#persen1").focus();
+            }
           },
           error: function (xhr, status, error) {
             console.error("Error:", error);
