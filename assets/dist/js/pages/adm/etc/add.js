@@ -67,7 +67,7 @@ $(document).ready(function () {
                 ${jmlitem}
                 <input type="hidden" name="jmlitem_hidden[]" value="${jmlitem}">
             </td>
-            <td class="text-uppercase nominal">
+            <td class="text-uppercase text-right pr-4 nominal">
                 ${formatedNominal}
                 <input type="hidden" name="nominal_hidden[]" value="${nominal}">
             </td>
@@ -171,6 +171,10 @@ $(document).ready(function () {
     arrKeperluan = [];
     arrItem = [];
     arrNominal = [];
+
+    $("#kode").val("");
+    $("#karyawan").val("");
+    $("#tanggal").val("");
 
     $("#cart tbody").empty();
     $("#tfoot").hide();
