@@ -14,6 +14,8 @@ $.fn.dataTableExt.oApi.fnPagingInfo = function (oSettings) {
 
 $("#salesTables").DataTable({
   ordering: true,
+  order: [[0, "desc"]],
+
   initComplete: function () {
     var api = this.api();
     $("#salesTables_filter input")

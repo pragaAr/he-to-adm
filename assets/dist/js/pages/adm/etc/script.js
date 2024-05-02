@@ -14,6 +14,8 @@ $.fn.dataTableExt.oApi.fnPagingInfo = function (oSettings) {
 
 $("#etcTables").DataTable({
   ordering: true,
+  order: [[0, "desc"]],
+
   initComplete: function () {
     var api = this.api();
     $("#etcTables_filter input")
@@ -34,32 +36,32 @@ $("#etcTables").DataTable({
   columns: [
     {
       data: "id",
-      className: "text-center",
+      className: "text-center align-middle",
     },
     {
       data: "kd",
-      className: "text-center",
+      className: "text-center align-middle",
       render: function (data, type, row) {
         return data.toUpperCase();
       },
     },
     {
       data: "nama",
-      className: "text-center",
+      className: "text-center align-middle",
       render: function (data, type, row) {
         return data.toUpperCase();
       },
     },
     {
-      data: "nominal",
+      data: "jml_nominal",
       className: "text-center align-middle",
       render: function (data, type, row) {
         return "Rp. " + format(data);
       },
     },
     {
-      data: "keterangan",
-      className: "text-center",
+      data: "jml_keperluan",
+      className: "text-center align-middle",
       render: function (data, type, row) {
         return data.toUpperCase();
       },
@@ -67,7 +69,7 @@ $("#etcTables").DataTable({
     {
       data: "dateAdd",
       searchable: false,
-      className: "text-center",
+      className: "text-center align-middle",
       render: function (data, type, row) {
         var date = new Date(data);
         return date.toLocaleDateString("id-ID", {
@@ -79,7 +81,7 @@ $("#etcTables").DataTable({
     },
     {
       data: "view",
-      className: "text-center",
+      className: "text-center align-middle",
     },
   ],
 
@@ -94,115 +96,6 @@ $("#etcTables").DataTable({
     var index = page * length + (iDisplayIndex + 1);
     $("td:eq(0)", row).html(index + ".");
   },
-});
-
-$("#btn_add").on("click", function () {
-  $("#modalAdd").modal("show");
-});
-
-$("#modalAdd").on("shown.bs.modal", function () {
-  $("#platno").focus();
-});
-
-$("#form_add").on("submit", function () {
-  const platno = $("#platno").val();
-  const merk = $("#merk").val();
-  const keur = $("#keur").val();
-
-  $.ajax({
-    url: "http://localhost/hira-to-adm/armada/add",
-    type: "POST",
-    data: {
-      platno: platno,
-      merk: merk,
-      keur: keur,
-    },
-    success: function (data) {
-      if (data === "true") {
-        $("#platno").val("");
-        $("#merk").val("");
-        $("#keur").val("");
-
-        $("#modalAdd").modal("hide");
-
-        Swal.fire({
-          icon: "success",
-          title: "Success!",
-          text: "Data Armada ditambahkan!",
-        });
-
-        $("#etcTables").DataTable().ajax.reload(null, false);
-      }
-    },
-  });
-
-  return false;
-});
-
-$("#modalEdit").on("shown.bs.modal", function () {
-  $("#platnoedit").focus();
-});
-
-$("#etcTables").on("click", ".btn-edit", function (e) {
-  const id = $(this).data("id");
-
-  $.ajax({
-    url: "http://localhost/hira-to-adm/armada/getId",
-    type: "POST",
-    data: {
-      id: id,
-    },
-    success: function (data) {
-      const parsedata = JSON.parse(data);
-
-      $("#id").val(parsedata.id);
-      $("#platnoedit").val(parsedata.platno);
-      $("#merkedit").val(parsedata.merk);
-      $("#keuredit").val(parsedata.dateKeur);
-
-      $("#modalEdit").modal("show");
-
-      $('[data-toggle="tooltip"]').tooltip("hide");
-    },
-  });
-});
-
-$("#form_edit").on("submit", function () {
-  const id = $("#id").val();
-  const platno = $("#platnoedit").val();
-  const merk = $("#merkedit").val();
-  const keur = $("#keuredit").val();
-
-  $.ajax({
-    type: "POST",
-    url: "http://localhost/hira-to-adm/armada/update",
-    data: {
-      id: id,
-      platno: platno,
-      merk: merk,
-      keur: keur,
-    },
-    success: function (data) {
-      if (data === "true") {
-        $("#id").val("");
-        $("#platnoedit").val("");
-        $("#merkedit").val("");
-        $("#keuredit").val("");
-
-        $("#modalEdit").modal("hide");
-
-        Swal.fire({
-          icon: "success",
-          title: "Success!",
-          text: "Data Armada diubah!",
-        });
-
-        $("#etcTables").DataTable().ajax.reload(null, false);
-      }
-    },
-  });
-
-  return false;
 });
 
 $("#etcTables").on("click", ".btn-delete", function () {
@@ -235,10 +128,4 @@ $("#etcTables").on("click", ".btn-delete", function () {
       });
     }
   });
-});
-
-$(document).on("select2:open", () => {
-  document
-    .querySelector(".select2-container--open .select2-search__field")
-    .focus();
 });

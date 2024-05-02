@@ -14,6 +14,8 @@ $.fn.dataTableExt.oApi.fnPagingInfo = function (oSettings) {
 
 $("#sanguTables").DataTable({
   ordering: true,
+  order: [[0, "desc"]],
+
   initComplete: function () {
     var api = this.api();
     $("#sanguTables_filter input")
