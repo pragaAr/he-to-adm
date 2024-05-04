@@ -349,7 +349,7 @@ $(document).ready(function () {
           if (result.value) {
             window.open(
               "http://localhost/hira-to-adm/persensopir/print" +
-                "?nomor=" +
+                "?kode=" +
                 resCode
             );
           }
