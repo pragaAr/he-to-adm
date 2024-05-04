@@ -659,7 +659,7 @@ $("#orderTables").on("click", ".btn-detail", function () {
     success: function (data) {
       $("#btnDetail").attr(
         "href",
-        "http://localhost/hira-to-adm/order/print/" + data.no_order
+        "http://localhost/hira-to-adm/order/print" + "?no_do=" + data.no_order
       );
 
       const formatedDate = new Date(data.dateAdd);
@@ -762,7 +762,6 @@ $("#orderTables").on("click", ".btn-update", function () {
               no: no,
             },
             success: function (data) {
-              console.log(data);
               Swal.fire({
                 icon: "success",
                 title: "Success!",

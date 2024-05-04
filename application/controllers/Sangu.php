@@ -132,6 +132,9 @@ class Sangu extends CI_Controller
           'margin_bottom' => 10,
         ]);
 
+        $upper = strtoupper($kd);
+
+        $mpdf->SetHTMLFooter("<p class='page-number-footer'>Pengeluaran Kas Sangu Sopir $upper | Halaman {PAGENO} dari {nb}</p>");
         $mpdf->AddPage();
         $mpdf->WriteHTML($content);
 
@@ -175,6 +178,9 @@ class Sangu extends CI_Controller
       'margin_bottom' => 10,
     ]);
 
+    $upper = strtoupper($kd);
+
+    $mpdf->SetHTMLFooter("<p class='page-number-footer'>Pengeluaran Kas Tambahan Sangu Sopir $upper | Halaman {PAGENO} dari {nb}</p>");
     $mpdf->AddPage();
     $mpdf->WriteHTML($content);
 

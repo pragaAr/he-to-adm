@@ -40,7 +40,7 @@
                 </span>
 
                 <div class="info-box-content">
-                  <span class="info-box-text">Diproses</span>
+                  <span class="info-box-text">Order Diproses</span>
                   <span class="info-box-number">
                     <?= $orderProses ?>
                     <small> Order</small>
@@ -55,7 +55,7 @@
                 </span>
 
                 <div class="info-box-content">
-                  <span class="info-box-text">Selesai</span>
+                  <span class="info-box-text">Order Selesai</span>
                   <span class="info-box-number">
                     <?= $orderSuccess ?>
                     <small> Order</small>

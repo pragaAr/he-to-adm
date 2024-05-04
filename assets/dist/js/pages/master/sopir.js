@@ -238,9 +238,6 @@ $("#sopirTables").on("click", ".btn-history", function () {
     success: function (response) {
       const res = JSON.parse(response);
 
-      console.log(res);
-      console.log(nama);
-
       const timeline = $("#timeline");
       timeline.empty();
 
