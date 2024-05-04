@@ -38,16 +38,26 @@ class Persensopir extends CI_Controller
     echo $this->Persen->getData();
   }
 
+  public function cek()
+  {
+    $kd   = $this->input->post('kd');
+    $cek  = $this->Persen->cekKode($kd);
+
+    echo json_encode($cek);
+  }
+
   public function getDetailData()
   {
-    $kd     = $this->input->post('kd');
-    $query  = $this->Persen->getDataByKd($kd);
-    $detail = $this->Persen->dataPersenByKd($kd);
+    $kd         = $this->input->post('kd');
+    $query      = $this->Persen->getDataByKd($kd);
+    $salesorder = $this->Persen->dataSalesOrderByKd($kd);
+    $sanguorder = $this->Persen->dataSanguOrderByKd($kd);
 
     $response = [
-      'kdpersen'  => $query->kd,
-      'sopir'     => $query->nama,
-      'detail'    => $detail
+      'kdpersen'    => $query->kd,
+      'sopir'       => $query->nama,
+      'salesorder'  => $salesorder,
+      'sanguorder'  => $sanguorder
     ];
 
     echo json_encode($response);
@@ -143,15 +153,15 @@ class Persensopir extends CI_Controller
 
   public function print()
   {
-    $kd  = $this->input->get('nomor');
+    $kd  = $this->input->get('kode');
 
     if ($kd === null) {
       echo 'tidak ada data yang ditampilkan';
     } else {
 
-      $cekkd  = $this->Persen->getKdPersen($kd);
+      $cekkd  = $this->Persen->cekKode($kd);
 
-      if ($cekkd === null) {
+      if ($cekkd === 0) {
         echo 'tidak ada data yang ditampilkan';
       } else {
         $sopir = $this->Persen->getSopirByKdPersen($kd);
@@ -175,7 +185,7 @@ class Persensopir extends CI_Controller
           'margin_left'   => 10,
           'margin_right'  => 10,
           'margin_top'    => 5,
-          'margin_bottom' => 3,
+          'margin_bottom' => 10,
         ]);
 
         $upper = strtoupper($kd);

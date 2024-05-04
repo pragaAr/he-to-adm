@@ -36,21 +36,22 @@
 
  <script src="<?= base_url('assets/') ?>dist/js/pages/number-format.js"></script>
 
- <script>
-   const userlogin = $(".userlogin").data("flashdata");
 
-   if (userlogin) {
-     Swal.fire({
-       icon: "success",
-       title: "Login berhasil!",
-       text: userlogin,
-     });
-   }
- </script>
 
  <?php if ($this->uri->segment(1) == 'home') { ?>
 
-   <script src="<?= base_url('assets/') ?>dist/js/pages/home.js"></script>
+   <!-- <script src="<?= base_url('assets/') ?>dist/js/pages/home.js"></script> -->
+   <script>
+     const userlogin = $(".userlogin").data("flashdata");
+
+     if (userlogin) {
+       Swal.fire({
+         icon: "success",
+         title: "Login berhasil!",
+         text: userlogin,
+       });
+     }
+   </script>
 
  <?php } else if ($this->uri->segment(1) == 'armada') { ?>
 

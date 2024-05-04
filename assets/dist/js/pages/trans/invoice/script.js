@@ -132,10 +132,18 @@ $("#invTables").on("click", ".btn-print", function () {
           window.open(url);
         }
       });
+    },
+    error: function (xhr, status, error) {
+      console.error("Error:", error);
 
-      $('[data-toggle="tooltip"]').tooltip("hide");
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "Permintaan tidak dapat diproses!",
+      });
     },
   });
+  $('[data-toggle="tooltip"]').tooltip("hide");
 });
 
 $("#invTables").on("click", ".btn-detail", function () {

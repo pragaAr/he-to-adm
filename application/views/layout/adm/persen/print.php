@@ -153,6 +153,10 @@
       padding: 10px 5px;
     }
 
+    .pb-avoid {
+      page-break-inside: avoid;
+    }
+
     .page-number-footer {
       text-align: right;
       font-style: italic;
@@ -182,20 +186,14 @@
       <table class="table-head">
         <tr>
           <td class="td-head" style="width:60%"></td>
-          <td class="td-head font-bold" style="width:18%">Nama Sopir</td>
+          <td class="td-head font-bold text-uppercase" style="width:18%">Nama Sopir</td>
           <td class="td-head font-bold text-center" style="width:4%">:</td>
           <td class="td-head font-bold text-uppercase" style="width:18%"><?= $sopir->nama ?></td>
-        </tr>
-        <tr>
-          <td class="td-head" style="width:60%"></td>
-          <td class="td-head font-bold" style="width:18%">Plat Nomor</td>
-          <td class="td-head font-bold text-center" style="width:4%">:</td>
-          <td class="td-head font-bold" style="width:18%">H 1234 AA</td>
         </tr>
       </table>
     </div>
 
-    <div class="mt-2">
+    <div class="mt-1">
       <p class="title-table">Order Penjualan</p>
       <table class="table-order">
         <thead>
@@ -210,7 +208,9 @@
           </tr>
         </thead>
         <tbody>
+
           <?php $no = 1;
+          $jmlTotalBiayaOrder = 0;
           foreach ($order as $order) : ?>
 
             <tr>
@@ -225,19 +225,15 @@
               $biaya = floatval($order->tot_biaya);
               $ps1 = floatval($order->persen1);
               $ps2 = floatval($order->persen2);
-              $penyebut = floatval(100);
+              $penyebut = 100; // Tidak perlu floatval karena 100 sudah float
 
-              $totBiayaOrder = 0;
-              $jmlTotalBiayaOrder = 0;
+              $totBiayaOrder = $biaya; // Default jika kedua persen adalah 0
 
-              if ($ps1 == 0 && $ps2 == 0) {
-                $totBiayaOrder = $biaya;
-              } elseif ($ps1 != 0 && $ps2 != 0) {
-                $totBiayaOrder = $biaya * (($ps1 / $penyebut) * ($ps2 / $penyebut));
-              } elseif ($ps1 != 0 && $ps2 == 0) {
-                $totBiayaOrder = $biaya * ($ps1 / $penyebut);
-              } elseif ($ps1 == 0 && $ps2 != 0) {
-                $totBiayaOrder = $biaya * ($ps2 / $penyebut);
+              if ($ps1 != 0) {
+                $totBiayaOrder *= ($ps1 / $penyebut);
+              }
+              if ($ps2 != 0) {
+                $totBiayaOrder *= ($ps2 / $penyebut);
               }
 
               $jmlTotalBiayaOrder += $totBiayaOrder;
@@ -256,7 +252,7 @@
       </table>
     </div>
 
-    <div class="mt-2">
+    <div class="mt-2 pb-avoid">
       <p class="title-table">Sangu</p>
       <table class="table-sangu">
         <thead>
@@ -301,26 +297,27 @@
           </tr>
         </tbody>
       </table>
+
+      <div class="mt-1">
+        <table class="table-persen">
+          <tr>
+            <td class="td-persen font-bold" style="width:60%">Persen (Jumlah Order Penjualan - Jumlah Sangu) </td>
+            <td class="td-persen font-bold text-center" style="width:6%">:</td>
+
+            <?php
+            $totOrder = floatval($totBiayaOrder);
+            $totSangu = floatval($jmlTotalSangu);
+
+            $totPersen = $totOrder - $totSangu;
+            ?>
+
+            <td class="td-persen font-bold text-right">Rp. <?= number_format($totPersen) ?></td>
+          </tr>
+        </table>
+
+      </div>
     </div>
 
-    <div class="mt-2">
-      <table class="table-persen">
-        <tr>
-          <td class="td-persen font-bold" style="width:60%">Persen (Jumlah Order Penjualan - Jumlah Sangu) </td>
-          <td class="td-persen font-bold text-center" style="width:6%">:</td>
-
-          <?php
-          $totOrder = floatval($totBiayaOrder);
-          $totSangu = floatval($jmlTotalSangu);
-
-          $totPersen = $totOrder - $totSangu;
-          ?>
-
-          <td class="td-persen font-bold text-right">Rp. <?= number_format($totPersen) ?></td>
-        </tr>
-      </table>
-
-    </div>
   </div>
 
 </body>

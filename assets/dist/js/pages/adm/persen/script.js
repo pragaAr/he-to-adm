@@ -111,15 +111,24 @@ $("#persenTables").on("click", ".btn-detail", function () {
       kd: kd,
     },
     success: function (data) {
-      const tbodyDetail = $("#tbodyDetail");
-      tbodyDetail.empty();
+      $("#printDetail").attr("data-kd", kd);
+
+      const tbodyOrderPenjualan = $("#tbodyOrderPenjualan");
+      tbodyOrderPenjualan.empty();
+
+      const tbodySanguOrder = $("#tbodySanguOrder");
+      tbodySanguOrder.empty();
 
       $(".kd-sopir").text(kd + " - " + data.sopir);
 
-      const detail = data.detail;
+      const salesorder = data.salesorder;
+      const sanguorder = data.sanguorder;
       let sumTotal = 0;
+      let sumSangu = 0;
 
-      for (let i = 0; i < detail.length; i++) {
+      for (let i = 0; i < salesorder.length; i++) {
+        const tglOrder = new Date(salesorder[i].tglOrder);
+
         const row = $("<tr>");
         row.append(
           "<td class='align-middle text-center'>" + (i + 1) + "." + "</td>"
@@ -127,69 +136,161 @@ $("#persenTables").on("click", ".btn-detail", function () {
 
         row.append(
           "<td class='align-middle text-uppercase'>" +
-            detail[i].no_order +
+            salesorder[i].namaCustomer +
             "</td>"
         );
 
         row.append(
           "<td class='align-middle text-uppercase text-center'>" +
-            detail[i].platno +
+            tglOrder.toLocaleDateString("id-ID", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            }) +
             "</td>"
         );
 
         row.append(
           "<td class='align-middle text-uppercase text-center'>" +
-            detail[i].persen1 +
+            salesorder[i].platno +
+            "</td>"
+        );
+
+        row.append(
+          "<td class='align-middle text-uppercase text-right pr-4'>Rp. " +
+            format(salesorder[i].tot_biaya) +
+            "</td>"
+        );
+
+        row.append(
+          "<td class='align-middle text-right pr-4'>" +
+            salesorder[i].persen1 +
             "%</td>"
         );
 
         row.append(
-          "<td class='align-middle text-uppercase text-center'>" +
-            detail[i].persen2 +
+          "<td class='align-middle text-right pr-4'>" +
+            salesorder[i].persen2 +
             "%</td>"
         );
 
-        row.append(
-          "<td class='align-middle text-right pr-4'>Rp. " +
-            format(detail[i].tot_biaya) +
-            "</td>"
-        );
+        const penyebut = 100;
+        const p1 = parseFloat(salesorder[i].persen1);
+        const p2 = parseFloat(salesorder[i].persen2);
+        const biaya = parseFloat(salesorder[i].tot_biaya);
+
+        let faktor = 1; // Faktor default jika kedua persen adalah 0
+
+        if (p1 !== 0) faktor *= p1 / penyebut;
+        if (p2 !== 0) faktor *= p2 / penyebut;
+
+        const totalBiaya = biaya * faktor;
 
         row.append(
           "<td class='align-middle text-right pr-4'>Rp. " +
-            format(detail[i].tot_sangu) +
+            format(totalBiaya) +
             "</td>"
         );
 
-        row.append(
-          "<td class='align-middle text-right pr-4'>Rp. " +
-            format(detail[i].diterima) +
-            "</td>"
-        );
-
-        sumTotal += parseFloat(detail[i].diterima);
-        tbodyDetail.append(row);
+        sumTotal += totalBiaya;
+        tbodyOrderPenjualan.append(row);
       }
 
-      const foot = $("<tr>");
+      const footOrder = $("<tr>");
 
-      foot.append(
-        "<td colspan='6' class='align-middle text-uppercase text-center'>Jumlah diterima</td>"
+      footOrder.append(
+        "<td colspan='7' class='align-middle text-uppercase text-center'>Jumlah diterima</td>"
       );
 
-      foot.append(
-        "<td colspan='2' class='align-middle text-right pr-4'>Rp. " +
+      footOrder.append(
+        "<td class='align-middle text-right pr-4'>Rp. " +
           format(sumTotal) +
           "</td>"
       );
 
-      tbodyDetail.append(foot);
+      tbodyOrderPenjualan.append(footOrder);
+
+      // ------------------sangu order------------------
+      for (let j = 0; j < sanguorder.length; j++) {
+        const tglSanguOrder = new Date(sanguorder[j].tglOrder);
+
+        const row = $("<tr>");
+        row.append(
+          "<td class='align-middle text-center'>" + (j + 1) + "." + "</td>"
+        );
+
+        row.append(
+          "<td class='align-middle text-uppercase'>" +
+            sanguorder[j].namaCustomer +
+            "</td>"
+        );
+
+        row.append(
+          "<td class='align-middle text-uppercase text-center'>" +
+            tglSanguOrder.toLocaleDateString("id-ID", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            }) +
+            "</td>"
+        );
+
+        row.append(
+          "<td class='align-middle text-uppercase text-right pr-4'>Rp. " +
+            format(sanguorder[j].nominal) +
+            "</td>"
+        );
+
+        row.append(
+          "<td class='align-middle text-uppercase text-right pr-4'>Rp. " +
+            format(sanguorder[j].tambahan) +
+            "</td>"
+        );
+
+        const sangu = parseFloat(sanguorder[j].nominal);
+        const tambahan = parseFloat(sanguorder[j].tambahan);
+        const totalSangu = sangu + tambahan;
+
+        row.append(
+          "<td class='align-middle text-right pr-4'>Rp. " +
+            format(totalSangu) +
+            "</td>"
+        );
+
+        sumSangu += totalSangu;
+        tbodySanguOrder.append(row);
+      }
+
+      const footSangu = $("<tr>");
+
+      footSangu.append(
+        "<td colspan='5' class='align-middle text-uppercase text-center'>Jumlah diterima</td>"
+      );
+
+      footSangu.append(
+        "<td class='align-middle text-right pr-4'>Rp. " +
+          format(sumSangu) +
+          "</td>"
+      );
+
+      tbodySanguOrder.append(footSangu);
+      // ------------------sangu order------------------
+
+      $("#totalDiterima").html("Persen : Rp. " + format(sumTotal - sumSangu));
 
       $("#modalDetail").modal("show");
 
       $('[data-toggle="tooltip"]').tooltip("hide");
     },
   });
+});
+
+$("#persenTables").on("click", ".btn-print", function () {
+  const kd = $(this).data("kd");
+
+  requestData(kd);
+
+  $('[data-toggle="tooltip"]').tooltip("hide");
 });
 
 $("#persenTables").on("click", ".btn-delete", function () {
@@ -223,3 +324,56 @@ $("#persenTables").on("click", ".btn-delete", function () {
     }
   });
 });
+
+$("#printDetail").on("click", function () {
+  const kd = $(this).data("kd");
+
+  requestData(kd);
+
+  $('[data-toggle="tooltip"]').tooltip("hide");
+});
+
+function requestData(kd) {
+  $.ajax({
+    url: "http://localhost/hira-to-adm/persensopir/cek",
+    method: "POST",
+    dataType: "JSON",
+    data: {
+      kd: kd,
+    },
+    success: function (data) {
+      if (data === 1) {
+        Swal.fire({
+          title: "Cetak Persen Sopir ?",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          cancelButtonText: "Batal",
+          confirmButtonText: "Ya, Cetak!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const url =
+              "http://localhost/hira-to-adm/persensopir/print" + "?kode=" + kd;
+            window.open(url);
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "Data tidak ditemukan!",
+        });
+      }
+    },
+    error: function (xhr, status, error) {
+      console.error("Error:", error);
+
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "Permintaan tidak dapat diproses!",
+      });
+    },
+  });
+}

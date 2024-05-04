@@ -27,7 +27,14 @@ class M_Persensopir extends CI_Model
 
   public function getData()
   {
-    $this->datatables->select('ps.id, ps.kd, s.nama, ps.jml_order, ps.total_diterima, ps.dateAdd')
+    $this->datatables->select('
+    ps.id, 
+    ps.kd, 
+    s.nama, 
+    ps.jml_order, 
+    ps.total_diterima, 
+    ps.dateAdd
+    ')
       ->from('persen_sopir ps')
       ->join('sopir s', 's.id = ps.sopir_id')
       ->add_column(
@@ -60,6 +67,13 @@ class M_Persensopir extends CI_Model
     return $query;
   }
 
+  public function cekKode($kd)
+  {
+    $query = $this->db->get_where('persen_sopir', ['kd' => $kd]);
+
+    return $query->num_rows();
+  }
+
   public function getDataByKd($kd)
   {
     $this->db->select('a.kd, b.nama')
@@ -85,13 +99,65 @@ class M_Persensopir extends CI_Model
 
   public function dataPersenByKd($kd)
   {
-    $this->db->select('a.kd, a.no_order, a.platno, a.persen1, a.persen2, a.tot_biaya, a.tot_sangu, a.diterima')
+    $this->db->select('
+    a.kd,
+    a.no_order, 
+    a.platno, 
+    a.persen1, 
+    a.persen2, 
+    a.tot_biaya, 
+    a.tot_sangu, 
+    a.diterima
+    ')
       ->from('detail_ps a')
       ->where('a.kd', $kd);
 
     $res = $this->db->get()->result();
 
     return $res;
+  }
+
+  public function dataSalesOrderByKd($kd)
+  {
+    $this->db->select('
+        dp.no_order, 
+        dp.persen1, 
+        dp.persen2, 
+        dp.tot_biaya, 
+        om.dateAdd as tglOrder, 
+        c.nama as namaCustomer,
+        ar.platno
+    ')
+      ->from('detail_ps dp')
+      ->join('order_masuk om', 'om.no_order = dp.no_order')
+      ->join('customer c', 'c.id = om.customer_id')
+      ->join('sangu_sopir ss', 'ss.no_order = om.no_order')
+      ->join('armada ar', 'ar.id = ss.truck_id')
+      ->where('dp.kd', $kd);
+
+    $result = $this->db->get()->result();
+
+    return $result;
+  }
+
+  public function dataSanguOrderByKd($kd)
+  {
+    $this->db->select('
+        dp.no_order,  
+        om.dateAdd as tglOrder, 
+        c.nama as namaCustomer,
+        ss.nominal,
+        ss.tambahan
+    ')
+      ->from('detail_ps dp')
+      ->join('order_masuk om', 'om.no_order = dp.no_order')
+      ->join('customer c', 'c.id = om.customer_id')
+      ->join('sangu_sopir ss', 'ss.no_order = om.no_order')
+      ->where('dp.kd', $kd);
+
+    $result = $this->db->get()->result();
+
+    return $result;
   }
 
   public function getDataOrderPersenByKdPersen($kd)
