@@ -63,32 +63,46 @@
 
          <li class="nav-header">Administrasi</li>
 
-         <li class="nav-item">
-           <a href="<?= base_url('uangmakan') ?>" class="nav-link <?= $this->uri->segment(1) == 'uangmakan' || $this->uri->segment(1) == '' ? 'active' : '' ?>" class="nav-link">
-             <i class="nav-icon fas fa-hand-holding-usd"></i>
-             <p>Uang Makan</p>
-           </a>
-         </li>
+         <li class="nav-item <?= $this->uri->segment(1) == 'uangmakan' || $this->uri->segment(1) == 'sangu' || $this->uri->segment(1) == 'persensopir' || $this->uri->segment(1) == 'pengeluaran_lain' || $this->uri->segment(1) == '' ? 'menu-open' : '' ?>">
 
-         <li class="nav-item">
-           <a href="<?= base_url('sangu') ?>" class="nav-link <?= $this->uri->segment(1) == 'sangu' || $this->uri->segment(1) == '' ? 'active' : '' ?>" class="nav-link">
-             <i class="nav-icon fas fa-wallet"></i>
-             <p>Sangu Sopir</p>
+           <a href="#" class="nav-link <?= $this->uri->segment(1) == 'uangmakan' || $this->uri->segment(1) == 'sangu' || $this->uri->segment(1) == 'persensopir' || $this->uri->segment(1) == 'pengeluaran_lain' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
+             <i class="nav-icon fas fa-balance-scale-right"></i>
+             <p>
+               Pengeluaran Kas
+               <i class="right fas fa-angle-right"></i>
+             </p>
            </a>
-         </li>
 
-         <li class="nav-item">
-           <a href="<?= base_url('persensopir') ?>" class="nav-link <?= $this->uri->segment(1) == 'persensopir' || $this->uri->segment(1) == '' ? 'active' : '' ?>" class="nav-link">
-             <i class="nav-icon fas fa-percentage"></i>
-             <p>Persen Sopir</p>
-           </a>
-         </li>
+           <ul class="nav nav-treeview">
+             <li class="nav-item">
+               <a href="<?= base_url('uangmakan') ?>" class="nav-link <?= $this->uri->segment(1) == 'uangmakan' || $this->uri->segment(1) == '' ? 'active bg-secondary' : '' ?>">
+                 <i class="nav-icon fas fa-hand-holding-usd"></i>
+                 <p>Uang Makan</p>
+               </a>
+             </li>
 
-         <li class="nav-item">
-           <a href="<?= base_url('pengeluaran_lain') ?>" class="nav-link <?= $this->uri->segment(1) == 'pengeluaran_lain' || $this->uri->segment(1) == '' ? 'active' : '' ?>" class="nav-link">
-             <i class="nav-icon fas fa-coins"></i>
-             <p>Lain-lain</p>
-           </a>
+             <li class="nav-item">
+               <a href="<?= base_url('sangu') ?>" class="nav-link <?= $this->uri->segment(1) == 'sangu' || $this->uri->segment(1) == '' ? 'active bg-secondary' : '' ?>">
+                 <i class="nav-icon fas fa-wallet"></i>
+                 <p>Sangu Sopir</p>
+               </a>
+             </li>
+
+             <li class="nav-item">
+               <a href="<?= base_url('persensopir') ?>" class="nav-link <?= $this->uri->segment(1) == 'persensopir' || $this->uri->segment(1) == '' ? 'active bg-secondary' : '' ?>">
+                 <i class="nav-icon fas fa-percentage"></i>
+                 <p>Persen Sopir</p>
+               </a>
+             </li>
+
+             <li class="nav-item">
+               <a href="<?= base_url('pengeluaran_lain') ?>" class="nav-link <?= $this->uri->segment(1) == 'pengeluaran_lain' || $this->uri->segment(1) == '' ? 'active bg-secondary' : '' ?>">
+                 <i class="nav-icon fas fa-coins"></i>
+                 <p>Lain-lain</p>
+               </a>
+             </li>
+
+           </ul>
          </li>
 
          <li class="nav-header">Transaksi</li>
