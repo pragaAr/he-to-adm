@@ -62,12 +62,16 @@ $("#armadaTables").DataTable({
       searchable: false,
       className: "text-center",
       render: function (data, type, row) {
-        var date = new Date(data);
-        return date.toLocaleDateString("id-ID", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-        });
+        if (data === null) {
+          return "-";
+        } else {
+          var date = new Date(data);
+          return date.toLocaleDateString("id-ID", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          });
+        }
       },
     },
     {
@@ -110,7 +114,9 @@ $("#modalAdd").on("shown.bs.modal", function () {
   $("#platno").focus();
 });
 
-$("#form_add").on("submit", function () {
+$("#form_add").on("submit", function (e) {
+  e.preventDefault();
+
   const platno = $("#platno").val();
   const merk = $("#merk").val();
   const keur = $("#keur").val();
@@ -142,7 +148,7 @@ $("#form_add").on("submit", function () {
     },
   });
 
-  return false;
+  // return false;
 });
 
 $("#modalEdit").on("shown.bs.modal", function () {

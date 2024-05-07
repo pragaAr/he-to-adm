@@ -46,14 +46,14 @@ class Order extends CI_Controller
     echo $this->Order->getData();
   }
 
-  public function getStatusOrderKd()
+  public function getStatusSalesKd()
   {
     $kd   = $this->input->post('kd');
 
-    $query = $this->Order->getOrderStatusByKd($kd);
+    $query = $this->Order->getOrderStatusSalesByKd($kd);
 
     $data = [
-      'status' => $query->status_order
+      'status' => $query->status_sales
     ];
 
     echo json_encode($data);

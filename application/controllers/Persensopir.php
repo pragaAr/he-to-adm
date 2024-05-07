@@ -190,7 +190,7 @@ class Persensopir extends CI_Controller
 
         $upper = strtoupper($kd);
 
-        $mpdf->SetHTMLFooter("<p class='page-number-footer'>Persen Sopir $upper | Halaman {PAGENO} dari {nb}</p>");
+        $mpdf->SetHTMLFooter("<p class='page-number-footer'>Persen Sopir - $upper | Halaman {PAGENO} dari {nb}</p>");
         $mpdf->AddPage();
         $mpdf->WriteHTML($content);
 

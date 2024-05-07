@@ -135,7 +135,7 @@ class Pengeluaran_lain extends CI_Controller
 
   public function print()
   {
-    $kode  = $this->input->get('kode');
+    $kode  = $this->input->get('nomor');
 
     if ($kode === null) {
       echo 'tidak ada data yang ditampilkan';
@@ -149,7 +149,7 @@ class Pengeluaran_lain extends CI_Controller
         $upperstr = strtoupper($kode);
 
         $data = [
-          'title'   => 'PENGELUARAN KAS',
+          'title'   => 'Pengeluaran Kas',
           'kode'    => $query->kd,
           'kry'     => $query->nama,
           'total'   => $query->jml_nominal,
@@ -170,7 +170,7 @@ class Pengeluaran_lain extends CI_Controller
 
         $content  = $this->load->view('layout/adm/etc/print', $data, true);
 
-        $mpdf->SetHTMLFooter("<p class='page-number-footer'>Pengeluaran Kas Lain-lain ( $upperstr ) | Halaman {PAGENO} Dari {nb}</p>");
+        $mpdf->SetHTMLFooter("<p class='page-number-footer'>Pengeluaran Kas Lain-lain - $upperstr | Halaman {PAGENO} Dari {nb}</p>");
         $mpdf->AddPage();
         $mpdf->WriteHTML($content);
 

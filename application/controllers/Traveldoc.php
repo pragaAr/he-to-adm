@@ -266,7 +266,9 @@ class Traveldoc extends CI_Controller
 
         $content  = $this->load->view('layout/trans/surat-jalan/print', $data, true);
 
-        $mpdf->SetHTMLFooter("<p class='page-number-footer'>Tanda Terima Surat Jalan ( $str ) | Halaman {PAGENO} Dari {nb}</p>");
+        $upperstr = strtoupper($str);
+
+        $mpdf->SetHTMLFooter("<p class='page-number-footer'>Tanda Terima Surat Jalan - $upperstr | Halaman {PAGENO} Dari {nb}</p>");
         $mpdf->AddPage();
         $mpdf->WriteHTML($content);
 

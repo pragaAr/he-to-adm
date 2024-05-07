@@ -105,6 +105,14 @@ class Penjualan extends CI_Controller
     echo json_encode($data);
   }
 
+  public function cek()
+  {
+    $reccu  = $this->input->post('reccu');
+    $cek    = $this->Sales->cekReccu($reccu);
+
+    echo json_encode($cek);
+  }
+
   public function add()
   {
     $userid       = $this->session->userdata('id');
@@ -144,10 +152,11 @@ class Penjualan extends CI_Controller
       'pembayaran'    => strtolower($pembayaran),
       'user_id'       => $userid,
       'dateAdd'       => $dateAdd,
+      'datePelunasan' => strtolower($pembayaran) === 'lunas' ? $dateAdd : null,
     );
 
     $dataorder = array(
-      'status_order'  => 'diproses',
+      'status_sales'  => 'disiapkan',
     );
 
     $where = array(
@@ -156,25 +165,40 @@ class Penjualan extends CI_Controller
 
     $this->Sales->addData($data, $dataorder, $where);
 
-    $dataReccu = strtolower($textnoorder);
+    $dataReccu = strtolower($reccu);
 
     echo json_encode($dataReccu);
   }
 
   public function update()
   {
-    $penjualanid  = $this->input->post('penjualanid');
-    $noorder      = trim($this->input->post('noorder'));
+    $penjualanid    = $this->input->post('penjualanid');
+    $noorder        = trim($this->input->post('noorder'));
 
-    $jenis        = trim($this->input->post('jenis'));
-    $berat        = trim($this->input->post('berat'));
-    $hrgborong    = preg_replace("/[^0-9\.]/", "", $this->input->post('borong'));
-    $hrgtonase    = preg_replace("/[^0-9\.]/", "", $this->input->post('tonase'));
-    $penerima     = trim($this->input->post('penerima'));
-    $alamatasal   = trim($this->input->post('alamatasal'));
-    $alamattujuan = trim($this->input->post('alamattujuan'));
-    $biaya        = preg_replace("/[^0-9\.]/", "", $this->input->post('biaya'));
-    $pembayaran   = trim($this->input->post('pembayaran'));
+    $jenis          = trim($this->input->post('jenis'));
+    $berat          = trim($this->input->post('berat'));
+    $hrgborong      = preg_replace("/[^0-9\.]/", "", $this->input->post('borong'));
+    $hrgtonase      = preg_replace("/[^0-9\.]/", "", $this->input->post('tonase'));
+    $penerima       = trim($this->input->post('penerima'));
+    $alamatasal     = trim($this->input->post('alamatasal'));
+    $alamattujuan   = trim($this->input->post('alamattujuan'));
+    $biaya          = preg_replace("/[^0-9\.]/", "", $this->input->post('biaya'));
+    $pembayaran     = trim($this->input->post('pembayaran'));
+    $oldpayment     = trim($this->input->post('oldpayment'));
+    $oldpelunasan   = $this->input->post('datepelunasan') === '' ? null : date('Y-m-d H:i:s', strtotime($this->input->post('datepelunasan')));
+    $dateAdd        = date('Y-m-d H:i:s');
+
+    if (strtolower($oldpayment) === 'tempo' && strtolower($pembayaran) === 'tempo') {
+      $datePelunasan = $oldpelunasan;
+    } elseif (strtolower($oldpayment) === 'lunas' && strtolower($pembayaran) === 'lunas') {
+      $datePelunasan = $oldpelunasan;
+    } elseif (strtolower($oldpayment) === 'lunas' && strtolower($pembayaran) === 'tempo') {
+      $datePelunasan = null;
+    } elseif (strtolower($oldpayment) === 'tempo' && strtolower($pembayaran) === 'lunas') {
+      $datePelunasan = $dateAdd;
+    } else {
+      $datePelunasan = null;
+    }
 
     $data = array(
       'jenis'         => strtolower($jenis),
@@ -186,6 +210,7 @@ class Penjualan extends CI_Controller
       'alamat_tujuan' => strtolower($alamattujuan),
       'total_hrg'     => $biaya,
       'pembayaran'    => strtolower($pembayaran),
+      'datePelunasan' => $datePelunasan
     );
 
     $dataorder = array(
@@ -205,52 +230,33 @@ class Penjualan extends CI_Controller
     echo json_encode($data);
   }
 
-  public function printAfterAddCopy($kd)
+  public function print()
   {
-    $data = [
-      'title' => 'Hira Express - Print Reccu',
-      'plat'  => $this->Sangu->getPlatByOrder($kd),
-      'sales' => $this->Sales->getDataByKd($kd)
-    ];
+    $reccu = $this->input->get('reccu');
 
-    $a = $data['sales']->pembayaran;
-    $b = strtoupper($a);
+    if ($reccu === null) {
+      echo 'tidak ada data yang ditampilkan';
+    } else {
+      $cekReccu  = $this->Sales->cekReccu($reccu);
 
-    $content  = $this->load->view('layout/trans/penjualan/print', $data, true);
+      if ($cekReccu === null) {
+        echo 'tidak ada data yang ditampilkan';
+      } else {
+        $kd = $cekReccu->no_order;
+        $rc = $cekReccu->reccu;
 
-    $mpdf = new Mpdf([
-      'mode'          => 'utf-8',
-      'format'        => 'A6',
-      'orientation'   => 'P',
-      'SetTitle'      => "reccu-$kd",
-      'margin_left'   => 4,
-      'margin_right'  => 4,
-      'margin_top'    => 4,
-      'margin_bottom' => 3,
-    ]);
+        $this->load->library('pdf');
 
-    $mpdf->SetWatermarkText($b, 0.2);
-    $mpdf->showWatermarkText = true;
+        $data = [
+          'title' => 'Hira Express - Print Reccu',
+          'plat'  => $this->Sangu->getPlatByOrder($kd),
+          'sales' => $this->Sales->getDataByKd($rc)
+        ];
 
-    $mpdf->watermarkAngle = 0;
-
-    $mpdf->AddPage();
-    $mpdf->WriteHTML($content);
-
-    $mpdf->Output();
-  }
-
-  public function print($kd)
-  {
-    $this->load->library('pdf');
-
-    $data = [
-      'title' => 'Hira Express - Print Reccu',
-      'plat'  => $this->Sangu->getPlatByOrder($kd),
-      'sales' => $this->Sales->getDataByKd($kd)
-    ];
-
-    $this->pdf->generate('layout/trans/penjualan/print', $data, "Reccu-$kd", 'A6', 'portrait');
+        $upper = strtoupper($reccu);
+        $this->pdf->generate('layout/trans/penjualan/print', $data, "Reccu-$upper", 'A6', 'portrait');
+      }
+    }
   }
 
   public function delete()

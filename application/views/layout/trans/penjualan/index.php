@@ -23,7 +23,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <div class="table-responsive">
+              <div class="table-responsive mb-2">
                 <p class="font-italic">#Untuk Searching tanggal, gunakan format Year-month-day</p>
                 <table id="salesTables" class="table table-bordered table-striped" style="width:100%" cellspacing="0">
                   <thead class="text-center">
@@ -119,13 +119,13 @@
               <label for="alamatasal">
                 Alamat Asal
               </label>
-              <input type="text" class="form-control text-uppercase" name="alamatasal" id="alamatasal" placeholder="Alamat Asal.." required autocomplete="off">
+              <input type="text" class="form-control text-uppercase" name="alamatasal" id="alamatasal" maxlength="60" placeholder="Alamat Asal.." required autocomplete="off">
             </div>
             <div class="form-group col-lg-6">
               <label for="alamattujuan">
                 Alamat Tujuan
               </label>
-              <input type="text" class="form-control text-uppercase" name="alamattujuan" id="alamattujuan" placeholder="Alamat Tujuan.." required autocomplete="off">
+              <input type="text" class="form-control text-uppercase" name="alamattujuan" id="alamattujuan" maxlength="60" placeholder="Alamat Tujuan.." required autocomplete="off">
             </div>
           </div>
           <div class="form-row">
@@ -260,13 +260,13 @@
               <label for="alamatasaledit">
                 Alamat Asal
               </label>
-              <input type="text" class="form-control text-uppercase" name="alamatasaledit" id="alamatasaledit" placeholder="Alamat Asal.." required autocomplete="off">
+              <input type="text" class="form-control text-uppercase" name="alamatasaledit" id="alamatasaledit" maxlength="60" placeholder="Alamat Asal.." required autocomplete="off">
             </div>
             <div class="form-group col-lg-6">
               <label for="alamattujuanedit">
                 Alamat Tujuan
               </label>
-              <input type="text" class="form-control text-uppercase" name="alamattujuanedit" id="alamattujuanedit" placeholder="Alamat Tujuan.." required autocomplete="off">
+              <input type="text" class="form-control text-uppercase" name="alamattujuanedit" id="alamattujuanedit" maxlength="60" placeholder="Alamat Tujuan.." required autocomplete="off">
             </div>
           </div>
           <div class="form-row">
@@ -323,6 +323,8 @@
                 <option value="lunas">LUNAS</option>
                 <option value="tempo">TEMPO</option>
               </select>
+              <input type="hidden" class="form-control" name="datepelunasan" id="datepelunasan">
+              <input type="hidden" class="form-control" name="oldpayment" id="oldpayment">
             </div>
           </div>
           <div class="form-group col-md d-flex justify-content-end px-0">
@@ -348,7 +350,7 @@
         </button>
       </div>
       <div class="modal-body" style="padding:1rem 2rem;">
-        <div class="table-responsive">
+        <div class="table-responsive mb-2">
           <h5 class="font-weight-bold">Data Order</h5>
           <div class="dropdown-divider"></div>
           <table class="table table-bordered my-3" id="tableDetailOrder" style="width:100%" cellspacing="0">
@@ -373,6 +375,8 @@
               </tr>
             </tbody>
           </table>
+        </div>
+        <div class="table-responsive mb-2">
 
           <h5 class="font-weight-bold">Data Penjualan</h5>
           <div class="dropdown-divider"></div>

@@ -238,34 +238,42 @@ $("#sopirTables").on("click", ".btn-history", function () {
     success: function (response) {
       const res = JSON.parse(response);
 
-      const timeline = $("#timeline");
-      timeline.empty();
-
-      $.each(res, function (index, item) {
-        const date = new Date(item.tgl_order);
-
-        const dateOrder = date.toLocaleDateString("id-ID", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
+      if (res.length === 0) {
+        Swal.fire({
+          icon: "info",
+          title: "Belum ada history!",
         });
+      } else {
+        const timeline = $("#timeline");
+        timeline.empty();
 
-        const status =
-          item.status_order == "selesai"
-            ? '<i class="fas fa-check-circle text-success"></i>'
-            : '<i class="fas fa-clock"></i>';
+        $.each(res, function (index, item) {
+          const date = new Date(item.tgl_order);
 
-        const tambahanSangu =
-          item.tambahan_sangu == "0"
-            ? ""
-            : '<p class="text-capitalize">' + item.ket_tambahan_sangu + "</p>";
+          const dateOrder = date.toLocaleDateString("id-ID", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          });
 
-        const timelineItem = `
+          const status =
+            item.status_order == "selesai"
+              ? '<i class="fas fa-check-circle text-success"></i>'
+              : '<i class="fas fa-clock"></i>';
+
+          const tambahanSangu =
+            item.tambahan_sangu == "0"
+              ? ""
+              : '<p class="text-capitalize">' +
+                item.ket_tambahan_sangu +
+                "</p>";
+
+          const timelineItem = `
             <div class="time-label">
                 <span class="bg-info" id="timelineDate">${dateOrder}</span>
             </div>
             <div>
-              <i class="fas fa-clock bg-info"></i>
+              <i class="fas fa-arrow-right bg-info"></i>
               <div class="timeline-item" style="background-color:#484d53">
                 <span class="time">
                   ${status}
@@ -315,10 +323,11 @@ $("#sopirTables").on("click", ".btn-history", function () {
               </div>
             </div>`;
 
-        timeline.append(timelineItem);
-      });
+          timeline.append(timelineItem);
+        });
 
-      $("#modalHistory").modal("show");
+        $("#modalHistory").modal("show");
+      }
     },
   });
 

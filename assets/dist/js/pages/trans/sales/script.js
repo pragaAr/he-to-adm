@@ -355,10 +355,13 @@ $("#form_add").on("submit", function (e) {
         cancelButtonText: "Batal",
         confirmButtonText: "Ya, Cetak !",
       }).then((result) => {
-        if (result.value) {
-          window.open(
-            "http://localhost/hira-to-adm/penjualan/print/" + parsedData
-          );
+        if (result.isConfirmed) {
+          const url =
+            "http://localhost/hira-to-adm/penjualan/print" +
+            "?reccu=" +
+            parsedData;
+
+          window.open(url);
         }
       });
 
@@ -525,6 +528,8 @@ $("#salesTables").on("click", ".btn-edit", function (e) {
       $("#borongedit").val(format(parsedata.hrg_borong));
       $("#biayaedit").val(format(parsedata.total_hrg));
       $("#pembayaranedit").val(parsedata.pembayaran).trigger("change");
+      $("#oldpayment").val(parsedata.pembayaran);
+      $("#datepelunasan").val(parsedata.datePelunasan);
 
       if ($("#jenisedit").val() == "borong") {
         $("#berat-tonaseedit").css("display", "none");
@@ -568,6 +573,8 @@ $("#form_update").on("submit", function (e) {
   const borong = $("#borongedit").val();
   const biaya = $("#biayaedit").val();
   const pembayaran = $("#pembayaranedit").val();
+  const oldpayment = $("#oldpayment").val();
+  const datepelunasan = $("#datepelunasan").val();
 
   $.ajax({
     url: "http://localhost/hira-to-adm/penjualan/update",
@@ -585,6 +592,8 @@ $("#form_update").on("submit", function (e) {
       borong: borong,
       biaya: biaya,
       pembayaran: pembayaran,
+      oldpayment: oldpayment,
+      datepelunasan: datepelunasan,
     },
     success: function (data) {
       $("#penjualanid").val("");
@@ -604,6 +613,8 @@ $("#form_update").on("submit", function (e) {
       $("#borongedit").val("");
       $("#biayaedit").val("");
       $("#pembayaranedit").val(null).trigger("change");
+      $("#oldpayment").val("");
+      $("#datepelunasan").val("");
 
       $("#modalUpdatePenjualan").modal("hide");
 
@@ -706,6 +717,56 @@ $("#salesTables").on("click", ".btn-delete", function () {
             },
           });
         }
+      });
+    },
+  });
+});
+
+$("#salesTables").on("click", ".btn-print", function () {
+  const reccu = $(this).data("reccu");
+
+  $.ajax({
+    url: "http://localhost/hira-to-adm/penjualan/cek",
+    method: "POST",
+    data: { reccu: reccu },
+    success: function (data) {
+      if (data !== "null") {
+        const parsedData = JSON.parse(data);
+        const reccu = parsedData.reccu;
+
+        Swal.fire({
+          title: "Cetak Reccu ?",
+          icon: "info",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          cancelButtonText: "Batal",
+          confirmButtonText: "Ya, Cetak !",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const url =
+              "http://localhost/hira-to-adm/penjualan/print" +
+              "?reccu=" +
+              reccu;
+
+            window.open(url);
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "Reccu tidak ditemukan!",
+        });
+      }
+    },
+    error: function (xhr, status, error) {
+      console.error("Error:", error);
+
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "Permintaan tidak dapat diproses!",
       });
     },
   });

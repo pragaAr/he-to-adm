@@ -134,7 +134,7 @@ class Sangu extends CI_Controller
 
         $upper = strtoupper($kd);
 
-        $mpdf->SetHTMLFooter("<p class='page-number-footer'>Pengeluaran Kas Sangu Sopir $upper | Halaman {PAGENO} dari {nb}</p>");
+        $mpdf->SetHTMLFooter("<p class='page-number-footer'>Pengeluaran Kas Sangu Sopir - $upper | Halaman {PAGENO} dari {nb}</p>");
         $mpdf->AddPage();
         $mpdf->WriteHTML($content);
 

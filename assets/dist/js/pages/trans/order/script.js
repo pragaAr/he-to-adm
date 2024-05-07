@@ -246,48 +246,60 @@ $("#btn_submitNewCust").on("click", function (e) {
   const notelpcust = $("#notelpcust").val();
   const alamatcust = $("#alamatcust").val();
 
-  $.ajax({
-    url: "http://localhost/hira-to-adm/customer/addNewSelect",
-    method: "POST",
-    data: {
-      nama: namacust,
-      kode: kodecust,
-      notelp: notelpcust,
-      alamat: alamatcust,
-    },
-    success: function (response) {
-      const res = JSON.parse(response);
+  if (
+    namacust === "" ||
+    kodecust === "" ||
+    notelpcust === "" ||
+    alamatcust === ""
+  ) {
+    Swal.fire({
+      icon: "warning",
+      title: "Form wjib diisi!",
+    });
+  } else {
+    $.ajax({
+      url: "http://localhost/hira-to-adm/customer/addNewSelect",
+      method: "POST",
+      data: {
+        nama: namacust,
+        kode: kodecust,
+        notelp: notelpcust,
+        alamat: alamatcust,
+      },
+      success: function (response) {
+        const res = JSON.parse(response);
 
-      if (res.status != "error") {
-        $("#namacust").val("");
-        $("#kodecust").val("");
-        $("#notelpcust").val("");
-        $("#alamatcust").val("");
+        if (res.status != "error") {
+          $("#namacust").val("");
+          $("#kodecust").val("");
+          $("#notelpcust").val("");
+          $("#alamatcust").val("");
 
-        Swal.fire({
-          icon: "success",
-          title: "Success!",
-          text: "Customer Baru ditambahkan!",
-        });
+          Swal.fire({
+            icon: "success",
+            title: "Success!",
+            text: "Customer Baru ditambahkan!",
+          });
 
-        const newOption = new Option(
-          res.text.toUpperCase(),
-          res.id,
-          true,
-          true
-        );
+          const newOption = new Option(
+            res.text.toUpperCase(),
+            res.id,
+            true,
+            true
+          );
 
-        $("#custid").append(newOption).trigger("change");
+          $("#custid").append(newOption).trigger("change");
 
-        $("#modalAddNewCust").modal("hide");
+          $("#modalAddNewCust").modal("hide");
 
-        $("#namecust").val(res.text);
-        $("#notelp").val(res.telp);
+          $("#namecust").val(res.text);
+          $("#notelp").val(res.telp);
 
-        $("#muatan").focus();
-      }
-    },
-  });
+          $("#muatan").focus();
+        }
+      },
+    });
+  }
 });
 // addNewCustModal
 
@@ -478,15 +490,15 @@ $("#orderTables").on("click", ".btn-edit", function (e) {
   const kd = $(this).data("kd");
 
   $.ajax({
-    url: "http://localhost/hira-to-adm/order/getStatusOrderKd",
+    url: "http://localhost/hira-to-adm/order/getStatusSalesKd",
     type: "POST",
     data: {
       kd: kd,
     },
     success: function (response) {
-      parsedRes = JSON.parse(response);
+      const parsedRes = JSON.parse(response);
 
-      if (parsedRes.status == "disiapkan") {
+      if (parsedRes.status === "") {
         $.ajax({
           url: "http://localhost/hira-to-adm/order/getDataKd",
           type: "POST",
@@ -701,32 +713,53 @@ $("#orderTables").on("click", ".btn-detail", function () {
 $("#orderTables").on("click", ".btn-delete", function () {
   const kd = $(this).data("kd");
 
-  Swal.fire({
-    title: "Apakah anda yakin ?",
-    text: "Data yang terkait akan di hapus !!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    cancelButtonText: "Batal",
-    confirmButtonText: "Ya, Hapus !",
-  }).then((result) => {
-    if (result.value) {
-      $.ajax({
-        url: "http://localhost/hira-to-adm/order/delete",
-        method: "POST",
-        data: { kd: kd },
-        success: function (data) {
-          Swal.fire({
-            icon: "success",
-            title: "Success!",
-            text: "Data yang terkait dihapus!",
-          });
+  $.ajax({
+    url: "http://localhost/hira-to-adm/order/getStatusSalesKd",
+    type: "POST",
+    data: {
+      kd: kd,
+    },
+    success: function (response) {
+      const parsedRes = JSON.parse(response);
 
-          $("#orderTables").DataTable().ajax.reload(null, false);
-        },
-      });
-    }
+      if (parsedRes.status === "") {
+        Swal.fire({
+          title: "Apakah anda yakin ?",
+          text: "Data yang terkait akan di hapus !!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          cancelButtonText: "Batal",
+          confirmButtonText: "Ya, Hapus !",
+        }).then((result) => {
+          if (result.value) {
+            $.ajax({
+              url: "http://localhost/hira-to-adm/order/delete",
+              method: "POST",
+              data: { kd: kd },
+              success: function (data) {
+                Swal.fire({
+                  icon: "success",
+                  title: "Success!",
+                  text: "Data yang terkait dihapus!",
+                });
+
+                $("#orderTables").DataTable().ajax.reload(null, false);
+              },
+            });
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "info",
+          title: "Order sudah " + parsedRes.status,
+          text: "Silahkan hapus data di penjualan dahulu!",
+        });
+      }
+
+      $('[data-toggle="tooltip"]').tooltip("hide");
+    },
   });
 });
 

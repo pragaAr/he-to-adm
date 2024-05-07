@@ -162,11 +162,20 @@ class M_Persensopir extends CI_Model
 
   public function getDataOrderPersenByKdPersen($kd)
   {
-    $this->db->select('a.persen1, a.persen2, a.tot_biaya, b.dateAdd as tglOrder, c.nama')
+    $this->db->select('
+    a.persen1, 
+    a.persen2, 
+    a.tot_biaya, 
+    b.dateAdd as tglOrder, 
+    c.nama,
+    e.platno
+    ')
       ->from('detail_ps a')
       ->where('a.kd', $kd)
       ->join('order_masuk b', 'b.no_order = a.no_order')
-      ->join('customer c', 'c.id = b.customer_id');
+      ->join('customer c', 'c.id = b.customer_id')
+      ->join('sangu_sopir d', 'd.no_order = b.no_order')
+      ->join('armada e', 'e.id = d.truck_id');
 
     $res = $this->db->get()->result();
 

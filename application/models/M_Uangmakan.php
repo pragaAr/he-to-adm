@@ -35,6 +35,9 @@ class M_Uangmakan extends CI_Model
       $this->datatables->add_column(
         'view',
         '<div class="btn-group" role="group">
+            <a href="javascript:void(0);" class="btn btn-sm btn-primary text-white border border-light btn-print" data-kd="$2" data-toggle="tooltip" title="Print">
+              <i class="fas fa-print fa-sm"></i>
+            </a>
             <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-kd="$2" data-toggle="tooltip" title="Detail">
               <i class="fas fa-eye fa-sm"></i>
             </a>
@@ -68,6 +71,11 @@ class M_Uangmakan extends CI_Model
   public function getDataKdUm($kd)
   {
     return $this->db->get_where('uang_makan', ['kd_um' => $kd])->row();
+  }
+
+  public function cekKode($no)
+  {
+    return $this->db->get_where('uang_makan', ['kd_um' => $no])->row();
   }
 
   public function getDetailKdUm($kd)

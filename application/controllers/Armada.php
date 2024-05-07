@@ -82,7 +82,7 @@ class Armada extends CI_Controller
   {
     $platno = trim($this->input->post('platno'));
     $merk   = trim($this->input->post('merk'));
-    $keur   = date('Y-m-d', strtotime($this->input->post('keur')));
+    $keur   = $this->input->post('keur') ? date('Y-m-d', strtotime($this->input->post('keur'))) : null;
     $addAt  = date('Y-m-d H:i:s');
 
     $data = [
@@ -92,9 +92,9 @@ class Armada extends CI_Controller
       'dateAdd'   => $addAt,
     ];
 
-    $data = $this->Armada->addData($data);
+    $response = $this->Armada->addData($data);
 
-    echo json_encode($data);
+    echo json_encode($response);
   }
 
   public function update()
@@ -102,7 +102,7 @@ class Armada extends CI_Controller
     $id     = $this->input->post('id');
     $platno = trim($this->input->post('platno'));
     $merk   = trim($this->input->post('merk'));
-    $keur   = date('Y-m-d', strtotime($this->input->post('keur')));
+    $keur   = $this->input->post('keur') ? date('Y-m-d', strtotime($this->input->post('keur'))) : null;
 
     $data = [
       'platno'    => strtolower($platno),

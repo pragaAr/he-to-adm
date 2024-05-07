@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+date_default_timezone_set('Asia/Jakarta');
+
 class M_Order extends CI_Model
 {
   public function getKd()
@@ -113,9 +115,9 @@ class M_Order extends CI_Model
     return $query;
   }
 
-  public function getOrderStatusByKd($kd)
+  public function getOrderStatusSalesByKd($kd)
   {
-    $this->db->select('status_order')
+    $this->db->select('status_sales')
       ->from('order_masuk')
       ->where('no_order', $kd);
 
@@ -140,7 +142,7 @@ class M_Order extends CI_Model
   {
     $this->db->select('om.id, om.no_order, om.asal_order, om.tujuan_order, om.jenis_muatan, om.status_order, om.keterangan, om.dateAdd, cust.nama')
       ->from('order_masuk om')
-      ->where('om.status_order =', 'diproses')
+      ->where('om.status_sales =', '')
       ->join('customer cust', 'cust.id = om.customer_id')
       ->order_by('om.id', 'DESC');
 
@@ -153,7 +155,7 @@ class M_Order extends CI_Model
   {
     $this->db->select('om.id, om.no_order, om.asal_order, om.tujuan_order, om.jenis_muatan, om.status_order, om.keterangan, om.dateAdd, cust.nama')
       ->from('order_masuk om')
-      ->where('om.status_order =', 'diproses')
+      ->where('om.status_sales =', '')
       ->join('customer cust', 'cust.id = om.customer_id')
       ->order_by('om.id', 'DESC')
       ->like('om.no_order', $keyword);
@@ -273,7 +275,10 @@ class M_Order extends CI_Model
   {
     $this->db->trans_start();
 
-    $statusOrder  = ['status_order'  => 'selesai'];
+    $statusOrder  = [
+      'status_order'      => 'selesai',
+      'dateUpdateStatus'  => date('Y-m-d H:i:s')
+    ];
 
     $whereidorder = ['id' => $id];
 

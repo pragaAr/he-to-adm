@@ -109,6 +109,8 @@ $("#umTables").on("click", ".btn-detail", function () {
 
       $("#kdum").val(kd);
 
+      $("#btn_printDetail").attr("data-kd", kd);
+
       const kdtgl = $(".kdtgl");
 
       const formatedTgl = new Date(data.data.dateAdd);
@@ -150,7 +152,17 @@ $("#umTables").on("click", ".btn-detail", function () {
       }
 
       $("#modalDetail").modal("show");
+
       $('[data-toggle="tooltip"]').tooltip("hide");
+    },
+    error: function (xhr, status, error) {
+      console.error("Error:", error);
+
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "Permintaan tidak dapat diproses!",
+      });
     },
   });
 });
@@ -182,7 +194,104 @@ $("#umTables").on("click", ".btn-delete", function () {
 
           $("#umTables").DataTable().ajax.reload(null, false);
         },
+        error: function (xhr, status, error) {
+          console.error("Error:", error);
+
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "Permintaan tidak dapat diproses!",
+          });
+        },
       });
     }
+  });
+});
+
+$("#umTables").on("click", ".btn-print", function () {
+  const kd = $(this).data("kd");
+
+  $.ajax({
+    url: "http://localhost/hira-to-adm/uangmakan/cek",
+    method: "POST",
+    data: { no: kd },
+    success: function (data) {
+      if (data !== "null") {
+        Swal.fire({
+          title: "Cetak data ?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          cancelButtonText: "Batal",
+          confirmButtonText: "Ya, Cetak !",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.open(
+              "http://localhost/hira-to-adm/uangmakan/print" + "?nomor=" + kd
+            );
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops!",
+          text: "Data tidak ditemukan!",
+        });
+      }
+    },
+    error: function (xhr, status, error) {
+      console.error("Error:", error);
+
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "Permintaan tidak dapat diproses!",
+      });
+    },
+  });
+});
+
+$("#btn_printDetail").on("click", function () {
+  const kd = $(this).data("kd");
+
+  $.ajax({
+    url: "http://localhost/hira-to-adm/uangmakan/cek",
+    method: "POST",
+    data: { no: kd },
+    success: function (data) {
+      if (data !== "null") {
+        Swal.fire({
+          title: "Cetak data ?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          cancelButtonText: "Batal",
+          confirmButtonText: "Ya, Cetak !",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.open(
+              "http://localhost/hira-to-adm/uangmakan/print" + "?nomor=" + kd
+            );
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops!",
+          text: "Data tidak ditemukan!",
+        });
+      }
+    },
+    error: function (xhr, status, error) {
+      console.error("Error:", error);
+
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "Permintaan tidak dapat diproses!",
+      });
+    },
   });
 });

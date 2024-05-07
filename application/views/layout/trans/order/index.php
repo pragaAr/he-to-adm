@@ -150,9 +150,9 @@
             </div>
             <div class="form-group col-md-4">
               <label for="nominal">
-                Nominal
+                Nominal Sangu
               </label>
-              <input type="text" name="nominal" id="nominal" class="form-control" placeholder="Nominal.." autocomplete="off" required oninvalid="this.setCustomValidity('Nominal wajib di isi!')" oninput="setCustomValidity('')">
+              <input type="text" name="nominal" id="nominal" class="form-control" placeholder="Nominal Sangu.." autocomplete="off" required oninvalid="this.setCustomValidity('Nominal wajib di isi!')" oninput="setCustomValidity('')">
             </div>
           </div>
 
@@ -283,7 +283,6 @@
   </div>
 </div>
 
-
 <!-- modalDetailOrder -->
 <div class="modal fade" id="modalDetailOrder" data-backdrop="static">
   <div class="modal-dialog modal-xl">
@@ -388,25 +387,25 @@
             <label for="namacust">
               Nama Customer
             </label>
-            <input type="text" class="form-control text-uppercase" name="namacust" id="namacust" placeholder="Nama Customer.." autofocus autocomplete="off" oninvalid="this.setCustomValidity('Nama Customer wajib di isi!')" oninput="setCustomValidity('')">
+            <input type="text" class="form-control text-uppercase" name="namacust" id="namacust" placeholder="Nama Customer.." required autofocus autocomplete="off">
           </div>
           <div class="form-group">
             <label for="kodecust">
               Kode Customer
             </label>
-            <input type="text" class="form-control text-uppercase" name="kodecust" id="kodecust" placeholder="Kode Customer.." autocomplete="off" oninvalid="this.setCustomValidity('Kode Customer wajib di isi!')" oninput="setCustomValidity('')">
+            <input type="text" class="form-control text-uppercase" name="kodecust" id="kodecust" placeholder="Kode Customer.." required autocomplete="off">
           </div>
           <div class="form-group">
             <label for="notelpcust">
               No Telepon
             </label>
-            <input type="text" class="form-control text-uppercase" name="notelpcust" id="notelpcust" placeholder="No Telepon.." autocomplete="off" oninvalid="this.setCustomValidity('Telpon Customer wajib di isi!')" oninput="setCustomValidity('')">
+            <input type="text" class="form-control text-uppercase" name="notelpcust" id="notelpcust" placeholder="No Telepon.." required autocomplete="off">
           </div>
           <div class="form-group">
             <label for="alamatcust">
               Alamat
             </label>
-            <input type="text" class="form-control text-uppercase" name="alamatcust" id="alamatcust" placeholder="Alamat.." autocomplete="off" oninvalid="this.setCustomValidity('Alamat Customer wajib di isi!')" oninput="setCustomValidity('')">
+            <input type="text" class="form-control text-uppercase" name="alamatcust" id="alamatcust" placeholder="Alamat.." required autocomplete="off">
           </div>
           <div>
             <button type="submit" id="btn_submitNewCust" class="btn btn-dark border border-light float-right">

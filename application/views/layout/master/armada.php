@@ -119,7 +119,7 @@
             <label for="keuredit">
               Tanggal Keur
             </label>
-            <input type="date" class="form-control" name="keuredit" id="keuredit" required>
+            <input type="date" class="form-control" name="keuredit" id="keuredit">
           </div>
           <div>
             <button type="submit" class="btn btn-dark border border-light float-right">

@@ -82,7 +82,6 @@
       text-align: right;
       font-style: italic;
       font-size: 11px;
-      text-transform: capitalize;
     }
 
     .upper {

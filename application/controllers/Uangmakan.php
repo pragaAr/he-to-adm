@@ -47,6 +47,15 @@ class Uangmakan extends CI_Controller
     echo json_encode($data);
   }
 
+  public function cek()
+  {
+    $no   = $this->input->post('no');
+    // $no   = 'um-000011';
+    $data = $this->Um->cekKode($no);
+
+    echo json_encode($data);
+  }
+
   public function add()
   {
     $data['title']  = 'Tambah Data Uang Makan';
@@ -130,34 +139,47 @@ class Uangmakan extends CI_Controller
     echo json_encode($response);
   }
 
-  public function print($kd)
+  public function print()
   {
-    $date = date('d/F/Y');
+    $kd = $this->input->get('nomor');
 
-    $data = [
-      'title'     => 'List Uang Makan',
-      'dataum'    => $this->Um->getDataByKd($kd),
-      'detailum'  => $this->Um->getDetailByKd($kd)
-    ];
+    if ($kd === null) {
+      echo 'tidak ada data yang ditampilkan';
+    } else {
+      $cekKd  = $this->Um->cekKode($kd);
 
-    $content  = $this->load->view('layout/adm/uang-makan/print', $data, true);
+      if ($cekKd === null) {
+        echo 'tidak ada data yang ditampilkan';
+      } else {
 
-    $mpdf = new Mpdf([
-      'mode'          => 'utf-8',
-      'format'        => 'A4',
-      'orientation'   => 'P',
-      'SetTitle'      => "list-uang-makan-$date",
-      'margin_left'   => 10,
-      'margin_right'  => 10,
-      'margin_top'    => 10,
-      'margin_bottom' => 10,
-    ]);
+        $data = [
+          'title'     => 'List Uang Makan',
+          'dataum'    => $this->Um->getDataByKd($kd),
+          'detailum'  => $this->Um->getDetailByKd($kd)
+        ];
 
-    $mpdf->SetHTMLFooter("<p class='page-number-footer'>list uangmakan $date | halaman {PAGENO} dari {nb}</p>");
-    $mpdf->AddPage();
-    $mpdf->WriteHTML($content);
+        $content  = $this->load->view('layout/adm/uang-makan/print', $data, true);
 
-    $mpdf->Output();
+        $mpdf = new Mpdf([
+          'mode'          => 'utf-8',
+          'format'        => 'A4',
+          'orientation'   => 'P',
+          'SetTitle'      => "list-uang-makan-$kd",
+          'margin_left'   => 10,
+          'margin_right'  => 10,
+          'margin_top'    => 10,
+          'margin_bottom' => 10,
+        ]);
+
+        $upper = strtoupper($kd);
+
+        $mpdf->SetHTMLFooter("<p class='page-number-footer'>List UangMakan - $upper | Halaman {PAGENO} Dari {nb}</p>");
+        $mpdf->AddPage();
+        $mpdf->WriteHTML($content);
+
+        $mpdf->Output();
+      }
+    }
   }
 
   public function delete()

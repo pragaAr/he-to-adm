@@ -229,7 +229,7 @@ $("#etcTables").on("click", ".btn-print", function () {
           if (result.isConfirmed) {
             const url =
               "http://localhost/hira-to-adm/pengeluaran_lain/print" +
-              "?kode=" +
+              "?nomor=" +
               kd;
             window.open(url);
           }

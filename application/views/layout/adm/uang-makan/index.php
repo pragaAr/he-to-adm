@@ -60,25 +60,25 @@
         </button>
       </div>
       <div class="modal-body" style="padding: 1rem 2rem !important;">
-        <form action="<?= base_url('uangmakan/print') ?>" method="POST" target="_blank">
-          <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-            <div>
-              <small class="text-uppercase mb-0 kdtgl"></small><br>
-              <small class="text-uppercase font-weight-bold mb-0 total"></small>
-            </div>
-            <button type="submit" class="btn btn-primary border border-light">Print</button>
-            <input type="hidden" name="kdum" id="kdum" class="form-control" readonly>
+
+        <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+          <div>
+            <small class="text-uppercase mb-0 kdtgl"></small><br>
+            <small class="text-uppercase font-weight-bold mb-0 total"></small>
           </div>
-          <table class="table table-bordered" width="100%">
-            <thead class="text-center" style="border:1.5px solid rgb(145, 143, 143) !important;">
-              <th width="10%" style="border-color: rgb(145, 143, 143) !important;">No.</th>
-              <th style="border-color: rgb(145, 143, 143) !important;">Penerima</th>
-              <th style="border-color: rgb(145, 143, 143) !important;">Nominal</th>
-            </thead>
-            <tbody class="text-center" id="tbodyDetail" style="border:1.5px solid rgb(145, 143, 143) !important;">
-            </tbody>
-          </table>
-        </form>
+          <button type="button" id="btn_printDetail" class="btn btn-primary border border-light">Print</button>
+          <input type="hidden" name="kdum" id="kdum" class="form-control" readonly>
+        </div>
+        <table class="table table-bordered" width="100%">
+          <thead class="text-center" style="border:1.5px solid rgb(145, 143, 143) !important;">
+            <th width="10%" style="border-color: rgb(145, 143, 143) !important;">No.</th>
+            <th style="border-color: rgb(145, 143, 143) !important;">Penerima</th>
+            <th style="border-color: rgb(145, 143, 143) !important;">Nominal</th>
+          </thead>
+          <tbody class="text-center" id="tbodyDetail" style="border:1.5px solid rgb(145, 143, 143) !important;">
+          </tbody>
+        </table>
+
       </div>
     </div>
   </div>

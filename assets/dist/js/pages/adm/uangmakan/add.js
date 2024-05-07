@@ -205,10 +205,21 @@ $(document).ready(function () {
         }).then((result) => {
           if (result.isConfirmed) {
             window.open(
-              "http://localhost/hira-to-adm/uangmakan/print/" + resCode
+              "http://localhost/hira-to-adm/uangmakan/print" +
+                "?nomor=" +
+                resCode
             );
           }
           window.location.href = "http://localhost/hira-to-adm/uangmakan";
+        });
+      },
+      error: function (xhr, status, error) {
+        console.error("Error:", error);
+
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: "Permintaan tidak dapat diproses!",
         });
       },
     });

@@ -110,6 +110,9 @@
     .addr {
       height: 30px;
       vertical-align: top;
+      overflow: hidden;
+      /* Memotong konten yang berlebihan */
+      text-overflow: ellipsis;
     }
 
     .bold {
@@ -264,7 +267,7 @@
           <td class="td-data w-sm">BERAT</td>
           <td class="td-data" style="width:3%">:</td>
           <td class="td-data">
-            <?= $sales->berat ?> Kg,
+            <?= $sales->berat ?> Kg
           </td>
         </tr>
       </table>

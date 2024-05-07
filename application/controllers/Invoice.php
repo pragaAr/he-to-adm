@@ -251,7 +251,7 @@ class Invoice extends CI_Controller
 
         $content  = $this->load->view('layout/trans/invoice/print', $data, true);
 
-        $mpdf->SetHTMLFooter("<p class='page-number-footer'>Invoice ( $upperstr ) | Halaman {PAGENO} Dari {nb}</p>");
+        $mpdf->SetHTMLFooter("<p class='page-number-footer'>Invoice - $upperstr | Halaman {PAGENO} Dari {nb}</p>");
         $mpdf->AddPage();
         $mpdf->WriteHTML($content);
 
