@@ -156,7 +156,6 @@ $("#sjTables").on("click", ".btn-detail", function () {
 
       for (let i = 0; i < data.datasj.length; i++) {
         let totalSuratJalan = 0;
-        let totalBerat = 0;
 
         const dateOrder = new Date(data.datasj[i].dateOrder);
 
@@ -184,7 +183,6 @@ $("#sjTables").on("click", ".btn-detail", function () {
         for (let j = 0; j < data.detail.length; j++) {
           if (data.detail[j].reccu == data.datasj[i].reccu) {
             totalSuratJalan++;
-            totalBerat += parseFloat(data.detail[j].berat);
           }
         }
 
@@ -203,7 +201,9 @@ $("#sjTables").on("click", ".btn-detail", function () {
         );
 
         row.append(
-          "<td class='text-capitalize align-middle'>" + totalBerat + " Kg </td>"
+          "<td class='text-capitalize align-middle'>" +
+            data.datasj[i].berat +
+            " Kg </td>"
         );
 
         row.append(

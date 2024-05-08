@@ -351,12 +351,12 @@ class Order extends CI_Controller
 
         $mpdf = new Mpdf([
           'mode'          => 'utf-8',
-          'format'        => 'A4',
-          'orientation'   => 'P',
+          'format'        => [165, 215],
+          'orientation'   => 'L',
           'SetTitle'      => "order-$kd",
-          'margin_left'   => 10,
-          'margin_right'  => 10,
-          'margin_top'    => 10,
+          'margin_left'   => 5,
+          'margin_right'  => 5,
+          'margin_top'    => 5,
           'margin_bottom' => 10,
         ]);
 
@@ -364,7 +364,7 @@ class Order extends CI_Controller
         $mpdf->AddPage();
         $mpdf->WriteHTML($content);
 
-        $mpdf->Output();
+        $mpdf->Output("surat-order-$kd.pdf", 'I');
       }
     }
   }

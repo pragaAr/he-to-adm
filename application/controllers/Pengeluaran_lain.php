@@ -159,12 +159,12 @@ class Pengeluaran_lain extends CI_Controller
 
         $mpdf = new Mpdf([
           'mode'          => 'utf-8',
-          'format'        => 'A5',
+          'format'        => [165, 215],
           'orientation'   => 'L',
           'SetTitle'      => "pengeluaran-kas-lain-lain-$kode",
-          'margin_left'   => 10,
-          'margin_right'  => 10,
-          'margin_top'    => 10,
+          'margin_left'   => 5,
+          'margin_right'  => 5,
+          'margin_top'    => 5,
           'margin_bottom' => 10,
         ]);
 

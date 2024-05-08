@@ -20,7 +20,7 @@
     }
 
     .logo {
-      width: 17%;
+      width: 16%;
       float: left;
     }
 
@@ -128,6 +128,7 @@
         pt. hira adya naranata
       </p>
       <p class="cdetail">Komplek Pangkalan Truk Genuk Blok AA No.35, Jl. Raya Kaligawe Km 56, Semarang</p>
+      <!-- <p class="cdetail"></p> -->
       <p class="cdetail">Telp : (024) 6582208; +628112940481</p>
       <p class="cdetail">Website : https://hira-express.com Email : hira.express.transport@gmail.com</p>
     </div>

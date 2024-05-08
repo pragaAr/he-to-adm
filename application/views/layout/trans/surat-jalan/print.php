@@ -53,6 +53,7 @@
 
     .data-title {
       text-align: center;
+      margin-top: 10px;
     }
 
     .data-title h4 {
@@ -200,18 +201,16 @@
 
               <?php
               $total_reccu = 0;
-              $total_berat = 0;
 
               foreach ($detail as $dtdetaildata) {
                 if ($dtdetaildata->reccu == $data->reccu) {
-                  $total_berat += floatval($dtdetaildata->berat);
                   $total_reccu++;
                 }
               } ?>
 
               <td class="td-content">Total Surat Jalan <?= $total_reccu ?></td>
               <td class="td-content"><?= $data->kota_asal ?>-<?= $data->kota_tujuan ?></td>
-              <td class="td-content"><?= $total_berat ?> Kg</td>
+              <td class="td-content"><?= $data->berat ?> Kg</td>
               <td class="td-content">Rp. <?= number_format($data->hrg_kg) ?></td>
               <td class="td-content">Rp. <?= number_format($data->total_hrg) ?></td>
             </tr>

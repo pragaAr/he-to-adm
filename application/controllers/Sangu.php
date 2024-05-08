@@ -123,12 +123,12 @@ class Sangu extends CI_Controller
 
         $mpdf = new Mpdf([
           'mode'          => 'utf-8',
-          'format'        => 'A5',
+          'format'        => [165, 215],
           'orientation'   => 'L',
           'SetTitle'      => "pengeluaran-kas-sangu-$kd",
-          'margin_left'   => 10,
-          'margin_right'  => 10,
-          'margin_top'    => 10,
+          'margin_left'   => 5,
+          'margin_right'  => 5,
+          'margin_top'    => 5,
           'margin_bottom' => 10,
         ]);
 
@@ -169,12 +169,12 @@ class Sangu extends CI_Controller
 
     $mpdf = new Mpdf([
       'mode'          => 'utf-8',
-      'format'        => 'A5',
+      'format'        => [165, 215],
       'orientation'   => 'L',
       'SetTitle'      => "pengeluaran-kas-tambahan-sangu-$kd",
-      'margin_left'   => 10,
-      'margin_right'  => 10,
-      'margin_top'    => 10,
+      'margin_left'   => 5,
+      'margin_right'  => 5,
+      'margin_top'    => 5,
       'margin_bottom' => 10,
     ]);
 

@@ -272,7 +272,7 @@ class Traveldoc extends CI_Controller
         $mpdf->AddPage();
         $mpdf->WriteHTML($content);
 
-        $mpdf->Output("$str.pdf", 'I');
+        $mpdf->Output("tanda-terima-sj-$str.pdf", 'I');
       }
     }
   }
