@@ -96,7 +96,7 @@ $(document).ready(function () {
           $("#hrgbrg").val(format(data.hrg_borong));
           $("#tothrg").val(format(data.total_hrg));
 
-          $("#ket").focus();
+          $("#tgl").focus();
         },
         error: function (xhr, status, error) {
           console.error("Error:", error);
@@ -213,6 +213,7 @@ $(document).ready(function () {
     let valberat = [];
     let valretur = [];
 
+    const tgl = $("#tgl").val();
     const custid = $("#pengirim").val();
     const selectedCust = $("#selectedCust").val();
     const selectedKodeCust = $("#selectedKodeCust").val();
@@ -251,6 +252,7 @@ $(document).ready(function () {
       url: "http://localhost/hira-to-adm/traveldoc/proses",
       method: "POST",
       data: {
+        tgl: tgl,
         pengirim: custid,
         noorder: noorder,
         rc: rc,
@@ -338,4 +340,8 @@ $(document).ready(function () {
     $("#cart tbody").empty();
     $("#tfoot").hide();
   }
+});
+
+document.getElementById("tgl").addEventListener("click", function (event) {
+  this.showPicker ? this.showPicker() : this.click();
 });

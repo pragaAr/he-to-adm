@@ -104,7 +104,7 @@ class M_Traveldoc extends CI_Model
 
   public function getDataByNomor($str)
   {
-    $this->db->select('a.nomor_surat, b.nama, a.jml_sj')
+    $this->db->select('a.nomor_surat, b.nama, a.jml_sj, a.dateAdd')
       ->from('surat_jalan a')
       ->where('a.nomor_surat', $str)
       ->join('customer b', 'b.id = a.cust_id');

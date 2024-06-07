@@ -71,7 +71,7 @@ class Sangu extends CI_Controller
     $noorder    = $this->input->post('noorder');
     $tambahan   = preg_replace("/[^0-9\.]/", "", $this->input->post('tambahan'));
     $keterangan = $this->input->post('keterangan');
-    $tgl        = $this->input->post('tanggal');
+    $tgl        = date('Y-m-d', strtotime($this->input->post('tgl'))) . ' ' . date('H:i:s');
 
     $data = [
       'tambahan'        => $tambahan,
@@ -134,7 +134,7 @@ class Sangu extends CI_Controller
 
         $upper = strtoupper($kd);
 
-        $mpdf->SetHTMLFooter("<p class='page-number-footer'>Pengeluaran Kas Sangu Sopir - $upper | Halaman {PAGENO} dari {nb}</p>");
+        $mpdf->SetHTMLFooter("<p class='page-number-footer'>Pengeluaran Kas | Sangu Sopir - $upper | Halaman {PAGENO} dari {nb}</p>");
         $mpdf->AddPage();
         $mpdf->WriteHTML($content);
 
@@ -143,47 +143,59 @@ class Sangu extends CI_Controller
     }
   }
 
-  public function printTambahan($kd)
+  public function printTambahan()
   {
-    $query    = $this->Sangu->tambahanByOrder($kd);
+    $kd  = $this->input->get('no_do');
 
-    $plat     = $query->platno;
-    $sopir    = $query->nama;
-    $nominal  = $query->tambahan;
-    $cust     = $query->nama_cust;
-    $asal     = $query->asal_order;
-    $tujuan   = $query->tujuan_order;
-    $ket      = $query->keterangan;
-    $date     = $query->dateTambahanAdd;
+    if ($kd === null) {
+      echo 'tidak ada data yang ditampilkan';
+    } else {
+      $cek  = $this->Sangu->getSanguByKd($kd);
 
-    $data = [
-      'title'     => 'Pengeluaran Kas',
-      'sopir'     => $sopir,
-      'keperluan' => "Tambahan Sangu " . strtoupper($plat) . " " . ucwords($sopir),
-      'nominal'   => $nominal,
-      'desc'      => strtoupper($cust) . ', ' . strtoupper($asal) . '-' . strtoupper($tujuan) . ' (' . strtoupper($kd) . ') ',
-      'ket'       => date('d F Y', strtotime($date)) . ', ' . ucwords($ket)
-    ];
+      if ($cek === null) {
+        echo 'tidak ada data yang ditampilkan';
+      } else {
+        $query    = $this->Sangu->tambahanByOrder($kd);
 
-    $content  = $this->load->view('layout/adm/sangu/print', $data, true);
+        $plat     = $query->platno;
+        $sopir    = $query->nama;
+        $nominal  = $query->tambahan;
+        $cust     = $query->nama_cust;
+        $asal     = $query->asal_order;
+        $tujuan   = $query->tujuan_order;
+        $ket      = $query->keterangan;
+        $date     = $query->dateTambahanAdd;
 
-    $mpdf = new Mpdf([
-      'mode'          => 'utf-8',
-      'format'        => [165, 215],
-      'orientation'   => 'L',
-      'SetTitle'      => "pengeluaran-kas-tambahan-sangu-$kd",
-      'margin_left'   => 5,
-      'margin_right'  => 5,
-      'margin_top'    => 5,
-      'margin_bottom' => 10,
-    ]);
+        $data = [
+          'title'     => 'Pengeluaran Kas',
+          'sopir'     => $sopir,
+          'keperluan' => "Tambahan Sangu " . strtoupper($plat) . " " . ucwords($sopir),
+          'nominal'   => $nominal,
+          'desc'      => strtoupper($cust) . ', ' . strtoupper($asal) . '-' . strtoupper($tujuan) . ' (' . strtoupper($kd) . ') ',
+          'ket'       => date('d F Y', strtotime($date)) . ', ' . ucwords($ket)
+        ];
 
-    $upper = strtoupper($kd);
+        $content  = $this->load->view('layout/adm/sangu/print', $data, true);
 
-    $mpdf->SetHTMLFooter("<p class='page-number-footer'>Pengeluaran Kas Tambahan Sangu Sopir $upper | Halaman {PAGENO} dari {nb}</p>");
-    $mpdf->AddPage();
-    $mpdf->WriteHTML($content);
+        $mpdf = new Mpdf([
+          'mode'          => 'utf-8',
+          'format'        => [165, 215],
+          'orientation'   => 'L',
+          'SetTitle'      => "pengeluaran-kas-tambahan-sangu-$kd",
+          'margin_left'   => 5,
+          'margin_right'  => 5,
+          'margin_top'    => 5,
+          'margin_bottom' => 10,
+        ]);
 
-    $mpdf->Output();
+        $upper = strtoupper($kd);
+
+        $mpdf->SetHTMLFooter("<p class='page-number-footer'>Pengeluaran Kas | Tambahan Sangu Sopir $upper | Halaman {PAGENO} dari {nb}</p>");
+        $mpdf->AddPage();
+        $mpdf->WriteHTML($content);
+
+        $mpdf->Output();
+      }
+    }
   }
 }

@@ -140,6 +140,7 @@
       <p class="p-title-desc">Semarang, <?= date('d F Y', strtotime($detail->dateAdd)) ?></p>
       <p class="p-title-desc">Kepada Yth,</p>
       <p class="p-title-desc uppercase"><?= $detail->nama_customer ?></p>
+      <p class="p-title-desc"><?= ucwords($detail->keterangan) ?>.</p>
       <p class="p-title-desc">Di <?= ucwords($detail->asal_order) ?>.</p>
     </div>
 

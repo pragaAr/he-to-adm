@@ -216,7 +216,7 @@
         <tr>
           <td class="td-data w-sm">TANGGAL</td>
           <td class="td-data" style="width:3%">:</td>
-          <td class="td-data"><?= date('d-m-Y', strtotime($sales->dateorder)) ?></td>
+          <td class="td-data"><?= date('d-m-Y', strtotime($sales->dateAdd)) ?></td>
         </tr>
         <tr>
           <td class="td-data w-sm">PENGIRIM</td>

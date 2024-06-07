@@ -118,6 +118,7 @@ $("#sanguTables").on("click", ".btn-edit", function () {
       kd: kd,
     },
     success: function (data) {
+      console.log(data);
       $("#noorder").val(data.no_order);
       $("#platno").val(data.platno);
       $("#sopir").val(data.nama);
@@ -131,7 +132,11 @@ $("#sanguTables").on("click", ".btn-edit", function () {
       const bulan = String(d.getMonth() + 1).padStart(2, "0");
       const tahun = d.getFullYear();
 
-      $("#tanggal").val(`${tahun}-${bulan}-${tanggal}`);
+      if (data.dateTambahanAdd === null) {
+        $("#tanggal").val("");
+      } else {
+        $("#tanggal").val(`${tahun}-${bulan}-${tanggal}`);
+      }
 
       $("#modalEditSangu").modal("show");
 
@@ -160,7 +165,7 @@ $("#form_updateSangu").on("submit", function (e) {
   const noorder = $("#noorder").val();
   const tambahan = $("#tambahan").val();
   const keterangan = $("#keterangan").val();
-  const tgl = $("#tgl").val();
+  const tgl = $("#tanggal").val();
 
   $.ajax({
     url: "http://localhost/hira-to-adm/sangu/update",
@@ -250,9 +255,47 @@ $("#sanguTables").on("click", ".btn-printsangu", function () {
           cancelButtonText: "Batal",
           confirmButtonText: "Ya, Cetak !",
         }).then((result) => {
-          if (result.value) {
+          if (result.isConfirmed) {
             window.open(
               "http://localhost/hira-to-adm/sangu/print" +
+                "?no_do=" +
+                data.no_order
+            );
+          }
+        });
+      } else {
+        console.log("data tidak ditemukan");
+      }
+
+      $('[data-toggle="tooltip"]').tooltip("hide");
+    },
+  });
+});
+
+$("#sanguTables").on("click", ".btn-printtambahan", function () {
+  const kd = $(this).data("kd");
+
+  $.ajax({
+    url: "http://localhost/hira-to-adm/sangu/cekKd",
+    method: "POST",
+    dataType: "JSON",
+    data: {
+      kd: kd,
+    },
+    success: function (data) {
+      if (data !== null) {
+        Swal.fire({
+          title: "Cetak Pengeluaran kas ?",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          cancelButtonText: "Batal",
+          confirmButtonText: "Ya, Cetak !",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.open(
+              "http://localhost/hira-to-adm/sangu/printTambahan" +
                 "?no_do=" +
                 data.no_order
             );

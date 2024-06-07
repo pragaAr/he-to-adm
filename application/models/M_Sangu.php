@@ -39,7 +39,7 @@ class M_Sangu extends CI_Model
                             <a href="javascript:void(0);" class="btn btn-sm btn-info border border-light btn-printsangu" data-toggle="tooltip" title="Print Sangu" data-kd="' . $row['no_order'] . '">
                               <i class="fas fa-print fa-sm"></i>
                             </a>
-                            <a href="javascript:void(0);" class="btn btn-sm btn-secondary border border-light btn-printtambahansangu" data-toggle="tooltip" title="Print Tambahan Sangu" data-kd="' . $row['no_order'] . '">
+                            <a href="javascript:void(0);" class="btn btn-sm btn-secondary border border-light btn-printtambahan" data-toggle="tooltip" title="Print Tambahan Sangu" data-kd="' . $row['no_order'] . '">
                               <i class="fas fa-plus-circle fa-sm"></i>
                             </a>
                             <a href="javascript:void(0);" class="btn btn-sm btn-success text-white border border-light btn-detail" data-toggle="tooltip" title="Detail" data-kd="' . $row['no_order'] . '">

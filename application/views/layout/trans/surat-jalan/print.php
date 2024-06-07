@@ -265,7 +265,7 @@
         <table class="table-signature">
           <tr>
             <td style="width:70%"></td>
-            <td class="td-signature">Semarang, <?= date('d F Y') ?></td>
+            <td class="td-signature">Semarang, <?= date('d-m-Y', strtotime($tgl)) ?></td>
           </tr>
           <tr>
             <td style="width:70%"></td>

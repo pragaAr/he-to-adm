@@ -733,7 +733,7 @@ $("#orderTables").on("click", ".btn-delete", function () {
           cancelButtonText: "Batal",
           confirmButtonText: "Ya, Hapus !",
         }).then((result) => {
-          if (result.value) {
+          if (result.isConfirmed) {
             $.ajax({
               url: "http://localhost/hira-to-adm/order/delete",
               method: "POST",
@@ -830,7 +830,7 @@ $("#orderTables").on("click", ".btn-print", function () {
         cancelButtonText: "Batal",
         confirmButtonText: "Ya, Cetak !",
       }).then((result) => {
-        if (result.value) {
+        if (result.isConfirmed) {
           window.open(
             "http://localhost/hira-to-adm/order/print" +
               "?no_do=" +

@@ -104,7 +104,7 @@
               <label for="tanggal">
                 Tanggal
               </label>
-              <input type="date" class="form-control" name="tanggal" id="tanggal">
+              <input type="date" class="form-control" name="tanggal" id="tanggal" value="<?= date('Y-m-d') ?>">
             </div>
           </div>
 

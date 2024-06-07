@@ -118,6 +118,7 @@ class Penjualan extends CI_Controller
     $userid       = $this->session->userdata('id');
     $reccu        = trim($this->input->post('reccu'));
     $noorder      = trim($this->input->post('noorder'));
+    $tglreccu     = date('Y-m-d', strtotime($this->input->post('tglreccu')));
     $textnoorder  = trim($this->input->post('textnoorder'));
     $jenis        = trim($this->input->post('jenis'));
     $muatan       = trim($this->input->post('muatan'));
@@ -151,7 +152,7 @@ class Penjualan extends CI_Controller
       'total_hrg'     => $biaya,
       'pembayaran'    => strtolower($pembayaran),
       'user_id'       => $userid,
-      'dateAdd'       => $dateAdd,
+      'dateAdd'       => $tglreccu,
       'datePelunasan' => strtolower($pembayaran) === 'lunas' ? $dateAdd : null,
     );
 
@@ -174,6 +175,7 @@ class Penjualan extends CI_Controller
   {
     $penjualanid    = $this->input->post('penjualanid');
     $noorder        = trim($this->input->post('noorder'));
+    $tglreccu       = date('Y-m-d', strtotime($this->input->post('tglreccu')));
 
     $jenis          = trim($this->input->post('jenis'));
     $berat          = trim($this->input->post('berat'));
@@ -209,6 +211,7 @@ class Penjualan extends CI_Controller
       'penerima'      => strtolower($penerima),
       'alamat_tujuan' => strtolower($alamattujuan),
       'total_hrg'     => $biaya,
+      'dateAdd'       => $tglreccu,
       'pembayaran'    => strtolower($pembayaran),
       'datePelunasan' => $datePelunasan
     );

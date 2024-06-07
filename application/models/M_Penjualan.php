@@ -35,7 +35,7 @@ class M_Penjualan extends CI_Model
           <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white border border-light btn-edit" data-kd="$2" data-toggle="tooltip" title="Edit">
             <i class="fas fa-pencil-alt fa-sm"></i>
           </a>
-          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-kd="$2" data-toggle="tooltip" title="Hapus">
+          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white border border-light btn-delete" data-kd="$3" data-toggle="tooltip" title="Hapus">
             <i class="fas fa-trash fa-sm"></i>
           </a>
         </div>',
@@ -59,7 +59,15 @@ class M_Penjualan extends CI_Model
 
   public function getDataByKd($rc)
   {
-    $this->db->select('p.id, p.reccu, om.id as id_order, om.no_order, om.dateAdd as dateorder, p.jenis, p.muatan, p.berat, p.hrg_borong, p.hrg_kg, p.pengirim, p.kota_asal, p.alamat_asal, p.penerima, p.kota_tujuan, p.alamat_tujuan, p.total_hrg, p.pembayaran, p.dateAdd, p.datePelunasan')
+    $this->db->select('
+                      p.id, p.reccu, 
+                      om.id as id_order, om.no_order, om.dateAdd as dateorder, 
+                      p.jenis, p.muatan, p.berat, p.hrg_borong, 
+                      p.hrg_kg, p.pengirim, p.kota_asal, p.alamat_asal, 
+                      p.penerima, p.kota_tujuan, p.alamat_tujuan, 
+                      p.total_hrg, p.pembayaran, 
+                      p.dateAdd, p.datePelunasan
+                      ')
       ->from('penjualan p')
       ->join('order_masuk om', 'om.id = p.order_id')
       ->where('p.reccu', $rc);

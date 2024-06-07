@@ -75,7 +75,11 @@
                   </div>
                 </div>
                 <div class="form-row">
-                  <div class="form-group col-md">
+                  <div class="form-group col-md-4">
+                    <label for="tgl">Tanggal</label>
+                    <input type="date" name="tgl" id="tgl" class="form-control text-uppercase" value="<?= date('Y-m-d') ?>">
+                  </div>
+                  <div class="form-group col-md-8">
                     <label for="ket">Keterangan</label>
                     <input type="text" name="ket" id="ket" class="form-control text-uppercase" placeholder="Keterangan.." autocomplete="off">
                   </div>

@@ -84,7 +84,7 @@ class Order extends CI_Controller
         'tujuan'  => strtoupper($order->tujuan_order),
         'muatan'  => strtoupper($order->jenis_muatan),
         'ket'     => strtoupper($order->keterangan),
-        'tgl'     => date('d-m-Y', strtotime(($order->dateAdd))),
+        'tgl'     => date('Y-m-d', strtotime(($order->dateAdd))),
       ];
     }
 
@@ -134,11 +134,11 @@ class Order extends CI_Controller
 
   public function getId()
   {
-    $kd   = $this->input->post('kd');
+    $kd = $this->input->post('kd');
 
-    $data = $this->Order->getOrderId($kd);
+    $response = $this->Order->getOrderId($kd);
 
-    echo json_encode($data);
+    echo json_encode($response);
   }
 
   public function getDetail()

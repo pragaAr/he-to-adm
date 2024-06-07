@@ -114,6 +114,7 @@ class Traveldoc extends CI_Controller
     $custid     = $this->input->post('pengirim');
     $cust       = strtolower($this->input->post('selectedCust'));
     $kode       = strtolower($this->input->post('selectedKodeCust'));
+    $tgl        = date('Y-m-d', strtotime($this->input->post('tgl')));
     $ket        = $this->input->post('ket');
     $berat      = $this->input->post('valberat');
     $retur      = $this->input->post('valretur');
@@ -144,7 +145,7 @@ class Traveldoc extends CI_Controller
       'cust_id'     => $custid,
       'jml_reccu'   => $jmlreccu,
       'jml_sj'      => $countRow,
-      'dateAdd'     => $dateAdd,
+      'dateAdd'     => $tgl,
       'user_id'     => $userid,
     ];
 
@@ -249,6 +250,7 @@ class Traveldoc extends CI_Controller
           'title'   => 'Tanda Terima Surat Jalan',
           'nomor'   => $query->nomor_surat,
           'cust'    => $query->nama,
+          'tgl'     => $query->dateAdd,
           'datasj'  => $datasj,
           'detail'  => $detail,
         ];

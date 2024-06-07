@@ -346,7 +346,7 @@ $(document).ready(function () {
           cancelButtonText: "Batal",
           confirmButtonText: "Ya, Cetak !",
         }).then((result) => {
-          if (result.value) {
+          if (result.isConfirmed) {
             window.open(
               "http://localhost/hira-to-adm/persensopir/print" +
                 "?kode=" +

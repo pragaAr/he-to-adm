@@ -118,7 +118,7 @@ $("#sjTables").on("click", ".btn-print", function () {
         cancelButtonText: "Batal",
         confirmButtonText: "Ya, Cetak !",
       }).then((result) => {
-        if (result.value) {
+        if (result.isConfirmed) {
           window.open(
             "http://localhost/hira-to-adm/traveldoc/print" +
               "?surat_jalan=" +

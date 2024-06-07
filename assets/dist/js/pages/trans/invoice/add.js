@@ -159,6 +159,8 @@ $(document).ready(function () {
                 $("#cart tbody").append(newRow);
               });
 
+              $("#tgl").focus();
+
               $("#pengirim").prop("disabled", true);
               $("#tfoot").show();
             }
@@ -200,6 +202,7 @@ $(document).ready(function () {
     let sjInvoice = [];
     let valberatInvoice = [];
 
+    const tgl = $("#tgl").val();
     const custid = $("#pengirim").val();
     const selectedCust = $("#selectedCust").val();
     const selectedKodeCust = $("#selectedKodeCust").val();
@@ -228,6 +231,7 @@ $(document).ready(function () {
       url: "http://localhost/hira-to-adm/invoice/proses",
       method: "POST",
       data: {
+        tgl: tgl,
         pengirim: custid,
         noorder: noorderInvoice,
         rc: rcInvoice,
@@ -310,4 +314,8 @@ $(document).ready(function () {
     $("#cart tbody").empty();
     $("#tfoot").hide();
   }
+});
+
+document.getElementById("tgl").addEventListener("click", function (event) {
+  this.showPicker ? this.showPicker() : this.click();
 });

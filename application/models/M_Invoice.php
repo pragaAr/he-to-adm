@@ -58,7 +58,7 @@ class M_Invoice extends CI_Model
 
   public function getDataByNomor($str)
   {
-    $this->db->select('a.nomor_inv, b.nama, a.jml_reccu, a.jml_sj')
+    $this->db->select('a.nomor_inv, b.nama, a.jml_reccu, a.jml_sj, a.dateAdd')
       ->from('invoice a')
       ->where('a.nomor_inv', $str)
       ->join('customer b', 'b.id = a.cust_id');

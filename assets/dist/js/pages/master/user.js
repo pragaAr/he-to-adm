@@ -204,7 +204,7 @@ $("#userTables").on("click", ".btn-delete", function () {
     cancelButtonText: "Batal",
     confirmButtonText: "Ya, Hapus !",
   }).then((result) => {
-    if (result.value) {
+    if (result.isConfirmed) {
       $.ajax({
         url: "http://localhost/hira-to-adm/user/delete",
         method: "POST",

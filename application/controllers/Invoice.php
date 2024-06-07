@@ -92,6 +92,7 @@ class Invoice extends CI_Controller
     $countRow   = count($this->input->post('sj'));
     $rc         = $this->input->post('rc');
     $noorder    = $this->input->post('noorder');
+    $tgl        = date('Y-m-d', strtotime($this->input->post('tgl')));
     $sj         = $this->input->post('sj');
     $custid     = $this->input->post('pengirim');
     $cust       = strtolower($this->input->post('selectedCust'));
@@ -124,7 +125,7 @@ class Invoice extends CI_Controller
       'cust_id'     => $custid,
       'jml_reccu'   => $jmlreccu,
       'jml_sj'      => $countRow,
-      'dateAdd'     => $dateAdd,
+      'dateAdd'     => $tgl,
       'user_id'     => $userid,
     ];
 
@@ -137,10 +138,6 @@ class Invoice extends CI_Controller
       $datadt[$i]['surat_jalan']  = $sj[$i];
       $datadt[$i]['berat']        = $berat[$i];
     }
-
-    // echo json_encode($datadt);
-    // die;
-
 
     $datasurat = [
       'customer'    => $cust,
@@ -233,6 +230,7 @@ class Invoice extends CI_Controller
           'title'     => 'Invoice',
           'nomor'     => $query->nomor_inv,
           'cust'      => $query->nama,
+          'tgl'       => $query->dateAdd,
           'datainv'   => $datainv,
           'detail'    => $detail,
           'ppnvalue'  => $ppn,

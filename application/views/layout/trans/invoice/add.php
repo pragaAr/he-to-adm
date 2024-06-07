@@ -75,6 +75,13 @@
                   </div>
                 </div>
 
+                <div class="form-row">
+                  <div class="form-group col-md">
+                    <label for="tgl">Tanggal</label>
+                    <input type="date" name="tgl" id="tgl" class="form-control text-uppercase" value="<?= date('Y-m-d') ?>">
+                  </div>
+                </div>
+
                 <hr style="border: 1px solid #6c757d;">
 
                 <h5 class="mb-3">List Surat Jalan</h5>

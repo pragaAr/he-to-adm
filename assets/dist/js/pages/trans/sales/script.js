@@ -195,14 +195,16 @@ $("#modalAddPenjualan").on("shown.bs.modal", function () {
     })
     .on("select2:select", function (e) {
       const data = e.params.data;
+
       $("#textnoorder").val(data.text);
       $("#tglorder").val(data.tgl);
+      $("#tglreccu").val(data.tgl);
       $("#pengirim").val(data.cust);
       $("#asal").val(data.asal);
       $("#tujuan").val(data.tujuan);
       $("#muatan").val(data.muatan);
 
-      $("#alamatasal").focus();
+      $("#tglreccu").focus();
     });
 
   $(".select-jenis")
@@ -281,11 +283,10 @@ $("#modalAddPenjualan").on("shown.bs.modal", function () {
   }
 });
 
-$("#form_add").on("submit", function (e) {
-  e.preventDefault();
-
+$("#form_add").on("submit", function () {
   const reccu = $("#reccu").val();
   const noorder = $("#noorder").val();
+  const tglreccu = $("#tglreccu").val();
   const textnoorder = $("#textnoorder").val();
   const pengirim = $("#pengirim").val();
   const asal = $("#asal").val();
@@ -307,6 +308,7 @@ $("#form_add").on("submit", function (e) {
     data: {
       reccu: reccu,
       noorder: noorder,
+      tglreccu: tglreccu,
       textnoorder: textnoorder,
       pengirim: pengirim,
       asal: asal,
@@ -327,6 +329,7 @@ $("#form_add").on("submit", function (e) {
       $("#noorder").val(null).trigger("change");
       $("#textnoorder").val("");
       $("#tglorder").val("");
+      $("#tglreccu").val("");
       $("#pengirim").val("");
       $("#asal").val("");
       $("#tujuan").val("");
@@ -374,7 +377,7 @@ $("#form_add").on("submit", function (e) {
 
 // ---------------------
 $("#modalUpdatePenjualan").on("shown.bs.modal", function () {
-  $("#alamatasaledit").focus();
+  $("#tglreccuedit").focus();
 
   $("#beratedit").on("keypress", function (key) {
     if (key.charCode < 48 || key.charCode > 57) return false;
@@ -501,19 +504,14 @@ $("#salesTables").on("click", ".btn-edit", function (e) {
     },
     success: function (data) {
       const parsedata = JSON.parse(data);
+      console.log(parsedata);
+      const formatedDate = new Date(parsedata.dateorder);
 
-      const formatedDate = new Date(parsedata.dateAdd);
-
-      $("#tglorderedit").val(
-        formatedDate.toLocaleDateString("id-ID", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-        })
-      );
+      $("#tglorderedit").val(parsedata.dateorder);
 
       $("#penjualanid").val(parsedata.id);
       $("#reccuedit").val(parsedata.reccu);
+      $("#tglreccuedit").val(parsedata.dateAdd);
       $("#noorderedit").val(parsedata.no_order);
       $("#pengirimedit").val(parsedata.pengirim);
       $("#asaledit").val(parsedata.kota_asal);
@@ -563,6 +561,7 @@ $("#form_update").on("submit", function (e) {
 
   const penjualanid = $("#penjualanid").val();
   const reccu = $("#reccuedit").val();
+  const tglreccu = $("#tglreccuedit").val();
   const noorder = $("#noorderedit").val();
   const alamatasal = $("#alamatasaledit").val();
   const alamattujuan = $("#alamattujuanedit").val();
@@ -582,6 +581,7 @@ $("#form_update").on("submit", function (e) {
     data: {
       penjualanid: penjualanid,
       reccu: reccu,
+      tglreccu: tglreccu,
       noorder: noorder,
       alamatasal: alamatasal,
       alamattujuan: alamattujuan,
@@ -600,6 +600,7 @@ $("#form_update").on("submit", function (e) {
       $("#reccuedit").val("");
       $("#noorderedit").val("");
       $("#tglorderedit").val("");
+      $("#tglreccuedit").val("");
       $("#pengirimedit").val("");
       $("#asaledit").val("");
       $("#tujuanedit").val("");
@@ -633,7 +634,7 @@ $("#form_update").on("submit", function (e) {
 
 $("#salesTables").on("click", ".btn-detail", function () {
   const kd = $(this).data("kd");
-
+  console.log(kd);
   $.ajax({
     url: "http://localhost/hira-to-adm/penjualan/getDataKd",
     type: "POST",
@@ -642,10 +643,19 @@ $("#salesTables").on("click", ".btn-detail", function () {
       kd: kd,
     },
     success: function (data) {
-      const formatedDate = new Date(data.dateAdd);
+      const dateOrder = new Date(data.dateorder);
+      const dateReccu = new Date(data.dateAdd);
 
       $("#dtTanggal").text(
-        formatedDate.toLocaleDateString("id-ID", {
+        dateOrder.toLocaleDateString("id-ID", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        })
+      );
+
+      $("#dtTglReccu").text(
+        dateReccu.toLocaleDateString("id-ID", {
           day: "2-digit",
           month: "2-digit",
           year: "numeric",
@@ -698,7 +708,7 @@ $("#salesTables").on("click", ".btn-delete", function () {
         cancelButtonText: "Batal",
         confirmButtonText: "Ya, Hapus !",
       }).then((result) => {
-        if (result.value) {
+        if (result.isConfirmed) {
           $.ajax({
             url: "http://localhost/hira-to-adm/penjualan/delete",
             method: "POST",
@@ -777,3 +787,13 @@ $(document).on("select2:open", () => {
     .querySelector(".select2-container--open .select2-search__field")
     .focus();
 });
+
+document.getElementById("tglreccu").addEventListener("click", function (event) {
+  this.showPicker ? this.showPicker() : this.click();
+});
+
+document
+  .getElementById("tglreccuedit")
+  .addEventListener("click", function (event) {
+    this.showPicker ? this.showPicker() : this.click();
+  });

@@ -53,43 +53,16 @@
 }
 
 input[type="month"]::-webkit-calendar-picker-indicator {
-  background-position: right;
-  background: transparent;
-  background-size: auto;
+  filter: invert(1) grayscale(100%) brightness(200%);
   cursor: pointer;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: 0;
-  width: auto;
-}
-
-input {
-  position: relative;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
-  background-position: right;
-  background: transparent;
-  background-size: auto;
+  filter: invert(1) grayscale(100%) brightness(200%);
   cursor: pointer;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: 0;
-  width: auto;
 }
 
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-input[type="number"] {
-  -moz-appearance: textfield;
+input[type="year"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) grayscale(100%) brightness(200%);
+  cursor: pointer;
 }

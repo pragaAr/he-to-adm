@@ -85,33 +85,39 @@
               <label for="tglorder">
                 Tanggal Order
               </label>
-              <input type="text" class="form-control text-uppercase" name="tglorder" id="tglorder" placeholder="Tanggal Order.." readonly>
+              <input type="date" class="form-control text-uppercase" name="tglorder" id="tglorder" readonly>
             </div>
             <div class="form-group col-lg-3 col-md-6">
-              <label for="pengirim">
-                Customer Order
+              <label for="tglreccu">
+                Tanggal Reccu
               </label>
-              <input type="text" class="form-control text-uppercase" name="pengirim" id="pengirim" placeholder="Nama Pengirim.." readonly>
+              <input type="date" class="form-control text-uppercase" name="tglreccu" id="tglreccu">
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group col-lg-4 col-md-6">
+            <div class="form-group col-lg-3 col-md-6">
+              <label for="pengirim">
+                Customer
+              </label>
+              <input type="text" class="form-control text-uppercase" name="pengirim" id="pengirim" placeholder="Nama Pengirim.." readonly>
+            </div>
+            <div class="form-group col-lg-3 col-md-6">
+              <label for="muatan">
+                Muatan
+              </label>
+              <input type="text" class="form-control text-uppercase" name="muatan" id="muatan" placeholder="Muatan.." readonly>
+            </div>
+            <div class="form-group col-lg-3 col-md-6">
               <label for="asal">
                 Asal
               </label>
               <input type="text" class="form-control text-uppercase" name="asal" id="asal" placeholder="Asal.." readonly>
             </div>
-            <div class="form-group col-lg-4 col-md-6">
+            <div class="form-group col-lg-3 col-md-6">
               <label for="tujuan">
                 Tujuan
               </label>
               <input type="text" class="form-control text-uppercase" name="tujuan" id="tujuan" placeholder="Tujuan.." readonly>
-            </div>
-            <div class="form-group col-lg-4 col-md-12">
-              <label for="muatan">
-                Muatan
-              </label>
-              <input type="text" class="form-control text-uppercase" name="muatan" id="muatan" placeholder="Muatan.." readonly>
             </div>
           </div>
           <div class="form-row">
@@ -137,7 +143,7 @@
             </div>
             <div class="form-group col-md-6">
               <label for="jenis">
-                Jenis Penjualan
+                Jenis
               </label>
               <select name="jenis" id="jenis" class="form-control text-uppercase select-jenis" style="width:100%" required>
                 <option value=""></option>
@@ -226,29 +232,35 @@
               <label for="tglorderedit">
                 Tanggal Order
               </label>
-              <input type="text" class="form-control text-uppercase" name="tglorderedit" id="tglorderedit" placeholder="Tanggal Order.." readonly>
+              <input type="date" class="form-control text-uppercase" name="tglorderedit" id="tglorderedit" readonly>
             </div>
             <div class="form-group col-lg-3 col-md-6">
-              <label for="pengirimedit">
-                Customer Order
+              <label for="tglreccuedit">
+                Tanggal Reccu
               </label>
-              <input type="text" class="form-control text-uppercase" name="pengirimedit" id="pengirimedit" placeholder="Nama Pengirim.." readonly>
+              <input type="date" class="form-control text-uppercase" name="tglreccuedit" id="tglreccuedit">
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group col-lg-4 col-md-6">
+            <div class="form-group col-lg-3 col-md-6">
+              <label for="pengirimedit">
+                Customer
+              </label>
+              <input type="text" class="form-control text-uppercase" name="pengirimedit" id="pengirimedit" placeholder="Nama Pengirim.." readonly>
+            </div>
+            <div class="form-group col-lg-3 col-md-6">
               <label for="asaledit">
                 Asal
               </label>
               <input type="text" class="form-control text-uppercase" name="asaledit" id="asaledit" placeholder="Asal.." readonly>
             </div>
-            <div class="form-group col-lg-4 col-md-6">
+            <div class="form-group col-lg-3 col-md-6">
               <label for="tujuanedit">
                 Tujuan
               </label>
               <input type="text" class="form-control text-uppercase" name="tujuanedit" id="tujuanedit" placeholder="Tujuan.." readonly>
             </div>
-            <div class="form-group col-lg-4 col-md-12">
+            <div class="form-group col-lg-3 col-md-6">
               <label for="muatanedit">
                 Muatan
               </label>
@@ -384,8 +396,10 @@
           <table class="table table-bordered my-3" id="tableDetailPenjualan" style="width:100%" cellspacing="0">
             <thead class="text-center">
               <tr>
-                <th class="align-middle" colspan="4">Reccu</th>
-                <th class="align-middle text-uppercase" colspan="4" id="dtReccu"></th>
+                <th class="align-middle" colspan="2">Reccu</th>
+                <th class="align-middle text-uppercase" colspan="2" id="dtReccu"></th>
+                <th class="align-middle" colspan="2">Tgl Reccu</th>
+                <th class="align-middle text-uppercase" colspan="2" id="dtTglReccu"></th>
               </tr>
               <tr>
                 <th class="align-middle">Jenis Penjualan</th>
