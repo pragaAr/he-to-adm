@@ -37,7 +37,7 @@
                       <th>Aksi</th>
                     </tr>
                   </thead>
-                  <tbody class="text-center">
+                  <tbody class="text-center" style="font-size:14px;">
 
                   </tbody>
                 </table>
@@ -60,7 +60,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body" style="padding: 2rem !important;">
+      <div class="modal-body" style="padding: 2rem !important; font-size:14px;">
         <div class="d-flex justify-content-between align-items-start flex-wrap mb-3">
           <div class="font-weight-bold">
             <p class="text-uppercase mb-0 kd-sopir"></p>
@@ -73,10 +73,12 @@
           <p class="text-uppercase">Data Order Penjualan</p>
           <table class="table table-bordered" width="100%">
             <thead class="text-center" style="border:1.5px solid rgb(145, 143, 143) !important;">
-              <th class="align-middle" width="10%" style="border-color: rgb(145, 143, 143) !important;">No</th>
+              <th class="align-middle" width="5%" style="border-color: rgb(145, 143, 143) !important;">No</th>
               <th class="align-middle" style="border-color: rgb(145, 143, 143) !important;">Customer</th>
               <th class="align-middle" style="border-color: rgb(145, 143, 143) !important;">Tanggal</th>
-              <th class="align-middle" style="border-color: rgb(145, 143, 143) !important;">Platno</th>
+              <th class="align-middle" style="border-color: rgb(145, 143, 143) !important;">Plat Nomor</th>
+              <th class="align-middle" style="border-color: rgb(145, 143, 143) !important;">Tonase</th>
+              <th class="align-middle" style="border-color: rgb(145, 143, 143) !important;">Harga Kg</th>
               <th class="align-middle" style="border-color: rgb(145, 143, 143) !important;">Biaya</th>
               <th class="align-middle" style="border-color: rgb(145, 143, 143) !important;">%</th>
               <th class="align-middle" style="border-color: rgb(145, 143, 143) !important;">%</th>
@@ -92,7 +94,7 @@
           <p class="text-uppercase">Data Sangu</p>
           <table class="table table-bordered" width="100%">
             <thead class="text-center" style="border:1.5px solid rgb(145, 143, 143) !important;">
-              <th class="align-middle" width="10%" style="border-color: rgb(145, 143, 143) !important;">No</th>
+              <th class="align-middle" width="5%" style="border-color: rgb(145, 143, 143) !important;">No</th>
               <th class="align-middle" style="border-color: rgb(145, 143, 143) !important;">Terima Sangu</th>
               <th class="align-middle" style="border-color: rgb(145, 143, 143) !important;">Tanggal</th>
               <th class="align-middle" style="border-color: rgb(145, 143, 143) !important;">Nominal</th>
@@ -104,8 +106,10 @@
             </tbody>
           </table>
         </div>
-
-        <p class="text-right text-lg pr-4" id="totalDiterima"></p>
+        <div class="d-flex justify-content-between align-items-center font-weight-bold">
+          <p>Persen (Jumlah Order Penjualan - Jumlah Sangu) : </p>
+          <p class="pr-4" id="totalDiterima"></p>
+        </div>
       </div>
     </div>
   </div>

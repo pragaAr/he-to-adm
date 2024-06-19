@@ -193,13 +193,15 @@
       <table class="table-order">
         <thead>
           <tr>
-            <th class="th-order" style="width:6%">No.</th>
-            <th class="th-order" style="width:22%">Customer</th>
-            <th class="th-order" style="width:13%">Tanggal</th>
-            <th class="th-order" style="width:13%">Plat Nomor</th>
-            <th class="th-order" style="width:15%">Harga</th>
-            <th class="th-order" style="width:8%">%</th>
-            <th class="th-order" style="width:8%">%</th>
+            <th class="th-order">No.</th>
+            <th class="th-order">Customer</th>
+            <th class="th-order">Tanggal</th>
+            <th class="th-order">Plat <br> Nomor</th>
+            <th class="th-order" style="width:10%">Tonase</th>
+            <th class="th-order" style="width:13%">Harga Kg</th>
+            <th class="th-order" style="width:15%">Biaya</th>
+            <th class="th-order" style="width:6%">%</th>
+            <th class="th-order" style="width:6%">%</th>
             <th class="th-order" style="width:15%">Total</th>
           </tr>
         </thead>
@@ -214,6 +216,8 @@
               <td class="td-order text-uppercase"><?= $order->nama ?></td>
               <td class="td-order"><?= date('d/m/y', strtotime($order->tglOrder)) ?></td>
               <td class="td-order text-uppercase"><?= $order->platno ?></td>
+              <td class="td-order text-right"><?= number_format($order->berat) ?> Kg</td>
+              <td class="td-order text-right">Rp. <?= number_format($order->hrg_kg) ?></td>
               <td class="td-order text-right">Rp. <?= number_format($order->tot_biaya) ?></td>
               <td class="td-order"><?= $order->persen1 ?>%</td>
               <td class="td-order"><?= $order->persen2 ?>%</td>
@@ -242,7 +246,7 @@
           <?php endforeach ?>
 
           <tr>
-            <td class="td-order text-uppercase font-bold" colspan="7">jumlah</td>
+            <td class="td-order text-uppercase font-bold" colspan="9">jumlah</td>
             <td class="td-order text-right">Rp. <?= number_format($jmlTotalBiayaOrder) ?></td>
           </tr>
         </tbody>
@@ -255,7 +259,7 @@
         <thead>
           <tr>
             <th class="th-sangu" style="width:6%">No.</th>
-            <th class="th-sangu" style="width:22%">Terima Sangu</th>
+            <th class="th-sangu" style="width:22%">Terima <br> Sangu</th>
             <th class="th-sangu" style="width:20%">Tanggal</th>
             <th class="th-sangu" style="width:18%">Nominal</th>
             <th class="th-sangu" style="width:16%">Tambahan</th>

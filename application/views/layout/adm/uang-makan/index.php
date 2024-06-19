@@ -36,7 +36,7 @@
                       <th>Aksi</th>
                     </tr>
                   </thead>
-                  <tbody class="text-center">
+                  <tbody class="text-center" style="font-size:14px;">
 
                   </tbody>
                 </table>
@@ -59,7 +59,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body" style="padding: 1rem 2rem !important;">
+      <div class="modal-body" style="padding: 1rem 2rem !important; font-size:14px;">
 
         <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
           <div>

@@ -36,7 +36,7 @@
                       <th class="align-middle">Aksi</th>
                     </tr>
                   </thead>
-                  <tbody class="text-center">
+                  <tbody class="text-center" style="font-size:14px;">
 
                   </tbody>
                 </table>
@@ -59,7 +59,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="font-size:14px;">
         <form id="form_add">
           <div class="form-group">
             <label for="platno">
@@ -100,7 +100,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="font-size:14px;">
         <form id="form_edit">
           <div class="form-group">
             <label for="platnoedit">

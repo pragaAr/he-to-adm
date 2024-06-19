@@ -207,19 +207,9 @@ $("#modalAddPenjualan").on("shown.bs.modal", function () {
       $("#tglreccu").focus();
     });
 
-  $(".select-jenis")
-    .select2({
-      placeholder: "PILIH JENIS PENJUALAN",
-    })
-    .on("select2:select", function (e) {
-      let selected = e.params.data.id;
-
-      if (selected === "borong") {
-        $("#borong").focus();
-      } else if (selected === "tonase") {
-        $("#berat").focus();
-      }
-    });
+  $(".select-jenis").select2({
+    placeholder: "PILIH JENIS PENJUALAN",
+  });
 
   $(".select-pembayaran").select2({
     placeholder: "PILIH PEMBAYARAN",
@@ -227,26 +217,20 @@ $("#modalAddPenjualan").on("shown.bs.modal", function () {
 
   $("#jenis").on("change", function () {
     if ($("#jenis").val() == "borong") {
-      $("#berat-tonase").css("display", "none");
+      $("#harga-tonase").css("display", "none");
+      $("#harga-tonase").removeClass("col-md-4");
       $("#harga-borong").css("display", "block");
-      $("#total-harga").removeClass("col-md-8");
+      $("#total-harga").removeClass("col-md-12");
       $("#total-harga").addClass("col-md-4");
-      $("#berat").prop("readonly", true);
-      $("#tonase").prop("readonly", true);
-      $("#berat").val("");
       $("#tonase").val("");
       $("#biaya").val("");
-      $("#borong").prop("readonly", false);
     } else {
-      $("#berat-tonase").css("display", "flex");
+      $("#harga-tonase").css("display", "block");
+      $("#harga-tonase").addClass("col-md-4");
       $("#harga-borong").css("display", "none");
-      $("#total-harga").removeClass("col-md-4");
-      $("#total-harga").addClass("col-md-8");
+
       $("#borong").val("");
       $("#biaya").val("");
-      $("#borong").prop("readonly", true);
-      $("#berat").prop("readonly", false);
-      $("#tonase").prop("readonly", false);
     }
   });
 
@@ -419,43 +403,30 @@ $("#modalUpdatePenjualan").on("shown.bs.modal", function () {
     });
   });
 
-  $(".select-jenisedit")
-    .select2({
-      placeholder: "PILIH JENIS PENJUALAN",
-    })
-    .on("select2:select", function (e) {
-      let selected = e.params.data.id;
-
-      if (selected === "borong") {
-        $("#borongedit").focus();
-      } else if (selected === "tonase") {
-        $("#beratedit").focus();
-      }
-    });
+  $(".select-jenisedit").select2({
+    placeholder: "PILIH JENIS PENJUALAN",
+  });
 
   $(".select-pembayaranedit").select2({
     placeholder: "PILIH PEMBAYARAN",
   });
 
   $("#jenisedit").on("change", function () {
-    let selected = $(this).val();
-
-    if (selected == "borong") {
-      $("#berat-tonaseedit").css("display", "none");
+    if ($("#jenisedit").val() == "borong") {
+      $("#harga-tonaseedit").css("display", "none");
+      $("#harga-tonaseedit").removeClass("col-md-4");
       $("#harga-borongedit").css("display", "block");
-      $("#total-hargaedit").removeClass("col-md-8");
+      $("#total-hargaedit").removeClass("col-md-12");
       $("#total-hargaedit").addClass("col-md-4");
-      $("#beratedit").prop("readonly", true);
-      $("#tonaseedit").prop("readonly", true);
-      $("#borongedit").prop("readonly", false);
-    } else if (selected == "tonase") {
-      $("#berat-tonaseedit").css("display", "flex");
+      $("#tonaseedit").val("");
+      $("#biayaedit").val("");
+    } else {
+      $("#harga-tonaseedit").css("display", "block");
+      $("#harga-tonaseedit").addClass("col-md-4");
       $("#harga-borongedit").css("display", "none");
-      $("#total-hargaedit").removeClass("col-md-4");
-      $("#total-hargaedit").addClass("col-md-8");
-      $("#borongedit").prop("readonly", true);
-      $("#beratedit").prop("readonly", false);
-      $("#tonaseedit").prop("readonly", false);
+
+      $("#borongedit").val("");
+      $("#biayaedit").val("");
     }
   });
 
@@ -505,7 +476,6 @@ $("#salesTables").on("click", ".btn-edit", function (e) {
     success: function (data) {
       const parsedata = JSON.parse(data);
       console.log(parsedata);
-      const formatedDate = new Date(parsedata.dateorder);
 
       $("#tglorderedit").val(parsedata.dateorder);
 
@@ -521,7 +491,7 @@ $("#salesTables").on("click", ".btn-edit", function (e) {
       $("#alamattujuanedit").val(parsedata.alamat_tujuan);
       $("#penerimaedit").val(parsedata.penerima);
       $("#jenisedit").val(parsedata.jenis).trigger("change");
-      $("#beratedit").val(parsedata.berat);
+      $("#beratedit").val(format(parsedata.berat));
       $("#tonaseedit").val(format(parsedata.hrg_kg));
       $("#borongedit").val(format(parsedata.hrg_borong));
       $("#biayaedit").val(format(parsedata.total_hrg));
@@ -530,23 +500,17 @@ $("#salesTables").on("click", ".btn-edit", function (e) {
       $("#datepelunasan").val(parsedata.datePelunasan);
 
       if ($("#jenisedit").val() == "borong") {
-        $("#berat-tonaseedit").css("display", "none");
+        $("#harga-tonaseedit").css("display", "none");
+        $("#harga-tonaseedit").removeClass("col-md-4");
         $("#harga-borongedit").css("display", "block");
-        $("#total-hargaedit").removeClass("col-md-8");
+        $("#total-hargaedit").removeClass("col-md-12");
         $("#total-hargaedit").addClass("col-md-4");
-        $("#beratedit").prop("readonly", true);
-        $("#tonaseedit").prop("readonly", true);
-
-        $("#borongedit").prop("readonly", false);
       } else if ($("#jenisedit").val() == "tonase") {
-        $("#berat-tonaseedit").css("display", "flex");
+        $("#harga-tonaseedit").css("display", "block");
+        $("#harga-tonaseedit").addClass("col-md-4");
         $("#harga-borongedit").css("display", "none");
-        $("#total-hargaedit").removeClass("col-md-4");
-        $("#total-hargaedit").addClass("col-md-8");
-
-        $("#borongedit").prop("readonly", true);
-        $("#beratedit").prop("readonly", false);
-        $("#tonaseedit").prop("readonly", false);
+        $("#total-hargaedit").removeClass("col-md-12");
+        $("#total-hargaedit").addClass("col-md-4");
       }
 
       $("#modalUpdatePenjualan").modal("show");
@@ -669,7 +633,7 @@ $("#salesTables").on("click", ".btn-detail", function () {
       $("#dtTujuan").text(data.kota_tujuan);
 
       $("#dtJenis").text(data.jenis);
-      $("#dtBerat").text(data.berat);
+      $("#dtBerat").text(format(data.berat));
       $("#dtHrgKg").text("Rp. " + format(data.hrg_kg));
       $("#dtHrgBorong").text("Rp. " + format(data.hrg_borong));
       $("#dtAlamatAsal").text(data.alamat_asal);

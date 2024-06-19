@@ -39,7 +39,7 @@
                     <th>Actions</th>
                   </tr>
                 </thead>
-                <tbody class="text-center">
+                <tbody class="text-center" style="font-size:14px;">
                   <?php $no = 1;
                   foreach ($pemasukan as $data) : ?>
                     <tr>

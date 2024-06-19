@@ -126,13 +126,14 @@ class M_Persensopir extends CI_Model
         dp.tot_biaya, 
         om.dateAdd as tglOrder, 
         c.nama as namaCustomer,
-        ar.platno
+        ar.platno, p.berat, p.hrg_kg
     ')
       ->from('detail_ps dp')
       ->join('order_masuk om', 'om.no_order = dp.no_order')
       ->join('customer c', 'c.id = om.customer_id')
       ->join('sangu_sopir ss', 'ss.no_order = om.no_order')
       ->join('armada ar', 'ar.id = ss.truck_id')
+      ->join('penjualan p', 'p.order_id = om.id')
       ->where('dp.kd', $kd);
 
     $result = $this->db->get()->result();
@@ -167,15 +168,16 @@ class M_Persensopir extends CI_Model
     a.persen2, 
     a.tot_biaya, 
     b.dateAdd as tglOrder, 
-    c.nama,
-    e.platno
+    c.nama, e.platno,
+    f.berat, f.hrg_kg
     ')
       ->from('detail_ps a')
       ->where('a.kd', $kd)
       ->join('order_masuk b', 'b.no_order = a.no_order')
       ->join('customer c', 'c.id = b.customer_id')
       ->join('sangu_sopir d', 'd.no_order = b.no_order')
-      ->join('armada e', 'e.id = d.truck_id');
+      ->join('armada e', 'e.id = d.truck_id')
+      ->join('penjualan f', 'f.order_id = b.id');
 
     $res = $this->db->get()->result();
 

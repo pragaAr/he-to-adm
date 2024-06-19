@@ -219,6 +219,11 @@
           <td class="td-data"><?= date('d-m-Y', strtotime($sales->dateAdd)) ?></td>
         </tr>
         <tr>
+          <td class="td-data w-sm">ARMADA</td>
+          <td class="td-data" style="width:3%">:</td>
+          <td class="td-data"><?= strtoupper($plat->platno) ?></td>
+        </tr>
+        <tr>
           <td class="td-data w-sm">PENGIRIM</td>
           <td class="td-data" style="width:3%">:</td>
           <td class="td-data"><?= strtoupper($sales->pengirim) ?></td>
@@ -267,7 +272,7 @@
           <td class="td-data w-sm">BERAT</td>
           <td class="td-data" style="width:3%">:</td>
           <td class="td-data">
-            <?= $sales->berat ?> Kg
+            <?= number_format($sales->berat) ?> Kg
           </td>
         </tr>
       </table>

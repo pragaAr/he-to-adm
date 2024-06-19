@@ -41,7 +41,7 @@
                       <th>Aksi</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody style="font-size:14px;">
 
                   </tbody>
                 </table>
@@ -64,7 +64,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body" style="padding-left: 2rem !important; padding-right: 2rem !important;">
+      <div class="modal-body" style="padding-left: 2rem !important; padding-right: 2rem !important; font-size:14px;">
 
         <form id="form_addOrder">
 
@@ -181,7 +181,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body" style="padding-left: 2rem !important; padding-right: 2rem !important;">
+      <div class="modal-body" style="padding-left: 2rem !important; padding-right: 2rem !important; font-size:14px;">
 
         <form id="form_updateOrder">
 
@@ -293,7 +293,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="font-size:14px">
         <form id="form_detail" method="post">
           <div class="row">
             <div class="col-lg-12 col-md-12">

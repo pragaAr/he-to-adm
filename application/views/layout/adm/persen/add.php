@@ -23,7 +23,7 @@
       <div class="row">
         <div class="col-12">
           <div class="card">
-            <div class="card-body">
+            <div class="card-body" style="font-size:14px;">
 
               <form id="formSubmit">
 

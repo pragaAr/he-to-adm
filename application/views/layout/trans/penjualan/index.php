@@ -62,7 +62,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body" style="padding:1rem 2rem;">
+      <div class="modal-body" style="padding:1rem 2rem; font-size:14px;">
         <form id="form_add">
           <div class="form-row">
             <div class="form-group col-lg-3 col-md-6">
@@ -121,13 +121,19 @@
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-4">
+              <label for="penerima">
+                Penerima
+              </label>
+              <input name="penerima" id="penerima" class="form-control text-uppercase" placeholder="Nama Penerima.." required autocomplete="off" oninvalid="this.setCustomValidity('Nama Penerima wajib di isi!')" oninput="setCustomValidity('')">
+            </div>
+            <div class="form-group col-lg-4">
               <label for="alamatasal">
                 Alamat Asal
               </label>
               <input type="text" class="form-control text-uppercase" name="alamatasal" id="alamatasal" maxlength="60" placeholder="Alamat Asal.." required autocomplete="off">
             </div>
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-4">
               <label for="alamattujuan">
                 Alamat Tujuan
               </label>
@@ -135,12 +141,6 @@
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="penerima">
-                Penerima
-              </label>
-              <input name="penerima" id="penerima" class="form-control text-uppercase" placeholder="Nama Penerima.." required autocomplete="off" oninvalid="this.setCustomValidity('Nama Penerima wajib di isi!')" oninput="setCustomValidity('')">
-            </div>
             <div class="form-group col-md-6">
               <label for="jenis">
                 Jenis
@@ -151,35 +151,7 @@
                 <option value="tonase">TONASE</option>
               </select>
             </div>
-          </div>
-          <div class="form-row" id="berat-tonase">
             <div class="form-group col-md-6">
-              <label for="berat">
-                Berat
-              </label>
-              <input type="text" class="form-control text-uppercase" name="berat" id="berat" placeholder="Berat dalam Kilo.." readonly>
-            </div>
-            <div class="form-group col-md-6">
-              <label for="tonase">
-                Harga Tonase
-              </label>
-              <input name="tonase" id="tonase" class="form-control text-uppercase" placeholder="Harga Tonase.." readonly>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-4" id="harga-borong">
-              <label for="borong">
-                Harga Borong
-              </label>
-              <input name="borong" id="borong" class="form-control text-uppercase" placeholder="Harga Borong.." readonly>
-            </div>
-            <div class="form-group col-md-4" id="total-harga">
-              <label for="biaya">
-                Total Harga
-              </label>
-              <input name="biaya" id="biaya" class="form-control text-uppercase" placeholder="Total Harga.." readonly>
-            </div>
-            <div class="form-group col-md-4">
               <label for="pembayaran">
                 Pembayaran
               </label>
@@ -190,11 +162,37 @@
               </select>
             </div>
           </div>
-          <div class="form-group col-md d-flex justify-content-end px-0">
-            <button type="submit" class="btn btn-dark border border-light">
-              Simpan
-              <i class="fas fa-save ml-1"></i>
-            </button>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="berat">
+                Berat
+              </label>
+              <input type="text" class="form-control text-uppercase" name="berat" id="berat" placeholder="Berat dalam Kilo.." autocomplete="off">
+            </div>
+            <div class="form-group col-md-4" id="harga-tonase">
+              <label for="tonase">
+                Harga Tonase
+              </label>
+              <input name="tonase" id="tonase" class="form-control text-uppercase" placeholder="Harga Tonase.." autocomplete="off">
+            </div>
+            <div class="form-group col-md-4" id="harga-borong">
+              <label for="borong">
+                Harga Borong
+              </label>
+              <input name="borong" id="borong" class="form-control text-uppercase" placeholder="Harga Borong.." autocomplete="off">
+            </div>
+            <div class="form-group col-md-12" id="total-harga">
+              <label for="biaya">
+                Total Harga
+              </label>
+              <input name="biaya" id="biaya" class="form-control text-uppercase" placeholder="Total Harga.." readonly>
+            </div>
+
+            <div class="form-group col-md-12">
+              <button type="submit" class="btn btn-dark btn-block border border-light">
+                Simpan
+              </button>
+            </div>
           </div>
         </form>
       </div>
@@ -212,7 +210,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body" style="padding:1rem 2rem;">
+      <div class="modal-body" style="padding:1rem 2rem; font-size:14px;">
         <form id="form_update">
           <div class="form-row">
             <div class="form-group col-lg-3 col-md-6">
@@ -268,13 +266,19 @@
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-4">
+              <label for="penerimaedit">
+                Penerima
+              </label>
+              <input name="penerimaedit" id="penerimaedit" class="form-control text-uppercase" placeholder="Nama Penerima.." required autocomplete="off" oninvalid="this.setCustomValidity('Nama Penerima wajib di isi!')" oninput="setCustomValidity('')">
+            </div>
+            <div class="form-group col-lg-4">
               <label for="alamatasaledit">
                 Alamat Asal
               </label>
               <input type="text" class="form-control text-uppercase" name="alamatasaledit" id="alamatasaledit" maxlength="60" placeholder="Alamat Asal.." required autocomplete="off">
             </div>
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-4">
               <label for="alamattujuanedit">
                 Alamat Tujuan
               </label>
@@ -282,12 +286,6 @@
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group col-md-6">
-              <label for="penerimaedit">
-                Penerima
-              </label>
-              <input name="penerimaedit" id="penerimaedit" class="form-control text-uppercase" placeholder="Nama Penerima.." required autocomplete="off" oninvalid="this.setCustomValidity('Nama Penerima wajib di isi!')" oninput="setCustomValidity('')">
-            </div>
             <div class="form-group col-md-6">
               <label for="jenisedit">
                 Jenis Penjualan
@@ -298,35 +296,7 @@
                 <option value="tonase">TONASE</option>
               </select>
             </div>
-          </div>
-          <div class="form-row" id="berat-tonaseedit">
             <div class="form-group col-md-6">
-              <label for="beratedit">
-                Berat
-              </label>
-              <input type="text" class="form-control text-uppercase" name="beratedit" id="beratedit" placeholder="Berat dalam Kilo.." readonly>
-            </div>
-            <div class="form-group col-md-6">
-              <label for="tonaseedit">
-                Harga Tonase
-              </label>
-              <input name="tonaseedit" id="tonaseedit" class="form-control text-uppercase" placeholder="Harga Tonase.." readonly>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-4" id="harga-borongedit">
-              <label for="borongedit">
-                Harga Borong
-              </label>
-              <input name="borongedit" id="borongedit" class="form-control text-uppercase" placeholder="Harga Borong.." readonly>
-            </div>
-            <div class="form-group col-md-4" id="total-hargaedit">
-              <label for="biayaedit">
-                Total Harga
-              </label>
-              <input name="biayaedit" id="biayaedit" class="form-control text-uppercase" placeholder="Total Harga.." readonly>
-            </div>
-            <div class="form-group col-md-4">
               <label for="pembayaranedit">
                 Pembayaran
               </label>
@@ -339,12 +309,38 @@
               <input type="hidden" class="form-control" name="oldpayment" id="oldpayment">
             </div>
           </div>
-          <div class="form-group col-md d-flex justify-content-end px-0">
-            <button type="submit" class="btn btn-dark border border-light">
-              Simpan
-              <i class="fas fa-save ml-1"></i>
-            </button>
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="beratedit">
+                Berat
+              </label>
+              <input type="text" class="form-control text-uppercase" name="beratedit" id="beratedit" placeholder="Berat dalam Kilo.." autocomplete="off">
+            </div>
+            <div class="form-group col-md-4" id="harga-tonaseedit">
+              <label for="tonaseedit">
+                Harga Tonase
+              </label>
+              <input name="tonaseedit" id="tonaseedit" class="form-control text-uppercase" placeholder="Harga Tonase.." autocomplete="off">
+            </div>
+            <div class="form-group col-md-4" id="harga-borongedit">
+              <label for="borongedit">
+                Harga Borong
+              </label>
+              <input name="borongedit" id="borongedit" class="form-control text-uppercase" placeholder="Harga Borong.." autocomplete="off">
+            </div>
+            <div class="form-group col-md-12" id="total-hargaedit">
+              <label for="biayaedit">
+                Total Harga
+              </label>
+              <input name="biayaedit" id="biayaedit" class="form-control text-uppercase" placeholder="Total Harga.." readonly>
+            </div>
+            <div class="form-group col-md-12">
+              <button type="submit" class="btn btn-dark btn-block border border-light">
+                Simpan
+              </button>
+            </div>
           </div>
+
         </form>
       </div>
     </div>
@@ -361,7 +357,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body" style="padding:1rem 2rem;">
+      <div class="modal-body" style="padding:1rem 2rem; font-size:14px;">
         <div class="table-responsive mb-2">
           <h5 class="font-weight-bold">Data Order</h5>
           <div class="dropdown-divider"></div>

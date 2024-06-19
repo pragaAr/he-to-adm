@@ -32,7 +32,7 @@
                       <th>Aksi</th>
                     </tr>
                   </thead>
-                  <tbody class="text-center">
+                  <tbody class="text-center" style="font-size:14px;">
 
                   </tbody>
                 </table>
@@ -55,7 +55,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="font-size:14px;">
         <form id="form_updateSangu">
           <div class="form-group">
             <label for="noorder">
@@ -129,7 +129,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="font-size:14px;">
         <div class="row">
           <div class="col-lg-12 col-md-12">
             <h5>Data Order</h5>

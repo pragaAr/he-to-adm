@@ -122,7 +122,7 @@ class Penjualan extends CI_Controller
     $textnoorder  = trim($this->input->post('textnoorder'));
     $jenis        = trim($this->input->post('jenis'));
     $muatan       = trim($this->input->post('muatan'));
-    $berat        = trim($this->input->post('berat'));
+    $berat        = preg_replace("/[^0-9\.]/", "", $this->input->post('berat'));
     $hrgborong    = preg_replace("/[^0-9\.]/", "", $this->input->post('borong'));
     $hrgtonase    = preg_replace("/[^0-9\.]/", "", $this->input->post('tonase'));
     $pengirim     = trim($this->input->post('pengirim'));
@@ -140,7 +140,7 @@ class Penjualan extends CI_Controller
       'order_id'      => strtolower($noorder),
       'jenis'         => strtolower($jenis),
       'muatan'        => strtolower($muatan),
-      'berat'         => strtolower($jenis) === 'borong' ? '0' : $berat,
+      'berat'         => $berat,
       'hrg_borong'    => strtolower($jenis) === 'borong' ? $hrgborong : '0',
       'hrg_kg'        => strtolower($jenis) === 'borong' ? '0' : $hrgtonase,
       'pengirim'      => strtolower($pengirim),
@@ -178,7 +178,7 @@ class Penjualan extends CI_Controller
     $tglreccu       = date('Y-m-d', strtotime($this->input->post('tglreccu')));
 
     $jenis          = trim($this->input->post('jenis'));
-    $berat          = trim($this->input->post('berat'));
+    $berat          = preg_replace("/[^0-9\.]/", "", $this->input->post('berat'));
     $hrgborong      = preg_replace("/[^0-9\.]/", "", $this->input->post('borong'));
     $hrgtonase      = preg_replace("/[^0-9\.]/", "", $this->input->post('tonase'));
     $penerima       = trim($this->input->post('penerima'));
@@ -204,7 +204,7 @@ class Penjualan extends CI_Controller
 
     $data = array(
       'jenis'         => strtolower($jenis),
-      'berat'         => strtolower($jenis) === 'borong' ? '0' : $berat,
+      'berat'         => $berat,
       'hrg_borong'    => strtolower($jenis) === 'borong' ? $hrgborong : '0',
       'hrg_kg'        => strtolower($jenis) === 'borong' ? '0' : $hrgtonase,
       'alamat_asal'   => strtolower($alamatasal),

@@ -24,7 +24,7 @@
           <div class="card">
             <div class="card-body">
 
-              <form id="formSubmit">
+              <form id="formSubmit" style="font-size:14px;">
                 <div class="form-row">
                   <div class="form-group col-lg-3 col-md-6 col-sm-12">
                     <label for="pengirim">Pengirim</label>

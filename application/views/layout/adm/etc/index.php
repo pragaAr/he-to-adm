@@ -36,7 +36,7 @@
                       <th>Aksi</th>
                     </tr>
                   </thead>
-                  <tbody class="text-center">
+                  <tbody class="text-center" style="font-size:14px;">
 
                   </tbody>
                 </table>
@@ -57,7 +57,7 @@
         <h4 class="modal-title">Detail Pengeluaran Lain</h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="font-size:14px;">
         <div class="d-flex align-items-center justify-content-between">
           <p id="kd_kry"></p>
           <p id="tgl"></p>

@@ -6,7 +6,7 @@ class M_Penjualan extends CI_Model
     $last_code = $this->db->select('reccu')->order_by('reccu', 'DESC')->limit(1)->get('penjualan')->row('reccu');
 
     if (!$last_code) {
-      return 'rc000075';
+      return '007697';
     }
 
     $last_number = (int)substr($last_code, 2);
@@ -221,7 +221,7 @@ class M_Penjualan extends CI_Model
   public function deleteData($id, $no)
   {
     $dataorder = [
-      'status_order'  => 'disiapkan',
+      'status_sales'  => '',
     ];
 
     $wherenoorder = [

@@ -36,7 +36,7 @@
                     <th width="20%">Actions</th>
                   </tr>
                 </thead>
-                <tbody class="text-center">
+                <tbody class="text-center" style="font-size:14px;">
                   <?php $no = 1;
                   foreach ($rek as $data) : ?>
                     <tr>
@@ -78,7 +78,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" style="font-size:14px;">
           <div class="form-group">
             <label for="norek">
               Nomor Rekening
@@ -122,7 +122,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" style="font-size:14px;">
           <div class="form-group">
             <label for="norek">
               Nomor Rekening

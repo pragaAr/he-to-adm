@@ -157,19 +157,31 @@ $("#persenTables").on("click", ".btn-detail", function () {
         );
 
         row.append(
+          "<td class='align-middle text-uppercase text-center'>" +
+            format(salesorder[i].berat) +
+            "</td>"
+        );
+
+        row.append(
+          "<td class='align-middle text-right pr-4'>Rp " +
+            format(salesorder[i].hrg_kg) +
+            "</td>"
+        );
+
+        row.append(
           "<td class='align-middle text-uppercase text-right pr-4'>Rp. " +
             format(salesorder[i].tot_biaya) +
             "</td>"
         );
 
         row.append(
-          "<td class='align-middle text-right pr-4'>" +
+          "<td class='align-middle text-center'>" +
             salesorder[i].persen1 +
             "%</td>"
         );
 
         row.append(
-          "<td class='align-middle text-right pr-4'>" +
+          "<td class='align-middle text-center'>" +
             salesorder[i].persen2 +
             "%</td>"
         );
@@ -199,7 +211,7 @@ $("#persenTables").on("click", ".btn-detail", function () {
       const footOrder = $("<tr>");
 
       footOrder.append(
-        "<td colspan='7' class='align-middle text-uppercase text-center'>Jumlah diterima</td>"
+        "<td colspan='9' class='align-middle text-uppercase text-center'>Jumlah diterima</td>"
       );
 
       footOrder.append(
@@ -276,7 +288,7 @@ $("#persenTables").on("click", ".btn-detail", function () {
       tbodySanguOrder.append(footSangu);
       // ------------------sangu order------------------
 
-      $("#totalDiterima").html("Persen : Rp. " + format(sumTotal - sumSangu));
+      $("#totalDiterima").html("Rp. " + format(sumTotal - sumSangu));
 
       $("#modalDetail").modal("show");
 
