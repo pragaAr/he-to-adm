@@ -13,7 +13,7 @@ class M_Penjualan extends CI_Model
 
     $next_number = str_pad($last_number + 1, 6, '0', STR_PAD_LEFT);
 
-    $kode = 'rc' . $next_number;
+    $kode = $next_number;
 
     return $kode;
   }

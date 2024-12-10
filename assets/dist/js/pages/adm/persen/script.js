@@ -127,7 +127,7 @@ $("#persenTables").on("click", ".btn-detail", function () {
       let sumSangu = 0;
 
       for (let i = 0; i < salesorder.length; i++) {
-        const tglOrder = new Date(salesorder[i].tglOrder);
+        const tglReccu = new Date(salesorder[i].tglReccu);
 
         const row = $("<tr>");
         row.append(
@@ -142,7 +142,7 @@ $("#persenTables").on("click", ".btn-detail", function () {
 
         row.append(
           "<td class='align-middle text-uppercase text-center'>" +
-            tglOrder.toLocaleDateString("id-ID", {
+            tglReccu.toLocaleDateString("id-ID", {
               day: "2-digit",
               month: "2-digit",
               year: "numeric",

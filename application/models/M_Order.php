@@ -299,9 +299,24 @@ class M_Order extends CI_Model
     $this->db->trans_complete();
 
     if ($this->db->trans_status() === FALSE) {
+      log_message('error', 'Update order gagal');
       return false;
     } else {
-      return true;
+      log_message('info', 'Update order berhasil');
+    }
+
+    if ($this->db->trans_status() === FALSE) {
+      log_message('error', 'Update sopir gagal');
+      return false;
+    } else {
+      log_message('info', 'Update sopir berhasil');
+    }
+
+    if ($this->db->trans_status() === FALSE) {
+      log_message('error', 'Update truck gagal');
+      return false;
+    } else {
+      log_message('info', 'Update truck berhasil');
     }
   }
 }

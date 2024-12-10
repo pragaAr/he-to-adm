@@ -126,7 +126,7 @@ class M_Persensopir extends CI_Model
         dp.tot_biaya, 
         om.dateAdd as tglOrder, 
         c.nama as namaCustomer,
-        ar.platno, p.berat, p.hrg_kg
+        ar.platno, p.berat, p.hrg_kg, p.dateAdd as tglReccu,
     ')
       ->from('detail_ps dp')
       ->join('order_masuk om', 'om.no_order = dp.no_order')
@@ -169,7 +169,7 @@ class M_Persensopir extends CI_Model
     a.tot_biaya, 
     b.dateAdd as tglOrder, 
     c.nama, e.platno,
-    f.berat, f.hrg_kg
+    f.berat, f.hrg_kg, f.dateAdd as tglReccu,
     ')
       ->from('detail_ps a')
       ->where('a.kd', $kd)

@@ -203,6 +203,7 @@ $(document).ready(function () {
     let valberatInvoice = [];
 
     const tgl = $("#tgl").val();
+    const noinv = $("#noinv").val();
     const custid = $("#pengirim").val();
     const selectedCust = $("#selectedCust").val();
     const selectedKodeCust = $("#selectedKodeCust").val();
@@ -232,6 +233,7 @@ $(document).ready(function () {
       method: "POST",
       data: {
         tgl: tgl,
+        noinv: noinv,
         pengirim: custid,
         noorder: noorderInvoice,
         rc: rcInvoice,

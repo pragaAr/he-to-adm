@@ -214,7 +214,7 @@
             <tr>
               <td class="td-order"><?= $no++; ?>.</td>
               <td class="td-order text-uppercase"><?= $order->nama ?></td>
-              <td class="td-order"><?= date('d/m/y', strtotime($order->tglOrder)) ?></td>
+              <td class="td-order"><?= date('d/m/y', strtotime($order->tglReccu)) ?></td>
               <td class="td-order text-uppercase"><?= $order->platno ?></td>
               <td class="td-order text-right"><?= number_format($order->berat) ?> Kg</td>
               <td class="td-order text-right">Rp. <?= number_format($order->hrg_kg) ?></td>
@@ -267,7 +267,9 @@
           </tr>
         </thead>
         <tbody>
-          <?php $no = 1;
+          <?php
+          $no = 1;
+          $jmlTotalSangu = 0;
           foreach ($sangu as $sangu) : ?>
             <tr>
               <td class="td-sangu"><?= $no++ ?>.</td>
@@ -281,7 +283,6 @@
               $b = floatval($sangu->tambahan);
 
               $c = $a + $b;
-              $jmlTotalSangu = 0;
 
               ?>
 

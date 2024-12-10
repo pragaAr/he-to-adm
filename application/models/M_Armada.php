@@ -91,4 +91,24 @@ class M_Armada extends CI_Model
   {
     return $this->db->delete('armada', ['id' => $id]);
   }
+
+  public function getSelectedArmadaReady($id, $key)
+  {
+    $this->db->select('id, platno')
+      ->from('armada')
+      ->where('status_truck', 0)
+      ->order_by('platno', 'asc');
+
+    if ($id) {
+      $this->db->or_where('id', $id);
+    }
+
+    if ($key) {
+      $this->db->like('platno', $key);
+    }
+
+    $res = $this->db->get()->result();
+
+    return $res;
+  }
 }

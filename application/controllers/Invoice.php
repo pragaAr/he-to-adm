@@ -92,6 +92,7 @@ class Invoice extends CI_Controller
     $countRow   = count($this->input->post('sj'));
     $rc         = $this->input->post('rc');
     $noorder    = $this->input->post('noorder');
+    $nomor      = $this->input->post('noinv');
     $tgl        = date('Y-m-d', strtotime($this->input->post('tgl')));
     $sj         = $this->input->post('sj');
     $custid     = $this->input->post('pengirim');
@@ -102,11 +103,6 @@ class Invoice extends CI_Controller
     $tipe       = 'invoice';
     $month      = date('m');
 
-    $querynomor = $this->Invoice->generateNomorInvoice($cust, $tipe);
-
-    $romawi     = $this->bulanRomawi($month);
-
-    $nomor      = $kode . '/' . $querynomor . '/han/' . $romawi . '/' . date('y');
     $noReplace  = str_replace('/', '-', $nomor);
 
     $dataReccu = [];
@@ -139,15 +135,7 @@ class Invoice extends CI_Controller
       $datadt[$i]['berat']        = $berat[$i];
     }
 
-    $datasurat = [
-      'customer'    => $cust,
-      'jenis'       => $tipe,
-      'nomor_angka' => $querynomor,
-      'nomor'       => $nomor,
-      'dateAdd'     => $dateAdd
-    ];
-
-    $proses = $this->Invoice->addData($datainv, $datadt, $datasurat);
+    $proses = $this->Invoice->addData($datainv, $datadt);
 
     if ($proses) {
       $response = [
@@ -258,39 +246,11 @@ class Invoice extends CI_Controller
     }
   }
 
-  public function test()
-  {
-    $str      = 'ims/3/han/iv/24';
-
-    $query    = $this->Invoice->getDataByNomor($str);
-
-    $datainv  = $this->Invoice->getInvData($str);
-
-    $reccu = [];
-
-    foreach ($datainv as $item) {
-      $reccu[] = $item->reccu;
-    }
-
-    $detail = $this->Invoice->getDetailData($reccu);
-
-    $data = [
-      'title'   => 'Invoice',
-      'nomor'   => $query->nomor_inv,
-      'cust'    => $query->nama,
-      'datainv' => $datainv,
-      'detail'  => $detail,
-    ];
-
-    $this->load->view('layout/trans/invoice/test', $data);
-  }
-
   public function delete()
   {
     $nomor = $this->input->post('nomor');
-    $jenis = 'invoice';
 
-    $data = $this->Invoice->deleteData($nomor, $jenis);
+    $data = $this->Invoice->deleteData($nomor);
 
     echo json_encode($data);
   }

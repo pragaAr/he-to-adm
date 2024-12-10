@@ -199,7 +199,6 @@
               <select name="custidedit" id="custidedit" class="form-control select-custedit" style="width:100%" required oninvalid="this.setCustomValidity('Customer wajib di isi!')" oninput="setCustomValidity('')">
                 <option value=""></option>
               </select>
-              <input type="hidden" class="form-control" name="namecustedit" id="namecustedit">
             </div>
             <div class="form-group col-md-4">
               <label for="notelpedit">
@@ -247,8 +246,7 @@
               <select name="platedit" id="platedit" class="form-control text-uppercase select-truckedit" style="width: 100%;" required oninvalid="this.setCustomValidity('Plat Nomor wajib di isi!')" oninput="setCustomValidity('')">
                 <option value=""></option>
               </select>
-              <input type="hidden" class="form-control" name="oldtruckid" id="oldtruckid">
-              <input type="hidden" class="form-control" name="platnoedit" id="platnoedit">
+              <input type="text" class="form-control" name="oldtruckid" id="oldtruckid">
             </div>
             <div class="form-group col-md-4">
               <label for="sopiredit">
@@ -257,8 +255,7 @@
               <select name="sopiredit" id="sopiredit" class="form-control text-uppercase select-sopiredit" style="width: 100%;" required oninvalid="this.setCustomValidity('Sopir wajib di isi!')" oninput="setCustomValidity('')">
                 <option value=""></option>
               </select>
-              <input type="hidden" class="form-control" name="oldsopirid" id="oldsopirid">
-              <input type="hidden" class="form-control" name="namasopiredit" id="namasopiredit">
+              <input type="text" class="form-control" name="oldsopirid" id="oldsopirid">
             </div>
             <div class="form-group col-md-4">
               <label for="nominaledit">

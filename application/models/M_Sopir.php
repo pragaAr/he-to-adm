@@ -111,4 +111,24 @@ class M_Sopir extends CI_Model
   {
     return $this->db->delete('sopir', ['id' => $id]);
   }
+
+  public function getSelectedSopirAvailable($id, $key)
+  {
+    $this->db->select('id, nama')
+      ->from('sopir')
+      ->where('status_sopir', 0)
+      ->order_by('nama', 'asc');
+
+    if ($id) {
+      $this->db->or_where('id', $id);
+    }
+
+    if ($key) {
+      $this->db->like('nama', $key);
+    }
+
+    $res = $this->db->get()->result();
+
+    return $res;
+  }
 }

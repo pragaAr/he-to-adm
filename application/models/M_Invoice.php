@@ -105,13 +105,12 @@ class M_Invoice extends CI_Model
     return $query;
   }
 
-  public function addData($datainv, $datadt, $datasurat)
+  public function addData($datainv, $datadt)
   {
     $this->db->trans_start();
 
     $this->db->insert('invoice', $datainv);
     $this->db->insert_batch('detail_inv', $datadt);
-    $this->db->insert('nomor_surat', $datasurat);
 
     $this->db->trans_complete();
 
@@ -135,10 +134,9 @@ class M_Invoice extends CI_Model
     $this->db->insert_batch('detail_inv', $detail);
   }
 
-  public function deleteData($nomor, $jenis)
+  public function deleteData($nomor)
   {
     $this->db->delete('invoice', ['nomor_inv' => $nomor]);
     $this->db->delete('detail_inv', ['nomor_inv' => $nomor]);
-    $this->db->delete('nomor_surat', ['nomor' => $nomor, 'jenis' => $jenis]);
   }
 }

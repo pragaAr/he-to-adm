@@ -14,6 +14,8 @@ class Order extends CI_Controller
 
     $this->load->model('M_Order', 'Order');
     $this->load->model('M_Sangu', 'Sangu');
+    $this->load->model('M_Sopir', 'Sopir');
+    $this->load->model('M_Armada', 'Armada');
 
     if (empty($this->session->userdata('id'))) {
       $this->session->set_flashdata('flashrole', 'Silahkan Login terlebih dahulu!');
@@ -148,6 +150,42 @@ class Order extends CI_Controller
     $data = $this->Order->printOrder($kd);
 
     echo json_encode($data);
+  }
+
+  public function getSelectedSopirAvailable()
+  {
+    $sopir_id = $this->input->get('sopir_id');
+    $keyword = $this->input->get('q');
+
+    $data = $this->Sopir->getSelectedSopirAvailable($sopir_id, $keyword);
+
+    $response = [];
+    foreach ($data as $sopir) {
+      $response[] = [
+        'id'    => $sopir->id,
+        'text'  => ucwords($sopir->nama),
+      ];
+    }
+
+    echo json_encode($response);
+  }
+
+  public function getSelectedArmadaReady()
+  {
+    $armada_id = $this->input->get('armada_id');
+    $keyword = $this->input->get('q');
+
+    $data = $this->Armada->getSelectedArmadaReady($armada_id, $keyword);
+
+    $response = [];
+    foreach ($data as $armada) {
+      $response[] = [
+        'id'    => $armada->id,
+        'text'  => strtoupper($armada->platno),
+      ];
+    }
+
+    echo json_encode($response);
   }
 
   public function add()

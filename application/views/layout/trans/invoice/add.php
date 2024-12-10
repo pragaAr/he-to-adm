@@ -76,9 +76,13 @@
                 </div>
 
                 <div class="form-row">
-                  <div class="form-group col-md">
+                  <div class="form-group col-md-6">
                     <label for="tgl">Tanggal</label>
                     <input type="date" name="tgl" id="tgl" class="form-control text-uppercase" value="<?= date('Y-m-d') ?>">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="noinv">No Invoice</label>
+                    <input type="text" name="noinv" id="noinv" class="form-control text-uppercase" required>
                   </div>
                 </div>
 

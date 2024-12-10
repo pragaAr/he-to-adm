@@ -438,52 +438,6 @@ $("#modalUpdateOrder").on("shown.bs.modal", function () {
 
       $("#muatan").focus();
     });
-
-  $(".select-truckedit")
-    .select2({
-      placeholder: "Pilih Truck",
-      ajax: {
-        url: "http://localhost/hira-to-adm/armada/getListArmada",
-        dataType: "json",
-        data: function (params) {
-          return {
-            q: params.term,
-          };
-        },
-        processResults: function (data) {
-          return {
-            results: data,
-          };
-        },
-      },
-    })
-    .on("select2:select", function (e) {
-      const data = e.params.data;
-      $("#platnoedit").val(data.text);
-    });
-
-  $(".select-sopiredit")
-    .select2({
-      placeholder: "Pilih Sopir",
-      ajax: {
-        url: "http://localhost/hira-to-adm/sopir/getListSopir",
-        dataType: "json",
-        data: function (params) {
-          return {
-            q: params.term,
-          };
-        },
-        processResults: function (data) {
-          return {
-            results: data,
-          };
-        },
-      },
-    })
-    .on("select2:select", function (e) {
-      const data = e.params.data;
-      $("#namasopiredit").val(data.text);
-    });
 });
 
 $("#orderTables").on("click", ".btn-edit", function (e) {
@@ -507,9 +461,11 @@ $("#orderTables").on("click", ".btn-edit", function (e) {
           },
           success: function (data) {
             const parsedata = JSON.parse(data);
+
             const custid = parsedata.customer_id;
             const truckid = parsedata.truck_id;
             const sopirid = parsedata.sopir_id;
+
             $("#oldtruckid").val(parsedata.truck_id);
             $("#oldsopirid").val(parsedata.sopir_id);
             $("#ordernumberedit").val(parsedata.no_order);
@@ -524,10 +480,15 @@ $("#orderTables").on("click", ".btn-edit", function (e) {
               type: "GET",
               dataType: "json",
               success: function (custData) {
-                const custedit = $(".select-custedit").select2({
-                  placeholder: "Pilih Customer",
-                  data: custData,
-                });
+                const custedit = $(".select-custedit")
+                  .select2({
+                    placeholder: "Pilih Customer",
+                    data: custData,
+                  })
+                  .on("select2:select", function (e) {
+                    const data = e.params.data;
+                    $("#notelpedit").val(data.telp);
+                  });
                 $.each(custData, function (i, cust) {
                   if (cust.id === custid) {
                     custedit.val(cust.id).trigger("change");
@@ -537,8 +498,9 @@ $("#orderTables").on("click", ".btn-edit", function (e) {
               },
             });
             $.ajax({
-              url: "http://localhost/hira-to-adm/armada/getListArmada",
+              url: "http://localhost/hira-to-adm/order/getSelectedArmadaReady",
               type: "GET",
+              data: { armada_id: truckid },
               dataType: "json",
               success: function (truckData) {
                 const truckedit = $(".select-truckedit").select2({
@@ -554,8 +516,9 @@ $("#orderTables").on("click", ".btn-edit", function (e) {
               },
             });
             $.ajax({
-              url: "http://localhost/hira-to-adm/sopir/getListSopir",
+              url: "http://localhost/hira-to-adm/order/getSelectedSopirAvailable",
               type: "GET",
+              data: { sopir_id: sopirid },
               dataType: "json",
               success: function (sopirData) {
                 const sopiredit = $(".select-sopiredit").select2({
@@ -592,7 +555,6 @@ $("#form_updateOrder").on("submit", function (e) {
 
   const ordernumber = $("#ordernumberedit").val();
   const custid = $("#custidedit").val();
-  const namecust = $("#namecustedit").val();
   const notelp = $("#notelpedit").val();
   const muatan = $("#muatanedit").val();
   const asal = $("#asaledit").val();
@@ -601,10 +563,8 @@ $("#form_updateOrder").on("submit", function (e) {
 
   const plat = $("#platedit").val();
   const oldplat = $("#oldtruckid").val();
-  const platno = $("#platnoedit").val();
   const sopir = $("#sopiredit").val();
   const oldsopir = $("#oldsopirid").val();
-  const namasopir = $("#namasopiredit").val();
   const nominal = $("#nominaledit").val();
 
   $.ajax({
@@ -613,7 +573,6 @@ $("#form_updateOrder").on("submit", function (e) {
     data: {
       ordernumber: ordernumber,
       custid: custid,
-      namecust: namecust,
       notelp: notelp,
       muatan: muatan,
       asal: asal,
@@ -622,25 +581,20 @@ $("#form_updateOrder").on("submit", function (e) {
 
       plat: plat,
       oldplat: oldplat,
-      platno: platno,
       sopir: sopir,
       oldsopir: oldsopir,
-      namasopir: namasopir,
       nominal: nominal,
     },
     success: function (data) {
       $("#ordernumberedit").val("");
       $("#custidedit").val(null).trigger("change");
-      $("#namecustedit").val("");
       $("#notelpedit").val("");
       $("#muatanedit").val("");
       $("#asaledit").val("");
       $("#tujuanedit").val("");
 
       $("#platedit").val(null).trigger("change");
-      $("#platnoedit").val("");
       $("#sopiredit").val(null).trigger("change");
-      $("#namasopiredit").val("");
       $("#nominaledit").val("");
 
       $("#modalUpdateOrder").modal("hide");
@@ -795,6 +749,7 @@ $("#orderTables").on("click", ".btn-update", function () {
               no: no,
             },
             success: function (data) {
+              console.log(data);
               Swal.fire({
                 icon: "success",
                 title: "Success!",
